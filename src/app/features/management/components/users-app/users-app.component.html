@@ -1,42 +1,42 @@
-<div class = "panels animate__animated animate__fadeInLeft">
-  <div class = "titleCards">
-    <span><em class = "fas fa-users"></em></span> Usuarios registrados en la aplicación
+<div class = 'panels animate__animated animate__fadeInLeft'>
+  <div class = 'titleCards'>
+    <span><em class = 'fas fa-users'></em></span> Usuarios registrados en la aplicación
   </div>
 
-  <table [dtOptions] = "dtOptions"
-         [dtTrigger] = "dtTrigger"
-         aria-label = "Tabla de usuarios"
-         class = "table table-striped"
+  <table [dtOptions] = 'dtOptions'
+         [dtTrigger] = 'dtTrigger'
+         aria-label = 'Tabla de usuarios'
+         class = 'table table-striped'
          datatable>
     <thead>
     <tr>
       <th class = 'd-none'>Id</th>
-      <th scope = "col">Nombre
+      <th scope = 'col'>Nombre
       </th>
-      <th scope = "col">Email</th>
+      <th scope = 'col'>Email</th>
       <th class = 'col'>Teléfono</th>
-      <th scope = "col">Estado</th>
-      <th scope = "col">Tipo Registro</th>
-      <th scope = "col">Código de validación</th>
-      <th scope = "col">Opciones</th>
+      <th scope = 'col'>Estado</th>
+      <th scope = 'col'>Tipo Registro</th>
+      <th scope = 'col'>Código de validación</th>
+      <th scope = 'col'>Opciones</th>
     </tr>
     </thead>
     <tbody>
 
-    <tr *ngFor = "let user of users"
-        class = "animate__animated animate__fadeIn">
-      <td class = 'd-none'><a href = "tel:{{user.id}}">{{user.id}}</a></td>
+    <tr *ngFor = 'let user of users'
+        class = 'animate__animated animate__fadeIn'>
+      <td class = 'd-none'><a href = 'tel:{{user.id}}'>{{user.id}}</a></td>
       <td>{{user.name + ' ' + (!user.last_name ? '' : user.last_name)}}</td>
       <td>{{user.email}}</td>
       <td>{{user.phone_number ? user.phone_number : 'Sin registrar'}}</td>
       <td>{{getStatus(!user.status ? 0 : user.status)}}</td>
       <td> {{getRegister(user)}}</td>
       <td> {{user.validate_code}}</td>
-      <td class = "text-right">
+      <td class = 'text-right'>
         <button
           (click) = 'open(contenido,user)'
-          class = "buttonRowEdit me-1"
-          title = "Editar"><em class = "fas fa-user-edit"></em>
+          class = 'buttonRowEdit me-1'
+          title = 'Editar'><em class = 'fas fa-user-edit'></em>
         </button>
     </tr>
     </tbody>
@@ -45,16 +45,16 @@
   <ng-template #contenido
                let-modal>
 
-    <div class = "modal-header">
-      <h3 class = "modal-title"
-          id = "staticBackdropLabel"><span><em class = 'fas fa-user-edit'></em></span> Editar usuario</h3>
+    <div class = 'modal-header'>
+      <h3 class = 'modal-title'
+          id = 'staticBackdropLabel'><span><em class = 'fas fa-user-edit'></em></span> Editar usuario</h3>
       <button (click) = 'modal.close()'
-              aria-label = "Close"
-              class = "btn-close"
-              data-bs-dismiss = "modal"
-              type = "button"></button>
+              aria-label = 'Close'
+              class = 'btn-close'
+              data-bs-dismiss = 'modal'
+              type = 'button'></button>
     </div>
-    <div class = "modal-body">
+    <div class = 'modal-body'>
       <div class = 'row'>
         <div class = 'col-xl-12 col-lg-12  col-sm-12'>
           <app-input-container
@@ -83,24 +83,22 @@
             [formGroup] = 'formGroup'
             controlName = 'phone'
             name = 'Número de Télefono'
-            typeof = 'number'
+            type = 'number'
           >
           </app-input-container>
         </div>
       </div>
     </div>
-    <div class = "modal-footer">
+    <div class = 'modal-footer'>
       <button (click) = 'modal.close()'
-              class = "btn btn-secondary"
-              data-bs-dismiss = "modal"
-              type = "button">Close
+              class = 'btn btn-secondary'
+              data-bs-dismiss = 'modal'
+              type = 'button'>Close
       </button>
       <button (click) = 'EditUserApp()'
-              class = "btn btn-primary"
-              type = "button">Guardar
+              class = 'btn btn-primary'
+              type = 'button'>Guardar
       </button>
     </div>
-
   </ng-template>
-
 </div>
