@@ -21,15 +21,6 @@ import * as logoFile from '../logoEbi'
 import 'jspdf-autotable'
 import { FormBuilder, FormGroup } from '@angular/forms'
 
-/* export interface tickets {
-  name: string;
-  last_name: string;
-  email: string;
-  phone_number: string;
-  amount: number;
-  created_at: Date;
-} */
-
 export interface tickets {
   fecha: Date
   total_v: number
@@ -44,20 +35,18 @@ export interface tickets {
   styleUrls: ['./parking-ticket-report.component.css']
 })
 export class ParkingTicketReportComponent implements OnInit {
-  //@ViewChild(DataTableDirective)
   @ViewChild(DxDataGridComponent, { static: false })
   dataGrid!: DxDataGridComponent
   dtElement!: DataTableDirective
-  dtOptions: DataTables.Settings = {}
+  dtOptions: DataTables.Settings
   dtTrigger: Subject<any> = new Subject()
   pdfTable!: ElementRef
 
   report: tickets[] = []
   dataSource: any
   reportForm: FormGroup
-  allParking: ParkingModel[] = Array<ParkingModel>()
+  allParking: ParkingModel[] = []
   verTodosLosParqueosReport = environment.verTodosLosParqueosReport
-  fechaActual = new Date().toISOString().split('T')[0]
   now = new Date()
 
   constructor(
@@ -67,11 +56,12 @@ export class ParkingTicketReportComponent implements OnInit {
     private messageService: MessageService,
     private utilitiesService: UtilitiesService,
     private authService: AuthService,
-    private permisionService: PermissionsService,
+    private permissionService: PermissionsService,
     private excelService: ReportService,
     private parkingService: ParkingService
   ) {
     this.reportForm = this.createReportForm()
+    this.dtOptions = DataTableOptions.getSpanishOptions(10)
   }
 
   get isSudo() {
@@ -79,21 +69,18 @@ export class ParkingTicketReportComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.messageService.showLoading()
-    this.dtOptions = DataTableOptions.getSpanishOptions(10)
-    this.authService.user$.subscribe(({ parkingId }) => {
-      this.reportForm.get('parkingId')?.setValue(parkingId)
-      this.getReport()
-    })
-
     this.parkingService.parkingLot$.subscribe((parkingLot) => {
       this.allParking = parkingLot
       this.allParking.push({ id: '0', name: '-- Todos los parqueos --' })
     })
+    this.authService.user$.subscribe(({ parkingId }) => {
+      this.reportForm.get('parkingId')?.setValue(parkingId)
+      this.getReport()
+    })
   }
 
   ifHaveAction(action: string) {
-    return this.permisionService.ifHaveAction(action)
+    return this.permissionService.ifHaveAction(action)
   }
 
   getReport() {
@@ -105,6 +92,7 @@ export class ParkingTicketReportComponent implements OnInit {
       )
       return
     }
+    this.messageService.showLoading()
     return this.reportService
       .getTicketsRpt(startDate, endDate, parkingId)
       .toPromise()
@@ -123,10 +111,6 @@ export class ParkingTicketReportComponent implements OnInit {
       .then(() => {
         this.messageService.hideLoading()
       })
-  }
-
-  ngAfterViewInit() {
-    this.dtTrigger.next()
   }
 
   exportGrid() {

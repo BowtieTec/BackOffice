@@ -1,44 +1,44 @@
-<div class = "row justify-content-center">
-  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12 panelLeft animate__animated animate__fadeInLeft">
-    <div class = "panelsWithOutMinHeight">
-      <div class = "titleCards">
-        <span><i class = "fas fa-sitemap"></i></span> Reporte de Facturación
+<div class = 'row justify-content-center'>
+  <div class = 'col-lg-12 col-md-12 col-sm-12 col-xs-12 panelLeft animate__animated animate__fadeInLeft'>
+    <div class = 'panelsWithOutMinHeight'>
+      <div class = 'titleCards'>
+        <span><i class = 'fas fa-sitemap'></i></span> Reporte de Facturación
       </div>
-      <div class = "row justify-content-center">
-        <div class = "row justify-content-center">
-          <div *ngIf = "isSudo"
-               class = "col-xl-4 col-lg-6 col-sm-12">
+      <div class = 'row justify-content-center'>
+        <div class = 'row justify-content-center'>
+          <div *ngIf = 'isSudo'
+               class = 'col-xl-4 col-lg-6 col-sm-12'>
             <app-select-container
-              (change) = "this.getReport()"
-              [data] = "allParking"
-              [formGroup] = "reportForm"
-              controlName = "parkingId"
-              name = "Parqueos"
+              (change) = 'this.getReport()'
+              [data] = 'allParking'
+              [formGroup] = 'reportForm'
+              controlName = 'parkingId'
+              name = 'Parqueos'
             ></app-select-container>
           </div>
-          <div class = "col-xl-2 col-lg-6 col-sm-12">
-            <div class = "mb-4 relative">
+          <div class = 'col-xl-4 col-lg-6 col-sm-12'>
+            <div class = 'mb-4 relative'>
               <app-input-container
-                (change) = "this.getReport()"
-                [formGroup] = "reportForm"
+                (change) = 'this.getReport()'
+                [formGroup] = 'reportForm'
                 [value] = "now | date: 'yyyy-MM-dd'"
-                controlName = "startDate"
+                controlName = 'startDate'
                 maxL = "{{now | date:'dd-MM-yyyy'}}"
-                name = "Inicio de Búsqueda"
-                type = "Date"
+                name = 'Inicio de Búsqueda'
+                type = 'Date'
               ></app-input-container>
             </div>
           </div>
-          <div class = "col-xl-2 col-lg-6 col-sm-12">
-            <div class = "mb-4 relative">
+          <div class = 'col-xl-4 col-lg-6 col-sm-12'>
+            <div class = 'mb-4 relative'>
               <app-input-container
-                (change) = "this.getReport()"
-                [formGroup] = "reportForm"
+                (change) = 'this.getReport()'
+                [formGroup] = 'reportForm'
                 [value] = "now | date: 'yyyy-MM-dd'"
-                controlName = "endDate"
+                controlName = 'endDate'
                 maxL = "{{now | date:'yyyy-MM-dd'}}"
-                name = "Fin de Búsqueda"
-                type = "Date"
+                name = 'Fin de Búsqueda'
+                type = 'Date'
               ></app-input-container>
             </div>
           </div>
@@ -46,66 +46,66 @@
       </div>
     </div>
   </div>
-  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class = "panels">
-      <div class = "row"
-           id = "exportable">
+  <div class = 'col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+    <div class = 'panels'>
+      <div class = 'row'
+           id = 'exportable'>
 
-        <dx-data-grid [columnHidingEnabled] = "false"
-                      [dataSource] = "dataSource"
-                      [showBorders] = "true"
-                      id = "gridContainer">
+        <dx-data-grid [columnHidingEnabled] = 'false'
+                      [dataSource] = 'dataSource'
+                      [showBorders] = 'true'
+                      id = 'gridContainer'>
           <dxi-column
-            caption = "Fecha facturación"
-            dataField = "dateBilling"
-            dataType = "datetime"
-            format = "dd/MM/yyyy hh:mm:ss"
-            width = "auto"
+            caption = 'Fecha facturación'
+            dataField = 'dateBilling'
+            dataType = 'datetime'
+            format = 'dd/MM/yyyy hh:mm:ss'
+            width = 'auto'
           ></dxi-column>
           <dxi-column
-            caption = "Teléfono"
-            dataField = "phone_key"
-            width = "auto"
+            caption = 'Teléfono'
+            dataField = 'phone_key'
+            width = 'auto'
           ></dxi-column>
           <dxi-column
-            caption = "Nit"
-            dataField = "nit"
-            width = "auto"
-          ></dxi-column>
-
-          <dxi-column
-            caption = "Total "
-            dataField = "total"
-            dataType = "number"
-            format = "currency"
-            format = "Q ,###,###,##0.00"
-            width = "auto"
-          ></dxi-column>
-          <dxi-column
-            caption = "No. Facturación"
-            dataField = "noFactura"
-            width = "auto"
-          ></dxi-column>
-          <dxi-column
-            caption = "Tipo de Servicio"
-            dataField = "typeService"
-            width = "auto"
+            caption = 'Nit'
+            dataField = 'nit'
+            width = 'auto'
           ></dxi-column>
 
-          <dxo-header-filter [visible] = "true"></dxo-header-filter>
-          <dxo-search-panel [visible] = "true"
-                            placeholder = "Buscar..."></dxo-search-panel>
+          <dxi-column
+            caption = 'Total '
+            dataField = 'total'
+            dataType = 'number'
+            format = 'currency'
+            format = 'Q ,###,###,##0.00'
+            width = 'auto'
+          ></dxi-column>
+          <dxi-column
+            caption = 'No. Facturación'
+            dataField = 'noFactura'
+            width = 'auto'
+          ></dxi-column>
+          <dxi-column
+            caption = 'Tipo de Servicio'
+            dataField = 'typeService'
+            width = 'auto'
+          ></dxi-column>
+
+          <dxo-header-filter [visible] = 'true'></dxo-header-filter>
+          <dxo-search-panel [visible] = 'true'
+                            placeholder = 'Buscar...'></dxo-search-panel>
           <dxo-toolbar>
-            <dxi-item location = "after">
+            <dxi-item location = 'after'>
               <dx-button
-                (onClick) = "onExporting($event)"
-                icon = "xlsxfile"
-                text = "Exportar a Excel"
+                (onClick) = 'onExporting($event)'
+                icon = 'xlsxfile'
+                text = 'Exportar a Excel'
               ></dx-button>
             </dxi-item>
-            <dxi-item name = "searchPanel"></dxi-item>
+            <dxi-item name = 'searchPanel'></dxi-item>
           </dxo-toolbar>
-          <dxo-export [enabled] = "true"></dxo-export>
+          <dxo-export [enabled] = 'true'></dxo-export>
         </dx-data-grid>
       </div>
     </div>
