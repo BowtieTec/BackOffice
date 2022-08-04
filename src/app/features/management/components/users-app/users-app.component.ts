@@ -176,7 +176,7 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
       ],
       phone: [
         '',
-        [Validators.required, Validators.maxLength(15)]
+        [Validators.required]
       ]
     })
   }
