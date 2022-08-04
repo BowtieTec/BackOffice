@@ -1,14 +1,29 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, ViewChild} from '@angular/core'
-import {CreateStation, StationsCourtesyModel} from '../../../../../parking/models/StationaryCourtesy.model'
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
-import {MessageService} from '../../../../../../shared/services/message.service'
-import {ParkingService} from '../../../../../parking/services/parking.service'
-import {ParkingModel} from '../../../../../parking/models/Parking.model'
-import {AuthService} from '../../../../../../shared/services/auth.service'
-import {DataTableDirective} from 'angular-datatables'
-import {Subject} from 'rxjs'
-import {DataTableOptions} from '../../../../../../shared/model/DataTableOptions'
-import { ResponseModel } from '../../../../../../shared/model/Request.model'
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core'
+import {
+  CreateStation,
+  StationsCourtesyModel
+} from '../../../../../parking/models/StationaryCourtesy.model'
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators
+} from '@angular/forms'
+import { MessageService } from '../../../../../../shared/services/message.service'
+import { ParkingService } from '../../../../../parking/services/parking.service'
+import { ParkingModel } from '../../../../../parking/models/Parking.model'
+import { AuthService } from '../../../../../../shared/services/auth.service'
+import { DataTableDirective } from 'angular-datatables'
+import { Subject } from 'rxjs'
+import { DataTableOptions } from '../../../../../../shared/model/DataTableOptions'
 import { UtilitiesService } from '../../../../../../shared/services/utilities.service'
 import { environment } from '../../../../../../../environments/environment'
 import { PermissionsService } from '../../../../../../shared/services/permissions.service'
@@ -18,7 +33,9 @@ import { PermissionsService } from '../../../../../../shared/services/permission
   templateUrl: './antennas-from-courtesy.component.html',
   styleUrls: ['./antennas-from-courtesy.component.css']
 })
-export class AntennasFromCourtesyComponent implements AfterViewInit, OnDestroy {
+export class AntennasFromCourtesyComponent
+  implements AfterViewInit, OnDestroy, OnInit
+{
   @Input() parkingId: string = this.authService.getParking().id
   @Output() stationsSaved = new EventEmitter<boolean>()
   stationsCourtesy: StationsCourtesyModel[] = []
@@ -26,8 +43,10 @@ export class AntennasFromCourtesyComponent implements AfterViewInit, OnDestroy {
   antennasForm: UntypedFormGroup
   allParking: ParkingModel[] = Array<ParkingModel>()
   /* Permissions */
-  editStationsCourtesyStationary: string = environment.editStationsCourtesyStationary
-  deleteStationsCourtesyStationary: string = environment.deleteStationsCourtesyStationary
+  editStationsCourtesyStationary: string =
+    environment.editStationsCourtesyStationary
+  deleteStationsCourtesyStationary: string =
+    environment.deleteStationsCourtesyStationary
 
   /*Table*/
   @ViewChild(DataTableDirective)
@@ -35,6 +54,7 @@ export class AntennasFromCourtesyComponent implements AfterViewInit, OnDestroy {
   dtTrigger: Subject<any> = new Subject()
   formGroup: UntypedFormGroup
   private actions: string[] = this.permissionService.actionsOfPermissions
+
   constructor(
     private formBuilder: UntypedFormBuilder,
     private message: MessageService,
@@ -44,7 +64,7 @@ export class AntennasFromCourtesyComponent implements AfterViewInit, OnDestroy {
     private permissionService: PermissionsService
   ) {
     this.antennasForm = this.createAntennasForm()
-    this.formGroup = formBuilder.group({filter: ['']})
+    this.formGroup = formBuilder.group({ filter: [''] })
     this.getInitialData()
   }
 
@@ -56,15 +76,6 @@ export class AntennasFromCourtesyComponent implements AfterViewInit, OnDestroy {
     return DataTableOptions.getSpanishOptions(10)
   }
 
-  cleanForm() {
-    this.idEditAntenna = ''
-    this.antennasForm.controls['parkingId'].setValue(this.parkingId)
-    this.antennasForm.controls['name'].setValue('');
-    this.antennasForm.controls['mac'].setValue('');
-    this.antennasForm.controls['antena'].setValue('');
-    this.utilitiesService.markAsUnTouched(this.antennasForm)
-  }
-
   get antennaFormValue(): CreateStation {
     return {
       parking: this.antennasForm.get('parkingId')?.value,
@@ -74,44 +85,62 @@ export class AntennasFromCourtesyComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  ngOnInit(): void {
+    this.parkingService.parkingLot$.subscribe((parkingLot) => {
+      this.allParking = parkingLot
+    })
+    this.authService.user$.subscribe(({ parkingId }) => {
+      this.parkingId = parkingId
+      this.antennasForm.get('parkingId')?.setValue(parkingId)
+      this.getInitialData()
+    })
+  }
+
+  cleanForm() {
+    this.idEditAntenna = ''
+    this.antennasForm.controls['parkingId'].setValue(this.parkingId)
+    this.antennasForm.controls['name'].setValue('')
+    this.antennasForm.controls['mac'].setValue('')
+    this.antennasForm.controls['antena'].setValue('')
+    this.utilitiesService.markAsUnTouched(this.antennasForm)
+  }
+
   validateId(id: string | undefined) {
     return id == undefined ? '' : id
   }
 
-  editAntenna(antenna: StationsCourtesyModel){
-    antenna.id = this.validateId(antenna.id);
-    this.idEditAntenna = antenna.id;
-    this.antennasForm.controls['parkingId'].setValue(antenna.parking.id);
-    this.antennasForm.controls['name'].setValue(antenna.name);
-    this.antennasForm.controls['mac'].setValue(antenna.mac);
-    this.antennasForm.controls['antena'].setValue(antenna.antena);
-
+  editAntenna(antenna: StationsCourtesyModel) {
+    antenna.id = this.validateId(antenna.id)
+    this.idEditAntenna = antenna.id
+    this.antennasForm.controls['parkingId'].setValue(antenna.parking.id)
+    this.antennasForm.controls['name'].setValue(antenna.name)
+    this.antennasForm.controls['mac'].setValue(antenna.mac)
+    this.antennasForm.controls['antena'].setValue(antenna.antena)
   }
 
-  deleteAntenna(antenna: StationsCourtesyModel){
+  deleteAntenna(antenna: StationsCourtesyModel) {
     this.message.showLoading()
     antenna.id = this.validateId(antenna.id)
-    this.parkingService.deleteAntennaWithCourtesy(antenna.id).subscribe((data)=>{
-      if(data.success){
-        this.searchStationsByParking()
-        this.message.OkTimeOut('Borrada')
-        this.stationsSaved.emit(true)
-      } else {
-        this.message.error(data.message)
-      }
-    })
+    this.parkingService
+      .deleteAntennaWithCourtesy(antenna.id)
+      .subscribe((data) => {
+        if (data.success) {
+          this.searchStationsByParking()
+          this.message.OkTimeOut('Borrada')
+          this.stationsSaved.emit(true)
+        } else {
+          this.message.error(data.message)
+        }
+      })
   }
 
   getInitialData() {
     try {
       this.message.showLoading()
-      Promise.all([
-        this.parkingService.getAllParking().then((data) => data.data.parkings),
-        this.parkingService.getAntennasWithStationaryCourtesy(this.parkingId)
-      ])
+      this.parkingService
+        .getAntennasWithStationaryCourtesy(this.parkingId)
         .then((resp) => {
-          this.allParking = resp[0]
-          this.stationsCourtesy = resp[1]
+          this.stationsCourtesy = resp
         })
         .then(() => this.rerender())
     } catch (ex: any) {
@@ -127,7 +156,6 @@ export class AntennasFromCourtesyComponent implements AfterViewInit, OnDestroy {
     return !!this.actions.find((x) => x == action)
   }
 
-
   async searchStationsByParking() {
     const parkingId = this.antennasForm.controls['parkingId'].value
     this.stationsCourtesy =
@@ -136,7 +164,6 @@ export class AntennasFromCourtesyComponent implements AfterViewInit, OnDestroy {
       this.parkingId = parkingId
       this.rerender()
     }
-
   }
 
   ngAfterViewInit(): void {
@@ -152,29 +179,14 @@ export class AntennasFromCourtesyComponent implements AfterViewInit, OnDestroy {
       this.message.errorTimeOut('', 'Datos incorrectos o faltantes.')
       return
     }
-        this.message.showLoading()
+    this.message.showLoading()
     const newAntenna = this.antennaFormValue
 
-    if(this.idEditAntenna == ''){
-      this.parkingService.createStationWithCourtesy(
-        newAntenna
-      ).subscribe((data) =>{
-        if(data.success){
-          this.cleanForm()
-          this.searchStationsByParking()
-          this.message.OkTimeOut()
-          this.stationsSaved.emit(true)
-        } else {
-          this.message.error(data.message)
-        }
-
-      })
-
-    }else{
-      newAntenna.id = this.idEditAntenna
-      this.parkingService.editStationWithCourtesy(newAntenna)
-        .subscribe((data) =>{
-          if(data.success){
+    if (this.idEditAntenna == '') {
+      this.parkingService
+        .createStationWithCourtesy(newAntenna)
+        .subscribe((data) => {
+          if (data.success) {
             this.cleanForm()
             this.searchStationsByParking()
             this.message.OkTimeOut()
@@ -182,12 +194,23 @@ export class AntennasFromCourtesyComponent implements AfterViewInit, OnDestroy {
           } else {
             this.message.error(data.message)
           }
-
+        })
+    } else {
+      newAntenna.id = this.idEditAntenna
+      this.parkingService
+        .editStationWithCourtesy(newAntenna)
+        .subscribe((data) => {
+          if (data.success) {
+            this.cleanForm()
+            this.searchStationsByParking()
+            this.message.OkTimeOut()
+            this.stationsSaved.emit(true)
+          } else {
+            this.message.error(data.message)
+          }
         })
       this.idEditAntenna = ''
     }
-
-
   }
 
   private createAntennasForm() {

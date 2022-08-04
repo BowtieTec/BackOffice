@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnDestroy, ViewChild} from '@angular/core'
+import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core'
 import {FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
 import {MessageService} from '../../../../shared/services/message.service'
 import {ParkingService} from '../../../parking/services/parking.service'
@@ -22,7 +22,7 @@ import {SelectModel} from '../../../../shared/model/CommonModels'
   templateUrl: './stationary-courtesy.component.html',
   styleUrls: ['./stationary-courtesy.component.css']
 })
-export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy {
+export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   loading = true
   @Input() parkingId: string = this.authService.getParking().id
   allCompanies: CompaniesModel[] = []
@@ -60,7 +60,6 @@ export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy {
   ) {
     this.stationaryForm = this.createForm()
     this.formGroup = formBuilder.group({filter: ['']})
-    this.getInitialData().catch()
   }
 
   getNewConditions() {
@@ -155,7 +154,6 @@ export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy {
     try {
       this.message.showLoading()
       Promise.all([
-        this.parkingService.getAllParking().then((data) => data.data.parkings),
         this.getTypeCourtesies(),
         this.getCourtesiesStationary(),
         this.courtesyService.getTypes().toPromise(),
@@ -163,11 +161,10 @@ export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy {
         this.searchAntennasByParking()
       ])
         .then((resp) => {
-          this.allParking = resp[0]
-          this.typeCourtesies = resp[1]
-          this.stationsCourtesies = resp[2]
-          this.courtesyTypes = resp[3].data.type
-          this.allCompanies = resp[4]
+          this.typeCourtesies = resp[0]
+          this.stationsCourtesies = resp[1]
+          this.courtesyTypes = resp[2].data.type
+          this.allCompanies = resp[3]
           // ignore resp [5]
         })
         .catch((x) => {
@@ -196,7 +193,6 @@ export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy {
     this.stationaryForm.get('companyId')?.setValue('0')
     this.stationaryForm.get('condition')?.setValue('0')
     this.stationaryForm.get('cantHours')?.setValue('0')
-    console.log(this.parkingId)
     this.stationaryForm.controls['parkingId'].setValue(this.parkingId)
   }
 
@@ -298,5 +294,16 @@ export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy {
         this.dtTrigger.next()
       })
     }
+  }
+
+  ngOnInit(): void {
+    this.authService.user$.subscribe(({parkingId}) => {
+      this.parkingId = parkingId
+      this.stationaryForm.get('parkingId')?.setValue(parkingId)
+      this.getInitialData().catch()
+    })
+    this.parkingService.parkingLot$.subscribe((parkings) => {
+      this.allParking = parkings
+    })
   }
 }

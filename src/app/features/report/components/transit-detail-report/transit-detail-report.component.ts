@@ -1,17 +1,17 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
-import {DxDataGridComponent} from "devextreme-angular";
-import {DataTableDirective} from "angular-datatables";
-import {Subject} from "rxjs";
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {AuthService} from "../../../../shared/services/auth.service";
-import {ParkingService} from "../../../parking/services/parking.service";
-import {ParkingModel} from "../../../parking/models/Parking.model";
-import {PermissionsService} from "../../../../shared/services/permissions.service";
-import {MessageService} from "../../../../shared/services/message.service";
-import {ReportService} from "../service/report.service";
-import {Workbook} from "exceljs";
-import * as logoFile from "../logoEbi";
-import {saveAs} from "file-saver";
+import { Component, ElementRef, OnInit } from '@angular/core'
+import { DxDataGridComponent } from 'devextreme-angular'
+import { DataTableDirective } from 'angular-datatables'
+import { Subject } from 'rxjs'
+import { FormBuilder, FormGroup } from '@angular/forms'
+import { AuthService } from '../../../../shared/services/auth.service'
+import { ParkingService } from '../../../parking/services/parking.service'
+import { ParkingModel } from '../../../parking/models/Parking.model'
+import { PermissionsService } from '../../../../shared/services/permissions.service'
+import { MessageService } from '../../../../shared/services/message.service'
+import { ReportService } from '../service/report.service'
+import { Workbook } from 'exceljs'
+import * as logoFile from '../logoEbi'
+import { saveAs } from 'file-saver'
 
 @Component({
   selector: 'app-transit-detail-report',
@@ -26,15 +26,20 @@ export class TransitDetailReportComponent implements OnInit {
   pdfTable!: ElementRef
   reportForm: FormGroup
   formGroup: FormGroup
-  allParking: ParkingModel[]
+  allParking: ParkingModel[] = []
   dataSource: any
   now: Date = new Date()
-  parkingId: string = ''
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private messageService: MessageService, private parkingService: ParkingService, private permissionService: PermissionsService, private reportService: ReportService) {
-    this.formGroup = formBuilder.group({filter: ['']})
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private messageService: MessageService,
+    private parkingService: ParkingService,
+    private permissionService: PermissionsService,
+    private reportService: ReportService
+  ) {
+    this.formGroup = formBuilder.group({ filter: [''] })
     this.reportForm = this.createReportForm()
-    this.allParking = [...this.parkingService.getAllParkingLot()]
   }
 
   get isSudo() {
@@ -43,20 +48,34 @@ export class TransitDetailReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.getReport()
-    this.allParking.push({id: '0', name: '-- Todos los parqueos --'})
-    if (this.isSudo) {
-      this.reportForm.get('parkingId')?.setValue('0')
-    } else {
-      this.reportForm.get('parkingId')?.setValue(this.authService.getParking().id)
-    }
+    this.authService.user$.subscribe(({ parkingId }) => {
+      this.reportForm.get('parkingId')?.setValue(parkingId)
+      this.getReport()
+    })
+
+    this.parkingService.parkingLot$.subscribe((parkingLot) => {
+      this.allParking = parkingLot
+      this.allParking.push({ id: '0', name: '-- Todos los parqueos --' })
+    })
   }
 
   getReport() {
     this.messageService.showLoading()
-    let {startDate, endDate, parkingId} = this.reportForm.getRawValue()
-    this.reportService.getTransitDetailRpt(startDate, endDate, parkingId).toPromise().then(data => {
-      this.dataSource = data
-    }).then(() => this.messageService.hideLoading())
+    const { startDate, endDate, parkingId } = this.reportForm.getRawValue()
+    if (endDate < startDate) {
+      this.messageService.error(
+        '',
+        'La fecha de fin debe ser mayor a la fecha de inicio'
+      )
+      return
+    }
+    this.reportService
+      .getTransitDetailRpt(startDate, endDate, parkingId)
+      .toPromise()
+      .then((data) => {
+        this.dataSource = data
+      })
+      .then(() => this.messageService.hideLoading())
   }
 
   ifHaveAction(action: string) {
@@ -64,7 +83,7 @@ export class TransitDetailReportComponent implements OnInit {
   }
 
   onExporting(e: any) {
-    const {startDate, endDate, parkingId} = this.reportForm.getRawValue()
+    const { startDate, endDate, parkingId } = this.reportForm.getRawValue()
     if (this.dataSource.length == 0) {
       this.messageService.infoTimeOut('No hay información para exportar')
       return
@@ -94,15 +113,15 @@ export class TransitDetailReportComponent implements OnInit {
     worksheet.addRow([])
 
     const busienssRow = worksheet.addRow(['', '', '', 'ebiGO'])
-    busienssRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    busienssRow.alignment = {horizontal: 'center', vertical: 'middle'}
+    busienssRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
+    busienssRow.alignment = { horizontal: 'center', vertical: 'middle' }
     busienssRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -110,36 +129,36 @@ export class TransitDetailReportComponent implements OnInit {
     let ParqueoReporte = 'Todos los parqueos'
     if (parkingId != '0') {
       const parqueoEncontrado = this.allParking.find(
-        (parqueos) => parqueos.id == this.parkingId
+        (parqueos) => parqueos.id == parkingId
       )
       if (parqueoEncontrado) {
         ParqueoReporte = parqueoEncontrado.name
       }
     }
     const addressRow = worksheet.addRow(['', '', '', ParqueoReporte])
-    addressRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    addressRow.alignment = {horizontal: 'center', vertical: 'middle'}
+    addressRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
+    addressRow.alignment = { horizontal: 'center', vertical: 'middle' }
     addressRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
     worksheet.mergeCells('D4:O5')
     const titleRow = worksheet.addRow(['', '', '', 'Reporte - Pago de parqueo'])
-    titleRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    titleRow.alignment = {horizontal: 'center', vertical: 'middle'}
+    titleRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
+    titleRow.alignment = { horizontal: 'center', vertical: 'middle' }
     titleRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -153,15 +172,15 @@ export class TransitDetailReportComponent implements OnInit {
     worksheet.addImage(logo, 'B3:C6')
     worksheet.addRow([])
     const infoRow = worksheet.addRow(['', 'Información General'])
-    infoRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    infoRow.alignment = {horizontal: 'center', vertical: 'middle'}
+    infoRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
+    infoRow.alignment = { horizontal: 'center', vertical: 'middle' }
     infoRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -181,10 +200,10 @@ export class TransitDetailReportComponent implements OnInit {
     header1.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -200,17 +219,17 @@ export class TransitDetailReportComponent implements OnInit {
       '',
       '',
       'Documento generado: ' +
-      new Date().toLocaleDateString('es-GT') +
-      '  ' +
-      new Date().toLocaleTimeString()
+        new Date().toLocaleDateString('es-GT') +
+        '  ' +
+        new Date().toLocaleTimeString()
     ])
     header2.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -225,14 +244,14 @@ export class TransitDetailReportComponent implements OnInit {
         cell.fill = {
           type: 'pattern',
           pattern: 'solid',
-          fgColor: {argb: 'FFFFFF00'},
-          bgColor: {argb: 'FF0000FF'}
+          fgColor: { argb: 'FFFFFF00' },
+          bgColor: { argb: 'FF0000FF' }
         }
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -259,10 +278,10 @@ export class TransitDetailReportComponent implements OnInit {
       row.eachCell((cell, number) => {
         if (number > 1) {
           cell.border = {
-            top: {style: 'thin'},
-            left: {style: 'thin'},
-            bottom: {style: 'thin'},
-            right: {style: 'thin'}
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
           }
         }
       })
@@ -270,7 +289,6 @@ export class TransitDetailReportComponent implements OnInit {
     worksheet.addRow([])
     worksheet.addRow([])
     worksheet.addRow([])
-
 
     worksheet.getColumn(2).width = 15
     worksheet.getColumn(3).width = 20
@@ -293,14 +311,19 @@ export class TransitDetailReportComponent implements OnInit {
       const blob = new Blob([data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       })
-      saveAs(blob, `Reporte de tránsito - Generado - '${this.now.toLocaleString()}.xlsx`)
+      saveAs(
+        blob,
+        `Reporte de tránsito - Generado - '${this.now.toLocaleString()}.xlsx`
+      )
     })
     e.cancel = true
   }
 
   private createReportForm() {
     return this.formBuilder.group({
-      startDate: [new Date()], endDate: [new Date()], parkingId: ['0']
+      startDate: [new Date()],
+      endDate: [new Date()],
+      parkingId: ['0']
     })
   }
 }

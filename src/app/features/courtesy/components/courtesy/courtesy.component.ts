@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, ViewChild} from '@angular/core'
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core'
 import {CourtesyService} from '../../services/courtesy.service'
 import {MessageService} from '../../../../shared/services/message.service'
 import {CourtesyModel, CourtesyTypeModel} from '../../models/Courtesy.model'
@@ -23,11 +23,11 @@ import {ToastrService} from 'ngx-toastr'
   templateUrl: './courtesy.component.html',
   styleUrls: ['./courtesy.component.css']
 })
-export class CourtesyComponent implements AfterViewInit, OnDestroy {
+export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   allParking: ParkingModel[] = []
   courtesyTypes: CourtesyTypeModel[] = []
   newCourtesyForm: FormGroup
-  parkingId: string = this.authService.getParking().id
+  parkingId: string = ''
   courtesies: CourtesyModel[] = []
   allCompanies: CompaniesModel[] = []
   discountOnWhatList: SelectModel[] = this.courtesyService.DiscountOnWhatOptions
@@ -55,11 +55,8 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy {
     private companyService: CompaniesService,
     private toast: ToastrService
   ) {
-    this.messageService.showLoading()
     this.formGroup = formBuilder.group({filter: ['']})
     this.newCourtesyForm = this.createForm()
-    this.getInitialData()
-      .then(() => this.messageService.hideLoading())
   }
 
   get isSudo() {
@@ -100,7 +97,6 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy {
       .then((data) => {
         if (data.success) {
           this.courtesyTypes = data.data.type.filter((x: any) => x.id != 3)
-          this.messageService.hideLoading()
         } else {
           this.messageService.errorTimeOut(
             '',
@@ -112,11 +108,6 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy {
         return this.getCourtesies()
       })
       .then(() => {
-        this.parkingService
-          .getAllParking()
-          .then((x) => (this.allParking = x.data.parkings))
-      })
-      .then(() => {
         if (this.ifHaveAction('listLocal')) {
           return this.companyService
             .getCompanies(this.parkingId)
@@ -124,9 +115,6 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy {
             .then((x) => (this.allCompanies = x))
         }
         return
-      })
-      .then(() => {
-        this.messageService.hideLoading()
       })
   }
 
@@ -260,5 +248,18 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy {
 
   getNewConditions() {
     this.typeOfCondition = this.courtesyService.getNewConditions(this.newCourtesyForm.getRawValue().type)
+  }
+
+  ngOnInit(): void {
+    this.authService.user$.subscribe(({parkingId, user}) => {
+      this.messageService.showLoading()
+      this.parkingId = parkingId
+      this.newCourtesyForm.get('parkingId')?.setValue(parkingId)
+      this.getInitialData()
+        .finally(() => this.messageService.hideLoading())
+    })
+    this.parkingService.parkingLot$.subscribe((parkings) => {
+      this.allParking = parkings
+    })
   }
 }

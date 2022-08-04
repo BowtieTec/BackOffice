@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, ViewChild} from '@angular/core'
+import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core'
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
 import {AccessModel, CreateParkingStepFiveModel} from '../../models/CreateParking.model'
 import {MessageService} from '../../../../shared/services/message.service'
@@ -18,7 +18,7 @@ import {Subject} from 'rxjs'
   templateUrl: './antennas.component.html',
   styleUrls: ['./antennas.component.css']
 })
-export class AntennasComponent implements AfterViewInit, OnDestroy {
+export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
   @Input() isCreatingParking = false
   @Input() parkingId: string = this.authService.getParking().id
   stepFiveForm!: UntypedFormGroup
@@ -48,14 +48,6 @@ export class AntennasComponent implements AfterViewInit, OnDestroy {
     private authService: AuthService,
     private permissionService: PermissionsService
   ) {
-    this.message.showLoading()
-    this.getInitialData()
-      .then(() => {
-        this.message.hideLoading()
-      })
-      .then(() => {
-        this.rerender()
-      })
     this.stepFiveForm = this.createForm()
     this.formGroup = formBuilder.group({filter: ['']})
   }
@@ -75,7 +67,6 @@ export class AntennasComponent implements AfterViewInit, OnDestroy {
   }
 
   addAntenna() {
-
     this.message.showLoading()
     if (this.stepFiveForm.invalid) {
       this.message.warningTimeOut(
@@ -203,7 +194,6 @@ export class AntennasComponent implements AfterViewInit, OnDestroy {
   }
 
   getInitialData() {
-    this.message.showLoading()
     return this.parkingService
       .getAntennas(this.parkingId)
       .toPromise()
@@ -217,21 +207,6 @@ export class AntennasComponent implements AfterViewInit, OnDestroy {
         return data
       })
       .catch(() => {
-        return
-      })
-      .then((data) => {
-        if (this.authService.isSudo) {
-          this.parkingService.getAllParking().then((parkings) => {
-            if (parkings.success) {
-              this.allParking = parkings.data.parkings
-            }
-          })
-        }
-      })
-      .then(() => {
-        this.message.hideLoading()
-      })
-      .catch((e) => {
         return
       })
   }
@@ -273,5 +248,19 @@ export class AntennasComponent implements AfterViewInit, OnDestroy {
         this.dtTrigger.next()
       })
     }
+  }
+
+  ngOnInit(): void {
+    this.authService.user$.subscribe(({parkingId}) => {
+      if (!this.isCreatingParking) {
+        this.parkingId = parkingId
+        this.stepFiveForm.get('parking')?.setValue(parkingId)
+      }
+      this.getInitialData().catch()
+    })
+
+    this.parkingService.parkingLot$.subscribe((parkingLot) => {
+      this.allParking = parkingLot
+    })
   }
 }

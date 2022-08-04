@@ -1,6 +1,5 @@
-import {Injectable} from '@angular/core'
+import { Injectable } from '@angular/core'
 import Swal from 'sweetalert2'
-
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +9,13 @@ export class MessageService {
   footer =
     '<div class="text-center"> <bold> Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.</bold> </div>'
 
+  get nowTimeFormat() {
+    const now = new Date()
+    return `${now.getFullYear()}-${now.getMonth() + 1 < 10 ? '0' : ''}${
+      now.getMonth() + 1
+    }-${now.getDate() < 10 ? '0' : ''}${now.getDate()}T23:59`
+  }
+
   showLoading() {
     this.loading = true
   }
@@ -17,7 +23,6 @@ export class MessageService {
   hideLoading() {
     this.loading = false
   }
-
 
   uncontrolledError(text = 'Error no controlado') {
     this.hideLoading()
@@ -97,7 +102,7 @@ export class MessageService {
       icon: 'info',
       title,
       text,
-      timer: 3000,
+      timer: 2000,
       showConfirmButton: true
     })
   }
@@ -123,11 +128,6 @@ export class MessageService {
       confirmButtonText,
       denyButtonText
     }).then((result) => result)
-  }
-
-  get nowTimeFormat() {
-    const now = new Date()
-    return `${now.getFullYear()}-${(now.getMonth() + 1 < 10 ? '0' : '')}${now.getMonth() + 1}-${(now.getDate() < 10 ? '0' : '')}${now.getDate()}T23:59`
   }
 
   async areYouSureWithCancel(
@@ -165,10 +165,10 @@ export class MessageService {
       confirmButtonText: 'Salir sin cobrar a la tarjeta',
       html: `
         <div>
-        <label class = ""
-               style = "display: block;">Hora de salida</label>
+        <label class = ''
+               style = 'display: block;'>Hora de salida</label>
         <input
-          class = "inputClass"
+          class = 'inputClass'
           id='dateOut'
           name='dateOutToGetOut'
           max='${this.nowTimeFormat}'
@@ -177,14 +177,16 @@ export class MessageService {
           type = 'datetime-local'>
       </div>
       <br>
-      `, preConfirm(inputValue: any) {
+      `,
+      preConfirm(inputValue: any) {
         return new Promise((resolve, reject) => {
           dateToGetOut = $('input[name="dateOutToGetOut"]').val()
           resolve({
             dateToGetOut: $('input[name="dateOutToGetOut"]').val()
           })
         })
-      }, preDeny(inputValue: any) {
+      },
+      preDeny(inputValue: any) {
         return new Promise((resolve, reject) => {
           dateToGetOut = $('input[name="dateOutToGetOut"]').val()
           resolve({
@@ -193,6 +195,11 @@ export class MessageService {
         })
       }
     }).then((result: any): any => {
+      if (result.isDismissed) {
+        return {
+          isDismissed: true
+        }
+      }
       if (result.isConfirmed) {
         return Swal.fire({
           denyButtonColor: '#415ba1',
@@ -203,7 +210,7 @@ export class MessageService {
           showConfirmButton: true,
           allowOutsideClick: false,
           denyButtonText: 'El pago fue en efectivo',
-          confirmButtonText,
+          confirmButtonText
         }).then((lastQuestion: any) => {
           return {
             isFree: lastQuestion.isConfirmed,
@@ -223,8 +230,7 @@ export class MessageService {
           dateToGetOut: dateToGetOut
         }
       }
-      return {result, dateToGetOut}
+      return { result, dateToGetOut }
     })
   }
-
 }

@@ -17,6 +17,7 @@ import * as logoFile from '../logoEbi'
 
 import { ParkingService } from '../../../parking/services/parking.service'
 import { ParkingModel } from '../../../parking/models/Parking.model'
+import { FormBuilder, FormGroup } from '@angular/forms'
 
 export interface desc {
   fecha: Date
@@ -39,21 +40,12 @@ export class CourtesyReportComponent implements OnInit {
   dtOptions: DataTables.Settings = {}
   dtTrigger: Subject<any> = new Subject()
   pdfTable!: ElementRef
-
+  reportForm: FormGroup
   report: desc[] = []
   dataSource: any
-  parqueo: any
-
   nowDateTime = new Date()
-
   allParking: ParkingModel[] = Array<ParkingModel>()
   verTodosLosParqueosReport = environment.verTodosLosParqueosReport
-  @ViewChild('inputParking') inputParking!: ElementRef
-  fechaActual = new Date().toISOString().split('T')[0]
-
-  datosUsuarioLogeado = this.auth.getParking()
-  startDateReport: any
-  endDateReport: any
 
   constructor(
     private auth: AuthService,
@@ -61,42 +53,39 @@ export class CourtesyReportComponent implements OnInit {
     private messageService: MessageService,
     private utilitiesService: UtilitiesService,
     private authService: AuthService,
-    private permisionService: PermissionsService,
+    private permissionService: PermissionsService,
     private excelService: ReportService,
-    private parkingService: ParkingService
+    private parkingService: ParkingService,
+    private formBuilder: FormBuilder
   ) {
-    this.messageService.showLoading()
+    this.reportForm = this.createReportForm()
+  }
 
-    this.messageService.hideLoading()
+  get isSudo() {
+    return this.authService.isSudo
   }
 
   ngOnInit(): void {
     this.dtOptions = DataTableOptions.getSpanishOptions(10)
-    this.parkingService.getAllParking().then((data) => {
-      if (data.success) {
-        this.allParking = data.data.parkings
-      }
+
+    this.authService.user$.subscribe(({ parkingId }) => {
+      this.reportForm.get('parkingId')?.setValue(parkingId)
+      this.getReport().then()
     })
 
-
+    this.parkingService.parkingLot$.subscribe((parkingLot) => {
+      this.allParking = parkingLot
+      this.allParking.push({ id: '0', name: '-- Todos los parqueos --' })
+    })
   }
 
   ifHaveAction(action: string) {
-    return this.permisionService.ifHaveAction(action)
+    return this.permissionService.ifHaveAction(action)
   }
 
-  getInitialData() {
-
-  }
-
-  getCourtesyRpt() {
-
-    this.parqueo = this.datosUsuarioLogeado.id
-    if (this.ifHaveAction('verTodosLosParqueosReport')) {
-      this.parqueo = this.inputParking.nativeElement.value
-    }
+  getReport() {
     return this.reportService
-      .getCourtesyRpt(this.parqueo)
+      .getCourtesyRpt(this.reportForm.value.parkingId)
       .toPromise()
       .then((data) => {
         if (data.success) {
@@ -114,22 +103,7 @@ export class CourtesyReportComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dtTrigger.next()
-    this.parqueo = this.datosUsuarioLogeado.id
-    this.getCourtesyRpt()
-  }
-
-  exportGrid() {
-    if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
-      return
-    }
-    const doc = new jsPDF()
-    exportDataGridToPdf({
-      jsPDFDocument: doc,
-      component: this.dataGrid.instance
-    }).then(() => {
-      doc.save('Duracion.pdf')
-    })
+    this.getReport().then()
   }
 
   onExporting(e: any) {
@@ -137,19 +111,7 @@ export class CourtesyReportComponent implements OnInit {
       this.messageService.infoTimeOut('No hay información para exportar')
       return
     }
-    /*     const context = this;
-        const workbook = new Workbook();
-        const worksheet = workbook.addWorksheet('General');
-
-        exportDataGrid({
-          component: context.dataGrid.instance,
-          worksheet: worksheet,
-          autoFilterEnabled: true,
-        }).then(() => {
-          workbook.xlsx.writeBuffer().then((buffer: any) => {
-            saveAs(new Blob([buffer], {type: 'application/octet-stream'}), 'Cortesias.xlsx');
-          })
-        }); */
+    const { parkingId } = this.reportForm.value
     const header = [
       '',
       'Fecha de Creación',
@@ -186,9 +148,9 @@ export class CourtesyReportComponent implements OnInit {
     })
     worksheet.mergeCells('D2:M3')
     let ParqueoReporte = 'Todos los parqueos'
-    if (this.parqueo != '0') {
+    if (parkingId != '0') {
       const parqueoEncontrado = this.allParking.find(
-        (parqueos) => parqueos.id == this.parqueo
+        (parqueos) => parqueos.id == parkingId
       )
       if (parqueoEncontrado) {
         ParqueoReporte = parqueoEncontrado.name
@@ -245,24 +207,6 @@ export class CourtesyReportComponent implements OnInit {
     })
     worksheet.mergeCells('B10:M11')
     worksheet.addRow([])
-    const header1 = worksheet.addRow([
-      '',
-      'Fecha Inicio: ' + this.startDateReport,
-      '',
-      '',
-      '',
-      'Fecha Fin: ' + this.endDateReport
-    ])
-    header1.eachCell((cell, number) => {
-      if (number > 1) {
-        cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
-        }
-      }
-    })
     worksheet.mergeCells('B13:E14')
     worksheet.mergeCells('F13:M14')
     const header2 = worksheet.addRow([
@@ -312,7 +256,9 @@ export class CourtesyReportComponent implements OnInit {
     this.dataSource.forEach((d: any) => {
       const row = worksheet.addRow([
         '',
-        d.cd_created_at ? new Date(d.cd_created_at).toLocaleDateString('es-GT') : ' ',
+        d.cd_created_at
+          ? new Date(d.cd_created_at).toLocaleDateString('es-GT')
+          : ' ',
         d.cd_name,
         d.parqueo,
         d.comercio,
@@ -339,33 +285,6 @@ export class CourtesyReportComponent implements OnInit {
     worksheet.addRow([])
     worksheet.addRow([])
     worksheet.addRow([])
-    /* let headerResumen = worksheet.addRow(['','Fecha','Total de vehiculos','Total de ingresos','Total de descuento','Total pagado']);
-    headerResumen.eachCell((cell, number) => {
-      if(number > 1){
-        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
-      }
-    });
-    let groupData = this.dataSource.reduce((r:any, a:any) =>{
-      r[a.ep_entry_date.slice(0,10)] = [...r[a.ep_entry_date.slice(0,10)] || [], a];
-      return r;
-    },{});
-    Object.entries(groupData).forEach(([key,value]) => {
-      let valor = JSON.parse(JSON.stringify(value));
-      let total = 0;
-      let descuento = 0;
-      let pagado = 0;
-      valor.forEach((element:any) => {
-        total+= +element.total;
-        descuento+= +element.descuento;
-        pagado+= +element.pagado;
-      });
-      let detailResumen = worksheet.addRow(['',key,valor.length,total,descuento,pagado]);
-      detailResumen.eachCell((cell, number) => {
-        if(number > 1){
-          cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
-        }
-      });
-    }); */
 
     worksheet.getColumn(2).width = 25
     worksheet.getColumn(3).width = 25
@@ -384,14 +303,36 @@ export class CourtesyReportComponent implements OnInit {
     worksheet.getColumn(16).width = 15
     worksheet.getColumn(17).width = 15
 
-    //Generate Excel File with given name
     workbook.xlsx.writeBuffer().then((data) => {
       const blob = new Blob([data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       })
-      saveAs(blob, `Reporte de Cortesias - Generado - ${this.nowDateTime.toLocaleString()}.xlsx`)
+      saveAs(
+        blob,
+        `Reporte de Cortesías - Generado - ${this.nowDateTime.toLocaleString()}.xlsx`
+      )
     })
     e.cancel = true
+  }
+
+  exportGrid() {
+    if (this.report.length == 0) {
+      this.messageService.infoTimeOut('No hay información para exportar')
+      return
+    }
+    const doc = new jsPDF()
+    exportDataGridToPdf({
+      jsPDFDocument: doc,
+      component: this.dataGrid.instance
+    }).then(() => {
+      doc.save('Duracion.pdf')
+    })
+  }
+
+  private createReportForm() {
+    return this.formBuilder.group({
+      parkingId: ['0']
+    })
   }
 
   private rerender() {

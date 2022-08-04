@@ -1,15 +1,26 @@
-import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core'
-import {environment} from '../../../../../environments/environment'
-import {Subject} from 'rxjs'
-import {NewUserModel, updateUserApp} from '../users/models/newUserModel'
-import {DataTableDirective} from 'angular-datatables'
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
-import {UserService} from '../users/services/user.service'
-import {MessageService} from '../../../../shared/services/message.service'
-import {PermissionsService} from '../../../../shared/services/permissions.service'
-import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
-import {UtilitiesService} from '../../../../shared/services/utilities.service'
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core'
+import { environment } from '../../../../../environments/environment'
+import { Subject } from 'rxjs'
+import { NewUserModel, updateUserApp } from '../users/models/newUserModel'
+import { DataTableDirective } from 'angular-datatables'
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators
+} from '@angular/forms'
+import { UserService } from '../users/services/user.service'
+import { MessageService } from '../../../../shared/services/message.service'
+import { PermissionsService } from '../../../../shared/services/permissions.service'
+import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { UtilitiesService } from '../../../../shared/services/utilities.service'
 
 @Component({
   selector: 'app-users-app',
@@ -27,7 +38,6 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
   formGroup: UntypedFormGroup
   users: NewUserModel[] = []
 
-
   constructor(
     private userService: UserService,
     private formBuilder: UntypedFormBuilder,
@@ -36,12 +46,21 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
     private modal: NgbModal,
     private utilitiesService: UtilitiesService
   ) {
-    this.formGroup = formBuilder.group({filter: ['']})
-
+    this.formGroup = formBuilder.group({ filter: [''] })
   }
 
   get dtOptions() {
     return DataTableOptions.getSpanishOptions(10)
+  }
+
+  get formUserAppValues(): updateUserApp {
+    return {
+      id: this.formGroup.get('id')?.value,
+      name: this.formGroup.get('name')?.value,
+      last_name: this.formGroup.get('last_name')?.value,
+      email: this.formGroup.get('email')?.value,
+      phone_number: this.formGroup.get('phone')?.value
+    }
   }
 
   ngOnInit(): void {
@@ -95,45 +114,24 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-
-  private getUsersApp() {
-    this.userService
-      .getUsersApp()
-      .toPromise()
-      .then((data) => {
-        this.users = data.data.users
-        this.rerender()
-        this.message.hideLoading()
-      })
-  }
-
   async EditUserApp() {
     if (this.formGroup.invalid) {
       this.message.error('', 'Datos no válidos o faltantes')
       return
     }
     const userAppVal = this.formUserAppValues
-    this.userService.editUserApp(userAppVal).toPromise().then((data) => {
-      if (data.success) {
-        this.message.infoTimeOut('Se guardaron los cambios correctamente')
-        this.getUsersApp()
-        this.modal.dismissAll()
-      } else {
-        this.message.error('', data.message)
-      }
-    })
-
-  }
-
-
-  get formUserAppValues(): updateUserApp {
-    return {
-      id: this.formGroup.get('id')?.value,
-      name: this.formGroup.get('name')?.value,
-      last_name: this.formGroup.get('last_name')?.value,
-      email: this.formGroup.get('email')?.value,
-      phone_number: this.formGroup.get('phone')?.value
-    }
+    this.userService
+      .editUserApp(userAppVal)
+      .toPromise()
+      .then((data) => {
+        if (data.success) {
+          this.message.infoTimeOut('Se guardaron los cambios correctamente')
+          this.getUsersApp()
+          this.modal.dismissAll()
+        } else {
+          this.message.error('', data.message)
+        }
+      })
   }
 
   open(contenido: any, user: NewUserModel) {
@@ -144,6 +142,17 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.formGroup.controls['id'].setValue(user.id)
     this.getEmailEdit(user)
     this.modal.open(contenido)
+  }
+
+  private getUsersApp() {
+    this.userService
+      .getUsersApp()
+      .toPromise()
+      .then((data) => {
+        this.users = data.data.users
+        this.rerender()
+        this.message.hideLoading()
+      })
   }
 
   private rerender() {
@@ -158,10 +167,17 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
       id: ['', [Validators.required]],
       name: ['', [Validators.required]],
       last_name: [''],
-      email: ['', [Validators.required, Validators.pattern(this.utilitiesService.getPatterEmail)]],
-      phone: ['0', [Validators.required]]
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(this.utilitiesService.getPatterEmail)
+        ]
+      ],
+      phone: [
+        null,
+        [Validators.required, Validators.maxLength(10), Validators.min(0)]
+      ]
     })
   }
-
-
 }

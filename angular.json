@@ -87,21 +87,21 @@
             "development": {
               "buildOptimizer": false,
               "optimization": false,
-              "aot": false,
+              "aot": true,
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true,
-              "outputHashing": "all"
+              "statsJson": false
             },
             "local": {
-              "outputHashing": "none",
-              "sourceMap": false,
-              "namedChunks": false,
+              "sourceMap": true,
+              "optimization": false,
+              "namedChunks": true,
               "aot": true,
               "extractLicenses": false,
               "statsJson": false,
-              "progress": false,
+              "progress": true,
               "vendorChunk": true,
               "buildOptimizer": false,
               "fileReplacements": [

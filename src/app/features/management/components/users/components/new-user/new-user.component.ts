@@ -34,7 +34,6 @@ export class NewUserComponent implements OnInit {
     private authService: AuthService,
   ) {
     this.newUserForm = this.createForm()
-    this.getInitialData().catch()
   }
 
   get Roles() {
@@ -68,14 +67,13 @@ export class NewUserComponent implements OnInit {
       }
       this.messageServices.hideLoading()
     })
-  }
-
-  async getInitialData() {
-    this.messageServices.showLoading()
-    this.allParking = await this.parkingService
-      .getAllParking()
-      .then((x) => x.data.parkings)
-    this.messageServices.hideLoading()
+    this.authService.user$.subscribe(({parkingId}) => {
+      this.parkingId = parkingId
+      this.newUserForm.get('parking')?.setValue(parkingId)
+    })
+    this.parkingService.parkingLot$.subscribe((parkingLot) => {
+      this.allParking = parkingLot
+    })
   }
 
   getNewUserDataForm(): NewUserModel {

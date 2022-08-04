@@ -1,4 +1,4 @@
-import {Component} from '@angular/core'
+import {Component, OnInit} from '@angular/core'
 import {PermissionsService} from 'src/app/shared/services/permissions.service'
 import {FormGroup, UntypedFormBuilder, Validators} from '@angular/forms'
 import {AuthService} from 'src/app/shared/services/auth.service'
@@ -18,7 +18,7 @@ import {environment} from '../../../../../environments/environment'
   templateUrl: './tariff-test.component.html',
   styleUrls: ['./tariff-test.component.css']
 })
-export class TariffTestComponent {
+export class TariffTestComponent implements OnInit {
   tariffTestForm: FormGroup
   allParkingLot: ParkingModel[] = []
   courtesies: CourtesyModel[] = []
@@ -41,8 +41,6 @@ export class TariffTestComponent {
   ) {
     this.ticket = new TicketTestModule()
     this.tariffTestForm = this.createTariffTestForm()
-    this.getInitialData().catch()
-
   }
 
   get isSudo() {
@@ -64,7 +62,7 @@ export class TariffTestComponent {
   }
 
   get parkingSelected() {
-    this.parkingId = this.tariffTestForm.get('parking')?.value
+    this.parkingId = this.tariffTestForm.value.parkingId
     this.tariffTestForm.controls['courtesyId'].setValue(null)
     return this.tariffTestForm.get('parking')?.value
   }
@@ -107,15 +105,6 @@ export class TariffTestComponent {
 
   private async getInitialData() {
     await this.getCourtesies()
-    await this.getAllParkingLot()
-  }
-
-  private getAllParkingLot() {
-    return this.parkingService.getAllParking().then((x) => {
-      if (x.success) {
-        this.allParkingLot = x.data.parkings
-      }
-    })
   }
 
   getCourtesies(parkingId = this.parkingId) {
@@ -137,5 +126,16 @@ export class TariffTestComponent {
       this.ListTicketTest.unshift(ticketTest)
       sessionStorage.setItem('tariffTest', JSON.stringify(this.ListTicketTest))
     }
+  }
+
+  ngOnInit(): void {
+    this.authService.user$.subscribe(({parkingId}) => {
+      this.parkingId = parkingId
+      this.tariffTestForm.controls['parking'].setValue(parkingId)
+      this.getInitialData().catch()
+    })
+    this.parkingService.parkingLot$.subscribe((parkingLot) => {
+      this.allParkingLot = parkingLot
+    })
   }
 }

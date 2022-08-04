@@ -9,6 +9,11 @@ export class AuthModel {
   token = ''
 }
 
+export interface AuthParkingModel {
+  user: UserModel,
+  parkingId: string
+}
+
 export class UserModel {
   id = ''
   name = ''
@@ -18,6 +23,7 @@ export class UserModel {
   role!: RoleAuthModel
   user = ''
   status = 0
+  otherParkings: ParkingAuthModel[] = []
 }
 
 export class ParkingAuthModel {
@@ -39,8 +45,6 @@ export class ParkingAuthModel {
   is_our_bac_credential: any
   is_our_visa_credential: any
   url_logo: string = ''
-  url_background: string = ''
-  url_tariff: string = ''
 }
 
 export class RoleAuthModel {

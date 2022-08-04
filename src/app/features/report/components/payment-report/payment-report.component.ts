@@ -1,22 +1,29 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core'
-import {DataTableDirective} from 'angular-datatables'
-import {Subject} from 'rxjs'
-import {MessageService} from '../../../../shared/services/message.service'
-import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
-import {ReportService} from '../service/report.service'
-import {UtilitiesService} from '../../../../shared/services/utilities.service'
-import {AuthService} from '../../../../shared/services/auth.service'
-import {PermissionsService} from '../../../../shared/services/permissions.service'
-import {environment} from 'src/environments/environment'
-import {jsPDF} from 'jspdf'
-import {DxDataGridComponent} from 'devextreme-angular'
-import {exportDataGrid as exportDataGridToPdf} from 'devextreme/pdf_exporter'
-import {Workbook} from 'exceljs'
-import {saveAs} from 'file-saver'
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild
+} from '@angular/core'
+import { DataTableDirective } from 'angular-datatables'
+import { Subject } from 'rxjs'
+import { MessageService } from '../../../../shared/services/message.service'
+import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
+import { ReportService } from '../service/report.service'
+import { UtilitiesService } from '../../../../shared/services/utilities.service'
+import { AuthService } from '../../../../shared/services/auth.service'
+import { PermissionsService } from '../../../../shared/services/permissions.service'
+import { environment } from 'src/environments/environment'
+import { jsPDF } from 'jspdf'
+import { DxDataGridComponent } from 'devextreme-angular'
+import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter'
+import { Workbook } from 'exceljs'
+import { saveAs } from 'file-saver'
 
-import {ParkingService} from '../../../parking/services/parking.service'
-import {ParkingModel} from '../../../parking/models/Parking.model'
+import { ParkingService } from '../../../parking/services/parking.service'
+import { ParkingModel } from '../../../parking/models/Parking.model'
 import * as logoFile from '../logoEbi'
+import { FormBuilder, FormGroup } from '@angular/forms'
 
 @Component({
   selector: 'app-payment-report',
@@ -24,61 +31,59 @@ import * as logoFile from '../logoEbi'
   styleUrls: ['./payment-report.component.css']
 })
 export class PaymentReportComponent implements OnInit, AfterViewInit {
-
-  @ViewChild(DxDataGridComponent, {static: false})
+  @ViewChild(DxDataGridComponent, { static: false })
   dataGrid!: DxDataGridComponent
   dtElement!: DataTableDirective
   dtOptions: DataTables.Settings = {}
   dtTrigger: Subject<any> = new Subject()
   pdfTable!: ElementRef
-
+  reportForm: FormGroup
   report: any
   dataSource: any
-  parqueo: any
-  nowDateTime = new Date()
+  now = new Date()
   allParking: ParkingModel[] = Array<ParkingModel>()
   verTodosLosParqueosReport = environment.verTodosLosParqueosReport
   @ViewChild('inputParking') inputParking!: ElementRef
-  fechaActual = new Date().toISOString().split('T')[0]
-
-  datosUsuarioLogeado = this.auth.getParking()
-
-  startDateReport: any
-  endDateReport: any
 
   constructor(
+    private formBuilder: FormBuilder,
     private auth: AuthService,
     private reportService: ReportService,
     private messageService: MessageService,
     private utilitiesService: UtilitiesService,
     private authService: AuthService,
-    private permisionService: PermissionsService,
+    private permissionService: PermissionsService,
     private excelService: ReportService,
     private parkingService: ParkingService
   ) {
+    this.reportForm = this.createReportForm()
+  }
+
+  get isSudo() {
+    return this.authService.isSudo
   }
 
   ngOnInit(): void {
     this.messageService.showLoading()
     this.dtOptions = DataTableOptions.getSpanishOptions(10)
-    this.parkingService.getAllParking().then((data) => {
-      if (data.success) {
-        this.allParking = data.data.parkings
-      }
-    }).then(() => {
-      this.getPaymentRpt(this.fechaActual, this.fechaActual)
-    }).finally(() => {
-      this.messageService.hideLoading()
+    this.authService.user$.subscribe(({ parkingId }) => {
+      this.reportForm.get('parkingId')?.setValue(parkingId)
+      this.getReport()
+    })
+    this.parkingService.parkingLot$.subscribe((parkingLot) => {
+      this.allParking = parkingLot
+      this.allParking.push({ id: '0', name: '-- Todos los parqueos --' })
     })
   }
 
   ifHaveAction(action: string) {
-    return this.permisionService.ifHaveAction(action)
+    return this.permissionService.ifHaveAction(action)
   }
 
-  getPaymentRpt(initDate: string, endDate: string, telephone: string = '') {
-
-    if (endDate < initDate) {
+  getReport() {
+    let { startDate, endDate, parkingId, telephone } = this.reportForm.value
+    telephone = telephone ?? ''
+    if (endDate < startDate) {
       this.messageService.error(
         '',
         'La fecha de inicio debe ser mayor a la fecha fin'
@@ -86,30 +91,19 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
       return
     }
     this.messageService.showLoading()
-    this.startDateReport = new Date(initDate + 'T00:00:00').toLocaleDateString('es-GT')
-    this.endDateReport = new Date(endDate + 'T00:00:00').toLocaleDateString('es-GT')
-    this.parqueo = this.datosUsuarioLogeado.id
-    if (this.ifHaveAction('verTodosLosParqueosReport')) {
-      this.parqueo = this.inputParking.nativeElement.value
-    }
+
     return this.reportService
-      .getPaymentsRpt(initDate, endDate, this.parqueo, telephone)
+      .getPaymentsRpt(startDate, endDate, parkingId, telephone)
       .toPromise()
       .then((data) => {
         this.report = data
         this.dataSource = data
       })
-      .finally(() => {
-        this.messageService.hideLoading()
-      })
+      .finally(() => this.messageService.hideLoading())
   }
 
   ngAfterViewInit() {
     this.dtTrigger.next()
-    this.parqueo = this.datosUsuarioLogeado.id
-    if (this.ifHaveAction('verTodosLosParqueosReport')) {
-      this.parqueo = '0'
-    }
   }
 
   exportGrid() {
@@ -131,6 +125,7 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
       this.messageService.infoTimeOut('No hay información para exportar')
       return
     }
+    const { startDate, endDate, parkingId, telephone } = this.reportForm.value
     const header = [
       '',
       'Teléfono',
@@ -146,7 +141,7 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
       'Fecha de emisión de Factura',
       'Fecha de pago',
       'No. Transacción',
-      'Método de pago',
+      'Método de pago'
     ]
     //Create workbook and worksheet
     const workbook = new Workbook()
@@ -155,52 +150,52 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
     worksheet.addRow([])
 
     const busienssRow = worksheet.addRow(['', '', '', 'ebiGO'])
-    busienssRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    busienssRow.alignment = {horizontal: 'center', vertical: 'middle'}
+    busienssRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
+    busienssRow.alignment = { horizontal: 'center', vertical: 'middle' }
     busienssRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
     worksheet.mergeCells('D2:O3')
     let ParqueoReporte = 'Todos los parqueos'
-    if (this.parqueo != '0') {
+    if (parkingId != '0') {
       const parqueoEncontrado = this.allParking.find(
-        (parqueos) => parqueos.id == this.parqueo
+        (parqueos) => parqueos.id == parkingId
       )
       if (parqueoEncontrado) {
         ParqueoReporte = parqueoEncontrado.name
       }
     }
     const addressRow = worksheet.addRow(['', '', '', ParqueoReporte])
-    addressRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    addressRow.alignment = {horizontal: 'center', vertical: 'middle'}
+    addressRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
+    addressRow.alignment = { horizontal: 'center', vertical: 'middle' }
     addressRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
     worksheet.mergeCells('D4:O5')
     const titleRow = worksheet.addRow(['', '', '', 'Reporte - Pago de parqueo'])
-    titleRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    titleRow.alignment = {horizontal: 'center', vertical: 'middle'}
+    titleRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
+    titleRow.alignment = { horizontal: 'center', vertical: 'middle' }
     titleRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -214,15 +209,15 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
     worksheet.addImage(logo, 'B3:C6')
     worksheet.addRow([])
     const infoRow = worksheet.addRow(['', 'Información General'])
-    infoRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    infoRow.alignment = {horizontal: 'center', vertical: 'middle'}
+    infoRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
+    infoRow.alignment = { horizontal: 'center', vertical: 'middle' }
     infoRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -230,22 +225,22 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
     worksheet.addRow([])
     const header1 = worksheet.addRow([
       '',
-      'Fecha Inicio: ' + this.startDateReport,
+      'Fecha Inicio: ' + new Date(startDate).toLocaleDateString(),
       '',
       '',
       '',
       '',
       '',
       '',
-      'Fecha Fin: ' + this.endDateReport
+      'Fecha Fin: ' + new Date(endDate).toLocaleDateString()
     ])
     header1.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -261,17 +256,17 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
       '',
       '',
       'Documento generado: ' +
-      new Date().toLocaleDateString('es-GT') +
-      '  ' +
-      new Date().toLocaleTimeString()
+        new Date().toLocaleDateString('es-GT') +
+        '  ' +
+        new Date().toLocaleTimeString()
     ])
     header2.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -286,14 +281,14 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
         cell.fill = {
           type: 'pattern',
           pattern: 'solid',
-          fgColor: {argb: 'FFFFFF00'},
-          bgColor: {argb: 'FF0000FF'}
+          fgColor: { argb: 'FFFFFF00' },
+          bgColor: { argb: 'FF0000FF' }
         }
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -314,15 +309,15 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
         d.invoiceDate ? new Date(d.invoiceDate).toLocaleString() : '',
         d.paymentDate ? new Date(d.paymentDate).toLocaleString() : '',
         d.transaction,
-        d.typePayment,
+        d.typePayment
       ])
       row.eachCell((cell, number) => {
         if (number > 1) {
           cell.border = {
-            top: {style: 'thin'},
-            left: {style: 'thin'},
-            bottom: {style: 'thin'},
-            right: {style: 'thin'}
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
           }
         }
       })
@@ -330,7 +325,6 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
     worksheet.addRow([])
     worksheet.addRow([])
     worksheet.addRow([])
-
 
     worksheet.getColumn(2).width = 15
     worksheet.getColumn(3).width = 20
@@ -353,7 +347,10 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
       const blob = new Blob([data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       })
-      saveAs(blob, `Reporte Detalle de Pagos por Ticket - Generado - '${this.nowDateTime.toLocaleString()}.xlsx`)
+      saveAs(
+        blob,
+        `Reporte Detalle de Pagos por Ticket - Generado - '${this.now.toLocaleString()}.xlsx`
+      )
     })
     e.cancel = true
   }
@@ -363,6 +360,15 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
     const timeNow: Date = new Date(rowData.exit_date)
 
     return this.reportService.descriptionOfDiffOfTime(oldTime, timeNow)
+  }
+
+  private createReportForm() {
+    return this.formBuilder.group({
+      startDate: [new Date()],
+      endDate: [new Date()],
+      parkingId: ['0'],
+      telephone: ['']
+    })
   }
 
   private rerender() {

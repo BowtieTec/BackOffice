@@ -10,6 +10,7 @@ import {PermissionsService} from '../../../../../../shared/services/permissions.
 import {environment} from '../../../../../../../environments/environment'
 import {RecoveryPasswordService} from "../../../../../auth/services/recovery-password.service";
 import {UtilitiesService} from "../../../../../../shared/services/utilities.service";
+import {AuthService} from "../../../../../../shared/services/auth.service";
 
 @Component({
   selector: 'app-resgistered-users',
@@ -27,6 +28,7 @@ export class ResgisteredUsersComponent
   dtTrigger: Subject<any> = new Subject()
   formGroup: UntypedFormGroup
   users: NewUserModel[] = []
+  parkingId: string = ''
 
   constructor(
     private userService: UserService,
@@ -34,7 +36,8 @@ export class ResgisteredUsersComponent
     private message: MessageService,
     private permissionsService: PermissionsService,
     private recoveryService: RecoveryPasswordService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private authService: AuthService,
   ) {
     this.formGroup = formBuilder.group({filter: ['']})
   }
@@ -44,7 +47,10 @@ export class ResgisteredUsersComponent
   }
 
   ngOnInit(): void {
-    this.getUsers()
+    this.authService.user$.subscribe(({parkingId}) => {
+      this.parkingId = parkingId
+      this.getUsers(parkingId)
+    })
     this.subject.subscribe((user: NewUserModel) => {
       this.getUsers()
     })
@@ -86,9 +92,9 @@ export class ResgisteredUsersComponent
     this.dtTrigger.unsubscribe()
   }
 
-  private getUsers() {
+  private getUsers(parkingId: string = this.parkingId) {
     this.userService
-      .getUsers()
+      .getUsers(parkingId)
       .toPromise()
       .then((data) => {
         const results = data.data.administradores.data
