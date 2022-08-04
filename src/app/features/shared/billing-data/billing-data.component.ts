@@ -1,13 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core'
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
-import {MessageService} from '../../../shared/services/message.service'
-import {ParkingService} from '../../parking/services/parking.service'
-import {UtilitiesService} from '../../../shared/services/utilities.service'
-import {SettingsOptionsModel} from '../../parking/models/SettingsOption.model'
-import {CreateParkingStepFourModel} from '../../parking/models/CreateParking.model'
-import {Router} from '@angular/router'
-import {ParkingModel} from '../../parking/models/Parking.model'
-import {AuthService} from '../../../shared/services/auth.service'
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { MessageService } from '../../../shared/services/message.service'
+import { ParkingService } from '../../parking/services/parking.service'
+import { UtilitiesService } from '../../../shared/services/utilities.service'
+import { SettingsOptionsModel } from '../../parking/models/SettingsOption.model'
+import { CreateParkingStepFourModel } from '../../parking/models/CreateParking.model'
+import { Router } from '@angular/router'
+import { ParkingModel } from '../../parking/models/Parking.model'
+import { AuthService } from '../../../shared/services/auth.service'
 
 @Component({
   selector: 'app-billing-data',
@@ -15,8 +15,8 @@ import {AuthService} from '../../../shared/services/auth.service'
   styleUrls: ['./billing-data.component.css']
 })
 export class BillingDataComponent implements OnInit {
-  stepFourForm: UntypedFormGroup = this.createForm()
-  settingsOptions!: SettingsOptionsModel
+  stepFourForm: FormGroup = this.createForm()
+  settingsOptions: SettingsOptionsModel
   allParking: ParkingModel[] = []
 
   @Input() parkingId!: string
@@ -28,23 +28,16 @@ export class BillingDataComponent implements OnInit {
   constructor(
     private message: MessageService,
     private parkingService: ParkingService,
-    private formBuilder: UntypedFormBuilder,
+    private formBuilder: FormBuilder,
     private utilitiesService: UtilitiesService,
     private route: Router,
     private authService: AuthService
   ) {
+    this.settingsOptions = this.parkingService.settingsOptions
   }
 
   get isSudo() {
     return this.authService.isSudo
-  }
-
-  async setPaymentData(parkingId: string) {
-    const paymentInfo = await this.parkingService.getParkingInfo(parkingId).toPromise();
-    this.stepFourForm.get('business_address')?.setValue(paymentInfo.business_address)
-    this.stepFourForm.get('business_name')?.setValue(paymentInfo.business_name)
-    this.stepFourForm.get('currency')?.setValue(paymentInfo.currency)
-    this.stepFourForm.get('nit')?.setValue(paymentInfo.nit)
   }
 
   get isVisaSelected() {
@@ -55,6 +48,18 @@ export class BillingDataComponent implements OnInit {
   get isBacSelected() {
     const selected = this.stepFourForm.get('pay_method')?.value
     return selected != 0 && selected
+  }
+
+  async setPaymentData(parkingId: string) {
+    const paymentInfo = await this.parkingService
+      .getParkingInfo(parkingId)
+      .toPromise()
+    this.stepFourForm
+      .get('business_address')
+      ?.setValue(paymentInfo.business_address)
+    this.stepFourForm.get('business_name')?.setValue(paymentInfo.business_name)
+    this.stepFourForm.get('currency')?.setValue(paymentInfo.currency)
+    this.stepFourForm.get('nit')?.setValue(paymentInfo.nit)
   }
 
   addValidators() {
@@ -93,27 +98,24 @@ export class BillingDataComponent implements OnInit {
       if (this.showNavigationButtons && !this.isPublic) {
         this.changeStep.emit(number)
       } else {
-        this.endToken()
+        this.endToken().then()
         this.route.navigate(['/']).catch()
       }
-
     } else {
       this.message.hideLoading()
       this.changeStep.emit(number)
     }
   }
 
-  parkingIdSelected() {
+  async parkingIdSelected() {
     this.message.showLoading()
-    this.parkingId = this.stepFourForm.get('parkingId')?.value ? this.stepFourForm.get('parkingId')?.value : this.parkingId
+    this.parkingId = this.stepFourForm.value.parkingId
+      ? this.stepFourForm.get('parkingId')?.value
+      : this.parkingId
     if (this.parkingId) {
-      this.setPaymentData(this.parkingId).catch()
+      await this.setPaymentData(this.parkingId)
     }
     this.message.hideLoading()
-  }
-
-  private async endToken() {
-    return this.parkingService.endTempToken().toPromise().then()
   }
 
   createForm() {
@@ -162,23 +164,21 @@ export class BillingDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.settingsOptions = this.parkingService.settingsOptions
+    console.log(this.settingsOptions)
     if (!this.isCreatingParking) {
-      this.stepFourForm.get('parkingId')?.setValue(this.parkingId)
-      this.getParkingLot().then()
-      this.parkingIdSelected()
+      this.parkingService.parkingLot$.subscribe((parkingLot) => {
+        this.allParking = parkingLot
+      })
+      this.authService.user$.subscribe(({ parkingId }) => {
+        this.parkingId = parkingId
+        this.stepFourForm.get('parkingId')?.setValue(parkingId)
+        this.parkingIdSelected().then()
+      })
     }
   }
 
-  getParkingLot() {
-    return this.parkingService.getAllParking().then(x => {
-      if (x.success) {
-        this.allParking = x.data.parkings
-      } else {
-        this.message.error(x.message)
-        return
-      }
-    })
+  private async endToken() {
+    return this.parkingService.endTempToken().toPromise().then()
   }
 
   private getStepFour(): CreateParkingStepFourModel {
@@ -188,9 +188,9 @@ export class BillingDataComponent implements OnInit {
       business_name: this.stepFourForm.controls['business_name'].value,
       currency: this.stepFourForm.controls['currency'].value,
       is_our_bac_credential:
-      this.stepFourForm.controls['is_our_bac_credential'].value,
+        this.stepFourForm.controls['is_our_bac_credential'].value,
       is_our_visa_credential:
-      this.stepFourForm.controls['is_our_visa_credential'].value,
+        this.stepFourForm.controls['is_our_visa_credential'].value,
       nit: this.stepFourForm.controls['nit'].value,
       pay_method: this.stepFourForm.controls['pay_method'].value,
       visa_credential: {
@@ -198,7 +198,7 @@ export class BillingDataComponent implements OnInit {
         terminal: this.stepFourForm.controls['terminal'].value,
         merchant_user: this.stepFourForm.controls['merchant_id_visa'].value,
         merchant_password:
-        this.stepFourForm.controls['merchant_pass_visa'].value
+          this.stepFourForm.controls['merchant_pass_visa'].value
       },
       bac_credential: {
         url: this.stepFourForm.controls['url_bac'].value,
@@ -206,7 +206,7 @@ export class BillingDataComponent implements OnInit {
         acquirer_id: this.stepFourForm.controls['acquirer_id_bac'].value,
         pmtnpssw: this.stepFourForm.controls['pmtnpssw_bac'].value,
         purchase_currency:
-        this.stepFourForm.controls['purchase_currency_bac'].value
+          this.stepFourForm.controls['purchase_currency_bac'].value
       }
     }
   }

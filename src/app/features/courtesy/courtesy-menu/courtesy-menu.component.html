@@ -1,17 +1,20 @@
-<nav #nav="ngbNav" class="nav-tabs " ngbNav>
-  <ng-container *ngIf="ifHaveAction(listCourtesy)" ngbNavItem>
-    <a ngbNavLink><em class="fas fa-hand-holding-heart"></em> Cortesias</a>
+<nav #nav = "ngbNav"
+     class = "nav-tabs "
+     ngbNav>
+  <ng-container *ngIf = "ifHaveAction(listCourtesy)"
+                ngbNavItem>
+    <a ngbNavLink><em class = "fas fa-hand-holding-heart"></em> Cortesias</a>
     <ng-template ngbNavContent>
       <app-courtesy></app-courtesy>
     </ng-template>
   </ng-container>
-  <ng-container *ngIf="ifHaveAction(listCourtesyStationary)" ngbNavItem>
-    <a ngbNavLink><em class="fas fa-hand-holding-usd"></em> Cortesías estacionarias</a>
+  <ng-container *ngIf = "ifHaveAction(listCourtesyStationary)"
+                ngbNavItem>
+    <a ngbNavLink><em class = "fas fa-hand-holding-usd"></em> Cortesías estacionarias</a>
     <ng-template ngbNavContent>
-
       <app-stationary-courtesy></app-stationary-courtesy>
-
     </ng-template>
   </ng-container>
 </nav>
-<div [ngbNavOutlet]="nav" class="mt-2"></div>
+<div [ngbNavOutlet] = "nav"
+     class = "mt-2"></div>

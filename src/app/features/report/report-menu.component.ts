@@ -1,7 +1,6 @@
-import {Component} from '@angular/core'
-import {AuthService} from '../../shared/services/auth.service'
-import {PermissionsService} from '../../shared/services/permissions.service'
-import {environment} from '../../../environments/environment'
+import { Component } from '@angular/core'
+import { PermissionsService } from '../../shared/services/permissions.service'
+import { environment } from '../../../environments/environment'
 
 @Component({
   selector: 'app-report',
@@ -21,11 +20,7 @@ export class ReportMenuComponent {
   transitDetailReport = environment.transitDetailReport
   private actions: string[] = this.permissionService.actionsOfPermissions
 
-  constructor(
-    private authService: AuthService,
-    private permissionService: PermissionsService
-  ) {
-  }
+  constructor(private permissionService: PermissionsService) {}
 
   ifHaveAction(action: string) {
     return !!this.actions.find((x) => x == action)

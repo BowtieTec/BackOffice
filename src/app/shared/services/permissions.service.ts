@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core'
+import {Injectable, OnInit} from '@angular/core'
 import {HttpClient} from '@angular/common/http'
 import {ResponseModel} from '../model/Request.model'
 import {environment} from '../../../environments/environment'
@@ -10,7 +10,7 @@ import {MessageService} from './message.service'
 @Injectable({
   providedIn: 'root'
 })
-export class PermissionsService {
+export class PermissionsService implements OnInit {
   actions: string[] = []
   modules: string[] = []
   private apiUrl = environment.serverAPI
@@ -20,15 +20,14 @@ export class PermissionsService {
     private auth: AuthService,
     private messageService: MessageService
   ) {
-    this.getMenuOptionsValidated().then()
+    //this.getMenuOptionsValidated().then()
   }
 
   get actionsOfPermissions() {
     return this.actions
   }
 
-  getPermissions() {
-    const userId = this.auth.getUser().user.id
+  getPermissions(userId: string) {
     return this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/admin/role/permissions/${userId}`
@@ -48,11 +47,10 @@ export class PermissionsService {
     return !!this.modules.find((x: string) => x == module)
   }
 
-  getMenuOptionsValidated() {
-    this.messageService.showLoading()
+  getMenuOptionsValidated(userId: string) {
     const options: OptionMenuModel[] = environment.leftMenu
     const menu: OptionMenuModel[] = Array<OptionMenuModel>()
-    return this.getPermissions()
+    return this.getPermissions(userId)
       .toPromise()
       .then((permissions: any) => {
         this.actions = permissions.permissions.map((a: any) => a.action)
@@ -66,8 +64,13 @@ export class PermissionsService {
             menu.push(option)
           }
         })
-        this.messageService.hideLoading()
         return menu
       })
+  }
+
+  ngOnInit(): void {
+    this.auth.user$.subscribe((user) => {
+
+    })
   }
 }

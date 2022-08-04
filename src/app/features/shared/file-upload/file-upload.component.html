@@ -1,128 +1,128 @@
-<form [formGroup] = "stepFourForm"
-      class = "needs-validation form-group"
-      id = "form-wrapper"
-      method = "post"
-      name = "form-wrapper">
-  <div *ngIf = "settingsOptions"
-       class = "form-group panels animate__animated animate__fadeInLeft"
-       id = "steps-container">
+<form [formGroup] = 'stepFourForm'
+      class = 'needs-validation form-group'
+      id = 'form-wrapper'
+      method = 'post'
+      name = 'form-wrapper'>
+  <div *ngIf = 'settingsOptions'
+       class = 'form-group panels animate__animated animate__fadeInLeft'
+       id = 'steps-container'>
     <div class = 'titleCards '>
       <span> <em class = 'fas fa-imges'></em></span> Archivos
     </div>
-    <div class = "container">
-      <div *ngIf = "isCreatingParking == false && this.getIsSudo()"
-           class = "relative">
+    <div class = 'container'>
+      <div *ngIf = 'isCreatingParking == false && this.getIsSudo'
+           class = 'relative'>
         <app-select-container
-          [data] = "this.allParking"
-          [formGroup] = "this.stepFourForm"
-          controlName = "parkingId"
-          name = "Parqueos"></app-select-container>
+          [data] = 'this.allParking'
+          [formGroup] = 'this.stepFourForm'
+          controlName = 'parkingId'
+          name = 'Parqueos'></app-select-container>
       </div>
-      <div class = "relative">
-        <label class = "labelInputFile">Logo del parqueo:</label>
-        <input (change) = "onFileChangeLogo($event)"
+      <div class = 'relative'>
+        <label class = 'labelInputFile'>Logo del parqueo:</label>
+        <input (change) = 'onFileChangeLogo($event)'
                [class.is-invalid] = "controlInvalid('logo')"
-               accept = ".png, .jpg, .jpeg"
-               class = "form-control inputClass"
-               formControlName = "logo"
-               id = "logo"
-               name = "logo"
-               type = "file">
+               accept = '.png, .jpg, .jpeg'
+               class = 'form-control inputClass'
+               formControlName = 'logo'
+               id = 'logo'
+               name = 'logo'
+               type = 'file'>
         <small *ngIf = "controlInvalid('logo')"
-               class = "text-danger animate__animated  animate__rotateIn">* Este campo es obligatorio</small>
+               class = 'text-danger animate__animated  animate__rotateIn'>* Este campo es obligatorio</small>
         <div *ngIf = "this.searchFile('logo')"
-             class = "img-container align-text-center m-2 animate__animated  animate__bounceIn">
+             class = 'img-container align-text-center m-2 animate__animated  animate__bounceIn'>
           <img
-            alt = "Previsualización de logo"
-            id = "logoPreview"
-            src = "">
-          <div class = "overlay">
-            <div class = "text">Logo</div>
+            alt = 'Previsualización de logo'
+            id = 'logoPreview'
+            src = ''>
+          <div class = 'overlay'>
+            <div class = 'text'>Logo</div>
           </div>
         </div>
       </div>
-      <div class = "relative">
-        <label class = "labelInputFile">Tarifas:</label>
-        <input (change) = "onFileChangeTarif($event)"
+      <div class = 'relative'>
+        <label class = 'labelInputFile'>Tarifas:</label>
+        <input (change) = 'onFileChangeTarif($event)'
                [class.is-invalid] = "controlInvalid('rate')"
-               accept = ".png, .jpg, .jpeg"
-               class = "form-control inputClass"
-               formControlName = "rate"
-               id = "rate"
-               name = "rate"
-               type = "file">
+               accept = '.png, .jpg, .jpeg'
+               class = 'form-control inputClass'
+               formControlName = 'rate'
+               id = 'rate'
+               name = 'rate'
+               type = 'file'>
         <small *ngIf = "controlInvalid('rate')"
-               class = "text-danger animate__animated  animate__rotateIn">* Este campo es obligatorio</small>
+               class = 'text-danger animate__animated  animate__rotateIn'>* Este campo es obligatorio</small>
         <div *ngIf = "this.searchFile('rate')"
-             class = "img-container align-text-center m-2 animate__animated  animate__bounceIn">
+             class = 'img-container align-text-center m-2 animate__animated  animate__bounceIn'>
           <img
-            alt = "Previsualización de la tarifa"
-            id = "tariffPreview"
-            src = "">
-          <div class = "overlay">
-            <div class = "text">Tarifas</div>
+            alt = 'Previsualización de la tarifa'
+            id = 'tariffPreview'
+            src = ''>
+          <div class = 'overlay'>
+            <div class = 'text'>Tarifas</div>
           </div>
         </div>
       </div>
-      <div class = "relative">
-        <label class = "labelInputFile">Foto de portada:</label>
-        <input (change) = "onFileChangeBackground($event)"
+      <div class = 'relative'>
+        <label class = 'labelInputFile'>Foto de portada:</label>
+        <input (change) = 'onFileChangeBackground($event)'
                [class.is-invalid] = "controlInvalid('backGroundApp')"
-               accept = ".png, .jpg, .jpeg"
-               class = "form-control inputClass"
-               formControlName = "backGroundApp"
-               id = "backGroundApp"
-               name = "backGroundApp"
-               type = "file">
+               accept = '.png, .jpg, .jpeg'
+               class = 'form-control inputClass'
+               formControlName = 'backGroundApp'
+               id = 'backGroundApp'
+               name = 'backGroundApp'
+               type = 'file'>
         <small *ngIf = "controlInvalid('rate')"
-               class = "text-danger animate__animated  animate__rotateIn">* Este campo es obligatorio</small>
+               class = 'text-danger animate__animated  animate__rotateIn'>* Este campo es obligatorio</small>
         <div *ngIf = "this.searchFile('backGroundApp')"
-             class = "img-container align-text-center m-2 animate__animated  animate__bounceIn">
+             class = 'img-container align-text-center m-2 animate__animated  animate__bounceIn'>
           <img
-            alt = "Previsualización del fondo"
-            class = "fluid-img"
-            id = "backGroundAppPreview"
-            src = "">
-          <div class = "overlay">
-            <div class = "text">Portada</div>
+            alt = 'Previsualización del fondo'
+            class = 'fluid-img'
+            id = 'backGroundAppPreview'
+            src = ''>
+          <div class = 'overlay'>
+            <div class = 'text'>Portada</div>
           </div>
         </div>
       </div>
-      <div class = " relative">
-        <label class = "labelInputFile">Planos: </label>
-        <input (change) = "onFileChangePlans($event)"
+      <div class = ' relative'>
+        <label class = 'labelInputFile'>Planos: </label>
+        <input (change) = 'onFileChangePlans($event)'
                [class.is-invalid] = "controlInvalid('plans')"
-               accept = ".png, .jpg, .jpeg"
-               class = "form-control inputClass"
-               formControlName = "plans"
-               id = "plans"
+               accept = '.png, .jpg, .jpeg'
+               class = 'form-control inputClass'
+               formControlName = 'plans'
+               id = 'plans'
                multiple
-               name = "plans"
-               type = "file">
+               name = 'plans'
+               type = 'file'>
         <small *ngIf = "controlInvalid('plans')"
-               class = "text-danger animate__animated  animate__rotateIn">* Este campo es obligatorio</small>
+               class = 'text-danger animate__animated  animate__rotateIn'>* Este campo es obligatorio</small>
 
-        <small class = "text-success">{{filesPlans.length}} Archivos seleccionados</small>
+        <small class = 'text-success'>{{filesPlans.length}} Archivos seleccionados</small>
       </div>
     </div>
-    <div class = "text-center"
-         *ngIf = "isCreatingParking"
-         id = "q-box__buttons">
-      <button (click) = "emmitStep(-1)"
-              class = "btn btn-primary m-2"
-              type = "button">Anterior
+    <div *ngIf = 'isCreatingParking'
+         class = 'text-center'
+         id = 'q-box__buttons'>
+      <button (click) = 'emmitStep(-1)'
+              class = 'btn btn-primary m-2'
+              type = 'button'>Anterior
       </button>
-      <button (click) = "emmitStep(1)"
-              class = "btn btn-primary m-2"
-              type = "button">Siguiente
+      <button (click) = 'emmitStep(1)'
+              class = 'btn btn-primary m-2'
+              type = 'button'>Siguiente
       </button>
     </div>
-    <div *ngIf = "!isCreatingParking"
-         class = "text-center"
-         id = "saveButton">
-      <button (click) = "emmitStep(1)"
-              class = "btn btn-primary m-2"
-              type = "button">Guardar
+    <div *ngIf = '!isCreatingParking'
+         class = 'text-center'
+         id = 'saveButton'>
+      <button (click) = 'emmitStep(1)'
+              class = 'btn btn-primary m-2'
+              type = 'button'>Guardar
       </button>
     </div>
   </div>

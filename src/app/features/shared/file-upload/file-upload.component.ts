@@ -1,13 +1,12 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core'
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
-import {CreateParkingFileModel} from 'src/app/features/parking/models/CreateParking.model'
-import {SettingsOptionsModel} from 'src/app/features/parking/models/SettingsOption.model'
-import {ParkingService} from 'src/app/features/parking/services/parking.service'
-import {MessageService} from 'src/app/shared/services/message.service'
-import {UtilitiesService} from 'src/app/shared/services/utilities.service'
-import {FileUploadService} from "./services/fileUploadService";
-import {ParkingModel} from "../../parking/models/Parking.model";
-import { UserService } from '../../management/components/users/services/user.service'
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { FormBuilder, UntypedFormGroup, Validators } from '@angular/forms'
+import { CreateParkingFileModel } from 'src/app/features/parking/models/CreateParking.model'
+import { SettingsOptionsModel } from 'src/app/features/parking/models/SettingsOption.model'
+import { ParkingService } from 'src/app/features/parking/services/parking.service'
+import { MessageService } from 'src/app/shared/services/message.service'
+import { UtilitiesService } from 'src/app/shared/services/utilities.service'
+import { FileUploadService } from './services/fileUploadService'
+import { ParkingModel } from '../../parking/models/Parking.model'
 import { AuthService } from '../../../shared/services/auth.service'
 
 @Component({
@@ -24,7 +23,6 @@ export class FileUploadComponent implements OnInit {
   stepFourForm: UntypedFormGroup = this.createForm()
   settingsOptions!: SettingsOptionsModel
 
-
   @Output() changeStep = new EventEmitter<number>()
   @Input() parkingId: string = this.parkingService.parkingStepOne.parkingId
   @Input() isCreatingParking: boolean = true
@@ -32,32 +30,24 @@ export class FileUploadComponent implements OnInit {
   constructor(
     private message: MessageService,
     private parkingService: ParkingService,
-    private formBuilder: UntypedFormBuilder,
+    private formBuilder: FormBuilder,
     private utilitiesService: UtilitiesService,
     private fileServices: FileUploadService,
     private authService: AuthService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
-
     this.settingsOptions = this.parkingService.settingsOptions
     this.stepFourForm.get('parkingId')?.setValue(this.parkingId)
     if (!this.isCreatingParking) {
-      this.message.showLoading()
-      this.getParkingLot().then(x => this.message.hideLoading())
+      this.authService.user$.subscribe(({ parkingId }) => {
+        this.parkingId = parkingId
+        this.stepFourForm.get('parkingId')?.setValue(parkingId)
+      })
+      this.parkingService.parkingLot$.subscribe((parkingLot) => {
+        this.allParking = parkingLot
+      })
     }
-  }
-
-  getParkingLot() {
-    return this.parkingService.getAllParking().then(x => {
-      if (x.success) {
-        this.allParking = x.data.parkings
-      } else {
-        this.message.error(x.message)
-        return
-      }
-    })
   }
 
   controlInvalid(control: string): boolean {
@@ -69,64 +59,70 @@ export class FileUploadComponent implements OnInit {
   }
 
   async emmitStep(number: number) {
-
     this.parkingId = this.stepFourForm.get('parkingId')?.value
     this.message.showLoading()
     let promises = []
     if (number == 1) {
-
       if (this.filesPlans) {
         //Plans------------------------------------------
         const formData = new FormData()
         for (let i = 0; i < this.filesPlans.length; i++) {
           formData.append('plans', this.filesPlans[i])
         }
-        promises.push(this.fileServices
-          .UploadPlans(formData, this.parkingId)
-          .toPromise()
-          .catch((err: any) => this.message.errorTimeOut(err.message)))
+        promises.push(
+          this.fileServices
+            .UploadPlans(formData, this.parkingId)
+            .toPromise()
+            .catch((err: any) => this.message.errorTimeOut(err.message))
+        )
       }
       if (this.fileTariff) {
         //Tariff-----------------------------------------
         const formDataTariff = new FormData()
         formDataTariff.append('rate', this.fileTariff)
-        promises.push(this.fileServices
-          .UploadTariff(formDataTariff, this.parkingId)
-          .toPromise()
-          .catch((err: any) => this.message.errorTimeOut(err.message)))
+        promises.push(
+          this.fileServices
+            .UploadTariff(formDataTariff, this.parkingId)
+            .toPromise()
+            .catch((err: any) => this.message.errorTimeOut(err.message))
+        )
       }
 
       if (this.fileLogo) {
         //LOGO----------------------------------------
         const formDataLogo = new FormData()
         formDataLogo.append('logo', this.fileLogo)
-        promises.push(this.fileServices
-          .UploadLogo(formDataLogo, this.parkingId)
-          .toPromise()
-          .catch((err: any) => this.message.errorTimeOut(err.message)))
+        promises.push(
+          this.fileServices
+            .UploadLogo(formDataLogo, this.parkingId)
+            .toPromise()
+            .catch((err: any) => this.message.errorTimeOut(err.message))
+        )
       }
 
       //BACKGROUND---------------------------------------
       if (this.backGroundApp) {
         const formDataBackground = new FormData()
         formDataBackground.append('backgroundApp', this.backGroundApp)
-        promises.push(this.fileServices
-          .UploadBackground(formDataBackground, this.parkingId)
-          .toPromise()
-          .catch((err: any) => this.message.errorTimeOut(err.message)))
+        promises.push(
+          this.fileServices
+            .UploadBackground(formDataBackground, this.parkingId)
+            .toPromise()
+            .catch((err: any) => this.message.errorTimeOut(err.message))
+        )
       }
     }
-    await Promise.all(promises)
-      .then(x => {
-        if (x.length <= 1) { //Siempre hay un promise porque se hace una promesa por cada archivo
-          this.message.info('No se seleccionaron archivos')
-        } else {
-          this.message.OkTimeOut()
-        }
-        if (this.isCreatingParking) {
-          this.changeStep.emit(number)
-        }
-      })
+    await Promise.all(promises).then((x) => {
+      if (x.length <= 1) {
+        //Siempre hay un promise porque se hace una promesa por cada archivo
+        this.message.info('No se seleccionaron archivos')
+      } else {
+        this.message.OkTimeOut()
+      }
+      if (this.isCreatingParking) {
+        this.changeStep.emit(number)
+      }
+    })
   }
 
   createForm() {
@@ -138,16 +134,9 @@ export class FileUploadComponent implements OnInit {
       parkingId: [this.parkingId, Validators.required]
     })
   }
-  getIsSudo(): boolean{
+
+  getIsSudo(): boolean {
     return this.authService.isSudo
-  }
-  private getFile(): CreateParkingFileModel {
-    return {
-      parkingId: '',
-      logo: this.stepFourForm.controls['logo'].value,
-      rate: this.stepFourForm.controls['rate'].value,
-      plans: this.stepFourForm.controls['plans'].value
-    }
   }
 
   onFileChangePlans(event: any) {
@@ -162,7 +151,7 @@ export class FileUploadComponent implements OnInit {
       const src = URL.createObjectURL(event.target.files[0])
       let preview = document.getElementById('logoPreview') as HTMLImageElement
       preview.src = src
-      preview.style.display = "block"
+      preview.style.display = 'block'
     }
   }
 
@@ -179,8 +168,19 @@ export class FileUploadComponent implements OnInit {
     this.backGroundApp = event.target.files[0]
     if (event.target.files.length > 0) {
       const src = URL.createObjectURL(event.target.files[0])
-      let preview = document.getElementById('backGroundAppPreview') as HTMLImageElement
+      let preview = document.getElementById(
+        'backGroundAppPreview'
+      ) as HTMLImageElement
       preview.src = src
+    }
+  }
+
+  private getFile(): CreateParkingFileModel {
+    return {
+      parkingId: '',
+      logo: this.stepFourForm.controls['logo'].value,
+      rate: this.stepFourForm.controls['rate'].value,
+      plans: this.stepFourForm.controls['plans'].value
     }
   }
 }

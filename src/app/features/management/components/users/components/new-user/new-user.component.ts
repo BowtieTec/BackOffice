@@ -1,4 +1,4 @@
-import {Component, Input, NgZone, OnInit} from '@angular/core'
+import {Component, Input, OnInit} from '@angular/core'
 import {UserService} from '../../services/user.service'
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
 import {UtilitiesService} from '../../../../../../shared/services/utilities.service'
@@ -32,19 +32,14 @@ export class NewUserComponent implements OnInit {
     private parkingService: ParkingService,
     private permissionService: PermissionsService,
     private authService: AuthService,
-    private zone: NgZone
   ) {
     this.newUserForm = this.createForm()
-    this.getInitialData().catch()
   }
 
   get Roles() {
     return this.userService.roles
   }
 
-  get userRoleSelected() {
-    return this.newUserForm.get('role')?.value
-  }
 
   ifHaveAction(action: string) {
     return this.permissionService.ifHaveAction(action)
@@ -72,14 +67,13 @@ export class NewUserComponent implements OnInit {
       }
       this.messageServices.hideLoading()
     })
-  }
-
-  async getInitialData() {
-    this.messageServices.showLoading()
-    this.allParking = await this.parkingService
-      .getAllParking()
-      .then((x) => x.data.parkings)
-    this.messageServices.hideLoading()
+    this.authService.user$.subscribe(({parkingId}) => {
+      this.parkingId = parkingId
+      this.newUserForm.get('parking')?.setValue(parkingId)
+    })
+    this.parkingService.parkingLot$.subscribe((parkingLot) => {
+      this.allParking = parkingLot
+    })
   }
 
   getNewUserDataForm(): NewUserModel {

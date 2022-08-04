@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input } from '@angular/core'
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core'
 import DataSource from 'devextreme/data/data_source'
 import ArrayStore from 'devextreme/data/array_store'
 import { ReportService } from '../../service/report.service'
@@ -12,7 +12,7 @@ import { ParkingService } from '../../../../parking/services/parking.service'
   selector: 'detail-grid',
   templateUrl: './detail-grid.component.html'
 })
-export class DetailGridComponent implements AfterViewInit {
+export class DetailGridComponent implements AfterViewInit, OnInit {
   @Input() key!: string
   @Input() parqueo = '0'
 
@@ -29,11 +29,6 @@ export class DetailGridComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
-    this.parkingService.getAllParking().then((data) => {
-      if (data.success) {
-        this.allParking = data.data.parkings
-      }
-    })
     this.reportService
       .getTicketsDateRpt(this.key, this.parqueo)
       .toPromise()
@@ -55,19 +50,6 @@ export class DetailGridComponent implements AfterViewInit {
   }
 
   onExporting(e: any) {
-    /* const workbook = new Workbook();
-    const worksheet = workbook.addWorksheet('Detalle');
-
-    exportDataGrid({
-      component: e.component,
-      worksheet: worksheet,
-      autoFilterEnabled: true,
-    }).then(() => {
-      workbook.xlsx.writeBuffer().then((buffer: any) => {
-        saveAs(new Blob([buffer], {type: 'application/octet-stream'}), 'Detalle.xlsx');
-      }).catch(error => {console.log(error)});
-    }).catch(error => {console.log(error)});
-    e.cancel = true; ////////////*/
     const header = [
       '',
       'Fecha',
@@ -246,33 +228,6 @@ export class DetailGridComponent implements AfterViewInit {
     worksheet.addRow([])
     worksheet.addRow([])
     worksheet.addRow([])
-    /* let headerResumen = worksheet.addRow(['','Fecha','Total de vehiculos','Total de ingresos','Total de descuento','Total pagado']);
-    headerResumen.eachCell((cell, number) => {
-      if(number > 1){
-        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
-      }
-    });
-    let groupData = this.dataSource.reduce((r:any, a:any) =>{
-      r[a.ep_entry_date.slice(0,10)] = [...r[a.ep_entry_date.slice(0,10)] || [], a];
-      return r;
-    },{});
-    Object.entries(groupData).forEach(([key,value]) => {
-      let valor = JSON.parse(JSON.stringify(value));
-      let total = 0;
-      let descuento = 0;
-      let pagado = 0;
-      valor.forEach((element:any) => {
-        total+= +element.total;
-        descuento+= +element.descuento;
-        pagado+= +element.pagado;
-      });
-      let detailResumen = worksheet.addRow(['',key,valor.length,total,descuento,pagado]);
-      detailResumen.eachCell((cell, number) => {
-        if(number > 1){
-          cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
-        }
-      });
-    }); */
 
     worksheet.getColumn(2).width = 20
     worksheet.getColumn(3).width = 20
@@ -288,5 +243,11 @@ export class DetailGridComponent implements AfterViewInit {
       saveAs(blob, 'ReporteDetalleEbiGoTicket.xlsx')
     })
     e.cancel = true
+  }
+
+  ngOnInit(): void {
+    this.parkingService.parkingLot$.subscribe((parkingLot) => {
+      this.allParking = parkingLot
+    })
   }
 }

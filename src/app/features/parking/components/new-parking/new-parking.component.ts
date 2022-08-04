@@ -1,9 +1,8 @@
 import {Component} from '@angular/core'
-import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms'
+import {FormBuilder, FormGroup} from '@angular/forms'
 import {MessageService} from '../../../../shared/services/message.service'
 import {ParkingService} from '../../services/parking.service'
 import {SettingsOptionsModel} from '../../models/SettingsOption.model'
-import {UtilitiesService} from '../../../../shared/services/utilities.service'
 
 @Component({
   selector: 'app-new-parking',
@@ -11,17 +10,16 @@ import {UtilitiesService} from '../../../../shared/services/utilities.service'
   styleUrls: ['./new-parking.component.css']
 })
 export class NewParkingComponent {
-  newParkingForm!: UntypedFormGroup
+  newParkingForm!: FormGroup
   totalSteps = 7
   step = 1
 
   settingsOptions!: SettingsOptionsModel
 
   constructor(
-    private formBuilder: UntypedFormBuilder,
+    private formBuilder: FormBuilder,
     private message: MessageService,
-    private parkingService: ParkingService,
-    private utilitiesService: UtilitiesService
+    private parkingService: ParkingService
   ) {
     this.newParkingForm = this.createForm()
     this.getInitialData()
@@ -31,24 +29,16 @@ export class NewParkingComponent {
     return this.parkingService.parkingStepOne.parkingId
   }
 
-  get stepOneForm() {
-    return this.newParkingForm.get('stepOne') as UntypedFormGroup
-  }
-
   get stepTwoForm() {
-    return this.newParkingForm.get('stepTwo') as UntypedFormGroup
-  }
-
-  get stepThreeForm() {
-    return this.newParkingForm.get('stepThree') as UntypedFormGroup
+    return this.newParkingForm.get('stepTwo') as FormGroup
   }
 
   get stepFourForm() {
-    return this.newParkingForm.get('stepFour') as UntypedFormGroup
+    return this.newParkingForm.get('stepFour') as FormGroup
   }
 
   get stepFiveForm() {
-    return this.newParkingForm.get('stepFive') as UntypedFormGroup
+    return this.newParkingForm.get('stepFive') as FormGroup
   }
 
   changeStep(number: number) {

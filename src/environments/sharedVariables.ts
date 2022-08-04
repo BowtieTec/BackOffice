@@ -62,7 +62,8 @@ export const permission = {
   listInvoiceInfo: 'changeInvoiceInfo',
   restartPassword: 'restartPassword',
   updateFiles: 'updateFiles',
-  transitDetailReport: 'transitDetailReport'
+  transitDetailReport: 'transitDetailReport',
+  assignCourtesyPermission: 'assignCourtesyPermission'
 }
 export const leftMenu = [
   {

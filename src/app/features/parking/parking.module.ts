@@ -20,7 +20,8 @@ import {DataTablesModule} from 'angular-datatables'
 import {
   CreateMonthlyParkingComponent
 } from './components/monthly-parking/create-monthly-parking/create-monthly-parking.component'
-import {FeaturesModule} from '../features.module'
+import {FeaturesModule} from '../features.module';
+import {AssignCourtesyComponent} from './components/parked/components/assign-courtesy/assign-courtesy.component'
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {FeaturesModule} from '../features.module'
     GeneralDataComponent,
     BillingDataComponent,
     ResumeComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    AssignCourtesyComponent
   ],
   imports: [
     CommonModule,

@@ -15,6 +15,7 @@ export class CourtesyModel {
   condition? = 0
   cantHours? = 0
   valueTimeMinutes? = 0
+  haveStation?: boolean = false
 }
 
 class CompanyModel {

@@ -5,21 +5,15 @@
         <span><i class = "fas fa-sitemap"></i></span> Reporte de cortesías
       </div>
       <div class = "row justify-content-center">
-        <div *ngIf = "ifHaveAction(verTodosLosParqueosReport)"
-             class = "col-xl-4 col-lg-3 col-sm-12">
-          <div class = "mb-4 relative">
-            <label class = "text-secondary"
-                   style = "display:block">Parqueo</label>
-            <select
-              #inputParking
-              (change) = "getCourtesyRpt()"
-              class = "inputClass">
-              <option value = "0">---- Todos los parqueos ----</option>
-              <option *ngFor = "let parking of this.allParking"
-                      value = "{{parking.id}}">{{parking.name}}</option>
-            </select>
-
-          </div>
+        <div *ngIf = "isSudo"
+             class = "col-xl-4 col-lg-6 col-sm-12">
+          <app-select-container
+            (change) = "this.getReport()"
+            [data] = "allParking"
+            [formGroup] = "reportForm"
+            controlName = "parkingId"
+            name = "Parqueos"
+          ></app-select-container>
         </div>
 
       </div>
@@ -38,11 +32,11 @@
             dataField = "cd_created_at"
             dataType = "date"
             format = "dd/MM/yyyy"
-            sortOrder='desc'
-            width='auto'
+            sortOrder = 'desc'
+            width = 'auto'
           ></dxi-column>
           <dxi-column
-            width='250'
+            width = '250'
             caption = "Cortesía"
             dataField = "cd_name"
 
@@ -51,43 +45,43 @@
           <dxi-column
             caption = "Tipo de cortesía"
             dataField = "cd_type"
-            width='auto'
+            width = 'auto'
           ></dxi-column>
 
           <dxi-column
             caption = "Tipo de condición"
             dataField = "cd_tipoCondicion"
-            width='auto'
+            width = 'auto'
           ></dxi-column>
           <dxi-column
             caption = "Valor de la cortesía"
             dataField = "cd_value"
-            width='auto'
+            width = 'auto'
           ></dxi-column>
 
           <dxi-column
             caption = "Cortesias usadas"
             dataField = "transacciones"
             dataType = "number"
-            width='auto'
+            width = 'auto'
           ></dxi-column>
 
           <dxi-column
             caption = "Disponibles"
             dataField = "disponibles"
             dataType = "number"
-            width='auto'
+            width = 'auto'
           ></dxi-column>
           <dxi-column
             caption = "Cant. Cortesias"
             dataField = "cd_quantity"
             dataType = "number"
-            width='auto'
+            width = 'auto'
           ></dxi-column>
           <dxi-column
             caption = "Tipo"
             dataField = "cd_tipoCortesia"
-            width='auto'
+            width = 'auto'
           ></dxi-column>
           <dxo-header-filter [visible] = "true"></dxo-header-filter>
           <dxo-search-panel [visible] = "true"
