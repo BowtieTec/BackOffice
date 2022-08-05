@@ -1,69 +1,75 @@
-<div class = "headerDashboard animate__animated animate__fadeInDown">
-  <nav class = "navbar navbar-light">
-    <div class = "container-fluid">
-      <form class = "d-flex search">
+<div class = 'headerDashboard animate__animated animate__fadeInDown'>
+  <nav class = 'navbar navbar-light'>
+    <div class = 'container-fluid'>
+      <form class = 'd-flex search'>
         <div *ngIf = 'false'
-             class = "input-group">
-              <span class = "input-group-prepend">
-                <div class = "input-group-text bg-transparent border-0"><em class = "fa fa-search"></em></div>
+             class = 'input-group'>
+              <span class = 'input-group-prepend'>
+                <div class = 'input-group-text bg-transparent border-0'><em class = 'fa fa-search'></em></div>
             </span>
-          <input aria-label = "Search"
-                 class = "form-control me-2 border-0"
-                 placeholder = "Buscar usuarios"
-                 type = "search">
+          <input aria-label = 'Search'
+                 class = 'form-control me-2 border-0'
+                 placeholder = 'Buscar usuarios'
+                 type = 'search'>
         </div>
       </form>
-      <div class = "menuMobile  "
-           style = "display: none;">
-        <span onclick = "menuMovil()"><em class = "fas fa-bars"></em></span>
+      <div class = 'menuMobile  '
+           style = 'display: none;'>
+        <span onclick = 'menuMovil()'><em class = 'fas fa-bars'></em></span>
       </div>
       <!-- <span class = "badge bg-info" >{{this.authData.user.name + ' ' + this.authData.user.last_name}}</span >
       <span class = "badge bg-info" >{{this.authData.user.email}}</span >
       <span class = "badge bg-info" >  {{this.authData.user.role.name}}</span > -->
 
-      <div class = "d-flex icons">
+      <div class = 'd-flex icons'>
         <!-- <span ><em class = "fas fa-bell" ></em ></span > -->
-        <div class = "dropdown dropdownHeader">
+        <div class = 'dropdown dropdownHeader'>
           <div>
-            <div class = "nameHeader">{{this.authData.user.name + ' ' + this.authData.user.last_name}}</div>
-            <em class = "far fa-user-circle fa-3x"></em>
+            <div class = 'nameHeader'>{{this.authData.user.name + ' ' + this.authData.user.last_name}}</div>
+            <em class = 'far fa-user-circle fa-3x'></em>
 
           </div>
           <div
-            class = "dropdown-content animate__animated animate__fadeInDown">
-            <ul class = "nav flex-column">
+            class = 'dropdown-content animate__animated animate__fadeInDown'>
+            <ul class = 'nav flex-column'>
 
               <!-- <li class = "nav-item text-center" >
                 {{this.authData.user.name + ' ' + this.authData.user.last_name}}
               </li >
               <hr> -->
-              <li class = "nav-item text-end">
-                <div style="padding-right: 15px;">{{this.authData.user.email}}</div>
+              <li class = 'nav-item text-end'>
+                <div style = 'padding-right: 15px;'>{{this.authData.user.email}}</div>
               </li>
-              <li class = "nav-item text-end">
-                <div style = "font-size:12px; font-weight:600; padding-right: 15px">{{this.authData.user.role.name}}</div>
+              <li class = 'nav-item text-end'>
+                <div style = 'font-size:12px; font-weight:600; padding-right: 15px'>{{this.authData.user.role.name}}</div>
               </li>
               <hr>
 
-              <div class = ""
-                   id = "list-tab"
-                   role = "tablist">
-                <a (click) = "setParkedSelected(item)"
-                   *ngFor = "let item of authData.user.otherParkings"
+              <div
+                id = 'list-tab'
+                role = 'tablist'>
+                <a (click) = 'setParkedSelected(item)'
+                   *ngFor = 'let item of authData.user.otherParkings'
                    [ngClass] = "{'active': item.id === this.parkingId}"
-                   aria-controls = "settings"
-                   class = "list-group-item multiParking"
-                   data-toggle = "list"
-                   id = "list-settings-list"
-                   role = "tab">{{item.name}}</a>
-                   <hr>
+                   aria-controls = 'settings'
+                   class = 'list-group-item multiParking'
+                   data-toggle = 'list'
+                   id = 'list-settings-list'
+                   role = 'tab'>{{item.name}}
+                  <div>
+                    <span *ngIf = 'defaultParking === item.id'
+                          class = 'badge badge-pill badge-dark'>Default</span>
+                  </div>
+                </a>
+                <hr>
               </div>
-              <li class = "nav-item">
-                <a (click) = "logout()"
-                   class = "nav-link" style="    background: #e97b79;
+              <li class = 'nav-item'>
+                <a (click) = 'logout()'
+                   class = 'nav-link'
+                   style = '    background: #e97b79;
                    color: #fff;
-                   border-radius: 6px;">
-                  <span><em class = "fa fa-power-off"></em></span>
+                   border-radius: 6px;'>
+                  <span><em class = 'fa fa-power-off'></em></span>
                   Cerrar sesión</a>
               </li>
             </ul>
