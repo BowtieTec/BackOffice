@@ -41,7 +41,7 @@ export class InputContainerComponent implements OnInit {
     } else if (this.type == 'number') {
       this.formGroup.controls[this.controlName].addValidators([
         Validators.min(0),
-        Validators.max(999999.99)
+        Validators.maxLength(12)
       ])
     }
     this.formGroup.controls[this.controlName].setValue(this.value)

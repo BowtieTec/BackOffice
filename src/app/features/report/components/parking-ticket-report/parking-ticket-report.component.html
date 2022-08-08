@@ -5,7 +5,7 @@
         <span><i class = 'fas fa-sitemap'></i></span> Reporte de parqueo diario (ticket)
       </div>
       <div class = 'row justify-content-center'>
-        <div *ngIf = 'isSudo'
+        <div *ngIf = 'this.isSudo'
              class = 'col-xl-4 col-lg-6 col-sm-12'>
           <app-select-container
             (change) = 'this.getReport()'
@@ -15,20 +15,20 @@
             name = 'Parqueos'
           ></app-select-container>
         </div>
-        <div class = 'col-xl-2 col-lg-6 col-sm-12'>
+        <div class = 'col-xl-4 col-lg-6 col-sm-12'>
           <div class = 'mb-4 relative'>
             <app-input-container
               (change) = 'this.getReport()'
               [formGroup] = 'reportForm'
               [value] = "now | date: 'yyyy-MM-dd'"
               controlName = 'startDate'
-              maxL = "{{now | date:'dd-MM-yyyy'}}"
+              maxL = "{{now | date:'yyyy-MM-dd'}}"
               name = 'Inicio de Búsqueda'
               type = 'Date'
             ></app-input-container>
           </div>
         </div>
-        <div class = 'col-xl-2 col-lg-6 col-sm-12'>
+        <div class = 'col-xl-4 col-lg-6 col-sm-12'>
           <div class = 'mb-4 relative'>
             <app-input-container
               (change) = 'this.getReport()'
@@ -103,10 +103,6 @@
             </dxi-item>
             <dxi-item name = 'searchPanel'></dxi-item>
           </dxo-toolbar>
-          <!-- <dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>
-           <div *dxTemplate="let datos of 'detail'">
-             <detail-grid [key]="datos.key" [parqueo]="parqueoDetalle"></detail-grid>
-           </div>-->
           <dxo-export [enabled] = 'true'></dxo-export>
         </dx-data-grid>
       </div>

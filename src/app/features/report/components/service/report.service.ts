@@ -33,13 +33,7 @@ export class ReportService {
         map((res) => {
           return res.data.map((item: any) => {
             return {
-              phone_key:
-                item.status == 2
-                  ? item.user.phone_number
-                  : 'xxxx-' +
-                    item.user.phone_number.substr(
-                      item.user.phone_number.length - 4
-                    ),
+              phone_key: item.user.phone_number,
               paymentStatus: item.status == 2 ? 'Pendiente de Pago' : 'Exitoso',
               subtotal: item.subtotal,
               discount: item.discount,
@@ -87,9 +81,14 @@ export class ReportService {
     )
   }
 
-  getBillingRpt(initDate: string, endDate: string, parqueo: string) {
+  getBillingRpt(
+    initDate: string,
+    endDate: string,
+    parqueo: string,
+    dateTypeSearch: number = 0
+  ) {
     return this.http.get<ResponseModel>(
-      `${this.apiUrl}backoffice/report/getFacturas/dates?initDate=${initDate}&endDate=${endDate}&parqueo=${parqueo}`
+      `${this.apiUrl}backoffice/report/getFacturas/dates?initDate=${initDate}&endDate=${endDate}&parqueo=${parqueo}&dateTypeSearch=${dateTypeSearch}`
     )
   }
 
@@ -128,7 +127,7 @@ export class ReportService {
         map((res) => {
           return res.data.map((item: any) => {
             return {
-              phone_key: item.user.phone_number,
+              phone_key: item.user?.phone_number ?? '',
               entry_date: item.entry_date
                 ? new Date(item.entry_date).toLocaleString()
                 : '',

@@ -195,6 +195,11 @@ export class MessageService {
         })
       }
     }).then((result: any): any => {
+      if (result.isDismissed) {
+        return {
+          isDismissed: true
+        }
+      }
       if (result.isConfirmed) {
         return Swal.fire({
           denyButtonColor: '#415ba1',

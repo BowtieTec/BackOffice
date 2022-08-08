@@ -81,7 +81,8 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
   }
 
   getReport() {
-    const { startDate, endDate, parkingId, telephone } = this.reportForm.value
+    let { startDate, endDate, parkingId, telephone } = this.reportForm.value
+    telephone = telephone ?? ''
     if (endDate < startDate) {
       this.messageService.error(
         '',
