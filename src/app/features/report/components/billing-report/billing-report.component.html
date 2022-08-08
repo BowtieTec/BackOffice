@@ -5,7 +5,6 @@
         <span><i class = 'fas fa-sitemap'></i></span> Reporte de Facturación
       </div>
       <div class = 'row justify-content-center'>
-        <div class = 'row justify-content-center'>
           <div *ngIf = 'isSudo'
                class = 'col-xl-4 col-lg-6 col-sm-12'>
             <app-select-container
@@ -42,9 +41,36 @@
               ></app-input-container>
             </div>
           </div>
+        <div class = 'row'>
+          <div class = 'justify-content-center col-12'>
+            <div [formGroup] = 'reportForm'
+                 class = 'btn-group'>
+              <input (change) = 'this.getReport()'
+                     [value] = '0'
+                     autocomplete = 'off'
+                     checked
+                     class = 'btn-check'
+                     formControlName = 'dateTypeSearch'
+                     id = 'option1'
+                     name = 'dateTypeSearch'
+                     type = 'radio' />
+              <label class = 'btn btn-outline-primary'
+                     for = 'option1'>Filtrar por fecha de entrada</label>
+
+              <input (change) = 'this.getReport()'
+                     [value] = '1'
+                     autocomplete = 'off'
+                     class = 'btn-check btn-sm'
+                     formControlName = 'dateTypeSearch'
+                     id = 'option2'
+                     name = 'dateTypeSearch'
+                     type = 'radio' />
+              <label class = 'btn btn-outline-primary btn-sm'
+                     for = 'option2'>Filtrar por fecha de facturación</label>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
   </div>
   <div class = 'col-lg-12 col-md-12 col-sm-12 col-xs-12'>
     <div class = 'panels'>

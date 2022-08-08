@@ -1,18 +1,18 @@
-<div [formGroup] = "formGroup"
-     class = "relative m-2 ">
+<div [formGroup] = 'formGroup'
+     class = 'relative m-2 '>
   <div>
-    <label class = "labelInput"
-           style = "display: block;">{{this.name}}</label>
+    <label class = 'labelInput'
+           style = 'display: block;'>{{this.name}}</label>
     <input
-      [readonly] = "readonly"
-      maxlength = '{{this.maxL}}'
-      formControlName = '{{controlName}}'
       [id] = "'new-'+name"
-      class = "inputClass "
-      placeholder = '{{name}}:'
-      min = '{{this.minL}}'
-      max = '{{this.maxL}}'
+      [readonly] = 'readonly'
       autocomplete = 'off'
+      class = 'inputClass '
+      formControlName = '{{controlName}}'
+      max = '{{this.maxL}}'
+      maxlength = '{{this.maxL}}'
+      min = '{{this.minL}}'
+      placeholder = '{{name}}:'
       type = '{{type}}'>
   </div>
   <span
