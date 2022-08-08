@@ -100,9 +100,15 @@ export class BillingReportComponent implements OnInit {
     const {
       startDate,
       endDate,
-      parkingId
-    }: { startDate: Date; endDate: Date; parkingId: string } =
-      this.reportForm.getRawValue()
+      parkingId,
+      dateTypeSearch
+    }: {
+      startDate: Date
+      endDate: Date
+      parkingId: string
+      dateTypeSearch: number
+    } = this.reportForm.getRawValue()
+    console.log({ dateTypeSearch })
     let _startDate = startDate + ' 00:00:00'
     let _endDate = endDate + ' 23:59:59'
     if (endDate < startDate) {
@@ -115,7 +121,7 @@ export class BillingReportComponent implements OnInit {
     if (this.ifHaveAction('verTodosLosParqueosReport')) {
     }
     return this.reportService
-      .getBillingRpt(_startDate, _endDate, parkingId)
+      .getBillingRpt(_startDate, _endDate, parkingId, dateTypeSearch)
       .toPromise()
       .then((data) => {
         if (data.success) {
@@ -380,7 +386,8 @@ export class BillingReportComponent implements OnInit {
     return this.formBuilder.group({
       startDate: [new Date()],
       endDate: [new Date()],
-      parkingId: ['0']
+      parkingId: ['0'],
+      dateTypeSearch: [0]
     })
   }
 }
