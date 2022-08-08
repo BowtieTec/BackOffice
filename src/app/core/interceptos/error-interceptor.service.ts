@@ -65,8 +65,9 @@ export class GlobalErrorHandler implements ErrorHandler {
       return throwError(errMsg)
     } else if (errorString.includes('Duplicate entry')) {
       const message = errorString.slice(
-        errorString.indexOf("D'Duplicate entry \''+ 17,
-        errorString.indexOf("''\' for key '      )
+        errorString.indexOf("Duplicate entry '") + 17,
+        errorString.indexOf("' for key ")
+      )
       this.message.error(` "${message}" ya existe`)
       return
     } else if (errorString.includes('Error: Error:')) {
