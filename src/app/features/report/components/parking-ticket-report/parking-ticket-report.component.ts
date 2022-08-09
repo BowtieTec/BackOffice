@@ -70,8 +70,10 @@ export class ParkingTicketReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParking = parkingLot
-      this.allParking.push({ id: '0', name: '-- Todos los parqueos --' })
+      this.allParking = [
+        ...parkingLot,
+        { id: '0', name: '-- Todos los parqueos --' }
+      ]
     })
     this.authService.user$.subscribe(({ parkingId }) => {
       this.reportForm.get('parkingId')?.setValue(parkingId)
@@ -100,9 +102,6 @@ export class ParkingTicketReportComponent implements OnInit {
         if (data.success) {
           this.report = data.data
           this.dataSource = data.data
-          if (this.report.length == 0) {
-            this.messageService.infoTimeOut('No se encontraron datos')
-          }
           this.rerender()
         } else {
           this.messageService.error('', data.message)

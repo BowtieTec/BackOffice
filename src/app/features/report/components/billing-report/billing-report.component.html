@@ -42,32 +42,35 @@
             </div>
           </div>
         <div class = 'row'>
-          <div class = 'justify-content-center col-12'>
-            <div [formGroup] = 'reportForm'
-                 class = 'btn-group'>
+          <div class = 'justify-content-center col-12 text-center'>
+            <ul [formGroup] = 'reportForm'
+                 class = 'opcionActivo'>
+                 <li style="    margin-right: 15px;">
               <input (change) = 'this.getReport()'
                      [value] = '0'
                      autocomplete = 'off'
                      checked
-                     class = 'btn-check'
+                     class = 'form-check-input'
                      formControlName = 'dateTypeSearch'
                      id = 'option1'
                      name = 'dateTypeSearch'
                      type = 'radio' />
-              <label class = 'btn btn-outline-primary'
+              <label class = 'btn form-check-label'
                      for = 'option1'>Filtrar por fecha de entrada</label>
-
+                    </li>
+                    <li>
               <input (change) = 'this.getReport()'
                      [value] = '1'
                      autocomplete = 'off'
-                     class = 'btn-check btn-sm'
+                     class = 'form-check-input'
                      formControlName = 'dateTypeSearch'
                      id = 'option2'
                      name = 'dateTypeSearch'
                      type = 'radio' />
-              <label class = 'btn btn-outline-primary btn-sm'
+              <label class = 'form-check-label'
                      for = 'option2'>Filtrar por fecha de facturación</label>
-            </div>
+                    </li>
+          </ul>
           </div>
         </div>
       </div>
