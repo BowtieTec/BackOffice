@@ -23,7 +23,9 @@ export class ManagementMenuComponent {
     private permissionService: PermissionsService
   ) {
   }
-
+  getIsSudo (){
+    return this.authService.isSudo
+  }
   get parkingId() {
     return this.authService.getParking().id
   }
