@@ -34,9 +34,10 @@ export class NewUserComponent implements OnInit {
     private authService: AuthService
   ) {
     this.newUserForm = this.createForm()
+    console.log(this.RawValue)
   }
 
-  get Roles() {
+  getRoles() {
     return this.userService.roles
   }
 
@@ -125,7 +126,6 @@ export class NewUserComponent implements OnInit {
         .saveNewUser(newUserValue)
         .toPromise()
         .then((data) => {
-          console.log(data)
           if (data.success) {
             this.messageServices.OkTimeOut('Guardado')
           } else {
@@ -142,6 +142,10 @@ export class NewUserComponent implements OnInit {
           this.subject.next()
         })
     }
+  }
+  get RawValue(){
+    console.log(this.newUserForm.getRawValue())
+    return this.newUserForm.getRawValue()
   }
 
   addPasswordValidations() {
@@ -189,7 +193,7 @@ export class NewUserComponent implements OnInit {
           Validators.pattern(environment.settings.passwordPattern)
         ]
       ],
-      role: ['0', [Validators.required]],
+      role: ['b5b821bb-f919-4bae-9b6d-75a144fe2082', [Validators.required]],
       parking: [this.parkingId, [Validators.required]]
     })
   }
