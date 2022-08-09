@@ -72,6 +72,7 @@ export class NewUserComponent implements OnInit {
     this.authService.user$.subscribe(({ parkingId }) => {
       this.parkingId = parkingId
       this.newUserForm.get('parking')?.setValue(parkingId)
+      this.parkingId = parkingId
     })
     this.parkingService.parkingLot$.subscribe((parkingLot) => {
       this.allParking = parkingLot
@@ -165,7 +166,7 @@ export class NewUserComponent implements OnInit {
     this.newUserForm.reset()
     this.isEdit = false
     this.newUserForm.get('parking')?.setValue(this.parkingId)
-    this.newUserForm.get('role')?.setValue('0')
+    this.newUserForm.get('role')?.setValue('b5b821bb-f919-4bae-9b6d-75a144fe2082')
     this.addPasswordValidations()
   }
 
