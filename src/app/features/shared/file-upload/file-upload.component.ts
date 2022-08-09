@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { FormBuilder, UntypedFormGroup, Validators } from '@angular/forms'
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { CreateParkingFileModel } from 'src/app/features/parking/models/CreateParking.model'
 import { SettingsOptionsModel } from 'src/app/features/parking/models/SettingsOption.model'
 import { ParkingService } from 'src/app/features/parking/services/parking.service'
@@ -20,7 +20,7 @@ export class FileUploadComponent implements OnInit {
   fileLogo!: File
   backGroundApp!: File
   allParking: ParkingModel[] = []
-  stepFourForm: UntypedFormGroup = this.createForm()
+  stepFourForm: FormGroup = this.createForm()
   settingsOptions!: SettingsOptionsModel
 
   @Output() changeStep = new EventEmitter<number>()
@@ -141,37 +141,84 @@ export class FileUploadComponent implements OnInit {
 
   onFileChangePlans(event: any) {
     for (let i = 0; i < event.target.files.length; i++) {
-      this.filesPlans.push(event.target.files[i])
+      if (
+        this.validateFileBeImage(
+          event.target.files[i],
+          this.stepFourForm.get('plans') as FormControl
+        )
+      ) {
+        this.filesPlans.push(event.target.files[i])
+      } else {
+        this.message.error('Hay archivos seleccionados que no son una imagen')
+        this.filesPlans = []
+      }
     }
   }
 
+  validateFileBeImage(file: File, input: FormControl) {
+    console.log(file.type)
+    if (!file.type.includes('image')) {
+      this.message.error(
+        'El archivo no es una imagen. solo se permiten imágenes png, jpeg y jpg'
+      )
+      input.reset()
+      return false
+    }
+    return true
+  }
+
   onFileChangeLogo(event: any) {
-    this.fileLogo = event.target.files[0]
-    if (event.target.files.length > 0) {
-      const src = URL.createObjectURL(event.target.files[0])
-      let preview = document.getElementById('logoPreview') as HTMLImageElement
-      preview.src = src
-      preview.style.display = 'block'
+    if (
+      this.validateFileBeImage(
+        event.target.files[0],
+        this.stepFourForm.get('logo') as FormControl
+      )
+    ) {
+      this.fileLogo = event.target.files[0]
+      if (event.target.files.length > 0) {
+        const src = URL.createObjectURL(event.target.files[0])
+        let preview = document.getElementById('logoPreview') as HTMLImageElement
+        preview.src = src
+        preview.style.display = 'block'
+      }
     }
   }
 
   onFileChangeTarif(event: any) {
-    this.fileTariff = event.target.files[0]
-    if (event.target.files.length > 0) {
-      const src = URL.createObjectURL(event.target.files[0])
-      let preview = document.getElementById('tariffPreview') as HTMLImageElement
-      preview.src = src
+    if (
+      this.validateFileBeImage(
+        event.target.files[0],
+        this.stepFourForm.get('rate') as FormControl
+      )
+    ) {
+      this.fileTariff = event.target.files[0]
+      if (event.target.files.length > 0) {
+        const src = URL.createObjectURL(event.target.files[0])
+        let preview = document.getElementById(
+          'tariffPreview'
+        ) as HTMLImageElement
+        preview.src = src
+      }
     }
   }
 
   onFileChangeBackground(event: any) {
-    this.backGroundApp = event.target.files[0]
-    if (event.target.files.length > 0) {
-      const src = URL.createObjectURL(event.target.files[0])
-      let preview = document.getElementById(
-        'backGroundAppPreview'
-      ) as HTMLImageElement
-      preview.src = src
+    if (
+      this.validateFileBeImage(
+        event.target.files[0],
+        this.stepFourForm.get('backGroundApp') as FormControl
+      )
+    ) {
+      this.backGroundApp = event.target.files[0]
+      if (event.target.files.length > 0) {
+        const src = URL.createObjectURL(event.target.files[0])
+        let preview = document.getElementById(
+          'backGroundAppPreview'
+        ) as HTMLImageElement
+        preview.src = src
+      } else {
+        this.stepFourForm.get('logo')?.setValue(null)
+      }
     }
   }
 

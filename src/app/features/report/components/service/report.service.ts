@@ -81,9 +81,14 @@ export class ReportService {
     )
   }
 
-  getBillingRpt(initDate: string, endDate: string, parqueo: string) {
+  getBillingRpt(
+    initDate: string,
+    endDate: string,
+    parqueo: string,
+    dateTypeSearch: number = 0
+  ) {
     return this.http.get<ResponseModel>(
-      `${this.apiUrl}backoffice/report/getFacturas/dates?initDate=${initDate}&endDate=${endDate}&parqueo=${parqueo}`
+      `${this.apiUrl}backoffice/report/getFacturas/dates?initDate=${initDate}&endDate=${endDate}&parqueo=${parqueo}&dateTypeSearch=${dateTypeSearch}`
     )
   }
 

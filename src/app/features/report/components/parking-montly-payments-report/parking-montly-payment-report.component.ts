@@ -74,8 +74,10 @@ export class ParkingMontlyPaymentReportComponent implements OnInit {
     })
 
     this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParking = parkingLot
-      this.allParking.push({ id: '0', name: '-- Todos los parqueos --' })
+      this.allParking = [
+        ...parkingLot,
+        { id: '0', name: '-- Todos los parqueos --' }
+      ]
     })
   }
 
@@ -100,12 +102,7 @@ export class ParkingMontlyPaymentReportComponent implements OnInit {
         if (data) {
           this.dataSource = data
           this.report = data
-          if (this.report.length == 0) {
-            this.messageService.infoTimeOut('No se encontraron datos')
-          }
           this.rerender()
-        } else {
-          this.messageService.error('', 'No se encontraron datos')
         }
       })
       .finally(() => {
