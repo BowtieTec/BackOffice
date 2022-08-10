@@ -110,7 +110,6 @@ export class BillingReportComponent implements OnInit {
       parkingId: string
       dateTypeSearch: number
     } = this.reportForm.getRawValue()
-    console.log({ dateTypeSearch })
     let _startDate = startDate + ' 00:00:00'
     let _endDate = endDate + ' 23:59:59'
     if (endDate < startDate) {

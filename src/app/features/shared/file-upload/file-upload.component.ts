@@ -156,7 +156,6 @@ export class FileUploadComponent implements OnInit {
   }
 
   validateFileBeImage(file: File, input: FormControl) {
-    console.log(file.type)
     if (!file.type.includes('image')) {
       this.message.error(
         'El archivo no es una imagen. solo se permiten imágenes png, jpeg y jpg'

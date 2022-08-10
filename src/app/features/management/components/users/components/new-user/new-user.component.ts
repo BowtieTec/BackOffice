@@ -34,7 +34,10 @@ export class NewUserComponent implements OnInit {
     private authService: AuthService
   ) {
     this.newUserForm = this.createForm()
-    console.log(this.RawValue)
+  }
+
+  get RawValue() {
+    return this.newUserForm.getRawValue()
   }
 
   getRoles() {
@@ -144,10 +147,6 @@ export class NewUserComponent implements OnInit {
         })
     }
   }
-  get RawValue(){
-    console.log(this.newUserForm.getRawValue())
-    return this.newUserForm.getRawValue()
-  }
 
   addPasswordValidations() {
     this.newUserForm
@@ -166,7 +165,9 @@ export class NewUserComponent implements OnInit {
     this.newUserForm.reset()
     this.isEdit = false
     this.newUserForm.get('parking')?.setValue(this.parkingId)
-    this.newUserForm.get('role')?.setValue('b5b821bb-f919-4bae-9b6d-75a144fe2082')
+    this.newUserForm
+      .get('role')
+      ?.setValue('b5b821bb-f919-4bae-9b6d-75a144fe2082')
     this.addPasswordValidations()
   }
 
