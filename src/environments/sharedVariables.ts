@@ -126,7 +126,6 @@ export const TypeOfCondition = [
 ]
 export const settings = {
   siteKey: '6LesloIfAAAAANKGMOJ5SOxyRugy3woH7Y1DP1f6',
-  passwordPattern:
-    '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])([A-Za-z\\d$@$!%*?&]|[^ ]){8,30}$'
+  passwordPattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{7,}$'
 }
 
