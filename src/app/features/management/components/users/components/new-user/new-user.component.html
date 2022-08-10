@@ -52,7 +52,7 @@
           type = 'password'>
         </app-input-container>
       </div>
-      <div *ngIf = 'ifHaveAction(changeParkingAtCreateUser) && this.isSudo()'
+      <div *ngIf = 'ifHaveAction(changeParkingAtCreateUser) && this.isSudo() == true'
            class = 'col-xl-12 col-lg-12  col-sm-12'>
         <app-select-container
           [data] = 'allParking'
