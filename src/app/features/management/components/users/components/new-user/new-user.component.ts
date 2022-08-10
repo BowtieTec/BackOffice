@@ -82,6 +82,10 @@ export class NewUserComponent implements OnInit {
     })
   }
 
+  isSudo() {
+    return this.authService.isSudo
+  }
+
   saveNewUser() {
     this.messageServices.showLoading()
     if (this.newUserForm.invalid && !this.isEdit) {
