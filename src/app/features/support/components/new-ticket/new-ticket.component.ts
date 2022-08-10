@@ -1,13 +1,13 @@
-import {Component} from '@angular/core'
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
-import {Router} from '@angular/router'
-import {AuthModel} from 'src/app/shared/model/UserResponse.model'
-import {AuthService} from 'src/app/shared/services/auth.service'
-import {MessageService} from 'src/app/shared/services/message.service'
-import {PermissionsService} from 'src/app/shared/services/permissions.service'
-import {UtilitiesService} from 'src/app/shared/services/utilities.service'
-import {supportTicketModel} from './Models/support-ticket.module'
-import {SupportTicketService} from './Services/support-ticket.service'
+import { Component } from '@angular/core'
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms'
+import { Router } from '@angular/router'
+import { AuthModel } from 'src/app/shared/model/UserResponse.model'
+import { AuthService } from 'src/app/shared/services/auth.service'
+import { MessageService } from 'src/app/shared/services/message.service'
+import { PermissionsService } from 'src/app/shared/services/permissions.service'
+import { UtilitiesService } from 'src/app/shared/services/utilities.service'
+import { supportTicketModel } from './Models/support-ticket.module'
+import { SupportTicketService } from './Services/support-ticket.service'
 
 @Component({
   selector: 'app-new-ticket',
@@ -15,10 +15,9 @@ import {SupportTicketService} from './Services/support-ticket.service'
   styleUrls: ['./new-ticket.component.css']
 })
 export class NewTicketComponent {
-  supportTicketForm: UntypedFormGroup
+  supportTicketForm: FormGroup
   date: Date = new Date()
   authData: AuthModel = this.authService.getUser()
-
 
   constructor(
     private permissionService: PermissionsService,
@@ -32,20 +31,14 @@ export class NewTicketComponent {
     this.supportTicketForm = this.createsupportTicketForm()
   }
 
-  private createsupportTicketForm() {
-    return this.formBuilder.group({
-      description: ['', [Validators.required]],
-      subject: ['', [Validators.required]]
-    })
-  }
-
   get formSupportTicketValues(): supportTicketModel {
     return {
       email: this.authData.user.email, //this.supportTicketForm.get('email')?.value,
       subject: this.supportTicketForm.get('subject')?.value,
       description: this.supportTicketForm.get('description')?.value,
-      parkingName: this.authService.getParking().name ? this.authService.getParking().name : 'No encontrado'
-
+      parkingName: this.authService.getParking().name
+        ? this.authService.getParking().name
+        : 'No encontrado'
     }
   }
 
@@ -75,5 +68,12 @@ export class NewTicketComponent {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false
     this.router.onSameUrlNavigation = 'reload'
     this.router.navigate([currentUrl])
+  }
+
+  private createsupportTicketForm() {
+    return this.formBuilder.group({
+      description: ['', [Validators.required]],
+      subject: ['', [Validators.required]]
+    })
   }
 }

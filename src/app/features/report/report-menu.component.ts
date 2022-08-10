@@ -1,5 +1,4 @@
 import { Component } from '@angular/core'
-import { AuthService } from '../../shared/services/auth.service'
 import { PermissionsService } from '../../shared/services/permissions.service'
 import { environment } from '../../../environments/environment'
 
@@ -18,12 +17,10 @@ export class ReportMenuComponent {
   verCourtesiesStationReport = environment.verCourtesiesStationReport
   verBillingReport = environment.verBillingReport
   verHistoryOfCourtesy = environment.verHistoryOfCourtesyReport
+  transitDetailReport = environment.transitDetailReport
   private actions: string[] = this.permissionService.actionsOfPermissions
 
-  constructor(
-    private authService: AuthService,
-    private permissionService: PermissionsService
-  ) {}
+  constructor(private permissionService: PermissionsService) {}
 
   ifHaveAction(action: string) {
     return !!this.actions.find((x) => x == action)

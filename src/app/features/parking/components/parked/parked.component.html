@@ -12,7 +12,7 @@
             <div class = "mb-4 relative">
               <app-select-container
                 (change) = "this.refreshParkedData()"
-                [data] = "this.parkingData"
+                [data] = "this.allParking"
                 [formGroup] = "parkedForm"
                 controlName = "parkingId"
                 name = "Parqueo"></app-select-container>
@@ -64,7 +64,7 @@
                 scope = "col">Parqueo
             </th>
             <th scope = "col"
-                style = "width: 6%">Acciones
+                style = "width: 9%">Acciones
             </th>
           </tr>
           </thead>
@@ -97,8 +97,16 @@
             <td>
               <button (click) = "getOut(parked)"
                       *ngIf = "(ifHaveAction(getOutWithPayment) || ifHaveAction(getOutWithoutPayment)) && parked.status!=2 "
-                      class = "buttonRowDelete ms-1 me-1"
+                      class = "buttonRowDelete ms-1 me-1 mt-1"
                       title = "Sacar del parqueo"><em class = "fas fa-door-open "></em>
+              </button>
+              <button
+                (click) = "this.changeParkedSelected(parked)"
+                *ngIf = "ifHaveAction(assignCourtesyPermission)"
+                class = "buttonRowEdit ms-1 me-1 mt-1"
+                data-bs-target = "#assignCourtesy"
+                data-bs-toggle = "modal"
+                title = "Asignar Cortesía"><em class = "fas fa-gift"></em>
               </button>
             </td>
           </tr>
@@ -108,4 +116,11 @@
     </div>
   </div>
 </div>
+<app-assign-courtesy [parked$] = "parked$"></app-assign-courtesy>
+
+
+
+
+
+
 

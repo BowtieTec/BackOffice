@@ -5,14 +5,17 @@
   <select [class.is-invalid] = "controlInvalid(controlName)"
           class = "selectClass"
           formControlName = "{{controlName}}">
-     <option [disabled] = "true"
-             value = "0">-- {{data.length <= 0 ? 'No hay ' + name + ' disponibles' : name}} --
+    <option *ngIf = "!this.exist0 || data.length == 0"
+            [disabled] = "true"
+            value = "0">-- {{data.length <= 0 ? 'No hay ' + name + ' disponibles' : name}} --
     </option>
-    <option *ngFor = "let item of data" selected
+    <option *ngFor = "let item of data"
+            selected
             [value] = "item.id">{{item.name | titlecase}}</option>
-    <option *ngIf='unselect'
-      [value] = "null">Sin {{name}}</option>
+    <option *ngIf = 'unselect'
+            [value] = "null">Sin {{name}}</option>
   </select>
   <div *ngIf = "controlInvalid(controlName)"
-         class = "text-danger animate__animated animate__fadeIn mb-1">* El valor no es valido</div>
+       class = "text-danger animate__animated animate__fadeIn mb-1">* El valor no es valido
+  </div>
 </div>

@@ -1,26 +1,27 @@
-<div [formGroup] = "formGroup"
-     class = "relative m-2 ">
+<div [formGroup] = 'formGroup'
+     class = 'relative m-2 '>
   <div>
-    <label class = "labelInput"
-           style = "display: block;">{{this.name}}</label>
+    <label class = 'labelInput'
+           style = 'display: block;'>{{this.name}}</label>
     <input
-      [readonly] = "readonly"
-      maxlength = '{{this.maxL}}'
-      formControlName = '{{controlName}}'
       [id] = "'new-'+name"
-      class = "inputClass "
-      placeholder = '{{name}}:'
-      min = '{{this.minL}}'
-      max = '{{this.maxL}}'
+      [readonly] = 'readonly'
       autocomplete = 'off'
+      class = 'inputClass '
+      formControlName = '{{controlName}}'
+      max = '{{this.maxL}}'
+      maxlength = '{{this.maxL}}'
+      min = '{{this.minL}}'
+      placeholder = '{{name}}:'
       type = '{{type}}'>
   </div>
   <span
     *ngIf = 'textInfo.length > 0'
     class = 'text-muted '>*{{textInfo}}</span>
-  
+
   <div
     *ngIf = 'controlInvalid(controlName)'
-    class = ' ml-1 text-danger animate__animated animate__fadeIn mb-1'>* El valor no es válido</div>
-    <br>
+    class = ' ml-1 text-danger animate__animated animate__fadeIn mb-1'>* El valor no es válido
+  </div>
+  <br>
 </div>

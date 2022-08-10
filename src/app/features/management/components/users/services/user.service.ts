@@ -46,10 +46,10 @@ export class UserService {
     return this.http.get<ResponseModel>(`${this.apiUrl}backoffice/role`)
   }
 
-  getUsers(): Observable<any> {
+  getUsers(parkingId: string): Observable<any> {
     this.messageService.showLoading()
     return this.http.get<ResponseModel>(
-      `${this.apiUrl}backoffice/admin/admins?page=1&per_page=100&status=3`
+      `${this.apiUrl}backoffice/admin/admins?page=1&per_page=100&status=3&parkingId=${parkingId}`
     )
   }
 

@@ -6,21 +6,25 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SupportRoutingModule } from './support-routing.module';
+import { IssueLogComponent } from './components/issue-log/issue-log.component';
+import { DataTablesModule } from 'angular-datatables'
 
 
 
 @NgModule({
   declarations: [
-    
+
     NewTicketComponent,
-    SupportMenuComponent
+    SupportMenuComponent,
+    IssueLogComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     NgbModule,
     SharedModule,
-    SupportRoutingModule
+    SupportRoutingModule,
+    DataTablesModule
   ]
 })
 export class SupportModule { }

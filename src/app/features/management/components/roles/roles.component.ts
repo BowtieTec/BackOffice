@@ -1,13 +1,10 @@
-import { Component, OnInit } from '@angular/core'
-import { UserService } from '../users/services/user.service'
-import { UtilitiesService } from '../../../../shared/services/utilities.service'
-import { MessageService } from '../../../../shared/services/message.service'
-import {
-  PermissionSaveModel,
-  PermissionsModel
-} from './models/Permissions.model'
-import { RolesService } from './services/roles.service'
-import { RolesModel } from '../users/models/RolesModel'
+import {Component, OnInit} from '@angular/core'
+import {UserService} from '../users/services/user.service'
+import {UtilitiesService} from '../../../../shared/services/utilities.service'
+import {MessageService} from '../../../../shared/services/message.service'
+import {PermissionSaveModel, PermissionsModel} from './models/Permissions.model'
+import {RolesService} from './services/roles.service'
+import {RolesModel} from '../users/models/RolesModel'
 
 @Component({
   selector: 'app-roles',
@@ -24,7 +21,8 @@ export class RolesComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private roleService: RolesService,
     private messageServices: MessageService
-  ) {}
+  ) {
+  }
 
   get Roles() {
     return this.roles
@@ -84,7 +82,7 @@ export class RolesComponent implements OnInit {
           this.messageServices.error(
             '',
             'No se pudo cargar la información solicitada. Error: ' +
-              data.message
+            data.message
           )
         }
       })
@@ -117,7 +115,7 @@ export class RolesComponent implements OnInit {
           }
         })
     } else {
-      this.messageServices.warning('Debe seleccionar un role para continuar')
+      this.messageServices.warning('Debe seleccionar un rol para continuar')
     }
   }
 }

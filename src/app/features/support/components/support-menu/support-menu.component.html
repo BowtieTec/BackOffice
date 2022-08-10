@@ -11,6 +11,15 @@
           <app-new-ticket></app-new-ticket>
         </ng-template>
       </ng-container>
+      <ng-container *ngIf = "ifHaveAction(verBitacora)"
+        ngbNavItem>
+        <a
+          ngbNavLink><em class = "fas fa-users"></em> Bitácora</a>
+        <ng-template
+          ngbNavContent>
+          <app-issue-log></app-issue-log>
+        </ng-template>
+      </ng-container>
     </nav>
   </div>
 </div>

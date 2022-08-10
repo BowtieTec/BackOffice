@@ -116,13 +116,17 @@ export class RecoverPasswordComponent {
 
   async changeStep(currentStep: number) {
     this.messageService.showLoading()
-    let isEmailSend = false
-    let isCodeRight = false
+    let isEmailSend: boolean = false
+    let isCodeRight: boolean = false
     if (!this.validations()) {
       return
     }
 
     if (currentStep == 1) {
+      if(this.emailControl?.invalid){
+        this.messageService.error('', 'Por favor, ingrese un correo válido.')
+        return
+      }
       isEmailSend = await this.sendConfirmation(this.emailControl?.value.trim())
       if (isEmailSend) {
         this.step++
@@ -181,7 +185,7 @@ export class RecoverPasswordComponent {
 
   createForm() {
     return this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.pattern(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/)]],
       validate_code: ['', Validators.required],
       newPassword: [
         '',

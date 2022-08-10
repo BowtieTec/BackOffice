@@ -19,15 +19,7 @@ import { ParkingModel } from '../../../parking/models/Parking.model'
 import * as logoFile from '../logoEbi'
 
 import 'jspdf-autotable'
-
-/* export interface tickets {
-  name: string;
-  last_name: string;
-  email: string;
-  phone_number: string;
-  amount: number;
-  created_at: Date;
-} */
+import { FormBuilder, FormGroup } from '@angular/forms'
 
 export interface tickets {
   fecha: Date
@@ -43,87 +35,73 @@ export interface tickets {
   styleUrls: ['./parking-ticket-report.component.css']
 })
 export class ParkingTicketReportComponent implements OnInit {
-  //@ViewChild(DataTableDirective)
   @ViewChild(DxDataGridComponent, { static: false })
   dataGrid!: DxDataGridComponent
   dtElement!: DataTableDirective
-  dtOptions: DataTables.Settings = {}
+  dtOptions: DataTables.Settings
   dtTrigger: Subject<any> = new Subject()
   pdfTable!: ElementRef
 
   report: tickets[] = []
   dataSource: any
-  parqueo: any
-
-  allParking: ParkingModel[] = Array<ParkingModel>()
+  reportForm: FormGroup
+  allParking: ParkingModel[] = []
   verTodosLosParqueosReport = environment.verTodosLosParqueosReport
-  @ViewChild('inputParking') inputParking!: ElementRef
-  fechaActual = new Date().toISOString().split('T')[0]
-
-  nowDateTime = new Date()
-  datosUsuarioLogeado = this.auth.getParking()
-  parqueoDetalle = '0'
-  startDateReport: any
-  endDateReport: any
+  now = new Date()
 
   constructor(
+    private formBuilder: FormBuilder,
     private auth: AuthService,
     private reportService: ReportService,
     private messageService: MessageService,
     private utilitiesService: UtilitiesService,
     private authService: AuthService,
-    private permisionService: PermissionsService,
+    private permissionService: PermissionsService,
     private excelService: ReportService,
     private parkingService: ParkingService
-  ) {}
+  ) {
+    this.reportForm = this.createReportForm()
+    this.dtOptions = DataTableOptions.getSpanishOptions(10)
+  }
+
+  get isSudo() {
+    return this.authService.isSudo
+  }
 
   ngOnInit(): void {
-    this.messageService.showLoading()
-    this.dtOptions = DataTableOptions.getSpanishOptions(10)
-    this.parkingService
-      .getAllParking()
-      .then((data) => {
-        if (data.success) {
-          this.allParking = data.data.parkings
-        }
-      })
-      .finally(() => this.messageService.hideLoading())
+    this.parkingService.parkingLot$.subscribe((parkingLot) => {
+      this.allParking = [
+        ...parkingLot,
+        { id: '0', name: '-- Todos los parqueos --' }
+      ]
+    })
+    this.authService.user$.subscribe(({ parkingId }) => {
+      this.reportForm.get('parkingId')?.setValue(parkingId)
+      this.getReport()
+    })
   }
 
   ifHaveAction(action: string) {
-    return this.permisionService.ifHaveAction(action)
+    return this.permissionService.ifHaveAction(action)
   }
 
-  getInitialData() {
-    // Calling
-    //this.getPaymentRpt();
-  }
-
-  getTicketRpt(initDate: string, endDate: string) {
-    if (endDate < initDate) {
+  getReport() {
+    const { startDate, endDate, parkingId } = this.reportForm.value
+    if (endDate < startDate) {
       this.messageService.error(
         '',
         'La fecha de inicio debe ser mayor a la fecha fin'
       )
       return
     }
-    this.startDateReport = new Date(initDate+'T00:00:00').toLocaleDateString('es-GT')
-    this.endDateReport = new Date(endDate+'T00:00:00').toLocaleDateString('es-GT')
-    this.parqueo = this.datosUsuarioLogeado.id
-    if (this.ifHaveAction('verTodosLosParqueosReport')) {
-      this.parqueo = this.inputParking.nativeElement.value
-    }
-    this.parqueoDetalle = this.parqueo
+    this.messageService.showLoading()
     return this.reportService
-      .getTicketsRpt(initDate, endDate, this.parqueo)
+      .getTicketsRpt(startDate, endDate, parkingId)
       .toPromise()
       .then((data) => {
         if (data.success) {
           this.report = data.data
           this.dataSource = data.data
-          if (this.report.length == 0) {
-            this.messageService.infoTimeOut('No se encontraron datos')
-          }
           this.rerender()
         } else {
           this.messageService.error('', data.message)
@@ -132,15 +110,6 @@ export class ParkingTicketReportComponent implements OnInit {
       .then(() => {
         this.messageService.hideLoading()
       })
-  }
-
-  ngAfterViewInit() {
-    this.dtTrigger.next()
-    this.parqueo = this.datosUsuarioLogeado.id
-    if (this.ifHaveAction('verTodosLosParqueosReport')) {
-      this.parqueo = '0'
-    }
-    this.parqueoDetalle = this.parqueo
   }
 
   exportGrid() {
@@ -162,20 +131,7 @@ export class ParkingTicketReportComponent implements OnInit {
       this.messageService.infoTimeOut('No hay información para exportar')
       return
     }
-    /* const context = this;
-    const workbook = new Workbook();
-    const worksheet = workbook.addWorksheet('General');
-
-    exportDataGrid({
-      component: context.dataGrid.instance,
-      worksheet: worksheet,
-      autoFilterEnabled: true,
-    }).then(() => {
-      workbook.xlsx.writeBuffer().then((buffer: any) => {
-        saveAs(new Blob([buffer], {type: 'application/octet-stream'}), 'General.xlsx');
-      })
-    });
-    e.cancel = true; */
+    const { startDate, endDate, parkingId } = this.reportForm.value
     const header = [
       '',
       'Fecha',
@@ -205,9 +161,9 @@ export class ParkingTicketReportComponent implements OnInit {
     })
     worksheet.mergeCells('D2:F3')
     let ParqueoReporte = 'Todos los parqueos'
-    if (this.parqueo != '0') {
+    if (parkingId != '0') {
       const parqueoEncontrado = this.allParking.find(
-        (parqueos) => parqueos.id == this.parqueo
+        (parqueos) => parqueos.id == parkingId
       )
       if (parqueoEncontrado) {
         ParqueoReporte = parqueoEncontrado.name
@@ -266,10 +222,10 @@ export class ParkingTicketReportComponent implements OnInit {
     worksheet.addRow([])
     const header1 = worksheet.addRow([
       '',
-      'Fecha Inicio: ' + this.startDateReport,
+      'Fecha Inicio: ' + new Date(startDate).toLocaleDateString(),
       '',
       '',
-      'Fecha Fin: ' + this.endDateReport
+      'Fecha Fin: ' + new Date(endDate).toLocaleDateString()
     ])
     header1.eachCell((cell, number) => {
       if (number > 1) {
@@ -350,33 +306,6 @@ export class ParkingTicketReportComponent implements OnInit {
     worksheet.addRow([])
     worksheet.addRow([])
     worksheet.addRow([])
-    /* let headerResumen = worksheet.addRow(['','Fecha','Total de vehiculos','Total de ingresos','Total de descuento','Total pagado']);
-    headerResumen.eachCell((cell, number) => {
-      if(number > 1){
-        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
-      }
-    });
-    let groupData = this.dataSource.reduce((r:any, a:any) =>{
-      r[a.ep_entry_date.slice(0,10)] = [...r[a.ep_entry_date.slice(0,10)] || [], a];
-      return r;
-    },{});
-    Object.entries(groupData).forEach(([key,value]) => {
-      let valor = JSON.parse(JSON.stringify(value));
-      let total = 0;
-      let descuento = 0;
-      let pagado = 0;
-      valor.forEach((element:any) => {
-        total+= +element.total;
-        descuento+= +element.descuento;
-        pagado+= +element.pagado;
-      });
-      let detailResumen = worksheet.addRow(['',key,valor.length,total,descuento,pagado]);
-      detailResumen.eachCell((cell, number) => {
-        if(number > 1){
-          cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
-        }
-      });
-    }); */
 
     worksheet.getColumn(2).width = 20
     worksheet.getColumn(3).width = 20
@@ -392,6 +321,14 @@ export class ParkingTicketReportComponent implements OnInit {
       saveAs(blob, 'ReporteEbiGoTicket.xlsx')
     })
     e.cancel = true
+  }
+
+  private createReportForm() {
+    return this.formBuilder.group({
+      startDate: [new Date()],
+      endDate: [new Date()],
+      parkingId: ['0']
+    })
   }
 
   private rerender() {

@@ -1,107 +1,105 @@
-<div class = "row justify-content-center">
-  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12 panelLeft animate__animated animate__fadeInLeft">
-    <div class = "panelsWithOutMinHeight">
-      <div class = "titleCards">
-        <span><i class = "fas fa-sitemap"></i></span> Entradas de parqueos mensuales
+<div class = 'row justify-content-center'>
+  <div class = 'col-lg-12 col-md-12 col-sm-12 col-xs-12 panelLeft animate__animated animate__fadeInLeft'>
+    <div class = 'panelsWithOutMinHeight'>
+      <div class = 'titleCards'>
+        <span><i class = 'fas fa-sitemap'></i></span> Entradas de parqueos mensuales
       </div>
-      <div class = "row justify-content-center">
-        <div *ngIf = "ifHaveAction(verTodosLosParqueosReport)"
-             class = "col-xl-4 col-lg-6 col-sm-12">
-          <div class = "mb-4 relative">
-            <label class = "text-secondary"
-                   style = "display:block">Parqueo</label>
-            <select
-              #inputParking
-              (change) = "getParkingsRpt(initDate.value,endDate.value)"
-              class = "inputClass">
-              <option value = "0">---- Todos los parqueos ----</option>
-              <option *ngFor = "let parking of this.allParking"
-                      value = "{{parking.id}}">{{parking.name}}</option>
-            </select>
+      <div class = 'row justify-content-center'>
+        <div *ngIf = 'isSudo'
+             class = 'col-xl-4 col-lg-6 col-sm-12'>
+          <app-select-container
+            (change) = 'this.getReport()'
+            [data] = 'allParking'
+            [formGroup] = 'reportForm'
+            controlName = 'parkingId'
+            name = 'Parqueos'
+          ></app-select-container>
+        </div>
+        <div class = 'col-xl-4 col-lg-6 col-sm-12'>
+          <div class = 'mb-4 relative'>
+            <app-input-container
+              (change) = 'this.getReport()'
+              [formGroup] = 'reportForm'
+              [value] = "now | date: 'yyyy-MM-dd'"
+              controlName = 'startDate'
+              maxL = "{{now | date:'dd-MM-yyyy'}}"
+              name = 'Inicio de Búsqueda'
+              type = 'Date'
+            ></app-input-container>
           </div>
         </div>
-        <div class = "col-xl-2 col-lg-6 col-sm-12">
-          <div class = "mb-4 relative">
-            <label class = "text-secondary"
-                   style = "display:block">Fecha de inicio</label>
-            <input #initDate
-                   [value] = "fechaActual"
-                   (change) = "getParkingsRpt(initDate.value,endDate.value)"
-                   class = "form-control inputClass datetimepicker"
-                   for = "initDate"
-                   max = "{{nowDateTime | date: 'yyyy-MM-dd'}}"
-                   name = "initDate"
-                   placeholder = "Fecha/Hora de entrada"
-                   type = "Date"
-            >
-          </div>
-        </div>
-        <div class = "col-xl-2 col-lg-6 col-sm-12">
-          <div class = "mb-4 relative">
-            <label class = "text-secondary"
-                   style = "display:block">Fecha de fin</label>
-            <input
-              #endDate
-              [value] = "fechaActual"
-              (change) = "getParkingsRpt(initDate.value,endDate.value)"
-              class = "form-control inputClass datetimepicker"
-              for = "endDate"
-              max = "{{nowDateTime | date: 'yyyy-MM-dd'}}"
-              name = "endDate"
-              placeholder = "Fecha/Hora de salida"
-              type = "date"
-            >
+        <div class = 'col-xl-4 col-lg-6 col-sm-12'>
+          <div class = 'mb-4 relative'>
+            <app-input-container
+              (change) = 'this.getReport()'
+              [formGroup] = 'reportForm'
+              [value] = "now | date: 'yyyy-MM-dd'"
+              controlName = 'endDate'
+              maxL = "{{now | date:'yyyy-MM-dd'}}"
+              name = 'Fin de Búsqueda'
+              type = 'Date'
+            ></app-input-container>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class = "panels">
-      <div class = "row">
-        <dx-data-grid [dataSource] = "dataSource"
-                      [showBorders] = "true"
-                      id = "gridContainer"
-                      keyExpr = "id">
+  <div class = 'col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+    <div class = 'panels'>
+      <div class = 'row'>
+        <dx-data-grid [dataSource] = 'dataSource'
+                      [showBorders] = 'true'
+                      id = 'gridContainer'
+                      keyExpr = 'id'>
           <dxi-column
-            caption = "Nombre"
-            dataField = "name"
-            dataType = "text"
+            caption = 'Nombre'
+            dataField = 'name'
+            dataType = 'text'
           ></dxi-column>
           <dxi-column
-            caption = "Teléfono"
-            dataField = "phone_number"
-            dataType = "text"
+            caption = 'Teléfono'
+            dataField = 'phone_number'
+            dataType = 'text'
           ></dxi-column>
           <dxi-column
-            caption = "Entrada"
-            dataField = "entry_date"
-            dataType = "datetime"
+            caption = 'Entrada'
+            dataField = 'entry_date'
+            dataType = 'datetime'
           ></dxi-column>
           <dxi-column
-            caption = "Salida"
-            dataField = "exit_date"
-            dataType = "datetime"
+            caption = 'Salida'
+            dataField = 'exit_date'
+            dataType = 'datetime'
           ></dxi-column>
           <dxi-column
-            caption = "Tiempo dentro"
-            dataField = "timeIn"
-            dataType = "datetime"
+            caption = 'Tiempo dentro'
+            dataField = 'timeIn'
+            dataType = 'datetime'
           ></dxi-column>
           <dxi-column
-            caption = "Estación de Entrada"
-            dataField = "entry_station"
-            dataType = "text"
+            caption = 'Estación de Entrada'
+            dataField = 'entry_station'
+            dataType = 'text'
           ></dxi-column>
           <dxi-column
-            caption = "Estación de Salida"
-            dataField = "exit_station"
-            dataType = "text"
+            caption = 'Estación de Salida'
+            dataField = 'exit_station'
+            dataType = 'text'
           ></dxi-column>
-          <dxo-header-filter [visible] = "true"></dxo-header-filter>
-          <dxo-search-panel [visible] = "true"
-                            placeholder = "Buscar..."></dxo-search-panel>
-          <dxo-export [enabled] = "true"></dxo-export>
+          <dxo-header-filter [visible] = 'true'></dxo-header-filter>
+          <dxo-search-panel [visible] = 'true'
+                            placeholder = 'Buscar...'></dxo-search-panel>
+          <dxo-toolbar>
+            <dxi-item location = 'after'>
+              <dx-button
+                (onClick) = 'onExporting($event)'
+                icon = 'xlsxfile'
+                text = 'Exportar a Excel'
+              ></dx-button>
+            </dxi-item>
+            <dxi-item name = 'searchPanel'></dxi-item>
+          </dxo-toolbar>
+          <dxo-export [enabled] = 'true'></dxo-export>
         </dx-data-grid>
       </div>
     </div>

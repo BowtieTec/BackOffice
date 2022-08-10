@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 export class SupportMenuComponent {
 
   newTicket = environment.newTicket
+  verBitacora = environment.verBitacora
   constructor(
     private authService: AuthService,
     private permissionService: PermissionsService

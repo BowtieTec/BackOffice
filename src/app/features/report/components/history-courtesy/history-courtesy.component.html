@@ -1,148 +1,134 @@
-<div class = "row justify-content-center">
-  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12 panelLeft animate__animated animate__fadeInLeft">
-    <div class = "panelsWithOutMinHeight">
-      <div class = "titleCards">
-        <span><i class = "fas fa-sitemap"></i></span> Historial de cortesias utilizadas
+<div class = 'row justify-content-center'>
+  <div class = 'col-lg-12 col-md-12 col-sm-12 col-xs-12 panelLeft animate__animated animate__fadeInLeft'>
+    <div class = 'panelsWithOutMinHeight'>
+      <div class = 'titleCards'>
+        <span><i class = 'fas fa-sitemap'></i></span> Historial de cortesias utilizadas
       </div>
-      <div class = "row justify-content-center">
-        <div *ngIf = "ifHaveAction(verTodosLosParqueosReport)"
-             class = "col-xl-4 col-lg-6 col-sm-12">
-          <div class = "mb-4 relative">
-            <label class = "text-secundary"
-                   style = "display:block">Parqueo</label>
-            <select
-              #inputParking
-              (change) = "getHistoryOfCourtesyRpt(initDate.value,endDate.value)"
-              class = "inputClass">
-              <option value = "0">---- Todos los parqueos ----</option>
-              <option *ngFor = "let parking of this.allParking"
-                      value = "{{parking.id}}">{{parking.name}}</option>
-            </select>
-
+      <div class = 'row justify-content-center'>
+        <div *ngIf = 'isSudo'
+             class = 'col-xl-4 col-lg-6 col-sm-12'>
+          <app-select-container
+            (change) = 'this.getReport()'
+            [data] = 'allParking'
+            [formGroup] = 'reportForm'
+            controlName = 'parkingId'
+            name = 'Parqueos'
+          ></app-select-container>
+        </div>
+        <div class = 'col-xl-4 col-lg-6 col-sm-12'>
+          <div class = 'mb-4 relative'>
+            <app-input-container
+              (change) = 'this.getReport()'
+              [formGroup] = 'reportForm'
+              [value] = "now | date: 'yyyy-MM-dd'"
+              controlName = 'startDate'
+              maxL = "{{now | date:'dd-MM-yyyy'}}"
+              name = 'Inicio de Búsqueda'
+              type = 'Date'
+            ></app-input-container>
           </div>
         </div>
-        <div class = "col-xl-2 col-lg-6 col-sm-12">
-          <div class = "mb-4 relative">
-            <label class = "text-secondary"
-                   style = "display:block">Fecha de inicio</label>
-            <input #initDate
-                   (change) = "getHistoryOfCourtesyRpt(initDate.value,endDate.value)"
-                   [value] = "fechaActual"
-                   class = "form-control inputClass datetimepicker"
-                   for = "initDate"
-                   max = "{{nowDateTime | date: 'yyyy-MM-dd'}}"
-                   name = "initDate"
-                   placeholder = "Fecha/Hora de entrada"
-                   type = "Date"
-            >
+        <div class = 'col-xl-4 col-lg-6 col-sm-12'>
+          <div class = 'mb-4 relative'>
+            <app-input-container
+              (change) = 'this.getReport()'
+              [formGroup] = 'reportForm'
+              [value] = "now | date: 'yyyy-MM-dd'"
+              controlName = 'endDate'
+              maxL = "{{now | date:'yyyy-MM-dd'}}"
+              name = 'Fin de Búsqueda'
+              type = 'Date'
+            ></app-input-container>
           </div>
         </div>
-        <div class = "col-xl-2 col-lg-6 col-sm-12">
-          <div class = "mb-4 relative">
-            <label class = "text-secondary"
-                   style = "display:block">Fecha de fin</label>
-            <input
-              #endDate
-              (change) = "getHistoryOfCourtesyRpt(initDate.value,endDate.value)"
-              [value] = "fechaActual"
-              class = "form-control inputClass datetimepicker"
-              for = "endDate"
-              max = "{{nowDateTime | date: 'yyyy-MM-dd'}}"
-              name = "endDate"
-              placeholder = "Fecha/Hora de salida"
-              type = "date"
-            >
-          </div>
-        </div>
-
       </div>
     </div>
   </div>
-  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class = "panels">
-      <div class = "row"
-           id = "exportable">
+  <div class = 'col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+    <div class = 'panels'>
+      <div class = 'row'
+           id = 'exportable'>
 
-        <dx-data-grid [columnHidingEnabled] = "false"
-                      [dataSource] = "dataSource"
-                      [showBorders] = "true"
-                      id = "gridContainer">
+        <dx-data-grid [columnHidingEnabled] = 'false'
+                      [dataSource] = 'dataSource'
+                      [showBorders] = 'true'
+                      id = 'gridContainer'>
           <dxi-column
-            caption = "Fecha"
-            dataField = "ep_entry_date"
-            dataType = "date"
-            format = "dd/MM/yyyy"
-            sortOrder='desc'
-            width='auto'
+            caption = 'Fecha'
+            dataField = 'ep_entry_date'
+            dataType = 'date'
+            format = 'dd/MM/yyyy'
+            sortOrder = 'desc'
+            width = 'auto'
           ></dxi-column>
           <dxi-column
-            caption = "Teléfono"
-            dataField = "phone_key"
-            width = "auto"
+            caption = 'Teléfono'
+            dataField = 'phone_key'
+            width = 'auto'
           ></dxi-column>
-          <dxi-column *ngIf='isSudo'
-            caption = "Parqueo"
-            dataField = "p_name"
-            width = "auto"
-          ></dxi-column>
-          <dxi-column
-            caption = "Cortesia Aplicada"
-            dataField = "cd_name"
-            width = "auto"
+          <dxi-column *ngIf = 'isSudo'
+                      caption = 'Parqueo'
+                      dataField = 'p_name'
+                      width = 'auto'
           ></dxi-column>
           <dxi-column
-            caption = "Tipo de Cortesía"
-            dataField = "tipoCortesia"
-            width = "auto"
+            caption = 'Cortesia Aplicada'
+            dataField = 'cd_name'
+            width = 'auto'
           ></dxi-column>
           <dxi-column
-            caption = "Sub Monto"
-            dataField = "total"
-            dataType = "number"
-            format = "currency"
-            format = "Q ,###,###,##0.00"
-            width = "125"
+            caption = 'Tipo de Cortesía'
+            dataField = 'tipoCortesia'
+            width = 'auto'
           ></dxi-column>
           <dxi-column
-            caption = "Descuento"
-            dataField = "descuento"
-            dataType = "number"
-            format = "currency"
-            format = "Q ,###,###,##0.00"
-            width = "125"
+            caption = 'Sub Monto'
+            dataField = 'total'
+            dataType = 'number'
+            format = 'currency'
+            format = 'Q ,###,###,##0.00'
+            width = '125'
           ></dxi-column>
           <dxi-column
-            caption = "Total "
-            dataField = "pagado"
-            dataType = "number"
-            format = "currency"
-            format = "Q ,###,###,##0.00"
-            width = "125"
+            caption = 'Descuento'
+            dataField = 'descuento'
+            dataType = 'number'
+            format = 'currency'
+            format = 'Q ,###,###,##0.00'
+            width = '125'
+          ></dxi-column>
+          <dxi-column
+            caption = 'Total '
+            dataField = 'pagado'
+            dataType = 'number'
+            format = 'currency'
+            format = 'Q ,###,###,##0.00'
+            width = '125'
           ></dxi-column>
 
           <dxi-column
             [allowSorting] = 'true'
-            caption = "No. Factura"
-            dataField = "noFactura"
-            type = "text"
-            width = "125"
+            caption = 'No. Factura'
+            dataField = 'noFactura'
+            type = 'text'
+            width = '125'
           ></dxi-column>
 
 
-          <dxo-header-filter [visible] = "true"></dxo-header-filter>
-          <dxo-search-panel [visible] = "true"
-                            placeholder = "Buscar..."></dxo-search-panel>
+          <dxo-header-filter [visible] = 'true'></dxo-header-filter>
+          <dxo-search-panel [visible] = 'true'
+                            placeholder = 'Buscar...'></dxo-search-panel>
           <dxo-toolbar>
-            <dxi-item location = "after">
+            <dxi-item location = 'after'>
               <dx-button
-                (onClick) = "onExporting($event)"
-                icon = "xlsxfile"
-                text = "Exportar a Excel"
+                (onClick) = 'onExporting($event)'
+                icon = 'xlsxfile'
+                text = 'Exportar a Excel'
               ></dx-button>
             </dxi-item>
-            <dxi-item name = "searchPanel"></dxi-item>
+            <dxi-item name = 'searchPanel'></dxi-item>
           </dxo-toolbar>
-          <dxo-export [enabled] = "true"></dxo-export>
+          <dxo-export [enabled] = 'true'></dxo-export>
         </dx-data-grid>
       </div>
     </div>

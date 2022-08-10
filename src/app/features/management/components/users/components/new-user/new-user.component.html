@@ -28,7 +28,7 @@
       </div>
       <div class='col-xl-12 col-lg-12 col-xs-12'>
         <app-select-container
-          [data]='Roles'
+          [data]='this.getRoles()'
           [formGroup]='newUserForm'
           controlName='role'
           name='Roles de usuario'>

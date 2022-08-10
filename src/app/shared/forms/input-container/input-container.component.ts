@@ -1,6 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core'
-import {ControlContainer, FormGroupDirective, UntypedFormGroup, Validators} from '@angular/forms'
-import {UtilitiesService} from '../../services/utilities.service'
+import { Component, Input, OnInit } from '@angular/core'
+import {
+  ControlContainer,
+  FormGroupDirective,
+  UntypedFormGroup,
+  Validators
+} from '@angular/forms'
+import { UtilitiesService } from '../../services/utilities.service'
 
 @Component({
   selector: 'app-input-container',
@@ -22,9 +27,9 @@ export class InputContainerComponent implements OnInit {
   @Input() readonly: boolean = false
   @Input() minL = '0'
   @Input() maxL = '80'
+  @Input() value: any
 
-  constructor(private utilitiesService: UtilitiesService) {
-  }
+  constructor(private utilitiesService: UtilitiesService) {}
 
   controlInvalid(control: string): boolean {
     return this.utilitiesService.controlInvalid(this.formGroup, control)
@@ -40,8 +45,11 @@ export class InputContainerComponent implements OnInit {
     } else if (this.type == 'number') {
       this.formGroup.controls[this.controlName].addValidators([
         Validators.min(0),
-        Validators.max(999999.99)
+        Validators.max(99999999999999),
+        Validators.maxLength(parseInt(this.maxL != '80' ? this.maxL : '20')),
+        Validators.minLength(parseInt(this.minL != '80' ? this.minL : '20'))
       ])
     }
+    this.formGroup.controls[this.controlName].setValue(this.value)
   }
 }

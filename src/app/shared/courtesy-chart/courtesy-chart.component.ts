@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core'
-import { DashboardService } from '../services/dashboard.service'
-import { CompaniesModel } from '../../features/management/components/users/models/companies.model'
-import { CompaniesService } from '../../features/management/components/users/services/companies.service'
-import { AuthService } from '../../shared/services/auth.service'
-import { MessageService } from '../../shared/services/message.service'
+import {Component, Input, OnInit} from '@angular/core'
+import {DashboardService} from '../services/dashboard.service'
+import {CompaniesModel} from '../../features/management/components/users/models/companies.model'
+import {CompaniesService} from '../../features/management/components/users/services/companies.service'
+import {AuthService} from '../../shared/services/auth.service'
+import {MessageService} from '../../shared/services/message.service'
+import {ParkingAuthModel} from "../model/UserResponse.model";
 
 @Component({
   selector: 'app-courtesy-chart',
@@ -22,7 +23,7 @@ export class CourtesyChartComponent implements OnInit {
   @Input() tipo = ''
   allCompanies: CompaniesModel[] = []
 
-  datosUsuarioLogeado = this.auth.getParking()
+  datosUsuarioLogeado: ParkingAuthModel = new ParkingAuthModel()
   options = {
     series: [],
     chart: {
@@ -72,7 +73,8 @@ export class CourtesyChartComponent implements OnInit {
     private dashboardService: DashboardService,
     private companyService: CompaniesService,
     private messageService: MessageService
-  ) {}
+  ) {
+  }
 
   ngOnChanges(): void {
     try {
@@ -144,6 +146,9 @@ export class CourtesyChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.auth.user$.subscribe((user) => {
+      this.datosUsuarioLogeado = user.user.parking
+    })
     try {
       if (this.parking != '0') {
         this.companyService

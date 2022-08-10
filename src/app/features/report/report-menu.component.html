@@ -67,6 +67,14 @@
     </ng-template>
   </ng-container>
 
+  <ng-container *ngIf = "ifHaveAction(transitDetailReport)"
+                ngbNavItem>
+    <a ngbNavLink><em class = "fas fa-road"></em> Detalle de transito</a>
+    <ng-template ngbNavContent>
+      <app-transit-detail-report></app-transit-detail-report>
+    </ng-template>
+  </ng-container>
+
 </nav>
 <div [ngbNavOutlet] = "nav"
      class = "mt-2"></div>

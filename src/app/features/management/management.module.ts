@@ -38,7 +38,8 @@ import {FeaturesModule} from "../features.module";
     NgbNavModule,
     ParkingModule,
     FeaturesModule
-  ]
+  ],
+
 })
 export class ManagementModule {
 }

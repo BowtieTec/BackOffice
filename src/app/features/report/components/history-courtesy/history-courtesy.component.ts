@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core'
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild
+} from '@angular/core'
 import { DxDataGridComponent } from 'devextreme-angular'
 import { DataTableDirective } from 'angular-datatables'
 import { Subject } from 'rxjs'
@@ -16,6 +22,7 @@ import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter'
 import { Workbook } from 'exceljs'
 import * as logoFile from '../logoEbi'
 import { saveAs } from 'file-saver'
+import { FormBuilder, FormGroup } from '@angular/forms'
 
 export interface historyOfCourtesy {
   completeName: string
@@ -32,26 +39,18 @@ export interface historyOfCourtesy {
   styleUrls: ['./history-courtesy.component.css']
 })
 export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
-  @ViewChild(DxDataGridComponent, {static: false})
+  @ViewChild(DxDataGridComponent, { static: false })
   dataGrid!: DxDataGridComponent
   dtElement!: DataTableDirective
   dtOptions: DataTables.Settings = {}
   dtTrigger: Subject<any> = new Subject()
   pdfTable!: ElementRef
-
+  reportForm: FormGroup
   report: historyOfCourtesy[] = []
   dataSource: any
-  parqueo: any
-  nowDateTime = new Date()
+  now = new Date()
   allParking: ParkingModel[] = Array<ParkingModel>()
   verTodosLosParqueosReport = environment.verTodosLosParqueosReport
-  @ViewChild('inputParking') inputParking!: ElementRef
-  fechaActual = new Date().toISOString().split('T')[0]
-
-  datosUsuarioLogeado = this.auth.getParking()
-
-  startDateReport: any
-  endDateReport: any
 
   constructor(
     private auth: AuthService,
@@ -59,59 +58,55 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
     private messageService: MessageService,
     private utilitiesService: UtilitiesService,
     private authService: AuthService,
-    private permisionService: PermissionsService,
+    private permissionService: PermissionsService,
     private excelService: ReportService,
-    private parkingService: ParkingService
+    private parkingService: ParkingService,
+    private formBuilder: FormBuilder
   ) {
-  }
-
-  ngOnInit(): void {
-    this.messageService.showLoading()
-    this.dtOptions = DataTableOptions.getSpanishOptions(10)
-    this.parkingService.getAllParking().then((data) => {
-      if (data.success) {
-        this.allParking = data.data.parkings
-      }
-    }).then(() => {
-      this.getHistoryOfCourtesyRpt(this.fechaActual, this.fechaActual)
-    }).finally(() => {
-        this.messageService.hideLoading()
-      })
-  }
-
-  ifHaveAction(action: string) {
-    return this.permisionService.ifHaveAction(action)
+    this.reportForm = this.createReportForm()
   }
 
   get isSudo() {
     return this.authService.isSudo
   }
 
-  getHistoryOfCourtesyRpt(initDate: string, endDate: string) {
-    if (endDate < initDate) {
+  ngOnInit(): void {
+    this.dtOptions = DataTableOptions.getSpanishOptions(10)
+    this.authService.user$.subscribe(({ parkingId }) => {
+      this.reportForm.get('parkingId')?.setValue(parkingId)
+      this.getReport()
+    })
+
+    this.parkingService.parkingLot$.subscribe((parkingLot) => {
+      this.allParking = [
+        ...parkingLot,
+        { id: '0', name: '-- Todos los parqueos --' }
+      ]
+    })
+  }
+
+  ifHaveAction(action: string) {
+    return this.permissionService.ifHaveAction(action)
+  }
+
+  getReport() {
+    const { startDate, endDate, parkingId } = this.reportForm.getRawValue()
+    let _startDate = new Date(startDate).toISOString().split('T')[0]
+    let _endDate = new Date(endDate).toISOString().split('T')[0]
+    if (endDate < startDate) {
       this.messageService.error(
         '',
         'La fecha de inicio debe ser mayor a la fecha fin'
       )
       return
     }
-
-    this.startDateReport = new Date(initDate + 'T00:00:00').toLocaleDateString('es-GT')
-    this.endDateReport = new Date(endDate + 'T00:00:00').toLocaleDateString('es-GT')
-    this.parqueo = this.datosUsuarioLogeado.id
-    if (this.ifHaveAction('verTodosLosParqueosReport')) {
-      this.parqueo = this.inputParking.nativeElement.value
-    }
     return this.reportService
-      .getHistoryOfCourtesyRpt(initDate, endDate, this.parqueo)
+      .getHistoryOfCourtesyRpt(_startDate, _endDate, parkingId)
       .toPromise()
       .then((data) => {
         if (data.success) {
           this.report = data.data
           this.dataSource = data.data
-          if (this.report.length == 0) {
-            this.messageService.infoTimeOut('No se encontraron datos')
-          }
           this.rerender()
         } else {
           this.messageService.error('', data.message)
@@ -122,34 +117,12 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       })
   }
 
-  ngAfterViewInit() {
-    this.dtTrigger.next()
-    this.parqueo = this.datosUsuarioLogeado.id
-    if (this.ifHaveAction('verTodosLosParqueosReport')) {
-      this.parqueo = '0'
-    }
-  }
-
-  exportGrid() {
-    if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
-      return
-    }
-    const doc = new jsPDF()
-    exportDataGridToPdf({
-      jsPDFDocument: doc,
-      component: this.dataGrid.instance
-    }).then(() => {
-      doc.save('HistoryOfCourtesies.pdf')
-    })
-  }
-
   onExporting(e: any) {
     if (this.report.length == 0) {
       this.messageService.infoTimeOut('No hay información para exportar')
       return
     }
-
+    const { startDate, endDate, parkingId } = this.reportForm.getRawValue()
     const header = [
       '',
       'Parqueo',
@@ -167,7 +140,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       'Estación de ingreso',
       'Estación de Salida',
       'No. Factura',
-      'Trace Number',
+      'Trace Number'
     ]
     //Create workbook and worksheet
     const workbook = new Workbook()
@@ -176,52 +149,57 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
     worksheet.addRow([])
 
     const busienssRow = worksheet.addRow(['', '', '', 'ebiGO'])
-    busienssRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    busienssRow.alignment = {horizontal: 'center', vertical: 'middle'}
+    busienssRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
+    busienssRow.alignment = { horizontal: 'center', vertical: 'middle' }
     busienssRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
     worksheet.mergeCells('D2:Q3')
     let ParqueoReporte = 'Todos los parqueos'
-    if (this.parqueo != '0') {
+    if (parkingId != '0') {
       const parqueoEncontrado = this.allParking.find(
-        (parqueos) => parqueos.id == this.parqueo
+        (parqueos) => parqueos.id == parkingId
       )
       if (parqueoEncontrado) {
         ParqueoReporte = parqueoEncontrado.name
       }
     }
     const addressRow = worksheet.addRow(['', '', '', ParqueoReporte])
-    addressRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    addressRow.alignment = {horizontal: 'center', vertical: 'middle'}
+    addressRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
+    addressRow.alignment = { horizontal: 'center', vertical: 'middle' }
     addressRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
     worksheet.mergeCells('D4:Q5')
-    const titleRow = worksheet.addRow(['', '', '', 'Reporte - Historial de cortesias'])
-    titleRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    titleRow.alignment = {horizontal: 'center', vertical: 'middle'}
+    const titleRow = worksheet.addRow([
+      '',
+      '',
+      '',
+      'Reporte - Historial de cortesias'
+    ])
+    titleRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
+    titleRow.alignment = { horizontal: 'center', vertical: 'middle' }
     titleRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -235,15 +213,15 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
     worksheet.addImage(logo, 'B3:C6')
     worksheet.addRow([])
     const infoRow = worksheet.addRow(['', 'Información General'])
-    infoRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    infoRow.alignment = {horizontal: 'center', vertical: 'middle'}
+    infoRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
+    infoRow.alignment = { horizontal: 'center', vertical: 'middle' }
     infoRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -251,22 +229,22 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
     worksheet.addRow([])
     const header1 = worksheet.addRow([
       '',
-      'Fecha Inicio: ' + this.startDateReport,
+      'Fecha Inicio: ' + new Date(startDate).toLocaleDateString(),
       '',
       '',
       '',
       '',
       '',
       '',
-      'Fecha Fin: ' + this.endDateReport
+      'Fecha Fin: ' + new Date(endDate).toLocaleDateString()
     ])
     header1.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -282,17 +260,17 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       '',
       '',
       'Documento generado: ' +
-      new Date().toLocaleDateString('es-GT') +
-      '  ' +
-      new Date().toLocaleTimeString()
+        new Date().toLocaleDateString('es-GT') +
+        '  ' +
+        new Date().toLocaleTimeString()
     ])
     header2.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -307,14 +285,14 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
         cell.fill = {
           type: 'pattern',
           pattern: 'solid',
-          fgColor: {argb: 'FFFFFF00'},
-          bgColor: {argb: 'FF0000FF'}
+          fgColor: { argb: 'FFFFFF00' },
+          bgColor: { argb: 'FF0000FF' }
         }
         cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
         }
       }
     })
@@ -337,15 +315,15 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
         d.estacionEntrada,
         d.estacionSalida ? d.estacionSalida : ' ',
         d.noFactura,
-        d.trace_number,
+        d.trace_number
       ])
       row.eachCell((cell, number) => {
         if (number > 1) {
           cell.border = {
-            top: {style: 'thin'},
-            left: {style: 'thin'},
-            bottom: {style: 'thin'},
-            right: {style: 'thin'}
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
           }
         }
       })
@@ -353,7 +331,6 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
     worksheet.addRow([])
     worksheet.addRow([])
     worksheet.addRow([])
-
 
     worksheet.getColumn(2).width = 25
     worksheet.getColumn(3).width = 25
@@ -377,9 +354,38 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       const blob = new Blob([data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       })
-      saveAs(blob, 'ReporteHistorialDeCortesias.xlsx')
+      saveAs(
+        blob,
+        `Reporte Historial De Cortesias - Generado - ${this.now.toLocaleString()}.xlsx`
+      )
     })
     e.cancel = true
+  }
+
+  ngAfterViewInit() {
+    this.dtTrigger.next()
+  }
+
+  exportGrid() {
+    if (this.report.length == 0) {
+      this.messageService.infoTimeOut('No hay información para exportar')
+      return
+    }
+    const doc = new jsPDF()
+    exportDataGridToPdf({
+      jsPDFDocument: doc,
+      component: this.dataGrid.instance
+    }).then(() => {
+      doc.save('HistoryOfCourtesies.pdf')
+    })
+  }
+
+  private createReportForm() {
+    return this.formBuilder.group({
+      startDate: [new Date()],
+      endDate: [new Date()],
+      parkingId: ['0']
+    })
   }
 
   private rerender() {

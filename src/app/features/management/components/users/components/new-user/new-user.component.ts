@@ -1,15 +1,15 @@
-import {Component, Input, NgZone, OnInit} from '@angular/core'
-import {UserService} from '../../services/user.service'
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
-import {UtilitiesService} from '../../../../../../shared/services/utilities.service'
-import {NewUserModel} from '../../models/newUserModel'
-import {MessageService} from '../../../../../../shared/services/message.service'
-import {Subject} from 'rxjs'
-import {ParkingModel} from '../../../../../parking/models/Parking.model'
-import {ParkingService} from '../../../../../parking/services/parking.service'
-import {PermissionsService} from '../../../../../../shared/services/permissions.service'
-import {environment} from '../../../../../../../environments/environment'
-import {AuthService} from '../../../../../../shared/services/auth.service'
+import { Component, Input, OnInit } from '@angular/core'
+import { UserService } from '../../services/user.service'
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms'
+import { UtilitiesService } from '../../../../../../shared/services/utilities.service'
+import { NewUserModel } from '../../models/newUserModel'
+import { MessageService } from '../../../../../../shared/services/message.service'
+import { Subject } from 'rxjs'
+import { ParkingModel } from '../../../../../parking/models/Parking.model'
+import { ParkingService } from '../../../../../parking/services/parking.service'
+import { PermissionsService } from '../../../../../../shared/services/permissions.service'
+import { environment } from '../../../../../../../environments/environment'
+import { AuthService } from '../../../../../../shared/services/auth.service'
 
 @Component({
   selector: 'app-new-user',
@@ -18,7 +18,7 @@ import {AuthService} from '../../../../../../shared/services/auth.service'
 })
 export class NewUserComponent implements OnInit {
   @Input() subject = new Subject<NewUserModel>()
-  newUserForm: UntypedFormGroup
+  newUserForm: FormGroup
   isEdit = false
   allParking: ParkingModel[] = []
   changeParkingAtCreateUser: string = environment.changeParkingAtCreateUser
@@ -31,19 +31,14 @@ export class NewUserComponent implements OnInit {
     private messageServices: MessageService,
     private parkingService: ParkingService,
     private permissionService: PermissionsService,
-    private authService: AuthService,
-    private zone: NgZone
+    private authService: AuthService
   ) {
     this.newUserForm = this.createForm()
-    this.getInitialData().catch()
+    console.log(this.RawValue)
   }
 
-  get Roles() {
+  getRoles() {
     return this.userService.roles
-  }
-
-  get userRoleSelected() {
-    return this.newUserForm.get('role')?.value
   }
 
   ifHaveAction(action: string) {
@@ -65,36 +60,23 @@ export class NewUserComponent implements OnInit {
         )
         this.newUserForm.controls['role'].setValue(user.role)
         this.newUserForm.controls['name'].setValue(user.name)
-        this.newUserForm.controls['parking'].setValue(user.parking.id ? user.parking.id : this.authService.getParking().id)
+        this.newUserForm.controls['parking'].setValue(
+          user.parking.id ? user.parking.id : this.authService.getParking().id
+        )
         this.newUserForm.controls['id'].setValue(user.id)
         this.isEdit = true
         this.utilitiesService.markAsUnTouched(this.newUserForm)
       }
       this.messageServices.hideLoading()
     })
-  }
-
-  async getInitialData() {
-    this.messageServices.showLoading()
-    this.allParking = await this.parkingService
-      .getAllParking()
-      .then((x) => x.data.parkings)
-    this.messageServices.hideLoading()
-  }
-
-  getNewUserDataForm(): NewUserModel {
-    return {
-      email: this.newUserForm.controls['email'].value,
-      last_name: this.newUserForm.controls['last_name'].value,
-      name: this.newUserForm.controls['name'].value,
-      password: this.newUserForm.controls['password'].value,
-      role: this.newUserForm.controls['role'].value,
-      user: this.newUserForm.controls['user'].value,
-      id: this.newUserForm.controls['id'].value,
-      parking: this.newUserForm.controls['parking'].value
-        ? this.newUserForm.controls['parking'].value
-        : this.parkingId
-    }
+    this.authService.user$.subscribe(({ parkingId }) => {
+      this.parkingId = parkingId
+      this.newUserForm.get('parking')?.setValue(parkingId)
+      this.parkingId = parkingId
+    })
+    this.parkingService.parkingLot$.subscribe((parkingLot) => {
+      this.allParking = parkingLot
+    })
   }
 
   saveNewUser() {
@@ -103,7 +85,7 @@ export class NewUserComponent implements OnInit {
       this.messageServices.error('', 'Datos no válidos o faltantes')
       return
     }
-    let newUserValue: NewUserModel = this.getNewUserDataForm()
+    let newUserValue: NewUserModel = this.newUserForm.getRawValue()
     if (!newUserValue) {
       this.utilitiesService.markAsTouched(this.newUserForm)
       this.messageServices.errorTimeOut('Datos incorrectos o faltantes.')
@@ -124,7 +106,7 @@ export class NewUserComponent implements OnInit {
         })
         .then((data) => {
           this.userService
-            .saveRole(this.getNewUserDataForm().role, data.admin.id)
+            .saveRole(this.newUserForm.getRawValue().role, data.admin.id)
             .toPromise()
             .then((dataRole) => {
               if (dataRole.success) {
@@ -162,12 +144,18 @@ export class NewUserComponent implements OnInit {
         })
     }
   }
+  get RawValue(){
+    console.log(this.newUserForm.getRawValue())
+    return this.newUserForm.getRawValue()
+  }
 
   addPasswordValidations() {
-    this.newUserForm.get('password')?.addValidators([
-      Validators.pattern(environment.settings.passwordPattern),
-      Validators.required
-    ])
+    this.newUserForm
+      .get('password')
+      ?.addValidators([
+        Validators.pattern(environment.settings.passwordPattern),
+        Validators.required
+      ])
   }
 
   clearPasswordValidations() {
@@ -178,7 +166,7 @@ export class NewUserComponent implements OnInit {
     this.newUserForm.reset()
     this.isEdit = false
     this.newUserForm.get('parking')?.setValue(this.parkingId)
-    this.newUserForm.get('role')?.setValue('0')
+    this.newUserForm.get('role')?.setValue('b5b821bb-f919-4bae-9b6d-75a144fe2082')
     this.addPasswordValidations()
   }
 
@@ -199,8 +187,14 @@ export class NewUserComponent implements OnInit {
         ]
       ],
       user: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.pattern(environment.settings.passwordPattern)]],
-      role: ['0', [Validators.required]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(environment.settings.passwordPattern)
+        ]
+      ],
+      role: ['b5b821bb-f919-4bae-9b6d-75a144fe2082', [Validators.required]],
       parking: [this.parkingId, [Validators.required]]
     })
   }

@@ -32,7 +32,7 @@ export const permission = {
   editCourtesyStationary: 'editCourtesyStationary',
   addStationsCourtesyStationary: 'addStationsCourtesyStationary',
   editStationsCourtesyStationary: 'editStationsCourtesyStationary',
-  deleteStationsCourtesyStationary:'deleteStationsCourtesyStationary',
+  deleteStationsCourtesyStationary: 'deleteStationsCourtesyStationary',
   graficosIngresoVehiculos: 'graficosIngresoVehiculos',
   graficosFlujoDinero: 'graficosFlujoDinero',
   graficosCortesias: 'graficosCortesias',
@@ -48,6 +48,7 @@ export const permission = {
   verCourtesiesStationReport: 'verCourtesiesStationReport',
   verBillingReport: 'verBillingReport',
   verHistoryOfCourtesyReport: 'verHistoryOfCourtesy',
+  verBitacora: 'verBitacora',
   graficosCortesiasEstacionarias: 'graficosCortesiasEstacionarias',
   listLocal: 'listLocal',
   createLocal: 'createLocal',
@@ -60,7 +61,9 @@ export const permission = {
   newTicket: 'newTicket',
   listInvoiceInfo: 'changeInvoiceInfo',
   restartPassword: 'restartPassword',
-  updateFiles: 'updateFiles'
+  updateFiles: 'updateFiles',
+  transitDetailReport: 'transitDetailReport',
+  assignCourtesyPermission: 'assignCourtesyPermission'
 }
 export const leftMenu = [
   {

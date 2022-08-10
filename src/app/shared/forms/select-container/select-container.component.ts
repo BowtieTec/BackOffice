@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core'
-import { ControlContainer, FormGroup, FormGroupDirective, UntypedFormGroup } from '@angular/forms'
+import {ControlContainer, FormGroup, FormGroupDirective, UntypedFormGroup} from '@angular/forms'
 import {UtilitiesService} from '../../services/utilities.service'
 
 @Component({
@@ -21,6 +21,10 @@ export class SelectContainerComponent {
   @Input() unselect: boolean = false
 
   constructor(private utilitiesService: UtilitiesService) {
+  }
+
+  exist0() {
+    return this.data.find((d: any) => d.id == 0 || d.id == '0')
   }
 
   controlInvalid(control: string): boolean {

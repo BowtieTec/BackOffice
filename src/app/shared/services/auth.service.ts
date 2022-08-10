@@ -1,19 +1,25 @@
-import {Injectable} from '@angular/core'
+import {Injectable, OnDestroy} from '@angular/core'
 import {UserRequestModel} from '../model/UserRequest.model'
 import {HttpClient} from '@angular/common/http'
-import {AuthModel, ParkingAuthModel, UserResponseModel} from '../model/UserResponse.model'
+import {AuthModel, AuthParkingModel, ParkingAuthModel, UserResponseModel} from '../model/UserResponse.model'
 import {environment} from '../../../environments/environment'
 import {MessageService} from './message.service'
 import {EncryptionService} from './encryption.service'
 import {Router} from '@angular/router'
+import {BehaviorSubject, Observable} from "rxjs";
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
   private apiUrl = environment.serverAPI
   isSudo: boolean = this.getUser().user?.role?.isSudo
+  private userSubject$: BehaviorSubject<AuthParkingModel> = new BehaviorSubject<AuthParkingModel>({
+    user: this.getUser().user,
+    parkingId: this.getUser().user?.parking?.id
+  })
+  user$ = this.userSubject$ as Observable<AuthParkingModel>
 
   constructor(
     private http: HttpClient,
@@ -21,18 +27,15 @@ export class AuthService {
     private crypto: EncryptionService,
     private route: Router,
   ) {
-  }
 
+  }
 
   saveUser(user: AuthModel) {
     sessionStorage.setItem(
       this.crypto.encryptKey('User'),
       this.crypto.encrypt(JSON.stringify(user).replace('/n', ''))
     )
-  }
-
-  getParking(): ParkingAuthModel {
-    return this.getUser().user.parking
+    this.userSubject$.next({user: user.user, parkingId: user.user.parking.id})
   }
 
   getUser(): AuthModel {
@@ -45,6 +48,10 @@ export class AuthService {
   cleanUser() {
     sessionStorage.clear()
     localStorage.clear()
+  }
+
+  getParking() {
+    return this.getUser().user.parking
   }
 
   login(login: UserRequestModel) {
@@ -72,4 +79,15 @@ export class AuthService {
         throw new Error(data.message)
       })
   }
+
+  async saveNewParking(parking: ParkingAuthModel) {
+    let newUser = this.getUser()
+    newUser.user.parking = parking
+    await this.saveUser(newUser)
+  }
+
+  ngOnDestroy(): void {
+    this.userSubject$.unsubscribe()
+  }
+
 }
