@@ -92,7 +92,8 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true,
-              "statsJson": false
+              "statsJson": false,
+              "outputHashing": "all"
             },
             "local": {
               "sourceMap": true,

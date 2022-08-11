@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve --outputHashing=all ",
     "build": "ng build --prod --outputHashing=all",
+    "devbuild": "ng build --configuration development",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
