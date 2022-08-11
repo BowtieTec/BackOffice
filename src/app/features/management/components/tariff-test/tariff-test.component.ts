@@ -1,17 +1,17 @@
-import {Component, OnInit} from '@angular/core'
-import {PermissionsService} from 'src/app/shared/services/permissions.service'
-import {FormGroup, UntypedFormBuilder, Validators} from '@angular/forms'
-import {AuthService} from 'src/app/shared/services/auth.service'
-import {ParkingModel} from 'src/app/features/parking/models/Parking.model'
-import {ParkingService} from 'src/app/features/parking/services/parking.service'
-import {MessageService} from 'src/app/shared/services/message.service'
-import {TariffTestService} from './services/tariff-test.service'
-import {tariffTestModel} from './models/tariff-test.model'
-import {TicketTestModule} from './models/ticket-test.module'
-import {UtilitiesService} from 'src/app/shared/services/utilities.service'
-import {CourtesyService} from '../../../courtesy/services/courtesy.service'
-import {CourtesyModel} from '../../../courtesy/models/Courtesy.model'
-import {environment} from '../../../../../environments/environment'
+import { Component, OnInit } from '@angular/core'
+import { PermissionsService } from 'src/app/shared/services/permissions.service'
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms'
+import { AuthService } from 'src/app/shared/services/auth.service'
+import { ParkingModel } from 'src/app/features/parking/models/Parking.model'
+import { ParkingService } from 'src/app/features/parking/services/parking.service'
+import { MessageService } from 'src/app/shared/services/message.service'
+import { TariffTestService } from './services/tariff-test.service'
+import { tariffTestModel } from './models/tariff-test.model'
+import { TicketTestModule } from './models/ticket-test.module'
+import { UtilitiesService } from 'src/app/shared/services/utilities.service'
+import { CourtesyService } from '../../../courtesy/services/courtesy.service'
+import { CourtesyModel } from '../../../courtesy/models/Courtesy.model'
+import { environment } from '../../../../../environments/environment'
 
 @Component({
   selector: 'app-tariff-test',
@@ -25,9 +25,9 @@ export class TariffTestComponent implements OnInit {
   ticket: TicketTestModule
   listExist = false
   ListTicketTest: TicketTestModule[] = []
+  tariffTestPermission = environment.tariffTest
   private courtesyId: string = ''
   private parkingId: string = this.authService.getParking().id
-  tariffTestPermission = environment.tariffTest
 
   constructor(
     private permissionService: PermissionsService,
@@ -48,7 +48,10 @@ export class TariffTestComponent implements OnInit {
   }
 
   get formTariffTestValues(): tariffTestModel {
-    const courtesyId = this.tariffTestForm.get('courtesyId')?.value == "null" ? null : this.tariffTestForm.get('courtesyId')?.value
+    const courtesyId =
+      this.tariffTestForm.get('courtesyId')?.value == 'null'
+        ? null
+        : this.tariffTestForm.get('courtesyId')?.value
     return {
       parkingId: this.parkingId,
       entry_date: new Date(this.tariffTestForm.get('date_in')?.value),
@@ -57,14 +60,14 @@ export class TariffTestComponent implements OnInit {
     }
   }
 
-  ifHaveAction(action: string) {
-    return this.permissionService.ifHaveAction(action)
-  }
-
   get parkingSelected() {
     this.parkingId = this.tariffTestForm.value.parkingId
     this.tariffTestForm.controls['courtesyId'].setValue(null)
     return this.tariffTestForm.get('parking')?.value
+  }
+
+  ifHaveAction(action: string) {
+    return this.permissionService.ifHaveAction(action)
   }
 
   courtesySelected() {
@@ -78,10 +81,12 @@ export class TariffTestComponent implements OnInit {
     }
     const newTest = this.formTariffTestValues
     if (newTest.entry_date > newTest.exit_date) {
-      this.messageService.error('', 'Datos no válidos, la fecha de salida debe ser mayor o igual a la de entrada')
+      this.messageService.error(
+        '',
+        'Datos no válidos, la fecha de salida debe ser mayor o igual a la de entrada'
+      )
       return
     }
-
 
     this.ticket = await this.testService
       .getTariffTest(newTest)
@@ -91,19 +96,6 @@ export class TariffTestComponent implements OnInit {
 
   validateDateForm(control: string) {
     return this.utilitiesService.controlInvalid(this.tariffTestForm, control)
-  }
-
-  private createTariffTestForm() {
-    return this.formBuilder.group({
-      parking: [this.parkingId, [Validators.required]],
-      date_in: ['', [Validators.required]],
-      date_out: ['', [Validators.required]],
-      courtesyId: [null]
-    })
-  }
-
-  private async getInitialData() {
-    await this.getCourtesies()
   }
 
   getCourtesies(parkingId = this.parkingId) {
@@ -121,14 +113,16 @@ export class TariffTestComponent implements OnInit {
       this.listExist = true
       sessionStorage.setItem('tariffTest', JSON.stringify(this.ListTicketTest))
     } else {
-      this.ListTicketTest = JSON.parse(sessionStorage.getItem('tariffTest') || '[]')
+      this.ListTicketTest = JSON.parse(
+        sessionStorage.getItem('tariffTest') || '[]'
+      )
       this.ListTicketTest.unshift(ticketTest)
       sessionStorage.setItem('tariffTest', JSON.stringify(this.ListTicketTest))
     }
   }
 
   ngOnInit(): void {
-    this.authService.user$.subscribe(({parkingId}) => {
+    this.authService.user$.subscribe(({ parkingId }) => {
       this.parkingId = parkingId
       this.tariffTestForm.controls['parking'].setValue(parkingId)
       this.getInitialData().catch()
@@ -136,5 +130,18 @@ export class TariffTestComponent implements OnInit {
     this.parkingService.parkingLot$.subscribe((parkingLot) => {
       this.allParkingLot = parkingLot
     })
+  }
+
+  private createTariffTestForm() {
+    return this.formBuilder.group({
+      parking: [this.parkingId, [Validators.required]],
+      date_in: ['', [Validators.required]],
+      date_out: ['', [Validators.required]],
+      courtesyId: [null]
+    })
+  }
+
+  private async getInitialData() {
+    await this.getCourtesies()
   }
 }

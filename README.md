@@ -159,17 +159,23 @@ To build this project you can use this command in the terminal:
    ```shell
    ng build
    ```
-### Build with configuration of development
 
-To build this project with the configuration of development, you can use this command in the terminal:
+### Build on development configuration
+
+To build this project with parameters pointed to the backend in dev, and configuration on dev, you can use this command
+in the terminal:
+
 
    ```shell
    npm run devbuild
    ```
+
 is the same as:
+
    ```shell
-   ng buid --configuration development
+   ng build --configuration=development
    ```
+
 <!-- ROADMAP -->
 
 ## Roadmap

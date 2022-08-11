@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
 import { CreateParkingFileModel } from 'src/app/features/parking/models/CreateParking.model'
 import { SettingsOptionsModel } from 'src/app/features/parking/models/SettingsOption.model'
 import { ParkingService } from 'src/app/features/parking/services/parking.service'
@@ -127,11 +127,11 @@ get settingsOptions(): SettingsOptionsModel{
 
   createForm() {
     return this.formBuilder.group({
-      logo: [null, Validators.required],
-      rate: [null, Validators.required],
-      plans: [null, Validators.required],
-      backGroundApp: [null, Validators.required],
-      parkingId: [this.parkingId, Validators.required]
+      logo: [null],
+      rate: [null],
+      plans: [null],
+      backGroundApp: [null],
+      parkingId: [this.parkingId]
     })
   }
 
@@ -223,7 +223,7 @@ get settingsOptions(): SettingsOptionsModel{
 
   private getFile(): CreateParkingFileModel {
     return {
-      parkingId: '',
+      parkingId: this.parkingId,
       logo: this.stepFourForm.controls['logo'].value,
       rate: this.stepFourForm.controls['rate'].value,
       plans: this.stepFourForm.controls['plans'].value

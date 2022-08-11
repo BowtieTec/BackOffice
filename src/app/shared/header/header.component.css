@@ -70,22 +70,25 @@
 .dropdown-content a:hover {
   background-color: #ddd;
 }
-.nameHeader{
+
+.nameHeader {
   display: inline-block;
-    font-size: 14px;
-    vertical-align: middle;
-    padding: 0px 10px 15px;
+  font-size: 14px;
+  vertical-align: middle;
+  padding: 0px 10px 15px;
 }
-.dropdownHeader{
+
+.dropdownHeader {
   position: relative;
-    display: inline-block;
-    cursor: pointer;
-    padding: 5px 10px 0px;
-    margin: -20px -10px -10px;
-    background: #415ba2;
-    border-radius: 6px;
-    color: #fff;
+  display: inline-block;
+  cursor: pointer;
+  padding: 5px 10px 0px;
+  margin: -20px -10px -10px;
+  background: #415ba2;
+  border-radius: 6px;
+  color: #fff;
 }
+
 @media (max-width: 480px) {
   .headerDashboard {
     width: 100vw;

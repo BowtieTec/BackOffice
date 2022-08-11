@@ -116,13 +116,13 @@ export const leftMenu = [
   }
 ]
 export const DiscountOnWhat = [
-  {id: 1, name: 'Total'},
-  {id: 2, name: 'Cantidad de horas'}
+  { id: 1, name: 'Total' },
+  { id: 2, name: 'Cantidad de horas' }
 ]
 export const TypeOfCondition = [
-  {id: 1, name: 'Aplicar si cumple'},
-  {id: 2, name: 'Solo si Cant. Horas es menor o igual a '},
-  {id: 3, name: 'Sumar tarifa normal y aplicar descuento solo a'}
+  { id: 1, name: 'Aplicar siempre' },
+  { id: 2, name: 'Solo si Cant. Horas es menor o igual a ' },
+  { id: 3, name: 'Sumar tarifa normal y aplicar descuento solo a' }
 ]
 export const settings = {
   siteKey: '6LesloIfAAAAANKGMOJ5SOxyRugy3woH7Y1DP1f6',

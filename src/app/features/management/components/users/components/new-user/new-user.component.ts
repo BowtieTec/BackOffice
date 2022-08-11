@@ -36,6 +36,10 @@ export class NewUserComponent implements OnInit {
     this.newUserForm = this.createForm()
   }
 
+  get RawValue() {
+    return this.newUserForm.getRawValue()
+  }
+
   getRoles() {
     return this.userService.roles
   }
@@ -76,6 +80,10 @@ export class NewUserComponent implements OnInit {
     this.parkingService.parkingLot$.subscribe((parkingLot) => {
       this.allParking = parkingLot
     })
+  }
+
+  isSudo() {
+    return this.authService.isSudo
   }
 
   saveNewUser() {
@@ -164,7 +172,9 @@ export class NewUserComponent implements OnInit {
     this.newUserForm.reset()
     this.isEdit = false
     this.newUserForm.get('parking')?.setValue(this.parkingId)
-    this.newUserForm.get('role')?.setValue('b5b821bb-f919-4bae-9b6d-75a144fe2082')
+    this.newUserForm
+      .get('role')
+      ?.setValue('b5b821bb-f919-4bae-9b6d-75a144fe2082')
     this.addPasswordValidations()
   }
 
