@@ -210,8 +210,12 @@ export class StationaryCourtesyComponent
         })
         .finally(() => {
           this.rerender()
-          this.stationaryForm.get('companyId')?.setValue(this.allCompanies[0].id)
-          this.stationaryForm.get('stationId')?.setValue(this.allAntennas[0].id)
+          if(this.allCompanies.length > 0){
+            this.stationaryForm.get('companyId')?.setValue(this.allCompanies[0].id)
+          }
+          if(this.allAntennas.length > 0){
+            this.stationaryForm.get('stationId')?.setValue(this.allAntennas[0].id)
+          }
           this.message.hideLoading()
           this.loading = false
         })
