@@ -137,7 +137,7 @@ export class StationaryCourtesyComponent
       type: ['0', [Validators.required]],
       name: ['', [Validators.required]],
       stationId: ['0', [Validators.required, Validators.minLength(5)]],
-      companyId: ['0', [Validators.required]],
+      companyId: ['0', [Validators.required, Validators.minLength(5)]],
       condition: [1, [Validators.required]],
       cantHours: [0]
     })
