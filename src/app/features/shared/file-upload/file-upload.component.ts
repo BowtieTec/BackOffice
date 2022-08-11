@@ -21,8 +21,6 @@ export class FileUploadComponent implements OnInit {
   backGroundApp!: File
   allParking: ParkingModel[] = []
   stepFourForm: FormGroup = this.createForm()
-  settingsOptions!: SettingsOptionsModel
-
   @Output() changeStep = new EventEmitter<number>()
   @Input() parkingId: string = this.parkingService.parkingStepOne.parkingId
   @Input() isCreatingParking: boolean = true
@@ -37,7 +35,6 @@ export class FileUploadComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.settingsOptions = this.parkingService.settingsOptions
     this.stepFourForm.get('parkingId')?.setValue(this.parkingId)
     if (!this.isCreatingParking) {
       this.authService.user$.subscribe(({ parkingId }) => {
@@ -53,6 +50,9 @@ export class FileUploadComponent implements OnInit {
   controlInvalid(control: string): boolean {
     return this.utilitiesService.controlInvalid(this.stepFourForm, control)
   }
+get settingsOptions(): SettingsOptionsModel{
+    return this.parkingService.settingsOptions
+}
 
   searchFile(name: string) {
     return this.stepFourForm.get(name)?.value
