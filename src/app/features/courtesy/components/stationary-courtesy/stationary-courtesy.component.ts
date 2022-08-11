@@ -7,9 +7,8 @@ import {
   ViewChild
 } from '@angular/core'
 import {
-  FormGroup,
   UntypedFormBuilder,
-  UntypedFormGroup,
+  FormGroup,
   Validators
 } from '@angular/forms'
 import { MessageService } from '../../../../shared/services/message.service'
@@ -56,7 +55,7 @@ export class StationaryCourtesyComponent
   @ViewChild(DataTableDirective)
   dtElement!: DataTableDirective
   dtTrigger: Subject<any> = new Subject()
-  formGroup: UntypedFormGroup
+  formGroup: FormGroup
 
   /* Permissions */
   createCourtesyStationary: string = environment.createCourtesyStationary
@@ -130,14 +129,14 @@ export class StationaryCourtesyComponent
     return !!this.actions.find((x) => x == action)
   }
 
-  createForm(): UntypedFormGroup {
+  createForm(): FormGroup {
     return this.formBuilder.group({
       parkingId: [this.parkingId, [Validators.required]],
       value: [0, [Validators.required, Validators.min(0)]],
       valueTimeMinutes: [0, [Validators.max(60), Validators.min(0)]],
       type: ['0', [Validators.required]],
       name: ['', [Validators.required]],
-      stationId: ['0', [Validators.required]],
+      stationId: ['0', [Validators.required, Validators.minLength(5)]],
       companyId: ['0', [Validators.required]],
       condition: [1, [Validators.required]],
       cantHours: [0]
@@ -202,7 +201,10 @@ export class StationaryCourtesyComponent
           this.courtesyTypes = resp[2].data.type
           this.allCompanies = resp[3]
           // ignore resp [5]
-        })
+        }).then((x) =>{
+          this.stationaryForm.get('stationId')?.setValue(this.stationsCourtesies[0].id)
+          this.stationaryForm.get('companyId')?.setValue(this.allCompanies[0].id)
+      })
         .catch((x) => {
           this.message.errorTimeOut(
             '',
@@ -211,9 +213,9 @@ export class StationaryCourtesyComponent
         })
         .finally(() => {
           this.rerender()
+          this.loading = false
           this.message.hideLoading()
         })
-      this.loading = false
     } catch (err: unknown) {
       throw new Error('')
     }
@@ -289,6 +291,7 @@ export class StationaryCourtesyComponent
   async addStationaryCourtesies() {
     if (this.stationaryForm.invalid) {
       this.message.error('', 'Datos faltantes o incorrectos.')
+      this.utilitiesService.markAsTouched(this.stationaryForm)
       return
     }
     this.message.showLoading()
@@ -327,6 +330,7 @@ export class StationaryCourtesyComponent
     this.authService.user$.subscribe(({ parkingId }) => {
       this.parkingId = parkingId
       this.stationaryForm.get('parkingId')?.setValue(parkingId)
+      this.utilitiesService.markAsUnTouched(this.stationaryForm)
       this.getInitialData().catch()
     })
     this.parkingService.parkingLot$.subscribe((parkings) => {
