@@ -34,7 +34,6 @@ export class NewUserComponent implements OnInit {
     private authService: AuthService
   ) {
     this.newUserForm = this.createForm()
-    console.log(this.RawValue)
   }
 
   getRoles() {
@@ -145,7 +144,6 @@ export class NewUserComponent implements OnInit {
     }
   }
   get RawValue(){
-    console.log(this.newUserForm.getRawValue())
     return this.newUserForm.getRawValue()
   }
 

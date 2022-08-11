@@ -86,7 +86,6 @@ export class TariffTestComponent implements OnInit {
     this.ticket = await this.testService
       .getTariffTest(newTest)
       .then((x) => x.ticket)
-    console.log(this.ticket)
     this.addItem(this.ticket)
   }
 

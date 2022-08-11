@@ -40,7 +40,6 @@ export class CourtesyService {
 
   getNewConditions(type: string | number) {
     type = Number(type)
-    console.log(type);
     if (type == 2) {
       return environment.TypeOfCondition.filter(x => x.id != 3)
     }
@@ -88,7 +87,6 @@ export class CourtesyService {
   }
 
   async assignCourtesy(parkedId: string, courtesyDetailId: string | undefined) {
-    console.log({parkedId, courtesyDetailId})
     if (!courtesyDetailId || !parkedId) {
       this.messageService.error('', 'Datos inválidos o faltantes')
       return
