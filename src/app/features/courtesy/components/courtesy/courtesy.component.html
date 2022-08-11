@@ -27,14 +27,14 @@
             </div>
           </div>
           <div class = 'row justify-content-center'>
-            <div class = 'col-xl-4 col-lg-4 col-sm-12'>
+            <div class = 'col-xl-6 col-lg-6 col-sm-12'>
               <app-input-container
                 [formGroup] = 'newCourtesyForm'
                 controlName = 'name'
                 name = 'Nombre'>
               </app-input-container>
             </div>
-            <div class = 'col-xl-4 col-lg-4  col-sm-12'>
+            <div class = 'col-xl-6 col-lg-6  col-sm-12'>
               <app-select-container
                 [data] = 'courtesyTypes'
                 (change) = "this.getNewConditions()"
@@ -45,7 +45,7 @@
             </div>
           </div>
           <div class = 'row justify-content-center'>
-            <div class = ' col-xl-4 col-lg-4  col-sm-12'>
+            <div class = ' col-xl-6 col-lg-6  col-sm-12'>
               <app-input-container
                 [formGroup] = 'newCourtesyForm'
                 controlName = 'quantity'
@@ -53,7 +53,7 @@
                 textInfo = 'Debe de crear mas de una cortesía'
                 type = 'number'></app-input-container>
             </div>
-            <div class = 'col-xl-4 col-lg-4 col-sm-12'>
+            <div class = 'col-xl-6 col-lg-6 col-sm-12'>
               <app-input-container
                 [formGroup] = 'newCourtesyForm'
                 controlName = 'value'
@@ -61,7 +61,7 @@
                 type = 'number'>
               </app-input-container>
             </div>
-            <div class = 'col-xl-4 col-lg-4 col-sm-12 animate__animated animate__fadeInDown'
+            <div class = 'col-xl-6 col-lg-6 col-sm-12 animate__animated animate__fadeInDown'
                  *ngIf = 'this.getCourtesy().type == 4'>
               <app-input-container
                 [formGroup] = 'newCourtesyForm'
@@ -72,7 +72,7 @@
             </div>
           </div>
           <div class = 'row justify-content-center'>
-            <div class = 'col-xl-4 col-lg-4 col-sm-12'>
+            <div class = 'col-xl-6 col-lg-6 col-sm-12'>
               <app-select-container
                 [data] = 'typeOfCondition'
                 [formGroup] = 'newCourtesyForm'
@@ -81,8 +81,8 @@
               </app-select-container>
             </div>
             <div
-              *ngIf = 'this.conditionValue != 2'
-              class = 'col-xl-4 col-lg-4 col-sm-12 animate__animated animate__fadeInDown'>
+              *ngIf = 'this.conditionValue == 2 || this.conditionValue == 3'
+              class = 'col-xl-6 col-lg-6 col-sm-12 animate__animated animate__fadeInDown'>
               <app-input-container
                 [formGroup] = 'newCourtesyForm'
                 controlName = 'cantHours'
@@ -90,7 +90,7 @@
                 type = 'number'>
               </app-input-container>
             </div>
-            <div class = 'col-xl-4 col-lg-4 col-sm-12'>
+            <div class = 'col-xl-6 col-lg-6 col-sm-12'>
               <app-select-container
                 [data] = 'allCompanies'
                 [formGroup] = 'newCourtesyForm'
@@ -100,7 +100,7 @@
             </div>
           </div>
           <div class = 'row justify-content-center'>
-            <div class = 'col-xl-4 col-lg-4 col-sm-12'>
+            <div class = 'col-xl-6 col-lg-6 col-sm-12'>
               <app-select-container
                 (change) = 'getCourtesies(this.parkingSelected)'
                 *ngIf = 'isSudo'

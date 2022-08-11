@@ -107,8 +107,8 @@ export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy, On
       name: ['', [Validators.required]],
       stationId: ['0', [Validators.required]],
       companyId: ['0', [Validators.required]],
-      condition: ['0', [Validators.required]],
-      cantHours: ['0']
+      condition: [1, [Validators.required]],
+      cantHours: [0]
     })
   }
 
@@ -186,13 +186,13 @@ export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy, On
   cleanForm() {
     this.stationaryForm.reset()
     this.stationaryForm.get('value')?.setValue('0')
-    this.stationaryForm.get('valueTimeMinutes')?.setValue('0')
+    this.stationaryForm.get('valueTimeMinutes')?.setValue(0)
     this.stationaryForm.get('type')?.setValue('0')
     this.stationaryForm.get('name')?.setValue('')
     this.stationaryForm.get('stationId')?.setValue('0')
     this.stationaryForm.get('companyId')?.setValue('0')
-    this.stationaryForm.get('condition')?.setValue('0')
-    this.stationaryForm.get('cantHours')?.setValue('0')
+    this.stationaryForm.get('condition')?.setValue(0)
+    this.stationaryForm.get('cantHours')?.setValue(0)
     this.stationaryForm.controls['parkingId'].setValue(this.parkingId)
   }
 
