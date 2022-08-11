@@ -36,10 +36,6 @@ export class NewUserComponent implements OnInit {
     this.newUserForm = this.createForm()
   }
 
-  get RawValue() {
-    return this.newUserForm.getRawValue()
-  }
-
   getRoles() {
     return this.userService.roles
   }

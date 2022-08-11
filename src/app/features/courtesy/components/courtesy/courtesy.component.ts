@@ -1,28 +1,22 @@
-import {
-  AfterViewInit,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core'
-import { CourtesyService } from '../../services/courtesy.service'
-import { MessageService } from '../../../../shared/services/message.service'
-import { CourtesyModel, CourtesyTypeModel } from '../../models/Courtesy.model'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { UtilitiesService } from '../../../../shared/services/utilities.service'
-import { AuthService } from '../../../../shared/services/auth.service'
-import { DataTableDirective } from 'angular-datatables'
-import { Subject } from 'rxjs'
-import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
-import { saveAs } from 'file-saver'
-import { PermissionsService } from '../../../../shared/services/permissions.service'
-import { environment } from '../../../../../environments/environment'
-import { ParkingService } from '../../../parking/services/parking.service'
-import { ParkingModel } from '../../../parking/models/Parking.model'
-import { CompaniesModel } from '../../../management/components/users/models/companies.model'
-import { CompaniesService } from '../../../management/components/users/services/companies.service'
-import { SelectModel } from '../../../../shared/model/CommonModels'
-import { ToastrService } from 'ngx-toastr'
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core'
+import {CourtesyService} from '../../services/courtesy.service'
+import {MessageService} from '../../../../shared/services/message.service'
+import {CourtesyModel, CourtesyTypeModel} from '../../models/Courtesy.model'
+import {FormBuilder, FormGroup, Validators} from '@angular/forms'
+import {UtilitiesService} from '../../../../shared/services/utilities.service'
+import {AuthService} from '../../../../shared/services/auth.service'
+import {DataTableDirective} from 'angular-datatables'
+import {Subject} from 'rxjs'
+import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
+import {saveAs} from 'file-saver'
+import {PermissionsService} from '../../../../shared/services/permissions.service'
+import {environment} from '../../../../../environments/environment'
+import {ParkingService} from '../../../parking/services/parking.service'
+import {ParkingModel} from '../../../parking/models/Parking.model'
+import {CompaniesModel} from '../../../management/components/users/models/companies.model'
+import {CompaniesService} from '../../../management/components/users/services/companies.service'
+import {SelectModel} from '../../../../shared/model/CommonModels'
+import {ToastrService} from 'ngx-toastr'
 
 @Component({
   selector: 'app-courtesy',
@@ -61,7 +55,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
     private companyService: CompaniesService,
     private toast: ToastrService
   ) {
-    this.formGroup = formBuilder.group({ filter: [''] })
+    this.formGroup = formBuilder.group({filter: ['']})
     this.newCourtesyForm = this.createForm()
   }
 
@@ -79,23 +73,6 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
 
   get conditionValue() {
     return this.newCourtesyForm.get('condition')?.value
-  }
-
-  get InputValueFromNewCourtesy() {
-    const type = this.newCourtesyForm.get('type')?.value
-    return type == 0
-      ? 'Valor de tarifa fija'
-      : type == 1
-      ? 'Porcentaje de descuento'
-      : type == 2
-      ? 'Valor de descuento'
-      : type == 4
-      ? 'Cantidad de horas'
-      : 'Valor'
-  }
-
-  get typeNewCourtesyForm() {
-    return this.newCourtesyForm.getRawValue().type
   }
 
   getTypeDescription(id: number) {
@@ -141,20 +118,23 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
       })
   }
 
+  get InputValueFromNewCourtesy() {
+    const type = this.newCourtesyForm.get('type')?.value
+    return type == 0 ? 'Valor de tarifa fija' :
+      type == 1 ? 'Porcentaje de descuento' :
+        type == 2 ? 'Valor de descuento' :
+          type == 4 ? 'Cantidad de horas' : 'Valor'
+  }
+
   getCourtesy(): CourtesyModel {
-    const minutes: number =
-      this.newCourtesyForm.getRawValue().valueTimeMinutes / 60 <= 0
-        ? 0
-        : this.newCourtesyForm.getRawValue().valueTimeMinutes / 60
-    const value: number =
-      Number(this.newCourtesyForm.getRawValue().value) + Number(minutes)
+    const minutes: number = (this.newCourtesyForm.getRawValue().valueTimeMinutes / 60) <= 0 ? 0 : (this.newCourtesyForm.getRawValue().valueTimeMinutes / 60)
+    const value: number = (Number(this.newCourtesyForm.getRawValue().value) + Number(minutes))
     return {
       parkingId: this.parkingId,
       name: this.newCourtesyForm.controls['name'].value,
       type: this.newCourtesyForm.controls['type'].value,
       value,
-      valueTimeMinutes:
-        this.newCourtesyForm.controls['valueTimeMinutes'].value / 60,
+      valueTimeMinutes: this.newCourtesyForm.controls['valueTimeMinutes'].value / 60,
       quantity: this.newCourtesyForm.controls['quantity'].value,
       companyId: this.newCourtesyForm.controls['companyId'].value,
       condition: this.newCourtesyForm.controls['condition'].value,
@@ -191,9 +171,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
     this.newCourtesyForm.get('type')?.setValue('0')
     this.newCourtesyForm.get('value')?.setValue('')
     this.newCourtesyForm.get('quantity')?.setValue('')
-    this.newCourtesyForm
-      .get('parkingId')
-      ?.setValue(this.authService.getParking().id)
+    this.newCourtesyForm.get('parkingId')?.setValue(this.authService.getParking().id)
     this.newCourtesyForm.get('companyId')?.setValue('0')
     this.newCourtesyForm.get('condition')?.setValue(1)
     this.newCourtesyForm.get('cantHours')?.setValue(0)
@@ -204,19 +182,13 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   saveCourtesy() {
     if (this.newCourtesyForm.valid) {
       this.cantCourtesiesCreating++
-      this.messageService.info(
-        'Recibirá una pequeña notificación cuando la cortesía haya terminado de crearse. Tomar en cuenta que entre mayor sea el numero, mas tiempo se necesita para crearse.',
-        'Creando cortesías'
-      )
+      this.messageService.info('Recibirá una pequeña notificación cuando la cortesía haya terminado de crearse. Tomar en cuenta que entre mayor sea el numero, mas tiempo se necesita para crearse.', 'Creando cortesías')
       const newCourtesy: CourtesyModel = this.getCourtesy()
 
       this.cleanCourtesyForm()
       this.courtesyService.saveCourtesy(newCourtesy).subscribe((data) => {
         if (data.success) {
-          this.toast.success(
-            'Cortesía creada satisfactoriamente',
-            'Cortesía creada'
-          )
+          this.toast.success('Cortesía creada satisfactoriamente', 'Cortesía creada')
         } else {
           this.messageService.error('No pudo crearse la cortesía', data.message)
         }
@@ -251,34 +223,13 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
     })
   }
 
-  getNewConditions() {
-    this.typeOfCondition = this.courtesyService.getNewConditions(
-      this.newCourtesyForm.getRawValue().type
-    )
-  }
-
-  ngOnInit(): void {
-    this.authService.user$.subscribe(({ parkingId, user }) => {
-      this.messageService.showLoading()
-      this.parkingId = parkingId
-      this.newCourtesyForm.get('parkingId')?.setValue(parkingId)
-      this.getInitialData().finally(() => this.messageService.hideLoading())
-    })
-    this.parkingService.parkingLot$.subscribe((parkings) => {
-      this.allParking = parkings
-    })
-  }
-
   private createForm() {
     return this.formBuilder.group({
       name: ['', [Validators.required]],
       type: ['0', [Validators.required]],
       value: ['0', [Validators.required, Validators.min(0)]],
       valueTimeMinutes: [0, [Validators.max(60), Validators.min(0)]],
-      quantity: [
-        '',
-        [Validators.required, Validators.min(2), Validators.max(100)]
-      ],
+      quantity: ['', [Validators.required, Validators.min(2), Validators.max(100)]],
       parkingId: [this.authService.getParking().id],
       companyId: ['0', [Validators.required, Validators.minLength(2)]],
       condition: [1, [Validators.required, Validators.minLength(1)]],
@@ -293,5 +244,22 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
         this.dtTrigger.next()
       })
     }
+  }
+
+  getNewConditions() {
+    this.typeOfCondition = this.courtesyService.getNewConditions(this.newCourtesyForm.getRawValue().type)
+  }
+
+  ngOnInit(): void {
+    this.authService.user$.subscribe(({parkingId, user}) => {
+      this.messageService.showLoading()
+      this.parkingId = parkingId
+      this.newCourtesyForm.get('parkingId')?.setValue(parkingId)
+      this.getInitialData()
+        .finally(() => this.messageService.hideLoading())
+    })
+    this.parkingService.parkingLot$.subscribe((parkings) => {
+      this.allParking = parkings
+    })
   }
 }
