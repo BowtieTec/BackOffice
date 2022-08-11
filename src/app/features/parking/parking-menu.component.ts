@@ -2,6 +2,7 @@ import { Component } from '@angular/core'
 import { AuthService } from '../../shared/services/auth.service'
 import { PermissionsService } from '../../shared/services/permissions.service'
 import { environment } from '../../../environments/environment'
+import {ParkingService} from "./services/parking.service";
 
 @Component({
   selector: 'app-parking-menu',
@@ -19,7 +20,8 @@ export class ParkingMenuComponent {
 
   constructor(
     private authService: AuthService,
-    private permissionService: PermissionsService
+    private permissionService: PermissionsService,
+    private parkingService: ParkingService
   ) {}
 
   get parkingId() {

@@ -80,6 +80,12 @@
                     style = 'position: relative; display: inline-block; width: 100%;'>
                     <span class = 'mute'>Si necesita crear una estación, por favor comunicarse con soporte.</span>
                   </app-select-container>
+
+                </div>
+                </div>
+                <div class = 'col-md-6 col-sm-12 '>
+                  <div class = 'relative'>
+        
                   <button
                     *ngIf = 'ifHaveAction(addStationsCourtesyStationary)'
                     class = 'btn-primary btn-input animate__animated animate__fadeInDown'
@@ -167,7 +173,7 @@
               class = 'animate__animated animate__fadeIn text-center'>
               <th id = '{{antenna.name + i}}'>{{antenna.courtesy_detail?.name || 'Sin nombre' | titlecase}} </th>
               <td>{{this.getTypeDescription(antenna.courtesy_detail!.type).name | titlecase}}</td>
-              <td>{{antenna.courtesy_detail!.value || 'Sin valor'| courtesyValue: antenna.courtesy_detail!.type}}</td>
+              <td>{{antenna.courtesy_detail!.value | courtesyValue: antenna.courtesy_detail!.type}}</td>
               <td>{{antenna.courtesy_detail!.company?.name}}</td>
               <td>{{antenna.name | titlecase}}</td>
               <td>{{antenna.created_at | date: 'medium'}}</td>

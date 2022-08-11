@@ -195,9 +195,9 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
       .get('parkingId')
       ?.setValue(this.authService.getParking().id)
     this.newCourtesyForm.get('companyId')?.setValue('0')
-    this.newCourtesyForm.get('condition')?.setValue('0')
-    this.newCourtesyForm.get('cantHours')?.setValue('0')
-    this.newCourtesyForm.get('valueTimeMinutes')?.setValue('0')
+    this.newCourtesyForm.get('condition')?.setValue(1)
+    this.newCourtesyForm.get('cantHours')?.setValue(0)
+    this.newCourtesyForm.get('valueTimeMinutes')?.setValue(0)
     this.utilitiesService.markAsUnTouched(this.newCourtesyForm)
   }
 
@@ -281,7 +281,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
       ],
       parkingId: [this.authService.getParking().id],
       companyId: ['0', [Validators.required, Validators.minLength(2)]],
-      condition: ['0', [Validators.required, Validators.minLength(1)]],
+      condition: [1, [Validators.required, Validators.minLength(1)]],
       cantHours: [0, [Validators.required]]
     })
   }

@@ -325,7 +325,7 @@ export class TransitDetailReportComponent implements OnInit {
     return this.formBuilder.group({
       startDate: [new Date()],
       endDate: [new Date()],
-      parkingId: ['0']
+      parkingId: [this.authService.getParking().id]
     })
   }
 }

@@ -151,6 +151,9 @@ export class NewUserComponent implements OnInit {
         })
     }
   }
+  get RawValue(){
+    return this.newUserForm.getRawValue()
+  }
 
   addPasswordValidations() {
     this.newUserForm
