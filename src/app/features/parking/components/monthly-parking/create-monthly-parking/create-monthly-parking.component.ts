@@ -281,7 +281,7 @@ export class CreateMonthlyParkingComponent implements OnInit {
       friday: [false],
       saturday: [false],
       sunday: [false],
-      telephone: [''],
+      telephone: ['', [Validators.maxLength(13)]],
       isUnlimited: [true],
       begin_date: [null],
       finish_date: [null],

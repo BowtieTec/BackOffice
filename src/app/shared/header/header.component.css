@@ -12,7 +12,7 @@
 }
 
 #list-tab {
-  max-height: 180px;
+  max-height: 300px;
   overflow: scroll;
   overflow-x: hidden;
 }
