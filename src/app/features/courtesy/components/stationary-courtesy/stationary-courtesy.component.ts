@@ -188,7 +188,7 @@ export class StationaryCourtesyComponent
   async getInitialData() {
     try {
       this.message.showLoading()
-      Promise.all([
+     return Promise.all([
         this.getTypeCourtesies(),
         this.getCourtesiesStationary(),
         this.courtesyService.getTypes().toPromise(),
@@ -201,10 +201,7 @@ export class StationaryCourtesyComponent
           this.courtesyTypes = resp[2].data.type
           this.allCompanies = resp[3]
           // ignore resp [5]
-        }).then((x) =>{
-          this.stationaryForm.get('stationId')?.setValue(this.stationsCourtesies[0].id)
-          this.stationaryForm.get('companyId')?.setValue(this.allCompanies[0].id)
-      })
+        })
         .catch((x) => {
           this.message.errorTimeOut(
             '',
@@ -213,8 +210,10 @@ export class StationaryCourtesyComponent
         })
         .finally(() => {
           this.rerender()
-          this.loading = false
+          this.stationaryForm.get('companyId')?.setValue(this.allCompanies[0].id)
+          this.stationaryForm.get('stationId')?.setValue(this.allAntennas[0].id)
           this.message.hideLoading()
+          this.loading = false
         })
     } catch (err: unknown) {
       throw new Error('')
@@ -223,15 +222,12 @@ export class StationaryCourtesyComponent
 
   cleanForm() {
     this.stationaryForm.reset()
-    this.stationaryForm.get('value')?.setValue('0')
+    this.stationaryForm.get('value')?.setValue(0)
     this.stationaryForm.get('valueTimeMinutes')?.setValue(0)
-    this.stationaryForm.get('type')?.setValue('0')
     this.stationaryForm.get('name')?.setValue('')
-    this.stationaryForm.get('stationId')?.setValue('0')
-    this.stationaryForm.get('companyId')?.setValue('0')
     this.stationaryForm.get('condition')?.setValue(1)
     this.stationaryForm.get('cantHours')?.setValue(0)
-    this.stationaryForm.controls['parkingId'].setValue(this.parkingId)
+    this.stationaryForm.get('parkingId')?.setValue(this.parkingId)
   }
 
   ngAfterViewInit(): void {
@@ -330,8 +326,9 @@ export class StationaryCourtesyComponent
     this.authService.user$.subscribe(({ parkingId }) => {
       this.parkingId = parkingId
       this.stationaryForm.get('parkingId')?.setValue(parkingId)
+
       this.utilitiesService.markAsUnTouched(this.stationaryForm)
-      this.getInitialData().catch()
+      this.getInitialData().then()
     })
     this.parkingService.parkingLot$.subscribe((parkings) => {
       this.allParking = parkings
