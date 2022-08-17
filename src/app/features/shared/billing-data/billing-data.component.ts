@@ -164,7 +164,6 @@ export class BillingDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.settingsOptions)
     if (!this.isCreatingParking) {
       this.parkingService.parkingLot$.subscribe((parkingLot) => {
         this.allParking = parkingLot

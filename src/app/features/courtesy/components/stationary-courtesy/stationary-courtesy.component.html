@@ -26,7 +26,6 @@
                 <div
                   *ngIf = 'isSudo'
                   class = 'col-md-6 col-sm-12'>
-
                   <app-select-container
                     (change) = 'searchAntennasByParking()'
                     [data] = 'this.allParking'
@@ -34,10 +33,8 @@
                     controlName = 'parkingId'
                     name = 'Parqueos'>
                   </app-select-container>
-
                 </div>
                 <div class = 'col-md-6 col-sm-12'>
-
                   <app-select-container
                     (change) = "this.getNewConditions()"
                     [data] = ' this.typeCourtesies'
@@ -45,18 +42,15 @@
                     controlName = 'type'
                     name = 'Tipos de cortesía'>
                   </app-select-container>
-
                 </div>
-                <div class = 'col-md-4 col-sm-12'>
-
+                <div class = 'col-md-6 col-sm-12'>
                   <app-input-container
                     [formGroup] = 'stationaryForm'
                     controlName = 'name'
                     name = 'Nombre de la cortesía'>
                   </app-input-container>
-
                 </div>
-                <div class = 'col-md-4 col-sm-12'>
+                <div class = 'col-md-6 col-sm-12'>
                   <app-input-container
                     [formGroup] = 'stationaryForm'
                     controlName = 'value'
@@ -64,7 +58,7 @@
                     type = 'number'>
                   </app-input-container>
                 </div>
-                <div class = 'col-xl-4 col-lg-4 col-sm-12 animate__animated animate__fadeInDown'
+                <div class = 'col-xl-6 col-lg-6 col-sm-12 animate__animated animate__fadeInDown'
                      *ngIf = 'this.stationaryCourtesiesFormValue.type == 4'>
                   <app-input-container
                     [formGroup] = 'this.stationaryForm'
@@ -82,6 +76,7 @@
                       name = 'Estaciones'
                       style = 'position: relative; display: inline-block; width: 100%;'>
                     </app-select-container>
+                    <span *ngIf="this.stationsCourtesies.length == 0" class="text-muted m-4">*Para crear una estación de cortesías, debe solicitarse con soporte.</span>
                     <button
                       *ngIf = 'ifHaveAction(addStationsCourtesyStationary)'
                       class = 'btn-primary btn-input animate__animated animate__fadeInDown'
@@ -106,7 +101,7 @@
                 </div>
                 <div
                   *ngIf = 'this.conditionValue == 2 || this.conditionValue == 3'
-                  class = 'col-xl-6 col-sm-12 animate__animated animate__fadeInDown'>
+                  class = 'col-xl-6 col-sm-12 animate__animated animate__fadeInDown mt-1'>
                   <app-input-container
                     [formGroup] = 'stationaryForm'
                     controlName = 'cantHours'
@@ -114,7 +109,7 @@
                     type = 'number'>
                   </app-input-container>
                 </div>
-                <div class = 'col-xl-6 col-sm-12'>
+                <div class = 'col-xl-6 col-sm-12 mt-1'>
                   <app-select-container
                     [data] = 'allCompanies'
                     [formGroup] = 'stationaryForm'

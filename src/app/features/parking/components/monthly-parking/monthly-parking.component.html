@@ -43,9 +43,9 @@
         <tbody>
         <tr *ngFor = "let subscription of subscriptions"
             class = "text-center">
-          <td>{{subscription.user?.name + ' ' + (subscription.user?.last_name ? subscription.user?.last_name : '')}}</td>
-          <td>{{subscription.user?.email}}</td>
-          <td>{{subscription.user?.phone_number}}</td>
+          <td>{{(subscription.user?.name ?? '') + ' ' + (subscription.user?.last_name ? subscription.user?.last_name : '')}}</td>
+          <td>{{subscription.user?.email ?? ''}}</td>
+          <td>{{subscription.user?.phone_number ?? ''}}</td>
           <td>{{subscription.amount | currency:'GTQ' }}</td>
           <td>{{subscription.isUnlimited ? 'Ilimitado' : 'Por fechas'}}</td>
           <td>

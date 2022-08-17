@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
 import { CreateParkingFileModel } from 'src/app/features/parking/models/CreateParking.model'
 import { SettingsOptionsModel } from 'src/app/features/parking/models/SettingsOption.model'
 import { ParkingService } from 'src/app/features/parking/services/parking.service'
@@ -21,8 +21,6 @@ export class FileUploadComponent implements OnInit {
   backGroundApp!: File
   allParking: ParkingModel[] = []
   stepFourForm: FormGroup = this.createForm()
-  settingsOptions!: SettingsOptionsModel
-
   @Output() changeStep = new EventEmitter<number>()
   @Input() parkingId: string = this.parkingService.parkingStepOne.parkingId
   @Input() isCreatingParking: boolean = true
@@ -37,7 +35,6 @@ export class FileUploadComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.settingsOptions = this.parkingService.settingsOptions
     this.stepFourForm.get('parkingId')?.setValue(this.parkingId)
     if (!this.isCreatingParking) {
       this.authService.user$.subscribe(({ parkingId }) => {
@@ -53,6 +50,9 @@ export class FileUploadComponent implements OnInit {
   controlInvalid(control: string): boolean {
     return this.utilitiesService.controlInvalid(this.stepFourForm, control)
   }
+get settingsOptions(): SettingsOptionsModel{
+    return this.parkingService.settingsOptions
+}
 
   searchFile(name: string) {
     return this.stepFourForm.get(name)?.value
@@ -127,11 +127,11 @@ export class FileUploadComponent implements OnInit {
 
   createForm() {
     return this.formBuilder.group({
-      logo: [null, Validators.required],
-      rate: [null, Validators.required],
-      plans: [null, Validators.required],
-      backGroundApp: [null, Validators.required],
-      parkingId: [this.parkingId, Validators.required]
+      logo: [null],
+      rate: [null],
+      plans: [null],
+      backGroundApp: [null],
+      parkingId: [this.parkingId]
     })
   }
 
@@ -156,7 +156,6 @@ export class FileUploadComponent implements OnInit {
   }
 
   validateFileBeImage(file: File, input: FormControl) {
-    console.log(file.type)
     if (!file.type.includes('image')) {
       this.message.error(
         'El archivo no es una imagen. solo se permiten imágenes png, jpeg y jpg'
@@ -224,7 +223,7 @@ export class FileUploadComponent implements OnInit {
 
   private getFile(): CreateParkingFileModel {
     return {
-      parkingId: '',
+      parkingId: this.parkingId,
       logo: this.stepFourForm.controls['logo'].value,
       rate: this.stepFourForm.controls['rate'].value,
       plans: this.stepFourForm.controls['plans'].value

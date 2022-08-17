@@ -16,7 +16,17 @@ import { ParkingModel } from '../../parking/models/Parking.model'
 export class CourtesyService {
   private apiUrl = environment.serverAPI
 
-  constructor(private http: HttpClient, private messageService: MessageService) {
+  constructor(
+    private http: HttpClient,
+    private messageService: MessageService
+  ) {}
+
+  get TypeOfConditions(): SelectModel[] {
+    return environment.TypeOfCondition
+  }
+
+  get DiscountOnWhatOptions(): SelectModel[] {
+    return environment.DiscountOnWhat
   }
 
   getTypes() {
@@ -46,17 +56,22 @@ export class CourtesyService {
   }
 
   getTypeCourtesyDescription(type: number): string {
-    return type == 0 ? 'Valor de tarifa fija' :
-      type == 1 ? 'Porcentaje de descuento' :
-        type == 2 ? 'Valor de descuento' :
-          type == 4 ? 'Cantidad de horas' : 'Valor'
+    return type == 0
+      ? 'Valor de tarifa fija'
+      : type == 1
+      ? 'Porcentaje de descuento'
+      : type == 2
+      ? 'Valor de descuento'
+      : type == 4
+      ? 'Cantidad de horas'
+      : 'Valor'
   }
 
   getNewConditions(type: string | number) {
     type = Number(type)
     console.log(type);
     if (type == 2) {
-      return environment.TypeOfCondition.filter(x => x.id != 3)
+      return environment.TypeOfCondition.filter((x) => x.id != 3)
     }
     return environment.TypeOfCondition
   }
@@ -68,15 +83,19 @@ export class CourtesyService {
   }
 
   getCourtesiesByParking(id: string): Observable<CourtesyModel[]> {
-    return this.http.get<ResponseModel>(
-      `${this.apiUrl}backoffice/cortesy/cortesiesDetails/${id}`
-    ).pipe(map((data) => {
-      if (!data.success) {
-        throw new Error('No se pudo obtener las cortesias')
-      }
+    return this.http
+      .get<ResponseModel>(
+        `${this.apiUrl}backoffice/cortesy/cortesiesDetails/${id}`
+      )
+      .pipe(
+        map((data) => {
+          if (!data.success) {
+            throw new Error('No se pudo obtener las cortesias')
+          }
 
-      return data.data
-    }))
+          return data.data
+        })
+      )
   }
 
   addParkingToCourtesy(listParking: string[],courtesyDetailId:string) {
@@ -92,43 +111,36 @@ export class CourtesyService {
   getPDF(id: string) {
     return this.http.get(
       `${this.apiUrl}backoffice/cortesy/cortesiespdf/${id}`,
-      {responseType: 'blob'}
+      { responseType: 'blob' }
     )
   }
 
   getStationaryCourtesies(parkingId: string) {
     return this.http.get(
       `${this.apiUrl}backoffice/station_cortesy/${parkingId}/station`,
-      {responseType: 'blob'}
+      { responseType: 'blob' }
     )
   }
 
-  get TypeOfConditions(): SelectModel[] {
-    return environment.TypeOfCondition
-  }
-
-  get DiscountOnWhatOptions(): SelectModel[] {
-    return environment.DiscountOnWhat
-  }
-
   async assignCourtesy(parkedId: string, courtesyDetailId: string | undefined) {
-    console.log({parkedId, courtesyDetailId})
     if (!courtesyDetailId || !parkedId) {
       this.messageService.error('', 'Datos inválidos o faltantes')
       return
     }
-    return this.http.post<ResponseModel>(
-      `${this.apiUrl}backoffice/cortesy/assignCourtesy`,
-      {
+    return this.http
+      .post<ResponseModel>(`${this.apiUrl}backoffice/cortesy/assignCourtesy`, {
         courtesyDetailId,
         parkedId
-      }
-    ).pipe(map((data) => {
-      if (data.success) {
-        this.messageService.Ok()
-      } else {
-        this.messageService.error(data.message)
-      }
-    })).toPromise()
+      })
+      .pipe(
+        map((data) => {
+          if (data.success) {
+            this.messageService.Ok()
+          } else {
+            this.messageService.error(data.message)
+          }
+        })
+      )
+      .toPromise()
   }
 }

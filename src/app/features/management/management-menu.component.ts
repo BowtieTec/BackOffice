@@ -1,7 +1,7 @@
-import {Component} from '@angular/core'
-import {AuthService} from '../../shared/services/auth.service'
-import {PermissionsService} from '../../shared/services/permissions.service'
-import {environment} from '../../../environments/environment'
+import { Component } from '@angular/core'
+import { AuthService } from '../../shared/services/auth.service'
+import { PermissionsService } from '../../shared/services/permissions.service'
+import { environment } from '../../../environments/environment'
 
 @Component({
   selector: 'app-managment',
@@ -21,11 +21,14 @@ export class ManagementMenuComponent {
   constructor(
     private authService: AuthService,
     private permissionService: PermissionsService
-  ) {
-  }
+  ) {}
 
   get parkingId() {
     return this.authService.getParking().id
+  }
+
+  getIsSudo() {
+    return this.authService.isSudo
   }
 
   ifHaveAction(action: string) {

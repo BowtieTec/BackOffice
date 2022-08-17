@@ -49,7 +49,7 @@ export class GlobalErrorHandler implements ErrorHandler {
       switch (error.status) {
         case 401:
           this.message.error(
-            'Token vencido. Por favor iniciar sesión nuevamente'
+            'La sesión a caducado', 'Vuelve a iniciar sesión.'
           )
           this.goToLogin()
           return

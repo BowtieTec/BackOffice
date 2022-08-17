@@ -36,7 +36,7 @@ export class NewUserComponent implements OnInit {
     this.newUserForm = this.createForm()
   }
 
-  get Roles() {
+  getRoles() {
     return this.userService.roles
   }
 
@@ -71,10 +71,15 @@ export class NewUserComponent implements OnInit {
     this.authService.user$.subscribe(({ parkingId }) => {
       this.parkingId = parkingId
       this.newUserForm.get('parking')?.setValue(parkingId)
+      this.parkingId = parkingId
     })
     this.parkingService.parkingLot$.subscribe((parkingLot) => {
       this.allParking = parkingLot
     })
+  }
+
+  isSudo() {
+    return this.authService.isSudo
   }
 
   saveNewUser() {
@@ -125,7 +130,6 @@ export class NewUserComponent implements OnInit {
         .saveNewUser(newUserValue)
         .toPromise()
         .then((data) => {
-          console.log(data)
           if (data.success) {
             this.messageServices.OkTimeOut('Guardado')
           } else {
@@ -142,6 +146,9 @@ export class NewUserComponent implements OnInit {
           this.subject.next()
         })
     }
+  }
+  get RawValue(){
+    return this.newUserForm.getRawValue()
   }
 
   addPasswordValidations() {
@@ -161,7 +168,9 @@ export class NewUserComponent implements OnInit {
     this.newUserForm.reset()
     this.isEdit = false
     this.newUserForm.get('parking')?.setValue(this.parkingId)
-    this.newUserForm.get('role')?.setValue('0')
+    this.newUserForm
+      .get('role')
+      ?.setValue('b5b821bb-f919-4bae-9b6d-75a144fe2082')
     this.addPasswordValidations()
   }
 
@@ -189,7 +198,7 @@ export class NewUserComponent implements OnInit {
           Validators.pattern(environment.settings.passwordPattern)
         ]
       ],
-      role: ['0', [Validators.required]],
+      role: ['b5b821bb-f919-4bae-9b6d-75a144fe2082', [Validators.required]],
       parking: [this.parkingId, [Validators.required]]
     })
   }

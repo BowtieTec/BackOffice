@@ -10,10 +10,10 @@
       </div>
       ​
       <div class = "row">
-        <div class = "col-md-6 mb-4">
+        <div *ngIf = "isSudo" class = "col-md-6 mb-4">
           <div class = "m-3 relative ">
             <app-select-container (change) = "getCourtesies(this.parkingSelected)"
-                                  *ngIf = "isSudo"
+
                                   [data] = "this.allParkingLot"
                                   [formGroup] = "tariffTestForm"
                                   controlName = "parking"

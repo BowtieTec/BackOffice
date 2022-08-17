@@ -10,7 +10,7 @@
       <span> <em class = 'fas fa-imges'></em></span> Archivos
     </div>
     <div class = 'container'>
-      <div *ngIf = 'isCreatingParking == false && this.getIsSudo'
+      <div *ngIf = 'isCreatingParking == false && this.getIsSudo()'
            class = 'relative'>
         <app-select-container
           [data] = 'this.allParking'

@@ -1,10 +1,11 @@
 {
-  "name": "ugi",
+  "name": "ebigo",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --outputHashing=all ",
     "build": "ng build --prod --outputHashing=all",
+    "devbuild": "ng build --configuration development ",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -47,7 +48,7 @@
     "sweetalert2": "11",
     "tslib": "2",
     "xlsx": "0",
-    "zone.js": "~0"
+    "zone.js": "0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "14",

@@ -152,8 +152,16 @@ export class DashboardComponent implements OnInit {
     this.parkingService.parkingLot$.subscribe((parkingLot) => {
       this.allParking= parkingLot
     })
-    /*this.auth.user$.subscribe(({ user }) => {
-      console.log('asdfasdf')
+    /*this.auth.user$.subscribe(({ user, parkingId }) => {
+
+      if(this.inputParkingIngresoDia.nativeElement && this.inputParkingFlujoDia.nativeElement && this.inputParkingFlujoMes.nativeElement){
+        this.inputParkingFlujoAnio.nativeElement.value = parkingId
+        this.inputParkingFlujoDia.nativeElement.value = parkingId
+        this.inputParkingFlujoMes.nativeElement.value = parkingId
+        this.inputParkingIngresoAnio.nativeElement.value = parkingId
+        this.inputParkingIngresoMes.nativeElement.value = parkingId
+        this.inputParkingIngresoDia.nativeElement.value = parkingId
+      }
       this.datosUsuarioLogeado = user.parking
       if (this.idTabActiva == 'Ingresos') {
         this.searchMes(this.ingresos)
@@ -173,8 +181,8 @@ export class DashboardComponent implements OnInit {
         this.searchAnio(this.cortesiasEstacionarias)
       }
       this.messageService.hideLoading()
-    })
-     */
+    })*/
+
   }
 
   ifHaveAction(action: string) {

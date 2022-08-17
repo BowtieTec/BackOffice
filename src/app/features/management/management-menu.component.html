@@ -1,75 +1,73 @@
-<nav #nav = "ngbNav"
-     class = "nav-tabs  "
+<nav #nav = 'ngbNav'
+     class = 'nav-tabs  '
      ngbNav>
-
-  <!-- <ng-container *ngIf="ifHaveAction(tariffTest)"-->
-  <ng-container *ngIf = "ifHaveAction(createUser)"
+  <ng-container *ngIf = 'ifHaveAction(createUser)'
                 ngbNavItem>
     <a
-      ngbNavLink><em class = "fas fa-users"></em> Usuarios</a>
+      ngbNavLink><em class = 'fas fa-users'></em> Usuarios</a>
     <ng-template ngbNavContent>
       <app-users></app-users>
     </ng-template>
   </ng-container>
-  <ng-container *ngIf = "ifHaveAction(assignRole)"
+  <ng-container *ngIf = 'ifHaveAction(assignRole) && this.getIsSudo() == true'
                 ngbNavItem>
-    <a ngbNavLink><em class = "fas fa-magic"></em> Roles</a>
+    <a ngbNavLink><em class = 'fas fa-magic'></em> Roles</a>
     <ng-template ngbNavContent>
       <app-roles></app-roles>
     </ng-template>
   </ng-container>
-  <ng-container *ngIf = "ifHaveAction(listLocal)"
+  <ng-container *ngIf = 'ifHaveAction(listLocal)'
                 ngbNavItem>
-    <a ngbNavLink><em class = "fas fa-store"></em> Locales</a>
+    <a ngbNavLink><em class = 'fas fa-store'></em> Locales</a>
     <ng-template ngbNavContent>
       <app-company></app-company>
     </ng-template>
   </ng-container>
-  <ng-container *ngIf = "ifHaveAction(listTariff)"
+  <ng-container *ngIf = 'ifHaveAction(listTariff)'
                 ngbNavItem>
-    <a ngbNavLink><em class = "fas fa-comment-dollar"></em> Tarifas</a>
+    <a ngbNavLink><em class = 'fas fa-comment-dollar'></em> Tarifas</a>
     <ng-template ngbNavContent>
-      <app-tariff [isCreatingParking] = "false"
-                  [parkingId] = "parkingId"></app-tariff>
+      <app-tariff [isCreatingParking] = 'false'
+                  [parkingId] = 'parkingId'></app-tariff>
     </ng-template>
   </ng-container>
   <ng-container *ngIf = 'ifHaveAction(tariffTest)'
                 ngbNavItem>
     <a
-      ngbNavLink><em class = "fas fa-users"></em> Prueba de Tarifa</a>
+      ngbNavLink><em class = 'fas fa-users'></em> Prueba de Tarifa</a>
     <ng-template ngbNavContent>
       <app-tariff-test></app-tariff-test>
     </ng-template>
   </ng-container>
-  <ng-container *ngIf = "ifHaveAction(listSchedules)"
+  <ng-container *ngIf = 'ifHaveAction(listSchedules)'
                 ngbNavItem>
-    <a ngbNavLink><em class = "fas fa-clock"></em> Horarios</a>
+    <a ngbNavLink><em class = 'fas fa-clock'></em> Horarios</a>
     <ng-template ngbNavContent>
-      <app-schedule [parkingId] = "parkingId"></app-schedule>
+      <app-schedule [parkingId] = 'parkingId'></app-schedule>
     </ng-template>
   </ng-container>
   <ng-container *ngIf = "ifHaveAction('changeInvoiceInfo')"
                 ngbNavItem>
-    <a ngbNavLink><em class = "fas fa-file-invoice"></em> Facturación</a>
+    <a ngbNavLink><em class = 'fas fa-file-invoice'></em> Facturación</a>
     <ng-template ngbNavContent>
-      <app-billing-data [parkingId] = "parkingId"></app-billing-data>
+      <app-billing-data [parkingId] = 'parkingId'></app-billing-data>
     </ng-template>
   </ng-container>
-  <ng-container *ngIf = "ifHaveAction(listUserApp)"
+  <ng-container *ngIf = 'ifHaveAction(listUserApp)'
                 ngbNavItem>
-    <a ngbNavLink><em class = "fas fa-users"></em> Usuarios ebiGo</a>
+    <a ngbNavLink><em class = 'fas fa-users'></em> Usuarios ebiGo</a>
     <ng-template ngbNavContent>
       <app-users-app></app-users-app>
     </ng-template>
   </ng-container>
-  <ng-container *ngIf = "ifHaveAction(updateFiles)"
+  <ng-container *ngIf = 'ifHaveAction(updateFiles)'
                 ngbNavItem>
-    <a ngbNavLink><em class = "fas fa-images"></em> Archivos</a>
+    <a ngbNavLink><em class = 'fas fa-images'></em> Archivos</a>
     <ng-template ngbNavContent>
-      <app-file-upload [isCreatingParking] = "false"
-                       [parkingId] = "parkingId"></app-file-upload>
+      <app-file-upload [isCreatingParking] = 'false'
+                       [parkingId] = 'parkingId'></app-file-upload>
     </ng-template>
   </ng-container>
 </nav>
-<div [ngbNavOutlet] = "nav"
-     class = "mt-2"></div>
+<div [ngbNavOutlet] = 'nav'
+     class = 'mt-2'></div>

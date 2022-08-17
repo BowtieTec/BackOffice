@@ -1,49 +1,48 @@
 <!-- Modal -->
-<div aria-hidden = "true"
-     aria-labelledby = "assignCourtesyLabel"
-     class = "modal fade"
-     id = "assignCourtesy"
-     tabindex = "-1">
-  <div class = "modal-dialog modal-dialog-centered modal-lg">
-    <div class = "modal-content">
-      <div class = "modal-header">
-        <h5 class = "modal-title"
-            id = "assignCourtesyLabel">Cortesías estacionarias</h5>
-        <button aria-label = "Close"
-                class = "btn-close"
-                data-bs-dismiss = "modal"
-                type = "button"></button>
+<div aria-hidden = 'true'
+     aria-labelledby = 'assignCourtesyLabel'
+     class = 'modal fade'
+     id = 'assignCourtesy'
+     tabindex = '-1'>
+  <div class = 'modal-dialog modal-dialog-centered modal-lg'>
+    <div class = 'modal-content'>
+      <div class = 'modal-header'>
+        <h5 class = 'modal-title'
+            id = 'assignCourtesyLabel'>Cortesías estacionarias</h5>
+        <button aria-label = 'Close'
+                class = 'btn-close'
+                data-bs-dismiss = 'modal'
+                type = 'button'></button>
       </div>
-      <div class = "modal-body">
-        <div *ngIf = "isLoading">
-          <p class = "placeholder-glow">
-            <span class = "placeholder col-12"></span>
+      <div class = 'modal-body'>
+        <div *ngIf = 'isLoading'>
+          <p class = 'placeholder-glow'>
+            <span class = 'placeholder col-12'></span>
           </p>
-          <p class = "placeholder-wave">
-            <span class = "placeholder col-12"></span>
+          <p class = 'placeholder-wave'>
+            <span class = 'placeholder col-12'></span>
           </p>
         </div>
-        <div *ngIf = "courtesies.length > 0 && !isLoading"
-             class = "list-group">
-          <div *ngFor = "let item of courtesies">
-            <a (click) = "assignCourtesy(item)"
-               class = "list-group-item list-group-item-action flex-column align-items-start">
-              <div class = "d-flex w-100 justify-content-between">
-                <h5 class = "mb-1">{{item.name}}</h5>
-                <small class = "text-muted">{{item.company?.name | titlecase}}</small>
+        <div *ngIf = 'courtesies.length > 0 && !isLoading'>
+          <div *ngFor = 'let item of courtesies'
+               class = 'courtesyLink'>
+            <a (click) = 'assignCourtesy(item)'
+               class = ' flex-column align-items-start '>
+              <div class = 'd-flex w-100 justify-content-between'>
+                <h5 class = 'mb-1'>{{item.name}}</h5>
+                <small class = 'text-muted'> {{item.company?.name | titlecase}} </small>
               </div>
             </a>
           </div>
         </div>
-        <div *ngIf = "!isLoading && courtesies.length == 0">
-          <figure class = "text-center">
-            <blockquote class = "blockquote">
+        <div *ngIf = '!isLoading && courtesies.length == 0'>
+          <figure class = 'text-center'>
+            <blockquote class = 'blockquote'>
               <p>No se encontraron cortesías estacionarias para este parqueo</p>
             </blockquote>
           </figure>
         </div>
       </div>
-
     </div>
   </div>
 </div>
