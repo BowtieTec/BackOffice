@@ -25,11 +25,10 @@ import {
 } from '../../../parking/models/StationaryCourtesy.model'
 import { CourtesyTypeModel } from '../../models/Courtesy.model'
 import { DataTableDirective } from 'angular-datatables'
-import { Subject } from 'rxjs'
+import {Subject, Subscription} from 'rxjs'
 import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
 import { CompaniesModel } from '../../../management/components/users/models/companies.model'
 import { CompaniesService } from '../../../management/components/users/services/companies.service'
-import { SelectModel } from '../../../../shared/model/CommonModels'
 import { ListCheckModel, listID, SelectModel } from '../../../../shared/model/CommonModels'
 import { ListCheckboxService } from '../../../../shared/forms/list-checkbox-container/service/list-checkbox.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
@@ -382,15 +381,6 @@ export class StationaryCourtesyComponent
     })
 
 
-  }
-
-  private rerender() {
-    if (this.dtElement != undefined) {
-      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.destroy()
-        this.dtTrigger.next()
-      })
-    }
   }
 
   private rerender() {

@@ -9,8 +9,6 @@ import {map} from "rxjs/operators";
 import {Observable} from "rxjs";
 import {MessageService} from "../../../shared/services/message.service";
 import { ParkingModel } from '../../parking/models/Parking.model'
-import { SelectModel } from '../../../shared/model/CommonModels'
-import { map } from 'rxjs/operators'
 
 
 @Injectable({
