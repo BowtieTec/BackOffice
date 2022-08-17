@@ -12,14 +12,15 @@ import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap'
 import {FilterPipe} from './pipes/filter.pipe'
 import {Page404Component} from './page404/page404.component'
 import {InputContainerComponent} from './forms/input-container/input-container.component'
-import {ReactiveFormsModule} from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import {SelectContainerComponent} from './forms/select-container/select-container.component'
 import {TextAreaContainerComponent} from './forms/text-area-container/text-area-container.component'
 import {CheckboxContainerComponent} from './forms/checkbox-container/checkbox-container.component'
 import {CourtesyValuePipe} from './pipes/courtesy-value.pipe'
 import {CourtesyChartComponent} from './courtesy-chart/courtesy-chart.component'
 import {RadioContainerComponent} from './forms/radio-container/radio-container.component';
-import {CardPlaceholderComponent} from './card-placeholder/card-placeholder.component'
+import {CardPlaceholderComponent} from './card-placeholder/card-placeholder.component';
+import { ListCheckboxContainerComponent } from './forms/list-checkbox-container/list-checkbox-container.component'
 
 @NgModule({
   declarations: [
@@ -39,13 +40,15 @@ import {CardPlaceholderComponent} from './card-placeholder/card-placeholder.comp
     CourtesyValuePipe,
     CourtesyChartComponent,
     RadioContainerComponent,
-    CardPlaceholderComponent
+    CardPlaceholderComponent,
+    ListCheckboxContainerComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     NgbPaginationModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [
     LeftPanelComponent,
@@ -62,7 +65,8 @@ import {CardPlaceholderComponent} from './card-placeholder/card-placeholder.comp
     CheckboxContainerComponent,
     CourtesyValuePipe,
     CourtesyChartComponent,
-    RadioContainerComponent
+    RadioContainerComponent,
+    ListCheckboxContainerComponent
   ]
 })
 export class SharedModule {

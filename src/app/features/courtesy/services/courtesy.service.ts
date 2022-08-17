@@ -1,12 +1,17 @@
-import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-import { environment } from '../../../../environments/environment'
-import { ResponseModel } from '../../../shared/model/Request.model'
-import { CourtesyModel } from '../models/Courtesy.model'
+
+import {Injectable} from '@angular/core'
+import {HttpClient} from '@angular/common/http'
+import {environment} from '../../../../environments/environment'
+import {ResponseModel} from '../../../shared/model/Request.model'
+import {CourtesyModel} from '../models/Courtesy.model'
+import { listID, SelectModel } from '../../../shared/model/CommonModels'
+import {map} from "rxjs/operators";
+import {Observable} from "rxjs";
+import {MessageService} from "../../../shared/services/message.service";
+import { ParkingModel } from '../../parking/models/Parking.model'
 import { SelectModel } from '../../../shared/model/CommonModels'
 import { map } from 'rxjs/operators'
-import { Observable } from 'rxjs'
-import { MessageService } from '../../../shared/services/message.service'
+
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +36,19 @@ export class CourtesyService {
     return this.http.get<ResponseModel>(
       `${this.apiUrl}backoffice/cortesy/typeCortesies`
     )
+  }
+
+  getParkingForCourtesy(courtesyDetailId:string) {
+    return this.http.get<ResponseModel>(
+      `${this.apiUrl}backoffice/cortesy/getParkingForCourtesy/${courtesyDetailId}`
+    ).pipe(map((res)=>{
+      return res.data.map((item:ParkingModel)=>{
+          return {
+            id: item.id,
+            name: item.name
+          }
+      })
+    }) )
   }
 
   saveCourtesy(newCourtesy: CourtesyModel) {
@@ -80,6 +98,17 @@ export class CourtesyService {
           return data.data
         })
       )
+
+  }
+
+  addParkingToCourtesy(listParking: string[],courtesyDetailId:string) {
+    return this.http
+      .post<ResponseModel>(
+        `${this.apiUrl}backoffice/station_cortesy/addParkingToCourtesy/${courtesyDetailId}`,
+        {listParking}
+      )
+      .toPromise()
+      .then((data) => data)
   }
 
   getPDF(id: string) {

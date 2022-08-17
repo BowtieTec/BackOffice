@@ -11,3 +11,9 @@ a.paginate_button.current {
   background: #415ba1 !important;
   color: #fff !important;
 }
+
+a:link {
+  color: green;
+  background-color: transparent;
+  text-decoration: none;
+}

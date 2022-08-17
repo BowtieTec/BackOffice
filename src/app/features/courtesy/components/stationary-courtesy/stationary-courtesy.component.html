@@ -172,10 +172,14 @@
               <td>
                 <button (click) = " editAntenna(antenna) "
                         *ngIf = "ifHaveAction(editCourtesyStationary)"
-                        class = "buttonRowEdit"
+                        class = "buttonRowEdit buttonIcon me-1"
                         title = "Editar" ><em class = "fas fa-edit" ></em >
                 </button >
-
+                <button (click) = " openParkingToCourtesy(antenna.courtesy_detail?.id,contenido) "
+                        *ngIf = "ifHaveAction(addParkingToCourtesyStationary)"
+                        class = "buttonRowAlert buttonIcon"
+                        title = "Agregar Parqueo" ><em class = "fas fa-parking" ></em >
+                </button >
               </td>
             </tr>
             </tbody>
@@ -186,39 +190,36 @@
   </form>
 </div>
 
-<!-- Modal -->
-<div
-  aria-hidden = 'true'
-  aria-labelledby = 'exampleModalLabel'
-  class = 'modal fade '
-  id = 'exampleModal'
-  tabindex = '-1'>
-  <div class = 'modal-dialog modal-xl '>
-    <div class = 'modal-content'>
-      <div class = 'modal-header'>
-        <h5
-          class = 'modal-title'
-          id = 'exampleModalLabel'>Administrar antenas de cortesías estáticas</h5>
-        <button
-          aria-label = 'Close'
-          class = 'btn-close'
-          data-bs-dismiss = 'modal'
-          type = 'button'></button>
+<ng-template #contenido
+             let-modal>
+
+      <div class = "modal-header">
+        <h5 class = "modal-title">Agregar Parqueos a las cortesías</h5>
+        <button aria-label = "Close"
+                class = "btn-close"
+                (click)='this.modal.close()'
+                type = "button"></button>
       </div>
-      <div class = 'modal-body'>
-        <app-antennas-from-courtesy
-          (stationsSaved) = 'searchAntennasByParking()'
-          [parkingId] = 'this.parkingId'>
-        </app-antennas-from-courtesy>
+      <div class = "modal-body">
+          <div class = "list-group">
+            <app-list-checkbox-container></app-list-checkbox-container>
+          </div>
       </div>
-      <div class = 'modal-footer'>
-        <button
-          class = 'btn btn-secondary'
-          data-bs-dismiss = 'modal'
-          type = 'button'>Close
+      <hr>
+      <div class = "text-center">
+        <button (click) = "addParkingToCourtesy()"
+                class = "btn btn-primary me-1"
+                data-bs-dismiss = "modal"
+                type = "button">Agregar
+
         </button>
 
+        <button
+                class = 'btn btn-secondary'
+                data-bs-dismiss = 'modal'
+                (click)='this.modal.close()'
+                type = "button">Cerrar
+        </button>
       </div>
-    </div>
-  </div>
-</div>
+
+</ng-template>

@@ -30,6 +30,9 @@ import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
 import { CompaniesModel } from '../../../management/components/users/models/companies.model'
 import { CompaniesService } from '../../../management/components/users/services/companies.service'
 import { SelectModel } from '../../../../shared/model/CommonModels'
+import { ListCheckModel, listID, SelectModel } from '../../../../shared/model/CommonModels'
+import { ListCheckboxService } from '../../../../shared/forms/list-checkbox-container/service/list-checkbox.service'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
   selector: 'app-stationary-courtesy',
@@ -50,6 +53,10 @@ export class StationaryCourtesyComponent
   stationsCourtesies: StationsCourtesyModel[] = []
   allAntennas: StationsCourtesyModel[] = []
   typeOfCondition: SelectModel[] = this.courtesyService.TypeOfConditions
+  $subs: Subscription = Subscription.EMPTY
+  listParkingToCourtesy: ListCheckModel[] = []
+  courtesyHasParking: ParkingModel[] = []
+  courtesyDetailID:string = ''
 
   /*Table*/
   @ViewChild(DataTableDirective)
@@ -60,6 +67,8 @@ export class StationaryCourtesyComponent
   /* Permissions */
   createCourtesyStationary: string = environment.createCourtesyStationary
   editCourtesyStationary: string = environment.editCourtesyStationary
+  addParkingToCourtesyStationary: string = environment.addParkingToCourtesyStationary
+
   addStationsCourtesyStationary: string =
     environment.addStationsCourtesyStationary
   private actions: string[] = this.permissionService.actionsOfPermissions
@@ -72,7 +81,9 @@ export class StationaryCourtesyComponent
     private authService: AuthService,
     private permissionService: PermissionsService,
     private courtesyService: CourtesyService,
-    private companyService: CompaniesService
+    private companyService: CompaniesService,
+    private listCheckboxService: ListCheckboxService,
+    private modal: NgbModal,
   ) {
     this.stationaryForm = this.createForm()
     this.formGroup = formBuilder.group({ filter: [''] })
@@ -126,7 +137,7 @@ export class StationaryCourtesyComponent
   }
 
   ifHaveAction(action: string) {
-    return !!this.actions.find((x) => x == action)
+    return this.permissionService.ifHaveAction(action)
   }
 
   createForm(): FormGroup {
@@ -241,12 +252,40 @@ export class StationaryCourtesyComponent
   ngOnDestroy(): void {
     try {
       this.dtTrigger.unsubscribe()
-    } catch (e) {}
+      this.$subs.unsubscribe()
+    } catch (e) {
+    }
   }
 
   validateId(id: string | undefined) {
     return id == undefined ? '' : id
   }
+
+  async openParkingToCourtesy(courtesyDetailId:string = '',contenido:any){
+    this.courtesyDetailID = courtesyDetailId
+    this.courtesyHasParking  = await this.courtesyService.getParkingForCourtesy(courtesyDetailId).toPromise()
+
+    let newList:ListCheckModel[] = this.allParking.map((p) => {
+      return {
+        id: p.id,
+        name: p.name,
+        isChecked: this.courtesyHasParking.find(element => element.id == p.id)?true:false,
+        disable: this.courtesyHasParking.find(element => element.id == p.id)?true:false
+      }
+    })
+
+    this.listCheckboxService.sendData(newList)
+    this.modal.open(contenido)
+  }
+
+  addParkingToCourtesy(){
+    let addParking =  this.listParkingToCourtesy.filter((value) => value.isChecked && !value.disable).map((val) =>val.id)
+    this.courtesyService.addParkingToCourtesy(addParking,this.courtesyDetailID).then((data) => this.message.OkTimeOut())
+    this.modal.dismissAll()
+  }
+
+
+
 
   editAntenna(antenna: StationsCourtesyModel) {
     antenna.id = this.validateId(antenna.id)
@@ -337,6 +376,21 @@ export class StationaryCourtesyComponent
     this.parkingService.parkingLot$.subscribe((parkings) => {
       this.allParking = parkings
     })
+
+    this.$subs = this.listCheckboxService.recivedData().subscribe((p) => {
+      this.listParkingToCourtesy = p
+    })
+
+
+  }
+
+  private rerender() {
+    if (this.dtElement != undefined) {
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.destroy()
+        this.dtTrigger.next()
+      })
+    }
   }
 
   private rerender() {
