@@ -1,0 +1,25 @@
+<div>
+  <div>
+    <div class='text-center'>
+      <button (click)='selectAll()'
+              class='btn btn-primary me-1'
+              type = "button">
+        Seleccionar Todo</button>
+      <button (click)='unselectAll()' class='btn btn-danger'
+              type = "button">
+        Borrar</button>
+
+    </div>
+
+  </div>
+  <div style='position: relative; max-height: 50vh; overflow: scroll; overflow-x: hidden'>
+    <ul class = "opcionActivo" style='padding: 0'>
+      <li class = "m-1" *ngFor='let ele of getListCheck'  style='display: block'><input
+         id='{{ele.id}}}'
+         [(ngModel)]='ele.isChecked'
+          [disabled]='ele.disable'
+         type = "checkbox"
+         value = "{{ele.id}}"><label for = "{{ele.id}}}" style='min-width: 100%; margin: 0; padding: 5px 15px' > {{ele.name}}</label></li>
+    </ul>
+  </div>
+</div>

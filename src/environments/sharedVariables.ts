@@ -30,6 +30,7 @@ export const permission = {
   listCourtesyStationary: 'listCourtesyStationary',
   createCourtesyStationary: 'createCourtesyStationary',
   editCourtesyStationary: 'editCourtesyStationary',
+  addParkingToCourtesyStationary: 'addParkingToCourtesyStationary',
   addStationsCourtesyStationary: 'addStationsCourtesyStationary',
   editStationsCourtesyStationary: 'editStationsCourtesyStationary',
   deleteStationsCourtesyStationary: 'deleteStationsCourtesyStationary',

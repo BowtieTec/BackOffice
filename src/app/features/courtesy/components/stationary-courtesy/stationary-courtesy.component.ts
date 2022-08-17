@@ -11,11 +11,13 @@ import {CourtesyService} from '../../services/courtesy.service'
 import {CreateStationaryCourtesy, StationsCourtesyModel} from '../../../parking/models/StationaryCourtesy.model'
 import {CourtesyTypeModel} from '../../models/Courtesy.model'
 import {DataTableDirective} from 'angular-datatables'
-import {Subject} from 'rxjs'
+import { Subject, Subscription } from 'rxjs'
 import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
 import {CompaniesModel} from '../../../management/components/users/models/companies.model'
 import {CompaniesService} from '../../../management/components/users/services/companies.service'
-import {SelectModel} from '../../../../shared/model/CommonModels'
+import { ListCheckModel, listID, SelectModel } from '../../../../shared/model/CommonModels'
+import { ListCheckboxService } from '../../../../shared/forms/list-checkbox-container/service/list-checkbox.service'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
   selector: 'app-stationary-courtesy',
@@ -34,6 +36,10 @@ export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy, On
   stationsCourtesies: StationsCourtesyModel[] = []
   allAntennas: StationsCourtesyModel[] = []
   typeOfCondition: SelectModel[] = this.courtesyService.TypeOfConditions
+  $subs: Subscription = Subscription.EMPTY
+  listParkingToCourtesy: ListCheckModel[] = []
+  courtesyHasParking: ParkingModel[] = []
+  courtesyDetailID:string = ''
 
   /*Table*/
   @ViewChild(DataTableDirective)
@@ -44,6 +50,8 @@ export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy, On
   /* Permissions */
   createCourtesyStationary: string = environment.createCourtesyStationary
   editCourtesyStationary: string = environment.editCourtesyStationary
+  addParkingToCourtesyStationary: string = environment.addParkingToCourtesyStationary
+
   addStationsCourtesyStationary: string =
     environment.addStationsCourtesyStationary
   private actions: string[] = this.permissionService.actionsOfPermissions
@@ -56,7 +64,9 @@ export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy, On
     private authService: AuthService,
     private permissionService: PermissionsService,
     private courtesyService: CourtesyService,
-    private companyService: CompaniesService
+    private companyService: CompaniesService,
+    private listCheckboxService: ListCheckboxService,
+    private modal: NgbModal,
   ) {
     this.stationaryForm = this.createForm()
     this.formGroup = formBuilder.group({filter: ['']})
@@ -94,7 +104,7 @@ export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy, On
 
 
   ifHaveAction(action: string) {
-    return !!this.actions.find((x) => x == action)
+    return this.permissionService.ifHaveAction(action)
   }
 
   createForm(): UntypedFormGroup {
@@ -203,6 +213,7 @@ export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy, On
   ngOnDestroy(): void {
     try {
       this.dtTrigger.unsubscribe()
+      this.$subs.unsubscribe()
     } catch (e) {
     }
   }
@@ -210,6 +221,32 @@ export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy, On
   validateId(id: string | undefined) {
     return id == undefined ? '' : id
   }
+
+  async openParkingToCourtesy(courtesyDetailId:string = '',contenido:any){
+    this.courtesyDetailID = courtesyDetailId
+    this.courtesyHasParking  = await this.courtesyService.getParkingForCourtesy(courtesyDetailId).toPromise()
+
+    let newList:ListCheckModel[] = this.allParking.map((p) => {
+      return {
+        id: p.id,
+        name: p.name,
+        isChecked: this.courtesyHasParking.find(element => element.id == p.id)?true:false,
+        disable: this.courtesyHasParking.find(element => element.id == p.id)?true:false
+      }
+    })
+
+    this.listCheckboxService.sendData(newList)
+    this.modal.open(contenido)
+  }
+
+  addParkingToCourtesy(){
+    let addParking =  this.listParkingToCourtesy.filter((value) => value.isChecked && !value.disable).map((val) =>val.id)
+    this.courtesyService.addParkingToCourtesy(addParking,this.courtesyDetailID).then((data) => this.message.OkTimeOut())
+    this.modal.dismissAll()
+  }
+
+
+
 
   editAntenna(antenna: StationsCourtesyModel) {
     antenna.id = this.validateId(antenna.id)
@@ -305,5 +342,11 @@ export class StationaryCourtesyComponent implements AfterViewInit, OnDestroy, On
     this.parkingService.parkingLot$.subscribe((parkings) => {
       this.allParking = parkings
     })
+
+    this.$subs = this.listCheckboxService.recivedData().subscribe((p) => {
+      this.listParkingToCourtesy = p
+    })
+
+
   }
 }
