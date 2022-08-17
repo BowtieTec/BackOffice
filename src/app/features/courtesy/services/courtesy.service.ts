@@ -1,3 +1,4 @@
+
 import {Injectable} from '@angular/core'
 import {HttpClient} from '@angular/common/http'
 import {environment} from '../../../../environments/environment'
@@ -8,6 +9,8 @@ import {map} from "rxjs/operators";
 import {Observable} from "rxjs";
 import {MessageService} from "../../../shared/services/message.service";
 import { ParkingModel } from '../../parking/models/Parking.model'
+import { SelectModel } from '../../../shared/model/CommonModels'
+import { map } from 'rxjs/operators'
 
 
 @Injectable({
@@ -69,7 +72,6 @@ export class CourtesyService {
 
   getNewConditions(type: string | number) {
     type = Number(type)
-    console.log(type);
     if (type == 2) {
       return environment.TypeOfCondition.filter((x) => x.id != 3)
     }
@@ -96,6 +98,7 @@ export class CourtesyService {
           return data.data
         })
       )
+
   }
 
   addParkingToCourtesy(listParking: string[],courtesyDetailId:string) {
