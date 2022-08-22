@@ -1,79 +1,50 @@
-<form [formGroup] = 'newUserForm'
-      autocomplete = 'off'>
-  <div class = 'panels animate__animated animate__fadeInLeft'>
-    <div class = 'titleCards'>
-      <span><em class = 'fas fa-user-plus'></em></span> Nuevo usuario
-    </div>
-    <div class = 'row'>
-      <div class = 'col-xl-12 col-lg-12  col-sm-12'>
-        <app-input-container
-          [formGroup] = 'newUserForm'
-          controlName = 'name'
-          name = 'Nombre'>
-        </app-input-container>
-      </div>
-      <div class = 'col-xl-12 col-lg-12  col-sm-12'>
-        <app-input-container
-          [formGroup] = 'newUserForm'
-          controlName = 'last_name'
-          name = 'Apellido'>
-        </app-input-container>
-      </div>
-      <div class = 'col-xl-12 col-lg-12  col-sm-12'>
-        <app-input-container
-          [formGroup] = 'newUserForm'
-          [readonly] = 'isEdit'
-          controlName = 'email'
-          name = 'Correo'>
-        </app-input-container>
-      </div>
-      <div class = 'col-xl-12 col-lg-12 col-xs-12'>
-        <app-select-container
-          [data] = 'this.getRoles()'
-          [formGroup] = 'newUserForm'
-          controlName = 'role'
-          name = 'Roles de usuario'>
-        </app-select-container>
-      </div>
-      <div class = 'col-xl-12 col-lg-12 col-sm-12'>
-        <app-input-container
-          [formGroup] = 'newUserForm'
-          controlName = 'user'
-          name = 'Alias'>
-        </app-input-container>
-      </div>
-      <div class = 'col-xl-12 col-lg-12 col-sm-12'>
-        <app-input-container
-          [formGroup] = 'newUserForm'
-          [readonly] = 'isEdit'
-          controlName = 'password'
-          name = 'Contraseña'
-          textInfo = 'La contraseña debe contener al menos 7 caracteres, una letra mayúscula y un dígito'
-          type = 'password'>
-        </app-input-container>
-      </div>
-      <div *ngIf = 'ifHaveAction(changeParkingAtCreateUser) && this.isSudo() == true'
-           class = 'col-xl-12 col-lg-12  col-sm-12'>
-        <app-select-container
-          [data] = 'allParking'
-          [formGroup] = 'newUserForm'
-          controlName = 'parking'
-          name = 'Parqueo'></app-select-container>
-      </div>
-    </div>
-    <div class = 'col-xl-12 col-lg-12 col-sm-12'>
-      <div class = 'text-center'>
-        <button (click) = 'saveNewUser()'
-                class = 'btn btn-success me-3'
-                type = 'button'>GUARDAR
+<form [formGroup]='newUserForm' autocomplete='off'>
+    <div class='panels animate__animated animate__fadeInLeft'>
+        <div class='titleCards'>
+            <span><em class='fas fa-user-plus'></em></span> Nuevo usuario
+        </div>
+        <div class='row'>
+            <div class='col-xl-12 col-lg-12  col-sm-12'>
+                <app-input-container [formGroup]='newUserForm' controlName='name' name='Nombre'>
+                </app-input-container>
+            </div>
+            <div class='col-xl-12 col-lg-12  col-sm-12'>
+                <app-input-container [formGroup]='newUserForm' controlName='last_name' name='Apellido'>
+                </app-input-container>
+            </div>
+            <div class='col-xl-12 col-lg-12  col-sm-12'>
+                <app-input-container [formGroup]='newUserForm' [readonly]='isEdit' controlName='email' name='Correo'>
+                </app-input-container>
+            </div>
+            <div class='col-xl-12 col-lg-12 col-xs-12'>
+                <app-select-container [data]='this.getRoles()' [formGroup]='newUserForm' controlName='role' name='Roles de usuario'>
+                </app-select-container>
+            </div>
+            <div class='col-xl-12 col-lg-12 col-sm-12'>
+                <app-input-container [formGroup]='newUserForm' controlName='user' name='Alias'>
+                </app-input-container>
+            </div>
+            <div class='col-xl-12 col-lg-12 col-sm-12'>
+                <app-input-container [formGroup]='newUserForm' [readonly]='isEdit' controlName='password' name='Contraseña' textInfo='La contraseña debe contener al menos 7 caracteres, una letra mayúscula y un dígito' type='password'>
+                </app-input-container>
+            </div>
+            <div class='col-xl-12 col-lg-12  col-sm-12'>
+                <app-select-container (change)="this.getCompanies()" [data]='allParking' [formGroup]='newUserForm' controlName='parking' name="Parqueo">
+                </app-select-container>
+            </div>
+            <div *ngIf='this.selectedRoleIsCourtesy' class='col-xl-12 col-lg-12  col-sm-12'>
+                <app-select-container [data]='companies' [formGroup]='newUserForm' controlName='company' name="Local">
+                </app-select-container>
+            </div>
+        </div>
+        <div class='col-xl-12 col-lg-12 col-sm-12'>
+            <div class='text-center'>
+                <button (click)='saveNewUser()' class='btn btn-success me-3' type='button'>GUARDAR
         </button>
-        <button (click) = 'cleanForm()'
-                *ngIf = 'isEdit'
-                class = 'btn btn-secundary '
-                type = 'button'>Cancelar edicion
+                <button (click)='cleanForm()' *ngIf='isEdit' class='btn btn-secundary ' type='button'>Cancelar edicion
         </button>
-      </div>
-      <div class = 'mb-4 relative'></div>
+            </div>
+            <div class='mb-4 relative'></div>
+        </div>
     </div>
-  </div>
 </form>
