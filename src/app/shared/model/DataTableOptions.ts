@@ -30,6 +30,7 @@ export class DataTableOptions {
       destroy: true,
       pagingType: 'full_numbers',
       pageLength: pageLength,
+      responsive: true,
       dom: 'Bfrtip',
       buttons: [
         'csv', 'copy'
