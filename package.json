@@ -17,7 +17,7 @@
     "@angular/compiler": "14",
     "@angular/core": "14",
     "@angular/forms": "14",
-    "@angular/google-maps": "12",
+    "@angular/google-maps": "13.3.9",
     "@angular/localize": "14",
     "@angular/platform-browser": "14",
     "@angular/platform-browser-dynamic": "14",
