@@ -136,7 +136,7 @@ export class ReportService {
                 : '',
               timeIn: this.descriptionOfDiffOfTime(
                 new Date(item.entry_date),
-                new Date(item.exit_date)
+                new Date(item.exit_date || new Date())
               ),
               subtotal: item.subtotal ?? '--',
               discount: item.discount ?? '',
@@ -218,6 +218,7 @@ export class ReportService {
   }
 
   descriptionOfDiffOfTime(oldTime: Date, timeNow: Date): string {
+    console.log(timeNow, oldTime);
     if (!timeNow) {
       return 'No ha salido del parqueo'
     }

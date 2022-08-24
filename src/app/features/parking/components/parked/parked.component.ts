@@ -57,6 +57,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
 
   get dtOptions() {
     return DataTableOptions.getSpanishOptions(10)
+
   }
 
   async getInitialData() {
@@ -68,7 +69,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
     await this.getParkedData().then(() => this.rerender())
     setInterval(() => {
       if (!this.dtTrigger.closed) this.refreshParkedData()
-    }, 60000)
+    }, 30000)
   }
 
   async refreshParkedData() {
