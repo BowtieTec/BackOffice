@@ -64,7 +64,7 @@ export class GeneralDataComponent implements OnInit {
   }
 
   addMapMark(event: google.maps.MapMouseEvent) {
-    this.coordsMark = {lat: event.latLng.lat(), lng: event.latLng.lng()}
+    this.coordsMark = {lat: event?.latLng?.lat() || 0, lng: event?.latLng?.lng() || 0}
   }
 
   getPosition(): Promise<any> {
