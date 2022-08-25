@@ -64,7 +64,8 @@ export const permission = {
   restartPassword: 'restartPassword',
   updateFiles: 'updateFiles',
   transitDetailReport: 'transitDetailReport',
-  assignCourtesyPermission: 'assignCourtesyPermission'
+  assignCourtesyPermission: 'assignCourtesyPermission',
+  changePermissions: 'changePermissions'
 }
 export const leftMenu = [
   {
