@@ -322,7 +322,6 @@ export class ParkingService implements OnDestroy {
       )
       .pipe(
         map((res) => {
-          console.log(res)
           return {
             data: res.data.parked.map((x: any): ParkedModel => {
               return {

@@ -218,7 +218,6 @@ export class ReportService {
   }
 
   descriptionOfDiffOfTime(oldTime: Date, timeNow: Date): string {
-    console.log(timeNow, oldTime);
     if (!timeNow) {
       return 'No ha salido del parqueo'
     }

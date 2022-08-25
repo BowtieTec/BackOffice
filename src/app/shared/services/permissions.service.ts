@@ -20,7 +20,7 @@ export class PermissionsService implements OnInit {
     private auth: AuthService,
     private messageService: MessageService
   ) {
-    //this.getMenuOptionsValidated().then()
+    this.getMenuOptionsValidated(this.auth.getUser().user.id).then()
   }
 
   get actionsOfPermissions() {
