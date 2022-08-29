@@ -136,7 +136,7 @@ export class ReportService {
                 : '',
               timeIn: this.descriptionOfDiffOfTime(
                 new Date(item.entry_date),
-                new Date(item.exit_date)
+                new Date(item.exit_date || new Date())
               ),
               subtotal: item.subtotal ?? '--',
               discount: item.discount ?? '',

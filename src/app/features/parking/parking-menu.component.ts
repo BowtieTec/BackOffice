@@ -16,14 +16,15 @@ export class ParkingMenuComponent {
   listMonthlyParking = environment.listMonthlyParking
   listParkedParking = environment.listParkedParking
   createMonthlyParking = environment.createMonthlyParking
-  private actions: string[] = this.permissionService.actionsOfPermissions
 
   constructor(
     private authService: AuthService,
     private permissionService: PermissionsService,
     private parkingService: ParkingService
   ) {}
-
+get actions() {
+    return this.permissionService.actionsOfPermissions
+}
   get parkingId() {
     return this.authService.getParking().id
   }

@@ -1,22 +1,22 @@
-<nav #nav="ngbNav"
+<nav #nav="ngbNav" [activeId]="1"
      class="nav-tabs animate__animated animate__zoomInLeft "
      ngbNav>
+  <ng-container *ngIf="ifHaveAction(listParkedParking)"
+                [ngbNavItem]="1">
+    <a ngbNavLink><em class="fas fa-parking"></em> Parqueos dia</a>
+    <ng-template ngbNavContent>
+      <app-parked></app-parked>
+    </ng-template>
+  </ng-container>
   <ng-container *ngIf="ifHaveAction(createParking)"
-                ngbNavItem>
+                [ngbNavItem]="2">
     <a
       ngbNavLink><em class="fas fa-plus-square"></em> Nuevo parqueo</a>
     <ng-template ngbNavContent>
       <app-new-parking></app-new-parking>
     </ng-template>
   </ng-container>
-  <ng-container *ngIf="ifHaveAction(listParkedParking)"
-                ngbNavItem>
-    <a ngbNavLink><em class="fas fa-parking"></em> Parqueos dia</a>
-    <ng-template ngbNavContent>
-      <app-parked></app-parked>
-    </ng-template>
-  </ng-container>
-  <ng-container *ngIf="ifHaveAction(listMonthlyParking)" ngbNavItem>
+  <ng-container *ngIf="ifHaveAction(listMonthlyParking)" [ngbNavItem]="3">
     <a ngbNavLink><em class="fas fa-calendar-check"></em> Ver parqueos mensuales</a>
     <ng-template ngbNavContent>
       <app-monthly-parking></app-monthly-parking>
@@ -24,14 +24,14 @@
   </ng-container>
   <ng-container
     *ngIf = 'ifHaveAction(createMonthlyParking)'
-    ngbNavItem>
+    [ngbNavItem]="4">
     <a ngbNavLink><em class = 'fas fa-calendar-check'></em> Crear parqueos mensuales</a>
     <ng-template ngbNavContent>
       <app-create-monthly-parking *ngIf = 'ifHaveAction(listMonthlyParking)'></app-create-monthly-parking>
     </ng-template>
   </ng-container>
   <ng-container *ngIf="ifHaveAction(listAntennas)"
-                ngbNavItem>
+                [ngbNavItem]="5">
     <a ngbNavLink><em class="fas fa-broadcast-tower"></em> Antenas</a>
     <ng-template ngbNavContent>
 

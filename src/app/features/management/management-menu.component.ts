@@ -17,6 +17,7 @@ export class ManagementMenuComponent {
   tariffTest = environment.tariffTest
   listUserApp = environment.listUserApp
   updateFiles = environment.updateFiles
+  changePermissions = environment.changePermissions
 
   constructor(
     private authService: AuthService,

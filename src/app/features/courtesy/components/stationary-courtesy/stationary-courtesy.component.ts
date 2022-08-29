@@ -390,13 +390,4 @@ export class StationaryCourtesyComponent
       this.listParkingToCourtesy = p
     })
   }
-
-  private rerender() {
-    if (this.dtElement != undefined) {
-      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.destroy()
-        this.dtTrigger.next()
-      })
-    }
-  }
 }

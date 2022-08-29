@@ -313,7 +313,7 @@ export class ParkingService implements OnDestroy {
   getParked(
     parkedFormValues: { parkingId: string; status: string },
     page = 1,
-    pageSize = 10
+    pageSize = 100
   ) {
     return this.http
       .post<ResponseModel>(
@@ -337,7 +337,7 @@ export class ParkingService implements OnDestroy {
                 parkingId: x?.parking.id
               }
             }),
-            recordsTotal: res.data.recordsFiltered,
+            recordsTotal: res.data.recordsTotal,
             recordsFiltered: res.data.recordsFiltered
           }
         })

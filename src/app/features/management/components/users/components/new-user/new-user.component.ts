@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { UserService } from '../../services/user.service'
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { UtilitiesService } from '../../../../../../shared/services/utilities.service'
 import { NewUserModel } from '../../models/newUserModel'
 import { MessageService } from '../../../../../../shared/services/message.service'
@@ -10,6 +10,9 @@ import { ParkingService } from '../../../../../parking/services/parking.service'
 import { PermissionsService } from '../../../../../../shared/services/permissions.service'
 import { environment } from '../../../../../../../environments/environment'
 import { AuthService } from '../../../../../../shared/services/auth.service'
+import { CompaniesService } from '../../services/companies.service'
+import { CompaniesModel } from '../../models/companies.model'
+import { Roles } from '../../utilities/User'
 
 @Component({
   selector: 'app-new-user',
@@ -23,17 +26,27 @@ export class NewUserComponent implements OnInit {
   allParking: ParkingModel[] = []
   changeParkingAtCreateUser: string = environment.changeParkingAtCreateUser
   parkingId: string = this.authService.getParking().id
+  companies: CompaniesModel[] = []
 
   constructor(
     private userService: UserService,
-    private formBuilder: UntypedFormBuilder,
+    private formBuilder: FormBuilder,
     private utilitiesService: UtilitiesService,
     private messageServices: MessageService,
     private parkingService: ParkingService,
     private permissionService: PermissionsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private companiesService: CompaniesService
   ) {
     this.newUserForm = this.createForm()
+  }
+
+  get selectedRoleIsCourtesy() {
+    return this.newUserForm.getRawValue().role == Roles.Cortesias
+  }
+
+  get RawValue() {
+    return this.newUserForm.getRawValue()
   }
 
   getRoles() {
@@ -72,6 +85,7 @@ export class NewUserComponent implements OnInit {
       this.parkingId = parkingId
       this.newUserForm.get('parking')?.setValue(parkingId)
       this.parkingId = parkingId
+      this.getCompanies().then()
     })
     this.parkingService.parkingLot$.subscribe((parkingLot) => {
       this.allParking = parkingLot
@@ -89,6 +103,9 @@ export class NewUserComponent implements OnInit {
       return
     }
     let newUserValue: NewUserModel = this.newUserForm.getRawValue()
+    if(!this.selectedRoleIsCourtesy){
+      newUserValue.company = null
+    }
     if (!newUserValue) {
       this.utilitiesService.markAsTouched(this.newUserForm)
       this.messageServices.errorTimeOut('Datos incorrectos o faltantes.')
@@ -147,8 +164,11 @@ export class NewUserComponent implements OnInit {
         })
     }
   }
-  get RawValue(){
-    return this.newUserForm.getRawValue()
+
+  async getCompanies() {
+    this.companies = await this.companiesService
+      .getCompanies(this.parkingId)
+      .toPromise()
   }
 
   addPasswordValidations() {
@@ -199,6 +219,7 @@ export class NewUserComponent implements OnInit {
         ]
       ],
       role: ['b5b821bb-f919-4bae-9b6d-75a144fe2082', [Validators.required]],
+      company: [],
       parking: [this.parkingId, [Validators.required]]
     })
   }
