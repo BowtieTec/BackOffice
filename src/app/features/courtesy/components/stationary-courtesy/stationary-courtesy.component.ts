@@ -6,11 +6,7 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core'
-import {
-  UntypedFormBuilder,
-  FormGroup,
-  Validators
-} from '@angular/forms'
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms'
 import { MessageService } from '../../../../shared/services/message.service'
 import { ParkingService } from '../../../parking/services/parking.service'
 import { UtilitiesService } from '../../../../shared/services/utilities.service'
@@ -25,12 +21,14 @@ import {
 } from '../../../parking/models/StationaryCourtesy.model'
 import { CourtesyTypeModel } from '../../models/Courtesy.model'
 import { DataTableDirective } from 'angular-datatables'
-import { Subject } from 'rxjs'
+import { Subject, Subscription } from 'rxjs'
 import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
 import { CompaniesModel } from '../../../management/components/users/models/companies.model'
 import { CompaniesService } from '../../../management/components/users/services/companies.service'
-import { SelectModel } from '../../../../shared/model/CommonModels'
-import { ListCheckModel, listID, SelectModel } from '../../../../shared/model/CommonModels'
+import {
+  ListCheckModel,
+  SelectModel
+} from '../../../../shared/model/CommonModels'
 import { ListCheckboxService } from '../../../../shared/forms/list-checkbox-container/service/list-checkbox.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 
@@ -56,7 +54,7 @@ export class StationaryCourtesyComponent
   $subs: Subscription = Subscription.EMPTY
   listParkingToCourtesy: ListCheckModel[] = []
   courtesyHasParking: ParkingModel[] = []
-  courtesyDetailID:string = ''
+  courtesyDetailID: string = ''
 
   /*Table*/
   @ViewChild(DataTableDirective)
@@ -67,7 +65,8 @@ export class StationaryCourtesyComponent
   /* Permissions */
   createCourtesyStationary: string = environment.createCourtesyStationary
   editCourtesyStationary: string = environment.editCourtesyStationary
-  addParkingToCourtesyStationary: string = environment.addParkingToCourtesyStationary
+  addParkingToCourtesyStationary: string =
+    environment.addParkingToCourtesyStationary
 
   addStationsCourtesyStationary: string =
     environment.addStationsCourtesyStationary
@@ -83,7 +82,7 @@ export class StationaryCourtesyComponent
     private courtesyService: CourtesyService,
     private companyService: CompaniesService,
     private listCheckboxService: ListCheckboxService,
-    private modal: NgbModal,
+    private modal: NgbModal
   ) {
     this.stationaryForm = this.createForm()
     this.formGroup = formBuilder.group({ filter: [''] })
@@ -199,7 +198,7 @@ export class StationaryCourtesyComponent
   async getInitialData() {
     try {
       this.message.showLoading()
-     return Promise.all([
+      return Promise.all([
         this.getTypeCourtesies(),
         this.getCourtesiesStationary(),
         this.courtesyService.getTypes().toPromise(),
@@ -221,11 +220,15 @@ export class StationaryCourtesyComponent
         })
         .finally(() => {
           this.rerender()
-          if(this.allCompanies.length > 0){
-            this.stationaryForm.get('companyId')?.setValue(this.allCompanies[0].id)
+          if (this.allCompanies.length > 0) {
+            this.stationaryForm
+              .get('companyId')
+              ?.setValue(this.allCompanies[0].id)
           }
-          if(this.allAntennas.length > 0){
-            this.stationaryForm.get('stationId')?.setValue(this.allAntennas[0].id)
+          if (this.allAntennas.length > 0) {
+            this.stationaryForm
+              .get('stationId')
+              ?.setValue(this.allAntennas[0].id)
           }
           this.message.hideLoading()
           this.loading = false
@@ -253,24 +256,29 @@ export class StationaryCourtesyComponent
     try {
       this.dtTrigger.unsubscribe()
       this.$subs.unsubscribe()
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   validateId(id: string | undefined) {
     return id == undefined ? '' : id
   }
 
-  async openParkingToCourtesy(courtesyDetailId:string = '',contenido:any){
+  async openParkingToCourtesy(courtesyDetailId: string = '', contenido: any) {
     this.courtesyDetailID = courtesyDetailId
-    this.courtesyHasParking  = await this.courtesyService.getParkingForCourtesy(courtesyDetailId).toPromise()
+    this.courtesyHasParking = await this.courtesyService
+      .getParkingForCourtesy(courtesyDetailId)
+      .toPromise()
 
-    let newList:ListCheckModel[] = this.allParking.map((p) => {
+    let newList: ListCheckModel[] = this.allParking.map((p) => {
       return {
         id: p.id,
         name: p.name,
-        isChecked: this.courtesyHasParking.find(element => element.id == p.id)?true:false,
-        disable: this.courtesyHasParking.find(element => element.id == p.id)?true:false
+        isChecked: this.courtesyHasParking.find((element) => element.id == p.id)
+          ? true
+          : false,
+        disable: this.courtesyHasParking.find((element) => element.id == p.id)
+          ? true
+          : false
       }
     })
 
@@ -278,14 +286,15 @@ export class StationaryCourtesyComponent
     this.modal.open(contenido)
   }
 
-  addParkingToCourtesy(){
-    let addParking =  this.listParkingToCourtesy.filter((value) => value.isChecked && !value.disable).map((val) =>val.id)
-    this.courtesyService.addParkingToCourtesy(addParking,this.courtesyDetailID).then((data) => this.message.OkTimeOut())
+  addParkingToCourtesy() {
+    let addParking = this.listParkingToCourtesy
+      .filter((value) => value.isChecked && !value.disable)
+      .map((val) => val.id)
+    this.courtesyService
+      .addParkingToCourtesy(addParking, this.courtesyDetailID)
+      .then((data) => this.message.OkTimeOut())
     this.modal.dismissAll()
   }
-
-
-
 
   editAntenna(antenna: StationsCourtesyModel) {
     antenna.id = this.validateId(antenna.id)
@@ -380,17 +389,6 @@ export class StationaryCourtesyComponent
     this.$subs = this.listCheckboxService.recivedData().subscribe((p) => {
       this.listParkingToCourtesy = p
     })
-
-
-  }
-
-  private rerender() {
-    if (this.dtElement != undefined) {
-      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.destroy()
-        this.dtTrigger.next()
-      })
-    }
   }
 
   private rerender() {
