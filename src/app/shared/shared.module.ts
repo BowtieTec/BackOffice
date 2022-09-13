@@ -21,6 +21,7 @@ import {CourtesyChartComponent} from './courtesy-chart/courtesy-chart.component'
 import {RadioContainerComponent} from './forms/radio-container/radio-container.component';
 import {CardPlaceholderComponent} from './card-placeholder/card-placeholder.component';
 import { ListCheckboxContainerComponent } from './forms/list-checkbox-container/list-checkbox-container.component'
+import {NgSelectModule} from "@ng-select/ng-select";
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { ListCheckboxContainerComponent } from './forms/list-checkbox-container/
     RouterModule,
     NgbPaginationModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgSelectModule
   ],
   exports: [
     LeftPanelComponent,
