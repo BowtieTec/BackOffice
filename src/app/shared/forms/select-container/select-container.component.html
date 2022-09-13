@@ -1,5 +1,5 @@
 <div [formGroup] = "formGroup"
-     class = "m-2 relative">
+     class = "m-2 mt-0 mb-4 relative">
 <!--  <label class = "labelInput"
          style = "display: block;">{{this.name}}</label>
   <select [class.is-invalid] = "controlInvalid(controlName)"
@@ -17,7 +17,7 @@
             [value] = "null">Sin {{name}}</option>
   </select>-->
   <ng-select formControlName="{{controlName}}">
-    <ng-option *ngFor="let item of data" [value]="item.id">{{item.name}}</ng-option>
+    <ng-option class="inputClass" *ngFor="let item of data" [value]="item.id">{{item.name}}</ng-option>
   </ng-select>
   <div *ngIf = "controlInvalid(controlName)"
        class = "text-danger animate__animated animate__fadeIn mb-1">* El valor no es valido
