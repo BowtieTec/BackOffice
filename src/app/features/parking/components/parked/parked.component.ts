@@ -87,7 +87,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
   createForm(): FormGroup {
     return this.formBuilder.group({
       parkingId: ['0'],
-      status: ['1'],
+      status: [1],
       textToSearch: [''],
       dateOutToGetOut: [null, [Validators.required]]
     })
