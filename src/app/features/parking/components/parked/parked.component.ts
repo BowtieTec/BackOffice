@@ -1,25 +1,15 @@
-import {
-  AfterViewInit,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { ParkingService } from '../../services/parking.service'
-import {
-  ParkedModel,
-  ParkingModel,
-  StatusParked
-} from '../../models/Parking.model'
-import { AuthService } from '../../../../shared/services/auth.service'
-import { DataTableDirective } from 'angular-datatables'
-import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
-import { Subject } from 'rxjs'
-import { MessageService } from '../../../../shared/services/message.service'
-import { environment } from '../../../../../environments/environment'
-import { PermissionsService } from '../../../../shared/services/permissions.service'
-import { ReportService } from '../../../report/components/service/report.service'
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core'
+import {FormBuilder, FormGroup, Validators} from '@angular/forms'
+import {ParkingService} from '../../services/parking.service'
+import {ParkedModel, ParkingModel, StatusParked} from '../../models/Parking.model'
+import {AuthService} from '../../../../shared/services/auth.service'
+import {DataTableDirective} from 'angular-datatables'
+import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
+import {Subject} from 'rxjs'
+import {MessageService} from '../../../../shared/services/message.service'
+import {environment} from '../../../../../environments/environment'
+import {PermissionsService} from '../../../../shared/services/permissions.service'
+import {ReportService} from '../../../report/components/service/report.service'
 
 @Component({
   selector: 'app-parked',
