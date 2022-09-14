@@ -1,25 +1,14 @@
 <div [formGroup] = "formGroup"
-     class = "m-2 mt-0 mb-4 relative">
-<!--  <label class = "labelInput"
+     class = "m-2 relative">
+  <label class = "labelInput"
          style = "display: block;">{{this.name}}</label>
-  <select [class.is-invalid] = "controlInvalid(controlName)"
-          data-live-search="true"
-          class = "selectClass"
-          formControlName = "{{controlName}}">
-    <option *ngIf = "!this.exist0 || data.length == 0"
-            [disabled] = "true"
-            value = "0">-- {{data.length <= 0 ? 'No hay ' + name + ' disponibles' : name}} --
-    </option>
-    <option *ngFor = "let item of data"
-            selected
-            [value] = "item.id">{{item.name | titlecase}}</option>
-    <option *ngIf = 'unselect'
-            [value] = "null">Sin {{name}}</option>
-  </select>-->
-  <ng-select formControlName="{{controlName}}">
-    <ng-option class="inputClass" *ngFor="let item of data" [value]="item.id">{{item.name}}</ng-option>
+  <ng-select formControlName = "{{controlName}}"
+             notFoundText = "No se encontraron coincidencias">
+    <ng-option *ngFor = "let item of data"
+               [value] = "item.id"
+               class = "inputClass">{{item.name | titlecase}}</ng-option>
   </ng-select>
   <div *ngIf = "controlInvalid(controlName)"
-       class = "text-danger animate__animated animate__fadeIn mb-1">* El valor no es valido
+       class = "text-danger animate__animated animate__fadeIn mb-1">* El valor no es válido
   </div>
 </div>
