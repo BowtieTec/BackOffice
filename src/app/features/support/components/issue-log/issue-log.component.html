@@ -75,21 +75,58 @@
       <th scope = "col">Modelo del Teléfono</th>
       <th scope = "col">Fecha</th>
       <th scope = "col">Nivel</th>
+      <th scope='col'>Opciones</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor = "let issue of issues"
-        class = "animate__animated animate__fadeIn">
+    <tr *ngFor='let issue of issues'
+        class='animate__animated animate__fadeIn'>
       <td>{{issue.name}}</td>
       <td>{{issue.phone_number}}</td>
       <td>{{issue.message}}</td>
       <td> {{issue.userDevice}}</td>
       <td> {{issue.created_at}}</td>
-      <td style='position: relative'> <div style='display: inline-block'>{{issue.level}}</div> <div [ngClass]= "issue.level < 4 ? 'typeIssue lowstatus' : 'typeIssue highstatus'"></div></td>
+      <td style='position: relative'>
+        <div style='display: inline-block'>{{issue.level}}</div>
+        <div [ngClass]="issue.level < 4 ? 'typeIssue lowstatus' : 'typeIssue highstatus'"></div>
+      </td>
+      <td>
+        <button
+          (click)='openContext(issue.context,contenido)'
+          class='btn-input'
+          title='Context'><em class='fas fa-eye'> Ver</em>
+        </button>
+      </td>
     </tr>
     </tbody>
   </table>
 
 
-
 </div>
+
+<ng-template #contenido
+             let-modal>
+
+  <div class='modal-header'>
+    <h5 class='modal-title'>Log Capturado</h5>
+    <button (click)='this.modal.close()'
+            aria-label='Close'
+            class='btn-close'
+            type='button'></button>
+  </div>
+  <div class='modal-body'>
+    <div class='list-group'>
+      <textarea [value]='valContext' readonly rows='5'></textarea>
+    </div>
+  </div>
+  <hr>
+  <div class='text-center'>
+    <button
+      (click)='this.modal.close()'
+      class='btn btn-secondary'
+      data-bs-dismiss='modal'
+      type='button'>Cerrar
+    </button>
+  </div>
+
+</ng-template>
