@@ -43,13 +43,13 @@
                  style = "display:block">Teléfono</label>
           <input
             #telephone
-            (change) = "getIssues(initDate.value,endDate.value, telephone.value)"
-            class = "form-control inputClass datetimepicker"
-            maxlength = "12"
-            name = "telephone"
-            placeholder = "Teléfono"
-            type = "text"
-            value = ""
+            (change)="getIssues(initDate.value,endDate.value, telephone.value)"
+            class="form-control inputClass datetimepicker"
+            maxlength="12"
+            name="telephone"
+            placeholder="Teléfono"
+            type="number"
+            value=""
           >
         </div>
       </div>

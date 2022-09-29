@@ -194,12 +194,10 @@ export class CreateMonthlyParkingComponent implements OnInit {
   }
 
   cleanForm() {
-    //this.monthlyForm.reset()
+    this.monthlyForm = this.createForm()
     this.userSelected = new MonthlyUserModel()
     this.userSearched = []
     this.isUnlimitedForm.setValue(true)
-    this.monthlyForm.getRawValue().profile_subscription = ''
-    this.monthlyForm.getRawValue().amount = ''
   }
 
   getProfiles() {
@@ -264,10 +262,11 @@ export class CreateMonthlyParkingComponent implements OnInit {
       })
       .then(() => {
         this.cleanForm()
+        console.log("Berny Cardona")
         this.message.Ok('Guardado')
-
       })
       .catch()
+
   }
 
   createForm() {

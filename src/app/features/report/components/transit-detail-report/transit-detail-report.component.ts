@@ -1,17 +1,17 @@
-import { Component, ElementRef, OnInit } from '@angular/core'
-import { DxDataGridComponent } from 'devextreme-angular'
-import { DataTableDirective } from 'angular-datatables'
-import { Subject } from 'rxjs'
-import { FormBuilder, FormGroup } from '@angular/forms'
-import { AuthService } from '../../../../shared/services/auth.service'
-import { ParkingService } from '../../../parking/services/parking.service'
-import { ParkingModel } from '../../../parking/models/Parking.model'
-import { PermissionsService } from '../../../../shared/services/permissions.service'
-import { MessageService } from '../../../../shared/services/message.service'
-import { ReportService } from '../service/report.service'
-import { Workbook } from 'exceljs'
+import {Component, ElementRef, OnInit} from '@angular/core'
+import {DxDataGridComponent} from 'devextreme-angular'
+import {DataTableDirective} from 'angular-datatables'
+import {Subject} from 'rxjs'
+import {FormBuilder, FormGroup} from '@angular/forms'
+import {AuthService} from '../../../../shared/services/auth.service'
+import {ParkingService} from '../../../parking/services/parking.service'
+import {ParkingModel} from '../../../parking/models/Parking.model'
+import {PermissionsService} from '../../../../shared/services/permissions.service'
+import {MessageService} from '../../../../shared/services/message.service'
+import {ReportService} from '../service/report.service'
+import {Workbook} from 'exceljs'
 import * as logoFile from '../logoEbi'
-import { saveAs } from 'file-saver'
+import {saveAs} from 'file-saver'
 
 @Component({
   selector: 'app-transit-detail-report',
@@ -262,8 +262,8 @@ export class TransitDetailReportComponent implements OnInit {
       const row = worksheet.addRow([
         '',
         d.phone_key,
-        d.entry_date ? new Date(d.entry_date).toLocaleString() : '',
-        d.exit_date ? new Date(d.exit_date).toLocaleString() : '',
+        d.entry_date,
+        d.exit_date,
         d.timeIn,
         d.subtotal,
         d.discount,
