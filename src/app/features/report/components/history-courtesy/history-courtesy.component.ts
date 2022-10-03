@@ -1,28 +1,22 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild
-} from '@angular/core'
-import { DxDataGridComponent } from 'devextreme-angular'
-import { DataTableDirective } from 'angular-datatables'
-import { Subject } from 'rxjs'
-import { ParkingModel } from '../../../parking/models/Parking.model'
-import { environment } from '../../../../../environments/environment'
-import { AuthService } from '../../../../shared/services/auth.service'
-import { ReportService } from '../service/report.service'
-import { MessageService } from '../../../../shared/services/message.service'
-import { UtilitiesService } from '../../../../shared/services/utilities.service'
-import { PermissionsService } from '../../../../shared/services/permissions.service'
-import { ParkingService } from '../../../parking/services/parking.service'
-import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
-import { jsPDF } from 'jspdf'
-import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter'
-import { Workbook } from 'exceljs'
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core'
+import {DxDataGridComponent} from 'devextreme-angular'
+import {DataTableDirective} from 'angular-datatables'
+import {Subject} from 'rxjs'
+import {ParkingModel} from '../../../parking/models/Parking.model'
+import {environment} from '../../../../../environments/environment'
+import {AuthService} from '../../../../shared/services/auth.service'
+import {ReportService} from '../service/report.service'
+import {MessageService} from '../../../../shared/services/message.service'
+import {UtilitiesService} from '../../../../shared/services/utilities.service'
+import {PermissionsService} from '../../../../shared/services/permissions.service'
+import {ParkingService} from '../../../parking/services/parking.service'
+import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
+import {jsPDF} from 'jspdf'
+import {exportDataGrid as exportDataGridToPdf} from 'devextreme/pdf_exporter'
+import {Workbook} from 'exceljs'
 import * as logoFile from '../logoEbi'
-import { saveAs } from 'file-saver'
-import { FormBuilder, FormGroup } from '@angular/forms'
+import {saveAs} from 'file-saver'
+import {FormBuilder, FormGroup} from '@angular/forms'
 
 export interface historyOfCourtesy {
   completeName: string
@@ -90,6 +84,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
   }
 
   getReport() {
+    this.messageService.showLoading()
     const { startDate, endDate, parkingId } = this.reportForm.getRawValue()
     let _startDate = new Date(startDate).toISOString().split('T')[0]
     let _endDate = new Date(endDate).toISOString().split('T')[0]

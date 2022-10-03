@@ -10,17 +10,7 @@
       </div>
       ​
       <div class = "row">
-        <div *ngIf = "isSudo" class = "col-md-6 mb-4">
-          <div class = "relative ">
-            <app-select-container (change) = "getCourtesies(this.parkingSelected)"
-
-                                  [data] = "this.allParkingLot"
-                                  [formGroup] = "tariffTestForm"
-                                  controlName = "parking"
-                                  name = "Parqueo"></app-select-container>
-          </div>
-        </div>
-        <div class = "col-md-6 mb-4">
+        <div class = "col-md-4 mb-4">
           <app-select-container (change) = "this.courtesySelected()"
                                 [data] = "this.courtesies"
                                 [formGroup] = "tariffTestForm"
@@ -28,7 +18,7 @@
                                 controlName = "courtesyId"
                                 name = "Cortesías"></app-select-container>
         </div>
-        <div class = "col-md-6 mb-4">
+        <div class = "col-md-4 mb-4">
           <app-input-container [formGroup] = "tariffTestForm"
                                controlName = "date_in"
                                name = "Fecha y hora de entrada"
@@ -36,7 +26,7 @@
 
           </app-input-container>
         </div>
-        <div class = "col-md-6 mb-4">
+        <div class = "col-md-4 mb-4">
           <app-input-container [formGroup] = "tariffTestForm"
                                controlName = "date_out"
                                name = "Fecha y hora de salida"
