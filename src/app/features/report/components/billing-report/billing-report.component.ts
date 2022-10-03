@@ -110,8 +110,9 @@ export class BillingReportComponent implements OnInit {
       parkingId: string
       dateTypeSearch: number
     } = this.reportForm.getRawValue()
-    let _startDate = startDate.toISOString().split('T')[0] + ' 00:00:00'
-    let _endDate = endDate.toISOString().split('T')[0] + ' 23:59:59'
+
+    let _startDate = new Date(startDate).toISOString().split('T')[0] + ' 00:00:00'
+    let _endDate = new Date(endDate).toISOString().split('T')[0] + ' 23:59:59'
     if (endDate < startDate) {
       this.messageService.error(
         '',
