@@ -1,22 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
-import { DxDataGridComponent } from 'devextreme-angular'
-import { DataTableDirective } from 'angular-datatables'
-import { Subject } from 'rxjs'
-import { ParkingModel } from '../../../parking/models/Parking.model'
-import { environment } from '../../../../../environments/environment'
-import { AuthService } from '../../../../shared/services/auth.service'
-import { ReportService } from '../service/report.service'
-import { MessageService } from '../../../../shared/services/message.service'
-import { UtilitiesService } from '../../../../shared/services/utilities.service'
-import { PermissionsService } from '../../../../shared/services/permissions.service'
-import { ParkingService } from '../../../parking/services/parking.service'
-import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
-import { jsPDF } from 'jspdf'
-import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter'
-import { Workbook } from 'exceljs'
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core'
+import {DxDataGridComponent} from 'devextreme-angular'
+import {DataTableDirective} from 'angular-datatables'
+import {Subject} from 'rxjs'
+import {ParkingModel} from '../../../parking/models/Parking.model'
+import {environment} from '../../../../../environments/environment'
+import {AuthService} from '../../../../shared/services/auth.service'
+import {ReportService} from '../service/report.service'
+import {MessageService} from '../../../../shared/services/message.service'
+import {UtilitiesService} from '../../../../shared/services/utilities.service'
+import {PermissionsService} from '../../../../shared/services/permissions.service'
+import {ParkingService} from '../../../parking/services/parking.service'
+import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
+import {jsPDF} from 'jspdf'
+import {exportDataGrid as exportDataGridToPdf} from 'devextreme/pdf_exporter'
+import {Workbook} from 'exceljs'
 import * as logoFile from '../logoEbi'
-import { saveAs } from 'file-saver'
-import { FormBuilder, FormGroup } from '@angular/forms'
+import {saveAs} from 'file-saver'
+import {FormBuilder, FormGroup} from '@angular/forms'
 
 export interface billingData {
   serial: string
@@ -110,8 +110,9 @@ export class BillingReportComponent implements OnInit {
       parkingId: string
       dateTypeSearch: number
     } = this.reportForm.getRawValue()
-    let _startDate = startDate + ' 00:00:00'
-    let _endDate = endDate + ' 23:59:59'
+
+    let _startDate = new Date(startDate).toISOString().split('T')[0] + ' 00:00:00'
+    let _endDate = new Date(endDate).toISOString().split('T')[0] + ' 23:59:59'
     if (endDate < startDate) {
       this.messageService.error(
         '',
@@ -119,12 +120,12 @@ export class BillingReportComponent implements OnInit {
       )
       return
     }
-    if (this.ifHaveAction('verTodosLosParqueosReport')) {
-    }
+    console.log(startDate)
     return this.reportService
       .getBillingRpt(_startDate, _endDate, parkingId, dateTypeSearch)
       .toPromise()
       .then((data) => {
+
         if (data.success) {
           this.report = data.data
           this.dataSource = data.data
