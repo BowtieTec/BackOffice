@@ -27,7 +27,7 @@ export interface billingData {
   pagado: number
   nit: number
   typeService: string
-  dateBilling: Date
+  dateBilling: string
 }
 
 @Component({
