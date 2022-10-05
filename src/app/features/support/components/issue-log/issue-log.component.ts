@@ -1,14 +1,14 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core'
-import { UntypedFormBuilder } from '@angular/forms'
-import { MessageService } from '../../../../shared/services/message.service'
-import { PermissionsService } from '../../../../shared/services/permissions.service'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { UtilitiesService } from '../../../../shared/services/utilities.service'
-import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
-import { Subject } from 'rxjs'
-import { DataTableDirective } from 'angular-datatables'
-import { IssueModel } from './issue/issue.module'
-import { IssueLogService } from './Services/issue-log.service'
+import {Component, Input, OnInit, ViewChild} from '@angular/core'
+import {UntypedFormBuilder} from '@angular/forms'
+import {MessageService} from '../../../../shared/services/message.service'
+import {PermissionsService} from '../../../../shared/services/permissions.service'
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
+import {UtilitiesService} from '../../../../shared/services/utilities.service'
+import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
+import {Subject} from 'rxjs'
+import {DataTableDirective} from 'angular-datatables'
+import {IssueModel} from './issue/issue.module'
+import {IssueLogService} from './Services/issue-log.service'
 
 @Component({
   selector: 'app-issue-log',
@@ -74,6 +74,10 @@ export class IssueLogComponent implements OnInit {
     endDate: string,
     telephone: string = ''
   ) {
+    if (!telephone) {
+      this.message.error('', 'Debe de ingresar un número de teléfono')
+      return
+    }
     if (endDate < initDate) {
       this.message.error('', 'La fecha de inicio debe ser mayor a la fecha fin')
       return
