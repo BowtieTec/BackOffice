@@ -99,6 +99,7 @@ export class BillingReportComponent implements OnInit {
   }
 
   getReport() {
+    this.messageService.showLoading()
     const {
       startDate,
       endDate,
@@ -120,7 +121,6 @@ export class BillingReportComponent implements OnInit {
       )
       return
     }
-    console.log(startDate)
     return this.reportService
       .getBillingRpt(_startDate, _endDate, parkingId, dateTypeSearch)
       .toPromise()
@@ -134,9 +134,7 @@ export class BillingReportComponent implements OnInit {
           this.messageService.error('', data.message)
         }
       })
-      .then(() => {
-        this.messageService.hideLoading()
-      })
+      .then(() => this.messageService.hideLoading())
   }
 
   onExporting(e: any) {

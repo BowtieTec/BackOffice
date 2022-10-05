@@ -1,10 +1,10 @@
-import { ErrorHandler, Injectable, NgZone } from '@angular/core'
-import { MessageService } from '../../shared/services/message.service'
-import { Router } from '@angular/router'
-import { AuthService } from '../../shared/services/auth.service'
-import { throwError } from 'rxjs'
-import { environment } from '../../../environments/environment'
-import { HttpErrorResponse } from '@angular/common/http'
+import {ErrorHandler, Injectable, NgZone} from '@angular/core'
+import {MessageService} from '../../shared/services/message.service'
+import {Router} from '@angular/router'
+import {AuthService} from '../../shared/services/auth.service'
+import {throwError} from 'rxjs'
+import {environment} from '../../../environments/environment'
+import {HttpErrorResponse} from '@angular/common/http'
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
@@ -13,7 +13,8 @@ export class GlobalErrorHandler implements ErrorHandler {
     private router: Router,
     private auth: AuthService,
     private zone: NgZone
-  ) {}
+  ) {
+  }
 
   handleError(error: Response | HttpErrorResponse | any) {
     const errorString = error.toString()
@@ -91,8 +92,10 @@ export class GlobalErrorHandler implements ErrorHandler {
       this.goToLogin()
       return
     }
-    this.message.error('Error no manejado. Por favor contacte al administrador')
-    if (!environment.production) console.error('Error: ', error)
+    if (!environment.production) {
+      this.message.error('Error no manejado. Por favor contacte al administrador')
+      console.error('Error: ', error)
+    }
     throw Error(error)
   }
 

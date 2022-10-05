@@ -231,12 +231,12 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   private async getParkedData() {
-    this.messageService.showLoading()
+
     return this.parkingService
       .getParked(this.getParkedFormValues())
       .toPromise()
       .then((data) => {
         this.parkedData = data.data
-      }).then(() => this.messageService.hideLoading())
+      })
   }
 }
