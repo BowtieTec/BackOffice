@@ -896,7 +896,7 @@ nav > .nav-link.active {
   .headerDashboard {
     width: 100vw !important;
     min-height: 75px;
-    z-index: 2;
+    z-index: 4;
   }
 
   .search {
