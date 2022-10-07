@@ -5,16 +5,6 @@
         <span><i class="fas fa-sitemap"></i></span> Reporte de Detalle de Transito
       </div>
       <div class="row justify-content-center">
-        <div *ngIf="isSudo"
-             class="col-xl-4 col-lg-6 col-sm-12">
-          <app-select-container
-            (change)="this.getReport()"
-            [data]="allParking"
-            [formGroup]="reportForm"
-            controlName="parkingId"
-            name="Parqueos"
-          ></app-select-container>
-        </div>
         <div class = 'col-xl-4 col-lg-6 col-sm-12'>
           <div class = 'mb-4 relative'>
             <app-input-container

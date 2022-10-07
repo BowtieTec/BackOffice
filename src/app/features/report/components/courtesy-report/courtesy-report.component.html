@@ -1,27 +1,9 @@
 <div class = "row justify-content-center">
-  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12 panelLeft animate__animated animate__fadeInLeft">
-    <div class = "panelsWithOutMinHeight">
+  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class = "panels">
       <div class = "titleCards">
         <span><i class = "fas fa-sitemap"></i></span> Reporte de cortesías
       </div>
-      <div class = "row justify-content-center">
-        <div *ngIf = "isSudo"
-             class = "col-xl-4 col-lg-6 col-sm-12">
-          <app-select-container
-            (change) = "this.getReport()"
-            [data] = "allParking"
-            [formGroup] = "reportForm"
-            controlName = "parkingId"
-            name = "Parqueos"
-          ></app-select-container>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class = "panels">
       <div class = "row">
         <dx-data-grid [dataSource] = "dataSource"
                       [showBorders] = "true"

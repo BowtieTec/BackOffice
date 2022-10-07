@@ -5,7 +5,6 @@ import {Subject} from 'rxjs'
 import {FormBuilder, FormGroup} from '@angular/forms'
 import {AuthService} from '../../../../shared/services/auth.service'
 import {ParkingService} from '../../../parking/services/parking.service'
-import {ParkingModel} from '../../../parking/models/Parking.model'
 import {PermissionsService} from '../../../../shared/services/permissions.service'
 import {MessageService} from '../../../../shared/services/message.service'
 import {ReportService} from '../service/report.service'
@@ -26,7 +25,6 @@ export class TransitDetailReportComponent implements OnInit {
   pdfTable!: ElementRef
   reportForm: FormGroup
   formGroup: FormGroup
-  allParking: ParkingModel[] = []
   dataSource: any
   now: Date = new Date()
 
@@ -51,13 +49,6 @@ export class TransitDetailReportComponent implements OnInit {
     this.authService.user$.subscribe(({ parkingId }) => {
       this.reportForm.get('parkingId')?.setValue(parkingId)
       this.getReport()
-    })
-
-    this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParking = [
-        ...parkingLot,
-        { id: '0', name: '-- Todos los parqueos --' }
-      ]
     })
   }
 
@@ -128,16 +119,7 @@ export class TransitDetailReportComponent implements OnInit {
       }
     })
     worksheet.mergeCells('D2:O3')
-    let ParqueoReporte = 'Todos los parqueos'
-    if (parkingId != '0') {
-      const parqueoEncontrado = this.allParking.find(
-        (parqueos) => parqueos.id == parkingId
-      )
-      if (parqueoEncontrado) {
-        ParqueoReporte = parqueoEncontrado.name
-      }
-    }
-    const addressRow = worksheet.addRow(['', '', '', ParqueoReporte])
+    const addressRow = worksheet.addRow(['', '', '', this.authService.getParking().name])
     addressRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
     addressRow.alignment = { horizontal: 'center', vertical: 'middle' }
     addressRow.eachCell((cell, number) => {

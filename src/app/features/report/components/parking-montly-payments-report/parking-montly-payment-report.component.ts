@@ -1,23 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
-import { DataTableDirective } from 'angular-datatables'
-import { Subject } from 'rxjs'
-import { MessageService } from '../../../../shared/services/message.service'
-import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
-import { ReportService } from '../service/report.service'
-import { UtilitiesService } from '../../../../shared/services/utilities.service'
-import { AuthService } from '../../../../shared/services/auth.service'
-import { PermissionsService } from '../../../../shared/services/permissions.service'
-import { environment } from 'src/environments/environment'
-import { jsPDF } from 'jspdf'
-import { DxDataGridComponent } from 'devextreme-angular'
-import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter'
-import { Workbook } from 'exceljs'
-import { saveAs } from 'file-saver'
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core'
+import {DataTableDirective} from 'angular-datatables'
+import {Subject} from 'rxjs'
+import {MessageService} from '../../../../shared/services/message.service'
+import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
+import {ReportService} from '../service/report.service'
+import {UtilitiesService} from '../../../../shared/services/utilities.service'
+import {AuthService} from '../../../../shared/services/auth.service'
+import {PermissionsService} from '../../../../shared/services/permissions.service'
+import {environment} from 'src/environments/environment'
+import {jsPDF} from 'jspdf'
+import {DxDataGridComponent} from 'devextreme-angular'
+import {exportDataGrid as exportDataGridToPdf} from 'devextreme/pdf_exporter'
+import {Workbook} from 'exceljs'
+import {saveAs} from 'file-saver'
 
-import { ParkingService } from '../../../parking/services/parking.service'
-import { ParkingModel } from '../../../parking/models/Parking.model'
+import {ParkingService} from '../../../parking/services/parking.service'
 import * as logoFile from '../logoEbi'
-import { FormBuilder, FormGroup } from '@angular/forms'
+import {FormBuilder, FormGroup} from '@angular/forms'
 
 export interface montlyPark {
   number: number
@@ -45,7 +44,6 @@ export class ParkingMontlyPaymentReportComponent implements OnInit {
   report: montlyPark[] = []
   dataSource: any
   now = new Date()
-  allParking: ParkingModel[] = Array<ParkingModel>()
   verTodosLosParqueosReport = environment.verTodosLosParqueosReport
 
   constructor(
@@ -71,13 +69,6 @@ export class ParkingMontlyPaymentReportComponent implements OnInit {
     this.authService.user$.subscribe(({ parkingId }) => {
       this.reportForm.get('parkingId')?.setValue(parkingId)
       this.getReport()
-    })
-
-    this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParking = [
-        ...parkingLot,
-        { id: '0', name: '-- Todos los parqueos --' }
-      ]
     })
   }
 
@@ -170,16 +161,7 @@ export class ParkingMontlyPaymentReportComponent implements OnInit {
       }
     })
     worksheet.mergeCells('D2:I3')
-    let ParqueoReporte = 'Todos los parqueos'
-    if (parkingId != '0') {
-      const parqueoEncontrado = this.allParking.find(
-        (parqueos) => parqueos.id == parkingId
-      )
-      if (parqueoEncontrado) {
-        ParqueoReporte = parqueoEncontrado.name
-      }
-    }
-    const addressRow = worksheet.addRow(['', '', '', ParqueoReporte])
+    const addressRow = worksheet.addRow(['', '', '', this.authService.getParking().name])
     addressRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
     addressRow.alignment = { horizontal: 'center', vertical: 'middle' }
     addressRow.eachCell((cell, number) => {

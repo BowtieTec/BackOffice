@@ -2,7 +2,6 @@ import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/
 import {DxDataGridComponent} from 'devextreme-angular'
 import {DataTableDirective} from 'angular-datatables'
 import {Subject} from 'rxjs'
-import {ParkingModel} from '../../../parking/models/Parking.model'
 import {environment} from '../../../../../environments/environment'
 import {AuthService} from '../../../../shared/services/auth.service'
 import {ReportService} from '../service/report.service'
@@ -43,7 +42,6 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
   report: historyOfCourtesy[] = []
   dataSource: any
   now = new Date()
-  allParking: ParkingModel[] = Array<ParkingModel>()
   verTodosLosParqueosReport = environment.verTodosLosParqueosReport
 
   constructor(
@@ -69,13 +67,6 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
     this.authService.user$.subscribe(({ parkingId }) => {
       this.reportForm.get('parkingId')?.setValue(parkingId)
       this.getReport()
-    })
-
-    this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParking = [
-        ...parkingLot,
-        { id: '0', name: '-- Todos los parqueos --' }
-      ]
     })
   }
 
@@ -157,16 +148,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       }
     })
     worksheet.mergeCells('D2:Q3')
-    let ParqueoReporte = 'Todos los parqueos'
-    if (parkingId != '0') {
-      const parqueoEncontrado = this.allParking.find(
-        (parqueos) => parqueos.id == parkingId
-      )
-      if (parqueoEncontrado) {
-        ParqueoReporte = parqueoEncontrado.name
-      }
-    }
-    const addressRow = worksheet.addRow(['', '', '', ParqueoReporte])
+    const addressRow = worksheet.addRow(['', '', '', this.authService.getParking().name])
     addressRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
     addressRow.alignment = { horizontal: 'center', vertical: 'middle' }
     addressRow.eachCell((cell, number) => {

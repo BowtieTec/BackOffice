@@ -2,7 +2,6 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core'
 import {DxDataGridComponent} from 'devextreme-angular'
 import {DataTableDirective} from 'angular-datatables'
 import {Subject} from 'rxjs'
-import {ParkingModel} from '../../../parking/models/Parking.model'
 import {environment} from '../../../../../environments/environment'
 import {AuthService} from '../../../../shared/services/auth.service'
 import {ReportService} from '../service/report.service'
@@ -46,13 +45,11 @@ export class BillingReportComponent implements OnInit {
   report: billingData[] = []
   dataSource: any
 
-  allParking: ParkingModel[] = Array<ParkingModel>()
   verTodosLosParqueosReport = environment.verTodosLosParqueosReport
   @ViewChild('inputParking') inputParking!: ElementRef
   fechaActual = new Date().toISOString().split('T')[0]
 
   nowDateTime = new Date()
-  parkingId: string = ''
   reportForm: FormGroup
 
   constructor(
@@ -77,14 +74,7 @@ export class BillingReportComponent implements OnInit {
     this.messageService.showLoading()
     this.dtOptions = DataTableOptions.getSpanishOptions(10)
 
-    this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParking = [
-        ...parkingLot,
-        { id: '0', name: '-- Todos los parqueos --' }
-      ]
-    })
     this.authService.user$.subscribe(({ parkingId }) => {
-      this.parkingId = parkingId
       this.reportForm.get('parkingId')?.setValue(parkingId)
       this.getInitialData()?.then()
     })
@@ -173,16 +163,7 @@ export class BillingReportComponent implements OnInit {
       }
     })
     worksheet.mergeCells('D2:G3')
-    let ParqueoReporte = 'Todos los parqueos'
-    if (this.parkingId != '0') {
-      const parqueoEncontrado = this.allParking.find(
-        (parqueos) => parqueos.id == parkingId
-      )
-      if (parqueoEncontrado) {
-        ParqueoReporte = parqueoEncontrado.name
-      }
-    }
-    const addressRow = worksheet.addRow(['', '', '', ParqueoReporte])
+    const addressRow = worksheet.addRow(['', '', '', this.authService.getParking().name])
     addressRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
     addressRow.alignment = { horizontal: 'center', vertical: 'middle' }
     addressRow.eachCell((cell, number) => {
