@@ -86,7 +86,28 @@
                       id = 'gridContainer'>
           <dxi-column
             caption = 'Fecha facturación'
-            dataField = 'dateBilling'
+            dataField = 'certification_time'
+            dataType = 'datetime'
+            format = 'dd/MM/yyyy hh:mm:ss'
+            width = 'auto'
+          ></dxi-column>
+          <dxi-column
+            caption = 'Fecha de entrada'
+            dataField = 'entry_date'
+            dataType = 'datetime'
+            format = 'dd/MM/yyyy hh:mm:ss'
+            width = 'auto'
+          ></dxi-column>
+          <dxi-column
+            caption = 'Fecha de salida'
+            dataField = 'exit_date'
+            dataType = 'datetime'
+            format = 'dd/MM/yyyy hh:mm:ss'
+            width = 'auto'
+          ></dxi-column>
+          <dxi-column
+            caption = 'Fecha de pago'
+            dataField = 'payment_date'
             dataType = 'datetime'
             format = 'dd/MM/yyyy hh:mm:ss'
             width = 'auto'
@@ -101,7 +122,6 @@
             dataField = 'nit'
             width = 'auto'
           ></dxi-column>
-
           <dxi-column
             caption = 'Total '
             dataField = 'total'
