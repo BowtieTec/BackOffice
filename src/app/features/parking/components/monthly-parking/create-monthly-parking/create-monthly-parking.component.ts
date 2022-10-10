@@ -14,7 +14,6 @@ import {
 } from '../../../models/MontlyParking.model'
 import {environment} from '../../../../../../environments/environment'
 import {ResponseModel} from '../../../../../shared/model/Request.model'
-import {ParkingModel} from '../../../models/Parking.model'
 
 @Component({
   selector: 'app-create-monthly-parking',
@@ -28,7 +27,6 @@ export class CreateMonthlyParkingComponent implements OnInit {
   userSearched: Array<MonthlyUserModel> = []
   profiles: ProfilesModel[] = []
   subscriptions: SubscriptionModel[] = []
-  allParking: ParkingModel[] = Array<ParkingModel>()
   stationsByParking: GetStationModel[] = []
   nameProfile = ''
   loadingUser = false
@@ -125,11 +123,6 @@ export class CreateMonthlyParkingComponent implements OnInit {
       this.monthlyForm.get('parkingId')?.setValue(parkingId)
       this.getInitialData().catch()
     })
-
-    this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParking = parkingLot
-    })
-
   }
 
   changeValueIsUnlimited() {

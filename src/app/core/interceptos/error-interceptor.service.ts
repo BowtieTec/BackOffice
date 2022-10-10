@@ -18,6 +18,10 @@ export class GlobalErrorHandler implements ErrorHandler {
 
   handleError(error: Response | HttpErrorResponse | any) {
     const errorString = error.toString()
+    if (error.error.message) {
+      this.message.error(error.error.message)
+      return
+    }
     if (errorString.includes('Recipient address rejected: Domain not found')) {
       this.message.error('Parece que el correo no existe. Por favor verifique')
       return
@@ -95,7 +99,9 @@ export class GlobalErrorHandler implements ErrorHandler {
     if (!environment.production) {
       this.message.error('Error no manejado. Por favor contacte al administrador')
       console.error('Error: ', error)
+      return
     }
+    console.error('Error: ', error)
     throw Error(error)
   }
 
