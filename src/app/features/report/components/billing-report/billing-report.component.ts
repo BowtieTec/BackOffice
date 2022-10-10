@@ -221,11 +221,11 @@ export class BillingReportComponent implements OnInit {
     worksheet.addRow([])
     const header1 = worksheet.addRow([
       '',
-      'Fecha Inicio: ' + new Date(startDate).toLocaleDateString(),
+      'Fecha Inicio: ' + new Date(new Date(startDate).setDate(new Date(startDate).getDate() + 1)).toLocaleDateString(),
       '',
       '',
 
-      'Fecha Fin: ' + new Date(endDate).toLocaleDateString()
+      'Fecha Fin: ' + new Date(new Date(endDate).setDate(new Date(endDate).getDate() + 1)).toLocaleDateString()
     ])
     header1.eachCell((cell, number) => {
       if (number > 1) {
