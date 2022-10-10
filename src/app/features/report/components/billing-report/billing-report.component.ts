@@ -119,6 +119,7 @@ export class BillingReportComponent implements OnInit {
         if (data.success) {
           this.report = data.data
           this.dataSource = data.data
+          console.log(data.data);
           this.rerender()
         } else {
           this.messageService.error('', data.message)
@@ -136,6 +137,9 @@ export class BillingReportComponent implements OnInit {
     const header = [
       '',
       'Fecha emisión factura',
+      'Fecha de entrada',
+      'Fecha de salida',
+      'Fecha de pago',
       'Teléfono',
       'Nit del Cliente',
       'Total (Q)',
@@ -285,9 +289,18 @@ export class BillingReportComponent implements OnInit {
     this.dataSource.forEach((d: any) => {
       const row = worksheet.addRow([
         '',
-        d.dateBilling
-          ? new Date(d.dateBilling).toLocaleDateString('es-GT')
-          : ' ',
+        d.certification_time
+          ? new Date(d.certification_time).toLocaleString('es-GT')
+          : '',
+        d.entry_date
+          ? new Date(d.entry_date).toLocaleString('es-GT')
+          : '',
+        d.exit_date
+          ? new Date(d.exit_date).toLocaleString('es-GT')
+          : '',
+        d.payment_date
+          ? new Date(d.payment_date).toLocaleString('es-GT')
+          : '',
         d.phone_key,
         d.nit,
         d.total,

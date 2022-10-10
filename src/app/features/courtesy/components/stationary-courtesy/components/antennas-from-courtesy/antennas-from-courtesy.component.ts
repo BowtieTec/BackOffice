@@ -201,7 +201,7 @@ export class AntennasFromCourtesyComponent
       parkingId: [this.parkingId, [Validators.required]],
       mac: ['', [Validators.required, Validators.pattern('^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$')]],
       name: ['', [Validators.required, Validators.maxLength(50)]],
-      antena: ['', [Validators.required, Validators.maxLength(32), Validators.minLength(32)]]
+      antena: ['', [Validators.required, Validators.maxLength(36), Validators.minLength(36)]]
     })
   }
 

@@ -18,7 +18,7 @@ export class GlobalErrorHandler implements ErrorHandler {
 
   handleError(error: Response | HttpErrorResponse | any) {
     const errorString = error.toString()
-    if (error.error.message) {
+    if (error.error?.message) {
       this.message.error(error.error.message)
       return
     }
