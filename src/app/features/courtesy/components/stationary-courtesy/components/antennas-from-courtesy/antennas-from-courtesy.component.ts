@@ -159,6 +159,7 @@ export class AntennasFromCourtesyComponent
 
   async createStationWithCourtesy() {
     if (this.antennasForm.invalid) {
+      this.utilitiesService.markAsTouched(this.antennasForm)
       this.message.errorTimeOut('', 'Datos incorrectos o faltantes.')
       return
     }
