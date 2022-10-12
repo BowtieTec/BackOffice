@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { PrincipalScheduleComponent } from './principal-schedule.component'
+import {PrincipalScheduleComponent} from './principal-schedule.component'
 
 describe('PrincipalScheduleComponent', () => {
   let component: PrincipalScheduleComponent

@@ -1,9 +1,9 @@
 <nav #nav = 'ngbNav'
+     [activeId] = "5"
      class = 'nav-tabs'
-     [activeId]="5"
      ngbNav>
   <ng-container *ngIf = 'ifHaveAction(createUser)'
-                [ngbNavItem]="1">
+                [ngbNavItem] = "1">
     <a
       ngbNavLink><em class = 'fas fa-users'></em> Usuarios</a>
     <ng-template ngbNavContent>
@@ -11,21 +11,21 @@
     </ng-template>
   </ng-container>
   <ng-container *ngIf = 'ifHaveAction(changePermissions)'
-                [ngbNavItem]="2">
+                [ngbNavItem] = "2">
     <a ngbNavLink><em class = 'fas fa-magic'></em> Roles</a>
     <ng-template ngbNavContent>
       <app-roles></app-roles>
     </ng-template>
   </ng-container>
   <ng-container *ngIf = 'ifHaveAction(listLocal)'
-                [ngbNavItem]="3">
+                [ngbNavItem] = "3">
     <a ngbNavLink><em class = 'fas fa-store'></em> Locales</a>
     <ng-template ngbNavContent>
       <app-company></app-company>
     </ng-template>
   </ng-container>
   <ng-container *ngIf = 'ifHaveAction(listTariff)'
-                [ngbNavItem]="4">
+                [ngbNavItem] = "4">
     <a ngbNavLink><em class = 'fas fa-comment-dollar'></em> Tarifas</a>
     <ng-template ngbNavContent>
       <app-tariff [isCreatingParking] = 'false'
@@ -33,7 +33,7 @@
     </ng-template>
   </ng-container>
   <ng-container *ngIf = 'ifHaveAction(tariffTest)'
-                [ngbNavItem]="5">
+                [ngbNavItem] = "5">
     <a
       ngbNavLink><em class = 'fas fa-users'></em> Prueba de Tarifa</a>
     <ng-template ngbNavContent>
@@ -41,28 +41,28 @@
     </ng-template>
   </ng-container>
   <ng-container *ngIf = 'ifHaveAction(listSchedules)'
-                [ngbNavItem]="6">
+                [ngbNavItem] = "6">
     <a ngbNavLink><em class = 'fas fa-clock'></em> Horarios</a>
     <ng-template ngbNavContent>
       <app-schedule [parkingId] = 'parkingId'></app-schedule>
     </ng-template>
   </ng-container>
   <ng-container *ngIf = "ifHaveAction('changeInvoiceInfo')"
-                [ngbNavItem]="7">
+                [ngbNavItem] = "7">
     <a ngbNavLink><em class = 'fas fa-file-invoice'></em> Facturación</a>
     <ng-template ngbNavContent>
       <app-billing-data [parkingId] = 'parkingId'></app-billing-data>
     </ng-template>
   </ng-container>
   <ng-container *ngIf = 'ifHaveAction(listUserApp)'
-                [ngbNavItem]="8">
+                [ngbNavItem] = "8">
     <a ngbNavLink><em class = 'fas fa-users'></em> Usuarios ebiGo</a>
     <ng-template ngbNavContent>
       <app-users-app></app-users-app>
     </ng-template>
   </ng-container>
   <ng-container *ngIf = 'ifHaveAction(updateFiles)'
-                [ngbNavItem]="9">
+                [ngbNavItem] = "9">
     <a ngbNavLink><em class = 'fas fa-images'></em> Archivos</a>
     <ng-template ngbNavContent>
       <app-file-upload [isCreatingParking] = 'false'

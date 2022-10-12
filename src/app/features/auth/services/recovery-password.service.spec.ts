@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing'
+import {TestBed} from '@angular/core/testing'
 
-import { RecoveryPasswordService } from './recovery-password.service'
+import {RecoveryPasswordService} from './recovery-password.service'
 
 describe('RecoveryPasswordService', () => {
   let service: RecoveryPasswordService

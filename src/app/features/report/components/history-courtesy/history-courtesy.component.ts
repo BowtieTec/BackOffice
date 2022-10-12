@@ -32,7 +32,7 @@ export interface historyOfCourtesy {
   styleUrls: ['./history-courtesy.component.css']
 })
 export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
-  @ViewChild(DxDataGridComponent, { static: false })
+  @ViewChild(DxDataGridComponent, {static: false})
   dataGrid!: DxDataGridComponent
   dtElement!: DataTableDirective
   dtOptions: DataTables.Settings = {}
@@ -64,7 +64,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.dtOptions = DataTableOptions.getSpanishOptions(10)
-    this.authService.user$.subscribe(({ parkingId }) => {
+    this.authService.user$.subscribe(({parkingId}) => {
       this.reportForm.get('parkingId')?.setValue(parkingId)
       this.getReport()
     })
@@ -76,7 +76,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
 
   getReport() {
     this.messageService.showLoading()
-    const { startDate, endDate, parkingId } = this.reportForm.getRawValue()
+    const {startDate, endDate, parkingId} = this.reportForm.getRawValue()
     let _startDate = new Date(startDate).toISOString().split('T')[0]
     let _endDate = new Date(endDate).toISOString().split('T')[0]
     if (endDate < startDate) {
@@ -108,7 +108,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       this.messageService.infoTimeOut('No hay información para exportar')
       return
     }
-    const { startDate, endDate, parkingId } = this.reportForm.getRawValue()
+    const {startDate, endDate, parkingId} = this.reportForm.getRawValue()
     const header = [
       '',
       'Parqueo',
@@ -135,29 +135,29 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
     worksheet.addRow([])
 
     const busienssRow = worksheet.addRow(['', '', '', 'ebiGO'])
-    busienssRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    busienssRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    busienssRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    busienssRow.alignment = {horizontal: 'center', vertical: 'middle'}
     busienssRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
     worksheet.mergeCells('D2:Q3')
     const addressRow = worksheet.addRow(['', '', '', this.authService.getParking().name])
-    addressRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    addressRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    addressRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    addressRow.alignment = {horizontal: 'center', vertical: 'middle'}
     addressRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -168,15 +168,15 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       '',
       'Reporte - Historial de cortesias'
     ])
-    titleRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    titleRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    titleRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    titleRow.alignment = {horizontal: 'center', vertical: 'middle'}
     titleRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -190,15 +190,15 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
     worksheet.addImage(logo, 'B3:C6')
     worksheet.addRow([])
     const infoRow = worksheet.addRow(['', 'Información General'])
-    infoRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    infoRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    infoRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    infoRow.alignment = {horizontal: 'center', vertical: 'middle'}
     infoRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -218,10 +218,10 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
     header1.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -237,17 +237,17 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       '',
       '',
       'Documento generado: ' +
-        new Date().toLocaleDateString('es-GT') +
-        '  ' +
-        new Date().toLocaleTimeString()
+      new Date().toLocaleDateString('es-GT') +
+      '  ' +
+      new Date().toLocaleTimeString()
     ])
     header2.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -262,14 +262,14 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
         cell.fill = {
           type: 'pattern',
           pattern: 'solid',
-          fgColor: { argb: 'FFFFFF00' },
-          bgColor: { argb: 'FF0000FF' }
+          fgColor: {argb: 'FFFFFF00'},
+          bgColor: {argb: 'FF0000FF'}
         }
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -297,10 +297,10 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       row.eachCell((cell, number) => {
         if (number > 1) {
           cell.border = {
-            top: { style: 'thin' },
-            left: { style: 'thin' },
-            bottom: { style: 'thin' },
-            right: { style: 'thin' }
+            top: {style: 'thin'},
+            left: {style: 'thin'},
+            bottom: {style: 'thin'},
+            right: {style: 'thin'}
           }
         }
       })

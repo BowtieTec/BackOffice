@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { TariffRanksComponent } from './tariff-ranks.component'
+import {TariffRanksComponent} from './tariff-ranks.component'
 
 describe('TariffRanksComponent', () => {
   let component: TariffRanksComponent

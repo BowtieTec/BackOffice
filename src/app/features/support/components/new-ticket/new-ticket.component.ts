@@ -1,13 +1,13 @@
-import { Component } from '@angular/core'
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms'
-import { Router } from '@angular/router'
-import { AuthModel } from 'src/app/shared/model/UserResponse.model'
-import { AuthService } from 'src/app/shared/services/auth.service'
-import { MessageService } from 'src/app/shared/services/message.service'
-import { PermissionsService } from 'src/app/shared/services/permissions.service'
-import { UtilitiesService } from 'src/app/shared/services/utilities.service'
-import { supportTicketModel } from './Models/support-ticket.module'
-import { SupportTicketService } from './Services/support-ticket.service'
+import {Component} from '@angular/core'
+import {FormGroup, UntypedFormBuilder, Validators} from '@angular/forms'
+import {Router} from '@angular/router'
+import {AuthModel} from 'src/app/shared/model/UserResponse.model'
+import {AuthService} from 'src/app/shared/services/auth.service'
+import {MessageService} from 'src/app/shared/services/message.service'
+import {PermissionsService} from 'src/app/shared/services/permissions.service'
+import {UtilitiesService} from 'src/app/shared/services/utilities.service'
+import {supportTicketModel} from './Models/support-ticket.module'
+import {SupportTicketService} from './Services/support-ticket.service'
 
 @Component({
   selector: 'app-new-ticket',

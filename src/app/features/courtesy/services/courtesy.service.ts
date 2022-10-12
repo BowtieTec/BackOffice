@@ -1,14 +1,13 @@
-
-import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-import { environment } from '../../../../environments/environment'
-import { ResponseModel } from '../../../shared/model/Request.model'
-import { CourtesyModel } from '../models/Courtesy.model'
-import { SelectModel } from '../../../shared/model/CommonModels'
-import { map } from 'rxjs/operators'
-import { Observable } from 'rxjs'
-import { MessageService } from '../../../shared/services/message.service'
-import { ParkingModel } from '../../parking/models/Parking.model'
+import {Injectable} from '@angular/core'
+import {HttpClient} from '@angular/common/http'
+import {environment} from '../../../../environments/environment'
+import {ResponseModel} from '../../../shared/model/Request.model'
+import {CourtesyModel} from '../models/Courtesy.model'
+import {SelectModel} from '../../../shared/model/CommonModels'
+import {map} from 'rxjs/operators'
+import {Observable} from 'rxjs'
+import {MessageService} from '../../../shared/services/message.service'
+import {ParkingModel} from '../../parking/models/Parking.model'
 
 
 @Injectable({
@@ -20,7 +19,8 @@ export class CourtesyService {
   constructor(
     private http: HttpClient,
     private messageService: MessageService
-  ) {}
+  ) {
+  }
 
   get TypeOfConditions(): SelectModel[] {
     return environment.TypeOfCondition
@@ -64,12 +64,12 @@ export class CourtesyService {
     return type == 0
       ? 'Valor de tarifa fija'
       : type == 1
-      ? 'Porcentaje de descuento'
-      : type == 2
-      ? 'Valor de descuento'
-      : type == 4
-      ? 'Cantidad de horas'
-      : 'Valor'
+        ? 'Porcentaje de descuento'
+        : type == 2
+          ? 'Valor de descuento'
+          : type == 4
+            ? 'Cantidad de horas'
+            : 'Valor'
   }
 
   getNewConditions(type: string | number) {
@@ -106,7 +106,7 @@ export class CourtesyService {
     return this.http
       .post<ResponseModel>(
         `${this.apiUrl}backoffice/station_cortesy/addParkingToCourtesy/${courtesyDetailId}`,
-        { listParking }
+        {listParking}
       )
       .toPromise()
       .then((data) => data)
@@ -115,14 +115,14 @@ export class CourtesyService {
   getPDF(id: string) {
     return this.http.get(
       `${this.apiUrl}backoffice/cortesy/cortesiespdf/${id}`,
-      { responseType: 'blob' }
+      {responseType: 'blob'}
     )
   }
 
   getStationaryCourtesies(parkingId: string) {
     return this.http.get(
       `${this.apiUrl}backoffice/station_cortesy/${parkingId}/station`,
-      { responseType: 'blob' }
+      {responseType: 'blob'}
     )
   }
 

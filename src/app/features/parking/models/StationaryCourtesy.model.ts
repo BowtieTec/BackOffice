@@ -1,4 +1,4 @@
-import { ParkingModel } from './Parking.model'
+import {ParkingModel} from './Parking.model'
 
 export class StationsCourtesyModel {
   id = ''
@@ -47,8 +47,8 @@ export class CreateStationaryCourtesy {
   type = 0
   name = ''
   stationId = ''
-  condition= 0
+  condition = 0
   companyId = 0
   cantHours = 0
-  valueTimeMinutes= 0
+  valueTimeMinutes = 0
 }

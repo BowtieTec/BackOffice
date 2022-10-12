@@ -1,20 +1,23 @@
 .check__margin {
   margin-right: 150px;
 }
-.btn-input{
+
+.btn-input {
   border-radius: 0px 6px 6px 0px !important;
-    min-width: 75px!important;
-    max-width: 100px!important;
-    padding: 11px 5px!important;
-    margin-bottom: 0px!important;
-    background: #04ccae;
-    border: 1px solid #04ccae;
+  min-width: 75px !important;
+  max-width: 100px !important;
+  padding: 11px 5px !important;
+  margin-bottom: 0px !important;
+  background: #04ccae;
+  border: 1px solid #04ccae;
 }
+
 .form-select:focus {
-  
-  box-shadow: 0 0 0 0 rgb(13 110 253 / 25%)!important;
+
+  box-shadow: 0 0 0 0 rgb(13 110 253 / 25%) !important;
 }
-.iconInput{
+
+.iconInput {
   position: absolute;
   right: 0;
   margin: 12px;

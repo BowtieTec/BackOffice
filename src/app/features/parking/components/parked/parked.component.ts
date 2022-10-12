@@ -25,7 +25,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
   parked$ = new Subject<ParkedModel>()
   @ViewChild(DataTableDirective) dtElement!: DataTableDirective
   dtTrigger: Subject<any> = new Subject()
-  formGroup: FormGroup = this.formBuilder.group({ filter: [''] })
+  formGroup: FormGroup = this.formBuilder.group({filter: ['']})
 
   getOutWithPayment = environment.getOutWithPaymentDoneParkedParking
   getOutWithoutPayment = environment.getOutWithoutPaymentDoneParkedParking
@@ -39,7 +39,8 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
     private messageService: MessageService,
     private permissionService: PermissionsService,
     private reportService: ReportService
-  ) {}
+  ) {
+  }
 
   get isSudo() {
     return this.authService.isSudo
@@ -220,7 +221,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.user$.subscribe(({ parkingId }) => {
+    this.authService.user$.subscribe(({parkingId}) => {
       this.parkedForm.get('parkingId')?.setValue(parkingId)
       this.getInitialData().then()
     })

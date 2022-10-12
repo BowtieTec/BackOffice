@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { GeneralDataComponent } from './general-data.component'
+import {GeneralDataComponent} from './general-data.component'
 
 describe('StepOneComponent', () => {
   let component: GeneralDataComponent

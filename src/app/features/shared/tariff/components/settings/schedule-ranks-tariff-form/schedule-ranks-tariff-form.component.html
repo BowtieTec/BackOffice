@@ -1,15 +1,24 @@
-<div *ngIf="timeRange == 2" class="animate__animated animate__fadeInUp " id="SchedulesAndRanks">
+<div *ngIf = "timeRange == 2"
+     class = "animate__animated animate__fadeInUp "
+     id = "SchedulesAndRanks">
   <p><b> horarios o rango de horas</b></p>
-  <form [formGroup]="rankForm" action="">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
+  <form [formGroup] = "rankForm"
+        action = "">
+    <div class = "row justify-content-center">
+      <div class = "col-md-6">
         <app-input-container
-          [formGroup]="rankForm" controlName="from" name="Desde" type="time">
+          [formGroup] = "rankForm"
+          controlName = "from"
+          name = "Desde"
+          type = "time">
         </app-input-container>
       </div>
-      <div class="col-md-6">
+      <div class = "col-md-6">
         <app-input-container
-          [formGroup]="rankForm" controlName="to" name="Hasta" type="time">
+          [formGroup] = "rankForm"
+          controlName = "to"
+          name = "Hasta"
+          type = "time">
         </app-input-container>
       </div>
     </div>

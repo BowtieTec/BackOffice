@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-import { ResponseModel } from '../model/Request.model'
-import { environment } from '../../../environments/environment'
-import { AuthService } from './auth.service'
-import { map } from 'rxjs/operators'
-import { MessageService } from './message.service'
+import {Injectable} from '@angular/core'
+import {HttpClient} from '@angular/common/http'
+import {ResponseModel} from '../model/Request.model'
+import {environment} from '../../../environments/environment'
+import {AuthService} from './auth.service'
+import {map} from 'rxjs/operators'
+import {MessageService} from './message.service'
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,8 @@ export class DashboardService {
     private http: HttpClient,
     private auth: AuthService,
     private messageService: MessageService
-  ) {}
+  ) {
+  }
 
   get actionsOfDashboard() {
     return this.actions

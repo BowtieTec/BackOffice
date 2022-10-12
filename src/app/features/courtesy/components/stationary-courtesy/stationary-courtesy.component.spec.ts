@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { StationaryCourtesyComponent } from './stationary-courtesy.component'
+import {StationaryCourtesyComponent} from './stationary-courtesy.component'
 
 describe('StationaryCourtesyComponent', () => {
   let component: StationaryCourtesyComponent

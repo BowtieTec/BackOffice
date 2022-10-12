@@ -34,7 +34,7 @@ export interface montlyPark {
 })
 export class ParkingMontlyPaymentReportComponent implements OnInit {
   //@ViewChild(DataTableDirective)
-  @ViewChild(DxDataGridComponent, { static: false })
+  @ViewChild(DxDataGridComponent, {static: false})
   dataGrid!: DxDataGridComponent
   dtElement!: DataTableDirective
   dtOptions: DataTables.Settings = {}
@@ -66,7 +66,7 @@ export class ParkingMontlyPaymentReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.dtOptions = DataTableOptions.getSpanishOptions(10)
-    this.authService.user$.subscribe(({ parkingId }) => {
+    this.authService.user$.subscribe(({parkingId}) => {
       this.reportForm.get('parkingId')?.setValue(parkingId)
       this.getReport()
     })
@@ -77,7 +77,7 @@ export class ParkingMontlyPaymentReportComponent implements OnInit {
   }
 
   getReport() {
-    const { startDate, endDate, parkingId, telephone } = this.reportForm.value
+    const {startDate, endDate, parkingId, telephone} = this.reportForm.value
     if (endDate < startDate) {
       this.messageService.error(
         '',
@@ -124,7 +124,7 @@ export class ParkingMontlyPaymentReportComponent implements OnInit {
       this.messageService.infoTimeOut('No hay información para exportar')
       return
     }
-    const { startDate, endDate, parkingId, telephone } = this.reportForm.value
+    const {startDate, endDate, parkingId, telephone} = this.reportForm.value
     const header = [
       '',
       'Teléfono',
@@ -148,43 +148,43 @@ export class ParkingMontlyPaymentReportComponent implements OnInit {
     worksheet.addRow([])
 
     const busienssRow = worksheet.addRow(['', '', '', 'ebiGO'])
-    busienssRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    busienssRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    busienssRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    busienssRow.alignment = {horizontal: 'center', vertical: 'middle'}
     busienssRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
     worksheet.mergeCells('D2:I3')
     const addressRow = worksheet.addRow(['', '', '', this.authService.getParking().name])
-    addressRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    addressRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    addressRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    addressRow.alignment = {horizontal: 'center', vertical: 'middle'}
     addressRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
     worksheet.mergeCells('D4:I5')
     const titleRow = worksheet.addRow(['', '', '', 'Reporte - Parqueo mensual'])
-    titleRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    titleRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    titleRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    titleRow.alignment = {horizontal: 'center', vertical: 'middle'}
     titleRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -198,15 +198,15 @@ export class ParkingMontlyPaymentReportComponent implements OnInit {
     worksheet.addImage(logo, 'B3:C6')
     worksheet.addRow([])
     const infoRow = worksheet.addRow(['', 'Información General'])
-    infoRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    infoRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    infoRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    infoRow.alignment = {horizontal: 'center', vertical: 'middle'}
     infoRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -222,10 +222,10 @@ export class ParkingMontlyPaymentReportComponent implements OnInit {
     header1.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -237,17 +237,17 @@ export class ParkingMontlyPaymentReportComponent implements OnInit {
       '',
       '',
       'Documento generado: ' +
-        new Date().toLocaleDateString('es-GT') +
-        '  ' +
-        new Date().toLocaleTimeString()
+      new Date().toLocaleDateString('es-GT') +
+      '  ' +
+      new Date().toLocaleTimeString()
     ])
     header2.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -262,14 +262,14 @@ export class ParkingMontlyPaymentReportComponent implements OnInit {
         cell.fill = {
           type: 'pattern',
           pattern: 'solid',
-          fgColor: { argb: 'FFFFFF00' },
-          bgColor: { argb: 'FF0000FF' }
+          fgColor: {argb: 'FFFFFF00'},
+          bgColor: {argb: 'FF0000FF'}
         }
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -281,10 +281,10 @@ export class ParkingMontlyPaymentReportComponent implements OnInit {
         d.name,
         d.email,
         d.nit,
-        new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' })
+        new Intl.NumberFormat('es-GT', {style: 'currency', currency: 'GTQ'})
           .format(d.amount_monthly ?? 0)
           .toString(),
-        new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' })
+        new Intl.NumberFormat('es-GT', {style: 'currency', currency: 'GTQ'})
           .format(d.amount ?? 0)
           .toString(),
         d.month_paid,
@@ -300,10 +300,10 @@ export class ParkingMontlyPaymentReportComponent implements OnInit {
       row.eachCell((cell, number) => {
         if (number > 1) {
           cell.border = {
-            top: { style: 'thin' },
-            left: { style: 'thin' },
-            bottom: { style: 'thin' },
-            right: { style: 'thin' }
+            top: {style: 'thin'},
+            left: {style: 'thin'},
+            bottom: {style: 'thin'},
+            right: {style: 'thin'}
           }
         }
       })

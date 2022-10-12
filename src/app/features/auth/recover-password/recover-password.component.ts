@@ -51,6 +51,10 @@ export class RecoverPasswordComponent {
     }
   }
 
+  get passwordPattern() {
+    return environment.settings.passwordPattern
+  }
+
   sendConfirmation(email: string) {
     this.email = email
     return this.recoveryService
@@ -92,10 +96,6 @@ export class RecoverPasswordComponent {
       })
   }
 
-  get passwordPattern() {
-    return environment.settings.passwordPattern
-  }
-
   validations() {
     if (!this.emailControl?.valid && this.step == 1) {
       this.messageService.errorTimeOut('', 'Correo no valido')
@@ -123,7 +123,7 @@ export class RecoverPasswordComponent {
     }
 
     if (currentStep == 1) {
-      if(this.emailControl?.invalid){
+      if (this.emailControl?.invalid) {
         this.messageService.error('', 'Por favor, ingrese un correo válido.')
         return
       }

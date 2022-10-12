@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { map } from 'rxjs/operators'
-import { ResponseModel } from 'src/app/shared/model/Request.model'
-import { MessageService } from 'src/app/shared/services/message.service'
-import { environment } from 'src/environments/environment'
-import { supportTicketModel } from '../Models/support-ticket.module'
+import {HttpClient} from '@angular/common/http'
+import {Injectable} from '@angular/core'
+import {map} from 'rxjs/operators'
+import {ResponseModel} from 'src/app/shared/model/Request.model'
+import {MessageService} from 'src/app/shared/services/message.service'
+import {environment} from 'src/environments/environment'
+import {supportTicketModel} from '../Models/support-ticket.module'
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,8 @@ export class SupportTicketService {
   constructor(
     private messageService: MessageService,
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
   sendSupportTicket(supportTicketModel: supportTicketModel) {
     this.messageService.showLoading()

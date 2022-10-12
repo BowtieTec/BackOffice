@@ -828,11 +828,11 @@ nav > .nav-link.active {
   min-width: 30px !important;
 }
 
-.ng-select-container{
-  background:#f9f9f9!important;
-  border: 0!important;
-  border-bottom: 1px solid #c6c6c6!important;
-  border-radius: 0!important;
+.ng-select-container {
+  background: #f9f9f9 !important;
+  border: 0 !important;
+  border-bottom: 1px solid #c6c6c6 !important;
+  border-radius: 0 !important;
 }
 
 @media (max-width: 800px) {

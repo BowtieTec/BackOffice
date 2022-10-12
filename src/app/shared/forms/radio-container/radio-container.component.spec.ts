@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { RadioContainerComponent } from './radio-container.component'
+import {RadioContainerComponent} from './radio-container.component'
 
 describe('RadioContainerComponent', () => {
   let component: RadioContainerComponent

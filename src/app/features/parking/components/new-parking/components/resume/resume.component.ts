@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core'
-import { ParkingService } from '../../../../services/parking.service'
-import { CountriesModel } from '../../../../models/Countries.model'
-import { MessageService } from '../../../../../../shared/services/message.service'
-import { Day } from '../../../../models/SettingsOption.model'
-import { AccessModel } from '../../../../models/CreateParking.model'
+import {Component, EventEmitter, Output} from '@angular/core'
+import {ParkingService} from '../../../../services/parking.service'
+import {CountriesModel} from '../../../../models/Countries.model'
+import {MessageService} from '../../../../../../shared/services/message.service'
+import {Day} from '../../../../models/SettingsOption.model'
+import {AccessModel} from '../../../../models/CreateParking.model'
 
 @Component({
   selector: 'app-resume',

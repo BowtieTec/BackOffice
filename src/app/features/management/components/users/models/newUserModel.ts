@@ -13,7 +13,7 @@ export class NewUserModel {
   googleId?: string
   appleId?: string
   validate_code?: string = ''
-  company?: string | null= ''
+  company?: string | null = ''
 }
 
 export class updateUserApp {

@@ -79,7 +79,7 @@ export class NewUserComponent implements OnInit {
       }
       this.messageServices.hideLoading()
     })
-    this.authService.user$.subscribe(({ parkingId }) => {
+    this.authService.user$.subscribe(({parkingId}) => {
       this.parkingId = parkingId
       this.newUserForm.get('parking')?.setValue(parkingId)
       this.parkingId = parkingId
@@ -98,7 +98,7 @@ export class NewUserComponent implements OnInit {
       return
     }
     let newUserValue: NewUserModel = this.newUserForm.getRawValue()
-    if(!this.selectedRoleIsCourtesy){
+    if (!this.selectedRoleIsCourtesy) {
       newUserValue.company = null
     }
     if (!newUserValue) {

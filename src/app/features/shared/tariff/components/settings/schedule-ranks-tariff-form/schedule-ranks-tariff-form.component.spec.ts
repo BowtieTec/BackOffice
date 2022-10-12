@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { ScheduleRanksTariffFormComponent } from './schedule-ranks-tariff-form.component'
+import {ScheduleRanksTariffFormComponent} from './schedule-ranks-tariff-form.component'
 
 describe('ScheduleRanksTariffFormComponent', () => {
   let component: ScheduleRanksTariffFormComponent

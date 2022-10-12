@@ -1,9 +1,9 @@
 <nav #nav = "ngbNav"
+     [activeId] = "1"
      class = "nav-tabs"
-     [activeId]="1"
      ngbNav>
   <ng-container *ngIf = "ifHaveAction(listCourtesy)"
-                [ngbNavItem]="1"
+                [ngbNavItem] = "1"
                 ngbNavItem>
     <a ngbNavLink><em class = "fas fa-hand-holding-heart"></em> Cortesias</a>
     <ng-template ngbNavContent>
@@ -11,7 +11,7 @@
     </ng-template>
   </ng-container>
   <ng-container *ngIf = "ifHaveAction(listCourtesyStationary)"
-                [ngbNavItem]="2"
+                [ngbNavItem] = "2"
                 ngbNavItem>
     <a ngbNavLink><em class = "fas fa-hand-holding-usd"></em> Cortesías estacionarias</a>
     <ng-template ngbNavContent>

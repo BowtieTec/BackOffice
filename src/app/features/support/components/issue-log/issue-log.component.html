@@ -3,36 +3,36 @@
     <div class = "titleCards">
       <span><i class = "fas fa-sitemap"></i></span> Bitácora
     </div>
-    <div class="row justify-content-center">
-      <div class="col-xl-2 col-lg-6 col-sm-12">
-        <div class="mb-4 relative">
-          <label class="text-secondary"
-                 style="display:block">Teléfono</label>
+    <div class = "row justify-content-center">
+      <div class = "col-xl-2 col-lg-6 col-sm-12">
+        <div class = "mb-4 relative">
+          <label class = "text-secondary"
+                 style = "display:block">Teléfono</label>
           <input
             #telephone
-            (change)="getIssues(initDate.value,endDate.value, telephone.value)"
-            class="form-control inputClass datetimepicker"
-            maxlength="12"
-            name="telephone"
-            placeholder="Teléfono"
-            type="number"
-            value=""
+            (change) = "getIssues(initDate.value,endDate.value, telephone.value)"
+            class = "form-control inputClass datetimepicker"
+            maxlength = "12"
+            name = "telephone"
+            placeholder = "Teléfono"
+            type = "number"
+            value = ""
           >
         </div>
       </div>
-      <div class="col-xl-2 col-lg-6 col-sm-12">
-        <div class="mb-4 relative">
-          <label class="text-secondary"
-                 style="display:block">Fecha de inicio</label>
+      <div class = "col-xl-2 col-lg-6 col-sm-12">
+        <div class = "mb-4 relative">
+          <label class = "text-secondary"
+                 style = "display:block">Fecha de inicio</label>
           <input #initDate
-                 [value]="fechaActual"
-                 (change)="getIssues(initDate.value,endDate.value, telephone.value)"
-                 class="form-control inputClass datetimepicker"
-                 for="initDate"
-                 max="{{nowDateTime | date: 'yyyy-MM-dd'}}"
-                 name="initDate"
-                 placeholder="Fecha/Hora de entrada"
-                 type="Date"
+                 (change) = "getIssues(initDate.value,endDate.value, telephone.value)"
+                 [value] = "fechaActual"
+                 class = "form-control inputClass datetimepicker"
+                 for = "initDate"
+                 max = "{{nowDateTime | date: 'yyyy-MM-dd'}}"
+                 name = "initDate"
+                 placeholder = "Fecha/Hora de entrada"
+                 type = "Date"
           >
         </div>
       </div>
@@ -76,26 +76,26 @@
       <th scope = "col">Modelo del Teléfono</th>
       <th scope = "col">Fecha</th>
       <th scope = "col">Nivel</th>
-      <th scope='col'>Opciones</th>
+      <th scope = 'col'>Opciones</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor='let issue of issues'
-        class='animate__animated animate__fadeIn'>
+    <tr *ngFor = 'let issue of issues'
+        class = 'animate__animated animate__fadeIn'>
       <td>{{issue.name}}</td>
       <td>{{issue.phone_number}}</td>
       <td>{{issue.message}}</td>
       <td> {{issue.userDevice}}</td>
       <td> {{issue.created_at}}</td>
-      <td style='position: relative'>
-        <div style='display: inline-block'>{{issue.level}}</div>
-        <div [ngClass]="issue.level < 4 ? 'typeIssue lowstatus' : 'typeIssue highstatus'"></div>
+      <td style = 'position: relative'>
+        <div style = 'display: inline-block'>{{issue.level}}</div>
+        <div [ngClass] = "issue.level < 4 ? 'typeIssue lowstatus' : 'typeIssue highstatus'"></div>
       </td>
       <td>
         <button
-          (click)='openContext(issue.context,contenido)'
-          class='btn-input'
-          title='Context'><em class='fas fa-eye'> Ver</em>
+          (click) = 'openContext(issue.context,contenido)'
+          class = 'btn-input'
+          title = 'Context'><em class = 'fas fa-eye'> Ver</em>
         </button>
       </td>
     </tr>
@@ -108,25 +108,27 @@
 <ng-template #contenido
              let-modal>
 
-  <div class='modal-header'>
-    <h5 class='modal-title'>Log Capturado</h5>
-    <button (click)='this.modal.close()'
-            aria-label='Close'
-            class='btn-close'
-            type='button'></button>
+  <div class = 'modal-header'>
+    <h5 class = 'modal-title'>Log Capturado</h5>
+    <button (click) = 'this.modal.close()'
+            aria-label = 'Close'
+            class = 'btn-close'
+            type = 'button'></button>
   </div>
-  <div class='modal-body'>
-    <div class='list-group'>
-      <textarea [value]='valContext' readonly rows='5'></textarea>
+  <div class = 'modal-body'>
+    <div class = 'list-group'>
+      <textarea [value] = 'valContext'
+                readonly
+                rows = '5'></textarea>
     </div>
   </div>
   <hr>
-  <div class='text-center'>
+  <div class = 'text-center'>
     <button
-      (click)='this.modal.close()'
-      class='btn btn-secondary'
-      data-bs-dismiss='modal'
-      type='button'>Cerrar
+      (click) = 'this.modal.close()'
+      class = 'btn btn-secondary'
+      data-bs-dismiss = 'modal'
+      type = 'button'>Cerrar
     </button>
   </div>
 

@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core'
-import { DashboardService } from '../services/dashboard.service'
-import { AuthService } from '../../shared/services/auth.service'
-import { CompaniesModel } from '../../features/management/components/users/models/companies.model'
-import { CompaniesService } from '../../features/management/components/users/services/companies.service'
+import {Component, Input, OnInit} from '@angular/core'
+import {DashboardService} from '../services/dashboard.service'
+import {AuthService} from '../../shared/services/auth.service'
+import {CompaniesModel} from '../../features/management/components/users/models/companies.model'
+import {CompaniesService} from '../../features/management/components/users/services/companies.service'
 
 @Component({
   selector: 'app-card-kpi',
@@ -24,7 +24,8 @@ export class CardKpiComponent implements OnInit {
     private auth: AuthService,
     private dashboardService: DashboardService,
     private companyService: CompaniesService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     //if(this.parking!='0'){

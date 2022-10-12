@@ -1,26 +1,15 @@
-import {
-  AfterViewInit,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core'
-import { environment } from '../../../../../environments/environment'
-import { Subject } from 'rxjs'
-import { NewUserModel, updateUserApp } from '../users/models/newUserModel'
-import { DataTableDirective } from 'angular-datatables'
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators
-} from '@angular/forms'
-import { UserService } from '../users/services/user.service'
-import { MessageService } from '../../../../shared/services/message.service'
-import { PermissionsService } from '../../../../shared/services/permissions.service'
-import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { UtilitiesService } from '../../../../shared/services/utilities.service'
+import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core'
+import {environment} from '../../../../../environments/environment'
+import {Subject} from 'rxjs'
+import {NewUserModel, updateUserApp} from '../users/models/newUserModel'
+import {DataTableDirective} from 'angular-datatables'
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
+import {UserService} from '../users/services/user.service'
+import {MessageService} from '../../../../shared/services/message.service'
+import {PermissionsService} from '../../../../shared/services/permissions.service'
+import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
+import {UtilitiesService} from '../../../../shared/services/utilities.service'
 
 @Component({
   selector: 'app-users-app',
@@ -46,7 +35,7 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
     private modal: NgbModal,
     private utilitiesService: UtilitiesService
   ) {
-    this.formGroup = formBuilder.group({ filter: [''] })
+    this.formGroup = formBuilder.group({filter: ['']})
   }
 
   get dtOptions() {

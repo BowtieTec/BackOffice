@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core'
-import { MessageService } from '../../../../../shared/services/message.service'
-import { HttpClient } from '@angular/common/http'
-import { environment } from '../../../../../../environments/environment'
-import { ResponseModel } from '../../../../../shared/model/Request.model'
-import { PermissionSaveModel } from '../models/Permissions.model'
+import {Injectable} from '@angular/core'
+import {MessageService} from '../../../../../shared/services/message.service'
+import {HttpClient} from '@angular/common/http'
+import {environment} from '../../../../../../environments/environment'
+import {ResponseModel} from '../../../../../shared/model/Request.model'
+import {PermissionSaveModel} from '../models/Permissions.model'
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,8 @@ export class RolesService {
   constructor(
     private messageService: MessageService,
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
   getAllPermissions() {
     return this.http.get<ResponseModel>(

@@ -30,12 +30,17 @@ export class FileUploadComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private fileServices: FileUploadService,
     private authService: AuthService
-  ) {}
+  ) {
+  }
+
+  get settingsOptions(): SettingsOptionsModel {
+    return this.parkingService.settingsOptions
+  }
 
   ngOnInit(): void {
     this.stepFourForm.get('parkingId')?.setValue(this.parkingId)
     if (!this.isCreatingParking) {
-      this.authService.user$.subscribe(({ parkingId }) => {
+      this.authService.user$.subscribe(({parkingId}) => {
         this.parkingId = parkingId
         this.stepFourForm.get('parkingId')?.setValue(parkingId)
       })
@@ -45,9 +50,6 @@ export class FileUploadComponent implements OnInit {
   controlInvalid(control: string): boolean {
     return this.utilitiesService.controlInvalid(this.stepFourForm, control)
   }
-get settingsOptions(): SettingsOptionsModel{
-    return this.parkingService.settingsOptions
-}
 
   searchFile(name: string) {
     return this.stepFourForm.get(name)?.value

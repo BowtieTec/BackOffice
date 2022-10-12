@@ -1,4 +1,4 @@
-import { Time } from '@angular/common'
+import {Time} from '@angular/common'
 
 export class RankInputModel {
   static_descriptionTime = ''

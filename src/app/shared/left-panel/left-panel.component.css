@@ -47,6 +47,7 @@
   font-size: 14px;
   padding: 8px 10px;
 }
+
 .menu ul > li a:hover {
   color: #fff;
 }
@@ -56,22 +57,24 @@
   color: #fff;
   border-radius: 8px;
 }
+
 .menu ul > li:hover, .menu ul > li:hover > a > span {
   color: #fff;
   background: #04ccae;
   border: 1px solid #04ccae;
   border-radius: 8px;
-  -webkit-transform:scale(1.10);
-  -moz-transform:scale(1.10);
-  -ms-transform:scale(1.10);
-  -o-transform:scale(1.10);
-  transform:scale(1.10);
-  -webkit-transition:all .5s ease; /* Safari y Chrome */
-  -moz-transition:all .5s ease; /* Firefox */
-  -o-transition:all .5s ease; /* IE 9 */
-  -ms-transition:all .5s ease; /* Opera */
-  width:100%;
+  -webkit-transform: scale(1.10);
+  -moz-transform: scale(1.10);
+  -ms-transform: scale(1.10);
+  -o-transform: scale(1.10);
+  transform: scale(1.10);
+  -webkit-transition: all .5s ease; /* Safari y Chrome */
+  -moz-transition: all .5s ease; /* Firefox */
+  -o-transition: all .5s ease; /* IE 9 */
+  -ms-transition: all .5s ease; /* Opera */
+  width: 100%;
 }
+
 .menu ul > li.active a, .menu ul > li.active a span {
   color: #fff
 }

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { TariffGeneralDataComponent } from './tariff-general-data.component'
+import {TariffGeneralDataComponent} from './tariff-general-data.component'
 
 describe('TariffGeneralDataComponent', () => {
   let component: TariffGeneralDataComponent

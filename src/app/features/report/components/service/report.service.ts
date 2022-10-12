@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core'
-import { environment } from '../../../../../environments/environment'
-import { HttpClient } from '@angular/common/http'
-import { ResponseModel } from 'src/app/shared/model/Request.model'
-import { payFilter } from '../model/paymentModel'
-import { map } from 'rxjs/operators'
+import {Injectable} from '@angular/core'
+import {environment} from '../../../../../environments/environment'
+import {HttpClient} from '@angular/common/http'
+import {ResponseModel} from 'src/app/shared/model/Request.model'
+import {payFilter} from '../model/paymentModel'
+import {map} from 'rxjs/operators'
 //import * as jsPDF from 'jspdf';
 
 const EXCEL_TYPE =
@@ -17,7 +17,8 @@ export class ReportService {
   payDate: payFilter[] = new Array<payFilter>()
   private apiUrl = environment.serverAPI
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getPaymentsRpt(
     initDate: string,
@@ -44,7 +45,7 @@ export class ReportService {
                 item.status == 2
                   ? 'Pendiente de Pago'
                   : item.payment[0]?.billing?.fiscal_number ??
-                    (item.total > 0 ? 'No generada' : 'No requerida'),
+                  (item.total > 0 ? 'No generada' : 'No requerida'),
               invoiceDate: item.payment[0]?.billing?.certification_time ?? '',
               paymentDate: item.payment[0]?.created_at ?? '',
               timeIn: this.descriptionOfDiffOfTime(
@@ -57,10 +58,10 @@ export class ReportService {
                 item.payment_type == 0
                   ? 'Tarjeta C/D'
                   : item.payment_type == 1
-                  ? 'Efectivo ó Pendiente de Pago'
-                  : item.payment_type == 3
-                  ? 'Salida gratuita'
-                  : ''
+                    ? 'Efectivo ó Pendiente de Pago'
+                    : item.payment_type == 3
+                      ? 'Salida gratuita'
+                      : ''
             }
           })
         })
@@ -146,10 +147,10 @@ export class ReportService {
                 item.payment_type == 0
                   ? 'Tarjeta C/D'
                   : item.payment_type == 1
-                  ? 'Efectivo'
-                  : item.payment_type == 3
-                  ? 'Salida gratuita'
-                  : '',
+                    ? 'Efectivo'
+                    : item.payment_type == 3
+                      ? 'Salida gratuita'
+                      : '',
               transaction: item.payment[0]?.trace_number ?? '',
               invoice: item.payment[0]?.billing?.fiscal_number ?? '',
               entry_station: item.entry_station?.name ?? '',
@@ -158,18 +159,18 @@ export class ReportService {
                 item.type == 0
                   ? 'ebigo Ticket'
                   : item.type == 1
-                  ? 'ebigo Mensual'
-                  : item.type == 5
-                  ? 'Test'
-                  : '',
+                    ? 'ebigo Mensual'
+                    : item.type == 5
+                      ? 'Test'
+                      : '',
               status:
                 item.status == 2
                   ? 'Puede salir'
                   : item.status == 1
-                  ? 'Dentro del parqueo'
-                  : item.status == 3 || item.status == 5
-                  ? 'Fuera del parqueo'
-                  : 'Intento fallido'
+                    ? 'Dentro del parqueo'
+                    : item.status == 3 || item.status == 5
+                      ? 'Fuera del parqueo'
+                      : 'Intento fallido'
             }
           })
         })

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import {Injectable} from '@angular/core'
 import Swal from 'sweetalert2'
 
 @Injectable({
@@ -230,7 +230,7 @@ export class MessageService {
           dateToGetOut: dateToGetOut
         }
       }
-      return { result, dateToGetOut }
+      return {result, dateToGetOut}
     })
   }
 }

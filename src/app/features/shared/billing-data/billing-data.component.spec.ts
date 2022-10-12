@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { BillingDataComponent } from './billing-data.component'
+import {BillingDataComponent} from './billing-data.component'
 
 describe('StepFourComponent', () => {
   let component: BillingDataComponent

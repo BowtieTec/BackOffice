@@ -92,6 +92,23 @@ export class ResgisteredUsersComponent
     this.dtTrigger.unsubscribe()
   }
 
+  restartPasswordUser(user: NewUserModel) {
+    const newPassword: string = this.utilitiesService.randomString() + '$$';
+
+    this.recoveryService.requestNewPassword({
+      newPassword,
+      newPasswordConfirmation: newPassword,
+      userId: user.id as string
+    })
+      .subscribe((data) => {
+        if (data.success) {
+          this.message.Ok('Contraseña reiniciada')
+        } else {
+          this.message.errorTimeOut('', data.message)
+        }
+      })
+  }
+
   private getUsers(parkingId: string = this.parkingId) {
     this.userService
       .getUsers(parkingId)
@@ -115,22 +132,5 @@ export class ResgisteredUsersComponent
       dtInstance.destroy()
       this.dtTrigger.next()
     })
-  }
-
-  restartPasswordUser(user: NewUserModel) {
-    const newPassword: string = this.utilitiesService.randomString() + '$$';
-
-    this.recoveryService.requestNewPassword({
-      newPassword,
-      newPasswordConfirmation: newPassword,
-      userId: user.id as string
-    })
-      .subscribe((data) => {
-        if (data.success) {
-          this.message.Ok('Contraseña reiniciada')
-        } else {
-          this.message.errorTimeOut('', data.message)
-        }
-      })
   }
 }

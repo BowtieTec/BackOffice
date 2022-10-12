@@ -13,8 +13,8 @@ import {BehaviorSubject, Observable} from "rxjs";
   providedIn: 'root'
 })
 export class AuthService implements OnDestroy {
-  private apiUrl = environment.serverAPI
   isSudo: boolean = false
+  private apiUrl = environment.serverAPI
   private userSubject$: BehaviorSubject<AuthParkingModel> = new BehaviorSubject<AuthParkingModel>({
     user: this.getUser().user,
     parkingId: this.getUser().user?.parking?.id
@@ -38,7 +38,7 @@ export class AuthService implements OnDestroy {
     this.userSubject$.next({user: user.user, parkingId: user.user.parking.id})
   }
 
-    getUser(): AuthModel {
+  getUser(): AuthModel {
     const sentence = sessionStorage.getItem(this.crypto.encryptKey('User'))
     return {
       ...JSON.parse(this.crypto.decrypt(sentence!))

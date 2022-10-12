@@ -1,19 +1,8 @@
-import {
-  AfterViewInit,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core'
-import {
-  FormGroup,
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators
-} from '@angular/forms'
-import { MessageService } from '../../../../shared/services/message.service'
-import { ParkingService } from '../../services/parking.service'
-import { UtilitiesService } from '../../../../shared/services/utilities.service'
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core'
+import {FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
+import {MessageService} from '../../../../shared/services/message.service'
+import {ParkingService} from '../../services/parking.service'
+import {UtilitiesService} from '../../../../shared/services/utilities.service'
 import {
   CreateProfilesModel,
   GetStationModel,
@@ -21,14 +10,14 @@ import {
   ProfilesModel,
   SubscriptionModel
 } from '../../models/MontlyParking.model'
-import { AuthService } from '../../../../shared/services/auth.service'
-import { DataTableDirective } from 'angular-datatables'
-import { Subject } from 'rxjs'
-import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
-import { ResponseModel } from '../../../../shared/model/Request.model'
-import { PermissionsService } from '../../../../shared/services/permissions.service'
-import { environment } from '../../../../../environments/environment'
-import { ParkingModel } from '../../models/Parking.model'
+import {AuthService} from '../../../../shared/services/auth.service'
+import {DataTableDirective} from 'angular-datatables'
+import {Subject} from 'rxjs'
+import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
+import {ResponseModel} from '../../../../shared/model/Request.model'
+import {PermissionsService} from '../../../../shared/services/permissions.service'
+import {environment} from '../../../../../environments/environment'
+import {ParkingModel} from '../../models/Parking.model'
 
 @Component({
   selector: 'app-monthly-parking',
@@ -36,8 +25,7 @@ import { ParkingModel } from '../../models/Parking.model'
   styleUrls: ['./monthly-parking.component.css']
 })
 export class MonthlyParkingComponent
-  implements AfterViewInit, OnDestroy, OnInit
-{
+  implements AfterViewInit, OnDestroy, OnInit {
   userSelected: MonthlyUserModel = new MonthlyUserModel()
   userSearched: Array<MonthlyUserModel> = []
   profiles: ProfilesModel[] = []
@@ -68,7 +56,7 @@ export class MonthlyParkingComponent
     private authService: AuthService,
     private permissionService: PermissionsService
   ) {
-    this.formGroup = formBuilder.group({ filter: [''] })
+    this.formGroup = formBuilder.group({filter: ['']})
     this.searchForm = this.createSearchForm()
   }
 
@@ -195,7 +183,7 @@ export class MonthlyParkingComponent
   }
 
   ngOnInit(): void {
-    this.authService.user$.subscribe(({ parkingId }) => {
+    this.authService.user$.subscribe(({parkingId}) => {
       this.parkingId = parkingId
       this.searchForm.get('parkingId')?.setValue(parkingId)
       this.getProfiles().then()

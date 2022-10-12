@@ -1,8 +1,8 @@
-import { Component } from '@angular/core'
-import { AuthService } from '../services/auth.service'
-import { Router } from '@angular/router'
-import { MessageService } from '../services/message.service'
-import { AuthModel, ParkingAuthModel } from '../model/UserResponse.model'
+import {Component} from '@angular/core'
+import {AuthService} from '../services/auth.service'
+import {Router} from '@angular/router'
+import {MessageService} from '../services/message.service'
+import {AuthModel, ParkingAuthModel} from '../model/UserResponse.model'
 
 @Component({
   selector: 'app-header',

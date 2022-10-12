@@ -11,7 +11,8 @@ a.paginate_button.current {
   background: #415ba1 !important;
   color: #fff !important;
 }
-.needs-validation{
+
+.needs-validation {
   position: relative;
   z-index: 2;
 }

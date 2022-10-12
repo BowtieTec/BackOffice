@@ -143,6 +143,13 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTrigger.unsubscribe()
   }
 
+  ngOnInit(): void {
+    this.authService.user$.subscribe(({parkingId}) => {
+      this.parkingId = parkingId
+      this.companiesForm.get('parking')?.setValue(parkingId)
+      this.getInitialData().catch()
+    })
+  }
 
   private async getInitialData() {
     await this.getCompanies().then(() => this.rerender())
@@ -175,13 +182,5 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
         this.dtTrigger.next()
       })
     }
-  }
-
-  ngOnInit(): void {
-    this.authService.user$.subscribe(({parkingId}) => {
-      this.parkingId = parkingId
-      this.companiesForm.get('parking')?.setValue(parkingId)
-      this.getInitialData().catch()
-    })
   }
 }

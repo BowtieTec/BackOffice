@@ -1,36 +1,23 @@
-import {
-  AfterViewInit,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core'
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms'
-import { MessageService } from '../../../../shared/services/message.service'
-import { ParkingService } from '../../../parking/services/parking.service'
-import { UtilitiesService } from '../../../../shared/services/utilities.service'
-import { AuthService } from '../../../../shared/services/auth.service'
-import { PermissionsService } from '../../../../shared/services/permissions.service'
-import { environment } from '../../../../../environments/environment'
-import { ParkingModel } from '../../../parking/models/Parking.model'
-import { CourtesyService } from '../../services/courtesy.service'
-import {
-  CreateStationaryCourtesy,
-  StationsCourtesyModel
-} from '../../../parking/models/StationaryCourtesy.model'
-import { CourtesyTypeModel } from '../../models/Courtesy.model'
-import { DataTableDirective } from 'angular-datatables'
-import { Subject, Subscription } from 'rxjs'
-import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
-import { CompaniesModel } from '../../../management/components/users/models/companies.model'
-import { CompaniesService } from '../../../management/components/users/services/companies.service'
-import {
-  ListCheckModel,
-  SelectModel
-} from '../../../../shared/model/CommonModels'
-import { ListCheckboxService } from '../../../../shared/forms/list-checkbox-container/service/list-checkbox.service'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core'
+import {FormGroup, UntypedFormBuilder, Validators} from '@angular/forms'
+import {MessageService} from '../../../../shared/services/message.service'
+import {ParkingService} from '../../../parking/services/parking.service'
+import {UtilitiesService} from '../../../../shared/services/utilities.service'
+import {AuthService} from '../../../../shared/services/auth.service'
+import {PermissionsService} from '../../../../shared/services/permissions.service'
+import {environment} from '../../../../../environments/environment'
+import {ParkingModel} from '../../../parking/models/Parking.model'
+import {CourtesyService} from '../../services/courtesy.service'
+import {CreateStationaryCourtesy, StationsCourtesyModel} from '../../../parking/models/StationaryCourtesy.model'
+import {CourtesyTypeModel} from '../../models/Courtesy.model'
+import {DataTableDirective} from 'angular-datatables'
+import {Subject, Subscription} from 'rxjs'
+import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
+import {CompaniesModel} from '../../../management/components/users/models/companies.model'
+import {CompaniesService} from '../../../management/components/users/services/companies.service'
+import {ListCheckModel, SelectModel} from '../../../../shared/model/CommonModels'
+import {ListCheckboxService} from '../../../../shared/forms/list-checkbox-container/service/list-checkbox.service'
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
   selector: 'app-stationary-courtesy',
@@ -38,8 +25,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
   styleUrls: ['./stationary-courtesy.component.css']
 })
 export class StationaryCourtesyComponent
-  implements AfterViewInit, OnDestroy, OnInit
-{
+  implements AfterViewInit, OnDestroy, OnInit {
   loading = true
   @Input() parkingId: string = this.authService.getParking().id
   allCompanies: CompaniesModel[] = []
@@ -85,7 +71,7 @@ export class StationaryCourtesyComponent
     private modal: NgbModal
   ) {
     this.stationaryForm = this.createForm()
-    this.formGroup = formBuilder.group({ filter: [''] })
+    this.formGroup = formBuilder.group({filter: ['']})
   }
 
   get dtOptions() {
@@ -121,12 +107,12 @@ export class StationaryCourtesyComponent
     return type == 0
       ? 'Valor de tarifa fija'
       : type == 1
-      ? 'Porcentaje de descuento'
-      : type == 2
-      ? 'Valor de descuento'
-      : type == 4
-      ? 'Cantidad de horas'
-      : 'Valor'
+        ? 'Porcentaje de descuento'
+        : type == 2
+          ? 'Valor de descuento'
+          : type == 4
+            ? 'Cantidad de horas'
+            : 'Valor'
   }
 
   getNewConditions() {
@@ -256,7 +242,8 @@ export class StationaryCourtesyComponent
     try {
       this.dtTrigger.unsubscribe()
       this.$subs.unsubscribe()
-    } catch (e) {}
+    } catch (e) {
+    }
   }
 
   validateId(id: string | undefined) {
@@ -332,7 +319,7 @@ export class StationaryCourtesyComponent
   getTypeDescription(id: number) {
     const newDescription = this.courtesyTypes.find((x) => x.id == id)
     return newDescription == undefined
-      ? { id: null, name: 'Sin descripción' }
+      ? {id: null, name: 'Sin descripción'}
       : newDescription
   }
 
@@ -375,7 +362,7 @@ export class StationaryCourtesyComponent
   }
 
   ngOnInit(): void {
-    this.authService.user$.subscribe(({ parkingId }) => {
+    this.authService.user$.subscribe(({parkingId}) => {
       this.parkingId = parkingId
       this.stationaryForm.get('parkingId')?.setValue(parkingId)
 

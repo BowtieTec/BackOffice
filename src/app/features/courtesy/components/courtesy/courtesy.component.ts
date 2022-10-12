@@ -53,7 +53,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
     private companyService: CompaniesService,
     private toast: ToastrService
   ) {
-    this.formGroup = formBuilder.group({ filter: [''] })
+    this.formGroup = formBuilder.group({filter: ['']})
     this.newCourtesyForm = this.createForm()
   }
 
@@ -78,12 +78,12 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
     return type == 0
       ? 'Valor de tarifa fija'
       : type == 1
-      ? 'Porcentaje de descuento'
-      : type == 2
-      ? 'Valor de descuento'
-      : type == 4
-      ? 'Cantidad de horas'
-      : 'Valor'
+        ? 'Porcentaje de descuento'
+        : type == 2
+          ? 'Valor de descuento'
+          : type == 4
+            ? 'Cantidad de horas'
+            : 'Valor'
   }
 
   getTypeDescription(id: number) {
@@ -244,7 +244,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.user$.subscribe(({ parkingId, user }) => {
+    this.authService.user$.subscribe(({parkingId, user}) => {
       this.messageService.showLoading()
       this.parkingId = parkingId
       this.newCourtesyForm.get('parkingId')?.setValue(parkingId)

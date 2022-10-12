@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs'
-import { ListCheckModel, SelectModel } from '../../../model/CommonModels'
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs'
+import {ListCheckModel} from '../../../model/CommonModels'
 
 @Injectable({
   providedIn: 'root'
@@ -8,12 +8,15 @@ import { ListCheckModel, SelectModel } from '../../../model/CommonModels'
 export class ListCheckboxService {
 
   private subject = new BehaviorSubject<ListCheckModel[]>([])
-  constructor() { }
 
-  sendData(data:ListCheckModel[]){
+  constructor() {
+  }
+
+  sendData(data: ListCheckModel[]) {
     this.subject.next(data)
   }
-  recivedData(): Observable<ListCheckModel[]>{
+
+  recivedData(): Observable<ListCheckModel[]> {
     return this.subject.asObservable()
   }
 }

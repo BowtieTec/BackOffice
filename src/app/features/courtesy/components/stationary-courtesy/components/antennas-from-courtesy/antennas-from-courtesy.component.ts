@@ -47,7 +47,7 @@ export class AntennasFromCourtesyComponent
     private permissionService: PermissionsService
   ) {
     this.antennasForm = this.createAntennasForm()
-    this.formGroup = formBuilder.group({ filter: [''] })
+    this.formGroup = formBuilder.group({filter: ['']})
     this.getInitialData()
   }
 
@@ -72,7 +72,7 @@ export class AntennasFromCourtesyComponent
     this.parkingService.parkingLot$.subscribe((parkingLot) => {
       this.allParking = parkingLot
     })
-    this.authService.user$.subscribe(({ parkingId }) => {
+    this.authService.user$.subscribe(({parkingId}) => {
       this.parkingId = parkingId
       this.antennasForm.get('parkingId')?.setValue(parkingId)
       this.getInitialData()

@@ -24,7 +24,8 @@ export class ScheduleComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private utilitiesService: UtilitiesService,
     private authService: AuthService
-  ) {}
+  ) {
+  }
 
   get ParkingIdSelected() {
     return this.stepTwoForm.get('parkingId')?.value
@@ -80,7 +81,7 @@ export class ScheduleComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.isCreatingParking) {
-      this.authService.user$.subscribe(({ parkingId }) => {
+      this.authService.user$.subscribe(({parkingId}) => {
         this.parkingId = parkingId
         this.stepTwoForm.get('parkingId')?.setValue(parkingId)
         this.getParkingInf(parkingId)
@@ -244,31 +245,31 @@ export class ScheduleComponent implements OnInit {
     return this.formBuilder.group({
       parkingId: [this.parkingId],
       //Monday
-      isOpen0: [{ value: true, disabled: true }],
+      isOpen0: [{value: true, disabled: true}],
       openning_time0: ['06:00:00'],
       closing_time0: ['00:00:00'],
       //Tuesday
-      isOpen1: [{ value: true, disabled: true }],
+      isOpen1: [{value: true, disabled: true}],
       openning_time1: ['06:00:00'],
       closing_time1: ['00:00:00'],
       //Wednesday
-      isOpen2: [{ value: true, disabled: true }],
+      isOpen2: [{value: true, disabled: true}],
       openning_time2: ['06:00:00'],
       closing_time2: ['00:00:00'],
       //Thursday
-      isOpen3: [{ value: true, disabled: true }],
+      isOpen3: [{value: true, disabled: true}],
       openning_time3: ['06:00:00'],
       closing_time3: ['00:00:00'],
       //Friday
-      isOpen4: [{ value: true, disabled: true }],
+      isOpen4: [{value: true, disabled: true}],
       openning_time4: ['06:00:00'],
       closing_time4: ['00:00:00'],
       //Saturday
-      isOpen5: [{ value: true, disabled: true }],
+      isOpen5: [{value: true, disabled: true}],
       openning_time5: ['06:00:00'],
       closing_time5: ['00:00:00'],
       //Sunday
-      isOpen6: [{ value: true, disabled: true }],
+      isOpen6: [{value: true, disabled: true}],
       openning_time6: ['06:00:00'],
       closing_time6: ['00:00:00']
     })

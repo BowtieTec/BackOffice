@@ -1,51 +1,74 @@
 <div>
-  <div class="titleCards">
-    <span><em class="fas fa-digital-tachograph"></em></span> Datos generales
+  <div class = "titleCards">
+    <span><em class = "fas fa-digital-tachograph"></em></span> Datos generales
 
   </div>
-  <form [formGroup]="generalDataForm" action="" class="form-group">
-    <div class="row justify-content-center">
-      <div class="col-xl-5 col-lg-6 col-md-12">
-        <div class="mb-3">
-          <app-input-container [formGroup]="generalDataForm" class="form-control inputClass" controlName='name'
-            name='Nombre de la regla' type='text'>
+  <form [formGroup] = "generalDataForm"
+        action = ""
+        class = "form-group">
+    <div class = "row justify-content-center">
+      <div class = "col-xl-5 col-lg-6 col-md-12">
+        <div class = "mb-3">
+          <app-input-container [formGroup] = "generalDataForm"
+                               class = "form-control inputClass"
+                               controlName = 'name'
+                               name = 'Nombre de la regla'
+                               type = 'text'>
           </app-input-container>
         </div>
       </div>
     </div>
-    <div class="row justify-content-center">
+    <div class = "row justify-content-center">
 
-      <div class="col-xl-5 col-lg-6 col-md-12">
-        <div class="form-floating">
-          <textarea [class.is-invalid]="validateGeneralDataForm('description')" class="form-control"
-            formControlName="description" id="descriptionTextArea" placeholder="Descripción de la tarifa"
-            style="height: 100px"></textarea>
-          <label for='descriptionTextArea'>Descripción de la regla</label>
+      <div class = "col-xl-5 col-lg-6 col-md-12">
+        <div class = "form-floating">
+          <textarea [class.is-invalid] = "validateGeneralDataForm('description')"
+                    class = "form-control"
+                    formControlName = "description"
+                    id = "descriptionTextArea"
+                    placeholder = "Descripción de la tarifa"
+                    style = "height: 100px"></textarea>
+          <label for = 'descriptionTextArea'>Descripción de la regla</label>
         </div>
-        <div *ngIf="validateGeneralDataForm('description')" class="text-danger animate__animated  animate__fadeIn mb-1">*
-          Este campo es obligatorio</div>
+        <div *ngIf = "validateGeneralDataForm('description')"
+             class = "text-danger animate__animated  animate__fadeIn mb-1">*
+                                                                           Este campo es obligatorio
+        </div>
         <br>
-        <div class="text-start">
-          <input class="" formControlName="isShowDescription" id="isShowDescription" type="checkbox">
-          <label class=" ms-2" for="isShowDescription">
+        <div class = "text-start">
+          <input class = ""
+                 formControlName = "isShowDescription"
+                 id = "isShowDescription"
+                 type = "checkbox">
+          <label class = " ms-2"
+                 for = "isShowDescription">
             Mostrar descripción en la aplicación
           </label>
         </div>
       </div>
 
-      <div class="text-center" >
+      <div class = "text-center">
 
-        <ul class="opcionActivo" style="padding: 0;">
+        <ul class = "opcionActivo"
+            style = "padding: 0;">
           <li>
-            <input class="form-radio-input" formControlName="hasGlobalSchedule" id="hasGlobalSchedule" type="checkbox"
-              >
-            <label class="form-check-label ms-2" for="hasGlobalSchedule">
+            <input class = "form-radio-input"
+                   formControlName = "hasGlobalSchedule"
+                   id = "hasGlobalSchedule"
+                   type = "checkbox"
+            >
+            <label class = "form-check-label ms-2"
+                   for = "hasGlobalSchedule">
               Horario global
             </label>
           </li>
           <li>
-            <input class="form-radio-input" formControlName="isPerDayCondition" id="isPerDayCondition" type="checkbox">
-            <label class="form-check-label ms-2" for="isPerDayCondition">
+            <input class = "form-radio-input"
+                   formControlName = "isPerDayCondition"
+                   id = "isPerDayCondition"
+                   type = "checkbox">
+            <label class = "form-check-label ms-2"
+                   for = "isPerDayCondition">
               Condicion por dia
             </label>
           </li>

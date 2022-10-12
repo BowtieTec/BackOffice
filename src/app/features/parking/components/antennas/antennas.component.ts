@@ -14,9 +14,7 @@ import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
 import {Subject} from 'rxjs'
 
 @Component({
-  selector: 'app-antennas',
-  templateUrl: './antennas.component.html',
-  styleUrls: ['./antennas.component.css']
+  selector: 'app-antennas', templateUrl: './antennas.component.html', styleUrls: ['./antennas.component.css']
 })
 export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
   @Input() isCreatingParking = false
@@ -25,12 +23,10 @@ export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
   @Output() changeStep = new EventEmitter<number>()
   idEditAntenna = ''
   accessList: AccessModel[] = this.parkingService.getAccesses()
-  antennas: CreateParkingStepFiveModel[] =
-    new Array<CreateParkingStepFiveModel>()
+  antennas: CreateParkingStepFiveModel[] = new Array<CreateParkingStepFiveModel>()
   allParking: ParkingModel[] = Array<ParkingModel>()
   /*Table*/
-  @ViewChild(DataTableDirective)
-  dtElement!: DataTableDirective
+  @ViewChild(DataTableDirective) dtElement!: DataTableDirective
   dtTrigger: Subject<any> = new Subject()
   formGroup: UntypedFormGroup
   /*Permissions*/
@@ -40,14 +36,7 @@ export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
   downloadQRAntennaAction = environment.downloadQRAntenna
   private actions: string[] = this.permissionService.actionsOfPermissions
 
-  constructor(
-    private formBuilder: UntypedFormBuilder,
-    private message: MessageService,
-    private parkingService: ParkingService,
-    private utilitiesService: UtilitiesService,
-    private authService: AuthService,
-    private permissionService: PermissionsService
-  ) {
+  constructor(private formBuilder: UntypedFormBuilder, private message: MessageService, private parkingService: ParkingService, private utilitiesService: UtilitiesService, private authService: AuthService, private permissionService: PermissionsService) {
     this.stepFiveForm = this.createForm()
     this.formGroup = formBuilder.group({filter: ['']})
   }
@@ -69,9 +58,7 @@ export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
   addAntenna() {
     this.message.showLoading()
     if (this.stepFiveForm.invalid) {
-      this.message.warningTimeOut(
-        'No ha llenado todos los datos. Para continuar por favor llene los datos necesarios.'
-      )
+      this.message.warningTimeOut('No ha llenado todos los datos. Para continuar por favor llene los datos necesarios.')
       return
     }
     if (this.idEditAntenna == '') {
@@ -84,10 +71,7 @@ export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
               this.cleanForm()
             })
           } else {
-            this.message.error(
-              '',
-              'No pudo guardarse la antena, error: ' + data.message
-            )
+            this.message.error('', 'No pudo guardarse la antena, error: ' + data.message)
           }
         })
     } else {
@@ -102,10 +86,7 @@ export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
               this.message.OkTimeOut('Guardado')
             })
           } else {
-            this.message.error(
-              '',
-              'No pudo guardarse la antena, error: ' + data.message
-            )
+            this.message.error('', 'No pudo guardarse la antena, error: ' + data.message)
           }
           this.idEditAntenna = ''
         })
@@ -157,23 +138,17 @@ export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
   downloadQR(antenna: CreateParkingStepFiveModel) {
     this.message.showLoading()
     antenna.id = this.validateId(antenna.id)
-    this.parkingService.getQR(antenna.id).subscribe(
-      (data) => {
-        const a = document.createElement('a')
-        a.href = URL.createObjectURL(data)
-        a.download = `${antenna.antena} - ${antenna.name}`
-        document.body.appendChild(a)
-        a.click()
-        a.remove()
-        this.message.hideLoading()
-      },
-      (err) => {
-        this.message.error(
-          '',
-          'No pudo descargarse el QR. Por favor verifique si los datos existen.'
-        )
-      }
-    )
+    this.parkingService.getQR(antenna.id).subscribe((data) => {
+      const a = document.createElement('a')
+      a.href = URL.createObjectURL(data)
+      a.download = `${antenna.antena} - ${antenna.name}`
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      this.message.hideLoading()
+    }, (err) => {
+      this.message.error('', 'No pudo descargarse el QR. Por favor verifique si los datos existen.')
+    })
   }
 
   ifHaveAction(action: string) {
@@ -183,9 +158,7 @@ export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
   async searchAntennasByParking() {
     if (this.authService.isSudo && !this.idEditAntenna) {
       const parkingId = this.stepFiveForm.controls['parking'].value
-      this.antennas = await this.parkingService.searchAntennasByParking(
-        parkingId
-      )
+      this.antennas = await this.parkingService.searchAntennasByParking(parkingId)
       if (this.antennas) {
         this.parkingId = parkingId
         this.rerender()
@@ -219,6 +192,20 @@ export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTrigger.unsubscribe()
   }
 
+  ngOnInit(): void {
+    this.authService.user$.subscribe(({parkingId}) => {
+      if (!this.isCreatingParking) {
+        this.parkingId = parkingId
+        this.stepFiveForm.get('parking')?.setValue(parkingId)
+      }
+      this.getInitialData().catch()
+    })
+
+    this.parkingService.parkingLot$.subscribe((parkingLot) => {
+      this.allParking = parkingLot
+    })
+  }
+
   private getStepFive(): CreateParkingStepFiveModel {
     return {
       parking: this.stepFiveForm.controls['parking'].value || this.parkingId,
@@ -248,19 +235,5 @@ export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
         this.dtTrigger.next()
       })
     }
-  }
-
-  ngOnInit(): void {
-    this.authService.user$.subscribe(({parkingId}) => {
-      if (!this.isCreatingParking) {
-        this.parkingId = parkingId
-        this.stepFiveForm.get('parking')?.setValue(parkingId)
-      }
-      this.getInitialData().catch()
-    })
-
-    this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParking = parkingLot
-    })
   }
 }

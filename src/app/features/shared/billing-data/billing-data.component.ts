@@ -163,7 +163,7 @@ export class BillingDataComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.isCreatingParking) {
-      this.authService.user$.subscribe(({ parkingId }) => {
+      this.authService.user$.subscribe(({parkingId}) => {
         this.parkingId = parkingId
         this.stepFourForm.get('parkingId')?.setValue(parkingId)
         this.parkingIdSelected().then()
@@ -182,9 +182,9 @@ export class BillingDataComponent implements OnInit {
       business_name: this.stepFourForm.controls['business_name'].value,
       currency: this.stepFourForm.controls['currency'].value,
       is_our_bac_credential:
-        this.stepFourForm.controls['is_our_bac_credential'].value,
+      this.stepFourForm.controls['is_our_bac_credential'].value,
       is_our_visa_credential:
-        this.stepFourForm.controls['is_our_visa_credential'].value,
+      this.stepFourForm.controls['is_our_visa_credential'].value,
       nit: this.stepFourForm.controls['nit'].value,
       pay_method: this.stepFourForm.controls['pay_method'].value,
       visa_credential: {
@@ -192,7 +192,7 @@ export class BillingDataComponent implements OnInit {
         terminal: this.stepFourForm.controls['terminal'].value,
         merchant_user: this.stepFourForm.controls['merchant_id_visa'].value,
         merchant_password:
-          this.stepFourForm.controls['merchant_pass_visa'].value
+        this.stepFourForm.controls['merchant_pass_visa'].value
       },
       bac_credential: {
         url: this.stepFourForm.controls['url_bac'].value,
@@ -200,7 +200,7 @@ export class BillingDataComponent implements OnInit {
         acquirer_id: this.stepFourForm.controls['acquirer_id_bac'].value,
         pmtnpssw: this.stepFourForm.controls['pmtnpssw_bac'].value,
         purchase_currency:
-          this.stepFourForm.controls['purchase_currency_bac'].value
+        this.stepFourForm.controls['purchase_currency_bac'].value
       }
     }
   }

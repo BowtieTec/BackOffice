@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { SelectContainerComponent } from './select-container.component'
+import {SelectContainerComponent} from './select-container.component'
 
 describe('SelectContainerComponent', () => {
   let component: SelectContainerComponent

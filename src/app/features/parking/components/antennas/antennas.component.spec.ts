@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { AntennasComponent } from './antennas.component'
+import {AntennasComponent} from './antennas.component'
 
 describe('StepFiveComponent', () => {
   let component: AntennasComponent

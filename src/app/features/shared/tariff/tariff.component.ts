@@ -57,11 +57,12 @@ export class TariffComponent implements OnInit {
     private tariffForms: TariffFormsService,
     private buildRuleService: BuildRulesService,
     private permissionService: PermissionsService
-  ) {}
+  ) {
+  }
 
   get daysFormValues() {
     const days: number[] = []
-    const { mon, tue, wen, thu, fri, sat, sun } = this.justDaysValue
+    const {mon, tue, wen, thu, fri, sat, sun} = this.justDaysValue
 
     mon == true ? days.push(1) : false
     tue == true ? days.push(2) : false
@@ -109,7 +110,7 @@ export class TariffComponent implements OnInit {
 
   get daysValuesDescription() {
     const days: string[] = []
-    const { mon, tue, wen, thu, fri, sat, sun } = this.justDaysValue
+    const {mon, tue, wen, thu, fri, sat, sun} = this.justDaysValue
 
     mon == true ? days.push('Lunes') : false
     tue == true ? days.push('Martes') : false
@@ -397,7 +398,7 @@ export class TariffComponent implements OnInit {
   ngOnInit(): void {
     this.generalDataForm.get('parkingId')?.setValue(this.parkingId)
     if (!this.isCreatingParking) {
-      this.authService.user$.subscribe(({ parkingId }) => {
+      this.authService.user$.subscribe(({parkingId}) => {
         this.parkingId = parkingId
         this.generalDataForm.get('parkingId')?.setValue(parkingId)
         this.getTariffs().then()

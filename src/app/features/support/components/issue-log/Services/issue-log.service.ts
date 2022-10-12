@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core'
-import { environment } from '../../../../../../environments/environment'
-import { MessageService } from '../../../../../shared/services/message.service'
-import { HttpClient } from '@angular/common/http'
-import { ResponseModel } from '../../../../../shared/model/Request.model'
-import { map } from 'rxjs/operators'
+import {Injectable} from '@angular/core'
+import {environment} from '../../../../../../environments/environment'
+import {MessageService} from '../../../../../shared/services/message.service'
+import {HttpClient} from '@angular/common/http'
+import {ResponseModel} from '../../../../../shared/model/Request.model'
+import {map} from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,8 @@ export class IssueLogService {
   constructor(
     private messageService: MessageService,
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
   getAllAppLogs(initDate: string, endDate: string, telephone: string) {
     this.messageService.showLoading()
@@ -33,8 +34,8 @@ export class IssueLogService {
               context: item.l_context ?? '',
               created_at:
                 new Date(item.l_created_at).toLocaleDateString('es-GT') +
-                  ' ' +
-                  new Date(item.l_created_at).toLocaleTimeString('es-GT') ?? '',
+                ' ' +
+                new Date(item.l_created_at).toLocaleTimeString('es-GT') ?? '',
               phone_number: item.phone_number ?? ''
             }
           })

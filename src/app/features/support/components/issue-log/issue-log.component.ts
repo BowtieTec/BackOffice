@@ -34,7 +34,8 @@ export class IssueLogComponent implements OnInit {
     private permissionsService: PermissionsService,
     private modal: NgbModal,
     private utilitiesService: UtilitiesService
-  ) {}
+  ) {
+  }
 
   get dtOptions() {
     return DataTableOptions.getSpanishOptions(25)
@@ -47,7 +48,8 @@ export class IssueLogComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngAfterViewInit(): void {
     this.dtTrigger.next()
@@ -57,16 +59,16 @@ export class IssueLogComponent implements OnInit {
     this.dtTrigger.unsubscribe()
   }
 
+  openContext(data: string, contenido: any) {
+    this.valContext = data
+    this.modal.open(contenido)
+  }
+
   private rerender() {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy()
       this.dtTrigger.next()
     })
-  }
-
-  openContext(data: string, contenido: any) {
-    this.valContext = data
-    this.modal.open(contenido)
   }
 
   private getLogsApp(

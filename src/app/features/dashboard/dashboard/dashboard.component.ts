@@ -1,11 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
-import { environment } from '../../../../environments/environment'
-import { PermissionsService } from '../../../shared/services/permissions.service'
-import { ParkingService } from '../../parking/services/parking.service'
-import { ParkingModel } from '../../parking/models/Parking.model'
-import { AuthService } from '../../../shared/services/auth.service'
-import { MessageService } from '../../../shared/services/message.service'
-import { ParkingAuthModel } from '../../../shared/model/UserResponse.model'
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core'
+import {environment} from '../../../../environments/environment'
+import {PermissionsService} from '../../../shared/services/permissions.service'
+import {ParkingService} from '../../parking/services/parking.service'
+import {ParkingModel} from '../../parking/models/Parking.model'
+import {AuthService} from '../../../shared/services/auth.service'
+import {MessageService} from '../../../shared/services/message.service'
+import {ParkingAuthModel} from '../../../shared/model/UserResponse.model'
 
 @Component({
   selector: 'app-dashboard',
@@ -98,18 +98,18 @@ export class DashboardComponent implements OnInit {
   AnioActual: any = +new Date().toISOString().split('T')[0].split('-')[0]
   monthFiltered: any[] = []
   allMonths = [
-    { key: '01', valor: 'Enero' },
-    { key: '02', valor: 'Febrero' },
-    { key: '03', valor: 'Marzo' },
-    { key: '04', valor: 'Abril' },
-    { key: '05', valor: 'Mayo' },
-    { key: '06', valor: 'Junio' },
-    { key: '07', valor: 'Julio' },
-    { key: '08', valor: 'Agosto' },
-    { key: '09', valor: 'Septiembre' },
-    { key: '10', valor: 'Octubre' },
-    { key: '11', valor: 'Noviembre' },
-    { key: '12', valor: 'Diciembre' }
+    {key: '01', valor: 'Enero'},
+    {key: '02', valor: 'Febrero'},
+    {key: '03', valor: 'Marzo'},
+    {key: '04', valor: 'Abril'},
+    {key: '05', valor: 'Mayo'},
+    {key: '06', valor: 'Junio'},
+    {key: '07', valor: 'Julio'},
+    {key: '08', valor: 'Agosto'},
+    {key: '09', valor: 'Septiembre'},
+    {key: '10', valor: 'Octubre'},
+    {key: '11', valor: 'Noviembre'},
+    {key: '12', valor: 'Diciembre'}
   ]
   AniosSelect: any[] = []
 
@@ -150,7 +150,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.messageService.showLoading()
     this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParking= parkingLot
+      this.allParking = parkingLot
     })
     /*this.auth.user$.subscribe(({ user, parkingId }) => {
 

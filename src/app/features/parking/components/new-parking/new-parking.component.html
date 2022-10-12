@@ -1,45 +1,46 @@
-<div class="row justify-content-center">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="panels">
-      <div class="titleCards">
-        <span><em class="fas fa-sitemap"></em></span> Nuevo parqueo
+<div class = "row justify-content-center">
+  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class = "panels">
+      <div class = "titleCards">
+        <span><em class = "fas fa-sitemap"></em></span> Nuevo parqueo
       </div>
-      <div class="progress">
-        <div [ngStyle]="{'width': step * (100 / totalSteps ) + '%' }"
-             aria-valuemax="100"
-             class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
-             role="progressbar"></div>
+      <div class = "progress">
+        <div [ngStyle] = "{'width': step * (100 / totalSteps ) + '%' }"
+             aria-valuemax = "100"
+             class = "progress-bar progress-bar-striped progress-bar-animated bg-primary"
+             role = "progressbar"></div>
       </div>
       <div
-        id="qbox-container">
+        id = "qbox-container">
         <form
-          [formGroup]="newParkingForm"
-          class="needs-validation"
-          id="form-wrapper"
-          method="post"
-          name="form-wrapper"
-          novalidate="">
-          <div id="steps-container">
-            <div *ngIf="step == 1"
-                 class="animate__animated animate__fadeInLeft"
-                 id="stepOne">
+          [formGroup] = "newParkingForm"
+          class = "needs-validation"
+          id = "form-wrapper"
+          method = "post"
+          name = "form-wrapper"
+          novalidate = "">
+          <div id = "steps-container">
+            <div *ngIf = "step == 1"
+                 class = "animate__animated animate__fadeInLeft"
+                 id = "stepOne">
               <app-general-data
-                (changeStep)="changeStep($event)"
+                (changeStep) = "changeStep($event)"
               ></app-general-data>
             </div>
-            <div *ngIf="step ==2"
-                 class="animate__animated animate__fadeInLeft"
-                 id="stepTwo">
-              <app-schedule (changeStep)="changeStep($event)"
-                            [isCreatingParking]="true"
-                            [parkingId]="this.parkingId"></app-schedule>
+            <div *ngIf = "step ==2"
+                 class = "animate__animated animate__fadeInLeft"
+                 id = "stepTwo">
+              <app-schedule (changeStep) = "changeStep($event)"
+                            [isCreatingParking] = "true"
+                            [parkingId] = "this.parkingId"></app-schedule>
             </div>
-            <div *ngIf="step ==3"
-                 class="animate__animated animate__fadeInLeft"
-                 id="stepThree">
+            <div *ngIf = "step ==3"
+                 class = "animate__animated animate__fadeInLeft"
+                 id = "stepThree">
               <app-tariff
-                (changeStep)="changeStep($event)"
-                [isCreatingParking]="true" [parkingId]="parkingId"></app-tariff>
+                (changeStep) = "changeStep($event)"
+                [isCreatingParking] = "true"
+                [parkingId] = "parkingId"></app-tariff>
             </div>
             <div
               *ngIf = 'step ==4 && this.settingsOptions != undefined'
@@ -79,21 +80,21 @@
               <app-resume (changeStep) = 'changeStep($event)'></app-resume>
             </div>
           </div>
-          <div class="text-center"
-               id="q-box__buttons">
+          <div class = "text-center"
+               id = "q-box__buttons">
             <button
-              (click)="saveParking()"
-              *ngIf="step == totalSteps"
-              class="btn btn-secondary m-2">Registrar
+              (click) = "saveParking()"
+              *ngIf = "step == totalSteps"
+              class = "btn btn-secondary m-2">Registrar
             </button>
           </div>
         </form>
       </div>
     </div>
-    <div id="preloader-wrapper">
-      <div id="preloader"></div>
-      <div class="preloader-section section-left"></div>
-      <div class="preloader-section section-right"></div>
+    <div id = "preloader-wrapper">
+      <div id = "preloader"></div>
+      <div class = "preloader-section section-left"></div>
+      <div class = "preloader-section section-right"></div>
     </div>
   </div>
 </div>

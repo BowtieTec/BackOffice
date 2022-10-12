@@ -1,7 +1,8 @@
-<div class="animate__animated animate__fadeInLeft" id="ranks">
-  <div class="titleCards">
+<div class = "animate__animated animate__fadeInLeft"
+     id = "ranks">
+  <div class = "titleCards">
     <hr>
-    <span><em class="fas fa-expand-alt"></em></span> Rangos
+    <span><em class = "fas fa-expand-alt"></em></span> Rangos
   </div>
   <div
     aria-label = 'Basic radio toggle button group'
@@ -36,10 +37,10 @@
       <li class = 'm-3'>
         <input
           (click) = 'emitNewTimeRange(3);'
+          [checked] = 'timeRange ==3'
           autocomplete = 'off'
           class = 'btn-check'
           id = 'timeslot'
-          [checked] = 'timeRange ==3'
           name = 'rangeTime'
           type = 'radio'>
         <label
@@ -51,9 +52,11 @@
           (click) = 'emitNewTimeRange(4)'
           autocomplete = 'off'
           class = 'btn-check'
-               id="default"
-               name="rangeTime" type="radio">
-        <label class="form-check-label" for="default">Por defecto</label>
+          id = "default"
+          name = "rangeTime"
+          type = "radio">
+        <label class = "form-check-label"
+               for = "default">Por defecto</label>
       </li>
     </ul>
   </div>
