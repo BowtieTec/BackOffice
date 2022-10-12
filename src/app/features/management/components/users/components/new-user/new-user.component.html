@@ -28,10 +28,6 @@
                 <app-input-container [formGroup]='newUserForm' [readonly]='isEdit' controlName='password' name='Contraseña' textInfo='La contraseña debe contener al menos 7 caracteres, una letra mayúscula y un dígito' type='password'>
                 </app-input-container>
             </div>
-            <div class='col-xl-12 col-lg-12  col-sm-12'>
-                <app-select-container (change)="this.getCompanies()" [data]='allParking' [formGroup]='newUserForm' controlName='parking' name="Parqueo">
-                </app-select-container>
-            </div>
             <div *ngIf='this.selectedRoleIsCourtesy' class='col-xl-12 col-lg-12  col-sm-12'>
                 <app-select-container [data]='companies' [formGroup]='newUserForm' controlName='company' name="Local">
                 </app-select-container>

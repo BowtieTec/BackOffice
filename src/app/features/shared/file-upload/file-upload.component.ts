@@ -1,13 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
-import { CreateParkingFileModel } from 'src/app/features/parking/models/CreateParking.model'
-import { SettingsOptionsModel } from 'src/app/features/parking/models/SettingsOption.model'
-import { ParkingService } from 'src/app/features/parking/services/parking.service'
-import { MessageService } from 'src/app/shared/services/message.service'
-import { UtilitiesService } from 'src/app/shared/services/utilities.service'
-import { FileUploadService } from './services/fileUploadService'
-import { ParkingModel } from '../../parking/models/Parking.model'
-import { AuthService } from '../../../shared/services/auth.service'
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core'
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms'
+import {CreateParkingFileModel} from 'src/app/features/parking/models/CreateParking.model'
+import {SettingsOptionsModel} from 'src/app/features/parking/models/SettingsOption.model'
+import {ParkingService} from 'src/app/features/parking/services/parking.service'
+import {MessageService} from 'src/app/shared/services/message.service'
+import {UtilitiesService} from 'src/app/shared/services/utilities.service'
+import {FileUploadService} from './services/fileUploadService'
+import {AuthService} from '../../../shared/services/auth.service'
 
 @Component({
   selector: 'app-file-upload',
@@ -19,7 +18,6 @@ export class FileUploadComponent implements OnInit {
   fileTariff!: File
   fileLogo!: File
   backGroundApp!: File
-  allParking: ParkingModel[] = []
   stepFourForm: FormGroup = this.createForm()
   @Output() changeStep = new EventEmitter<number>()
   @Input() parkingId: string = this.parkingService.parkingStepOne.parkingId
@@ -40,9 +38,6 @@ export class FileUploadComponent implements OnInit {
       this.authService.user$.subscribe(({ parkingId }) => {
         this.parkingId = parkingId
         this.stepFourForm.get('parkingId')?.setValue(parkingId)
-      })
-      this.parkingService.parkingLot$.subscribe((parkingLot) => {
-        this.allParking = parkingLot
       })
     }
   }

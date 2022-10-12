@@ -1,13 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { MessageService } from '../../../shared/services/message.service'
-import { ParkingService } from '../../parking/services/parking.service'
-import { UtilitiesService } from '../../../shared/services/utilities.service'
-import { SettingsOptionsModel } from '../../parking/models/SettingsOption.model'
-import { CreateParkingStepFourModel } from '../../parking/models/CreateParking.model'
-import { Router } from '@angular/router'
-import { ParkingModel } from '../../parking/models/Parking.model'
-import { AuthService } from '../../../shared/services/auth.service'
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core'
+import {FormBuilder, FormGroup, Validators} from '@angular/forms'
+import {MessageService} from '../../../shared/services/message.service'
+import {ParkingService} from '../../parking/services/parking.service'
+import {UtilitiesService} from '../../../shared/services/utilities.service'
+import {SettingsOptionsModel} from '../../parking/models/SettingsOption.model'
+import {CreateParkingStepFourModel} from '../../parking/models/CreateParking.model'
+import {Router} from '@angular/router'
+import {AuthService} from '../../../shared/services/auth.service'
 
 @Component({
   selector: 'app-billing-data',
@@ -17,7 +16,6 @@ import { AuthService } from '../../../shared/services/auth.service'
 export class BillingDataComponent implements OnInit {
   stepFourForm: FormGroup = this.createForm()
   settingsOptions: SettingsOptionsModel
-  allParking: ParkingModel[] = []
 
   @Input() parkingId!: string
   @Input() showNavigationButtons = true
@@ -165,9 +163,6 @@ export class BillingDataComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.isCreatingParking) {
-      this.parkingService.parkingLot$.subscribe((parkingLot) => {
-        this.allParking = parkingLot
-      })
       this.authService.user$.subscribe(({ parkingId }) => {
         this.parkingId = parkingId
         this.stepFourForm.get('parkingId')?.setValue(parkingId)

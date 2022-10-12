@@ -23,17 +23,6 @@
             </div>
             <div *ngIf = 'ifHaveAction(createCourtesyStationary)'>
               <div class = 'row justify-content-center'>
-                <div
-                  *ngIf = 'isSudo'
-                  class = 'col-md-6 col-sm-12'>
-                  <app-select-container
-                    (change) = 'searchAntennasByParking()'
-                    [data] = 'this.allParking'
-                    [formGroup] = 'this.stationaryForm'
-                    controlName = 'parkingId'
-                    name = 'Parqueos'>
-                  </app-select-container>
-                </div>
                 <div class = 'col-md-6 col-sm-12'>
                   <app-select-container
                     (change) = "this.getNewConditions()"

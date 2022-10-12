@@ -1,11 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms'
-import { MessageService } from '../../../shared/services/message.service'
-import { ParkingService } from '../../parking/services/parking.service'
-import { UtilitiesService } from '../../../shared/services/utilities.service'
-import { CreateParkingStepTwoModel } from '../../parking/models/CreateParking.model'
-import { ParkingModel } from '../../parking/models/Parking.model'
-import { AuthService } from '../../../shared/services/auth.service'
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core'
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms'
+import {MessageService} from '../../../shared/services/message.service'
+import {ParkingService} from '../../parking/services/parking.service'
+import {UtilitiesService} from '../../../shared/services/utilities.service'
+import {CreateParkingStepTwoModel} from '../../parking/models/CreateParking.model'
+import {AuthService} from '../../../shared/services/auth.service'
 
 @Component({
   selector: 'app-schedule',
@@ -15,7 +14,6 @@ import { AuthService } from '../../../shared/services/auth.service'
 export class ScheduleComponent implements OnInit {
   stepTwoForm: UntypedFormGroup = this.createForm()
   schedules: Array<any> = []
-  allParking: ParkingModel[] = []
   @Input() parkingId!: string
   @Input() isCreatingParking = false
   @Output() changeStep = new EventEmitter<number>()
@@ -86,9 +84,6 @@ export class ScheduleComponent implements OnInit {
         this.parkingId = parkingId
         this.stepTwoForm.get('parkingId')?.setValue(parkingId)
         this.getParkingInf(parkingId)
-      })
-      this.parkingService.parkingLot$.subscribe((parkingLot) => {
-        this.allParking = parkingLot
       })
     }
   }

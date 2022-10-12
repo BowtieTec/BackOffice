@@ -1,29 +1,22 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms'
-import { UtilitiesService } from '../../../shared/services/utilities.service'
-import { MessageService } from '../../../shared/services/message.service'
-import { HolidayInputModel } from './model/HolidayTariff.model'
-import { RankInputModel } from './model/RankTariff.model'
-import { BlockInputModel } from './model/BlockTariff.model'
-import { DefaultInputModel } from './model/DefaultTariff.model'
-import { ParkingService } from '../../parking/services/parking.service'
-import { CurrencyPipe, DatePipe, Time } from '@angular/common'
-import { ValidationsService } from './service/validations.service'
-import { AuthService } from '../../../shared/services/auth.service'
-import { TariffFormsService } from './service/tariff-forms.service'
-import {
-  All,
-  FixedCostInputModel,
-  HourHalfInputModel,
-  IEvent,
-  Rules
-} from './model/Tariff.model'
-import { CreateTariffModel } from '../../parking/models/Tariff.model'
-import { BuildRulesService } from './service/build-rules.service'
-import { environment } from '../../../../environments/environment'
-import { PermissionsService } from '../../../shared/services/permissions.service'
-import { DailyInputModel } from './model/DailyTariff.model'
-import { ParkingModel } from '../../parking/models/Parking.model'
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core'
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms'
+import {UtilitiesService} from '../../../shared/services/utilities.service'
+import {MessageService} from '../../../shared/services/message.service'
+import {HolidayInputModel} from './model/HolidayTariff.model'
+import {RankInputModel} from './model/RankTariff.model'
+import {BlockInputModel} from './model/BlockTariff.model'
+import {DefaultInputModel} from './model/DefaultTariff.model'
+import {ParkingService} from '../../parking/services/parking.service'
+import {CurrencyPipe, DatePipe, Time} from '@angular/common'
+import {ValidationsService} from './service/validations.service'
+import {AuthService} from '../../../shared/services/auth.service'
+import {TariffFormsService} from './service/tariff-forms.service'
+import {All, FixedCostInputModel, HourHalfInputModel, IEvent, Rules} from './model/Tariff.model'
+import {CreateTariffModel} from '../../parking/models/Tariff.model'
+import {BuildRulesService} from './service/build-rules.service'
+import {environment} from '../../../../environments/environment'
+import {PermissionsService} from '../../../shared/services/permissions.service'
+import {DailyInputModel} from './model/DailyTariff.model'
 
 @Component({
   selector: 'app-tariff',
@@ -34,7 +27,6 @@ export class TariffComponent implements OnInit {
   @Input() parkingId!: string
   @Input() isCreatingParking!: boolean
   @Output() changeStep = new EventEmitter<number>()
-  allParking: ParkingModel[] = []
   timeRange = 1
   costType = 1
   tariffs: Array<any> = []
@@ -410,9 +402,6 @@ export class TariffComponent implements OnInit {
         this.generalDataForm.get('parkingId')?.setValue(parkingId)
         this.getTariffs().then()
       })
-      this.parkingService.parkingLot$.subscribe((parkingLot) => {
-        this.allParking = parkingLot
-      })
     }
   }
 
@@ -459,12 +448,14 @@ export class TariffComponent implements OnInit {
       hourCost: '',
       halfCost: '',
       whenIsAHalf: '1',
-      subtract: '0'
+      subtract: '0',
+      subtractMinutes: '0'
     })
     this.fixedCostForm.setValue({
       fixedCost: '',
       whenIsAHalf: '1',
-      subtract: '0'
+      subtract: '0',
+      subtractMinutes: '0'
     })
     this.costType = 1
   }
@@ -520,6 +511,7 @@ export class TariffComponent implements OnInit {
       )
       return
     }
+    this.messageService.showLoading()
     this.parkingService
       .setRule(newRule)
       .then((data) => {
@@ -537,7 +529,6 @@ export class TariffComponent implements OnInit {
       .catch((e) => {
         throw new Error(e.message)
       })
-    this.messageService.OkTimeOut()
   }
 
   validateForms() {

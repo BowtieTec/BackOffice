@@ -4,7 +4,6 @@ import {UtilitiesService} from '../../../../shared/services/utilities.service'
 import {MessageService} from '../../../../shared/services/message.service'
 import {PermissionSaveModel, PermissionsModel} from './models/Permissions.model'
 import {RolesService} from './services/roles.service'
-import {RolesModel} from '../users/models/RolesModel'
 
 @Component({
   selector: 'app-roles',
@@ -14,7 +13,6 @@ import {RolesModel} from '../users/models/RolesModel'
 export class RolesComponent implements OnInit {
   allPermissions: PermissionsModel[] = []
   roleIdSelected = ''
-  roles: RolesModel[] = this.userService.roles
 
   constructor(
     private userService: UserService,
@@ -25,7 +23,7 @@ export class RolesComponent implements OnInit {
   }
 
   get Roles() {
-    return this.roles
+    return this.userService.roles
   }
 
   get getModules() {

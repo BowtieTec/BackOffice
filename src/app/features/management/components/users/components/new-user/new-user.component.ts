@@ -1,18 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core'
-import { UserService } from '../../services/user.service'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { UtilitiesService } from '../../../../../../shared/services/utilities.service'
-import { NewUserModel } from '../../models/newUserModel'
-import { MessageService } from '../../../../../../shared/services/message.service'
-import { Subject } from 'rxjs'
-import { ParkingModel } from '../../../../../parking/models/Parking.model'
-import { ParkingService } from '../../../../../parking/services/parking.service'
-import { PermissionsService } from '../../../../../../shared/services/permissions.service'
-import { environment } from '../../../../../../../environments/environment'
-import { AuthService } from '../../../../../../shared/services/auth.service'
-import { CompaniesService } from '../../services/companies.service'
-import { CompaniesModel } from '../../models/companies.model'
-import { Roles } from '../../utilities/User'
+import {Component, Input, OnInit} from '@angular/core'
+import {UserService} from '../../services/user.service'
+import {FormBuilder, FormGroup, Validators} from '@angular/forms'
+import {UtilitiesService} from '../../../../../../shared/services/utilities.service'
+import {NewUserModel} from '../../models/newUserModel'
+import {MessageService} from '../../../../../../shared/services/message.service'
+import {Subject} from 'rxjs'
+import {ParkingService} from '../../../../../parking/services/parking.service'
+import {PermissionsService} from '../../../../../../shared/services/permissions.service'
+import {environment} from '../../../../../../../environments/environment'
+import {AuthService} from '../../../../../../shared/services/auth.service'
+import {CompaniesService} from '../../services/companies.service'
+import {CompaniesModel} from '../../models/companies.model'
+import {Roles} from '../../utilities/User'
 
 @Component({
   selector: 'app-new-user',
@@ -23,7 +22,6 @@ export class NewUserComponent implements OnInit {
   @Input() subject = new Subject<NewUserModel>()
   newUserForm: FormGroup
   isEdit = false
-  allParking: ParkingModel[] = []
   changeParkingAtCreateUser: string = environment.changeParkingAtCreateUser
   parkingId: string = this.authService.getParking().id
   companies: CompaniesModel[] = []
@@ -86,9 +84,6 @@ export class NewUserComponent implements OnInit {
       this.newUserForm.get('parking')?.setValue(parkingId)
       this.parkingId = parkingId
       this.getCompanies().then()
-    })
-    this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParking = parkingLot
     })
   }
 

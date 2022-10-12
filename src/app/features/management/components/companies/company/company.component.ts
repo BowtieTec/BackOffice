@@ -11,7 +11,6 @@ import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
 import {DataTableOptions} from '../../../../../shared/model/DataTableOptions'
 import {CompaniesModel} from '../../users/models/companies.model'
 import {ParkingService} from '../../../../parking/services/parking.service'
-import {ParkingModel} from '../../../../parking/models/Parking.model'
 import {MessageService} from '../../../../../shared/services/message.service'
 
 @Component({
@@ -24,7 +23,6 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
   companiesForm: UntypedFormGroup
   companies: CompaniesModel[] = []
   states: Array<any> = this.companyService.states
-  allParkingLot: ParkingModel[] = []
   @ViewChild(DataTableDirective) dtElement!: DataTableDirective
   /*Table*/
   @Input() subject: Subject<NewUserModel> = new Subject<NewUserModel>()
@@ -184,9 +182,6 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
       this.parkingId = parkingId
       this.companiesForm.get('parking')?.setValue(parkingId)
       this.getInitialData().catch()
-    })
-    this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParkingLot = parkingLot
     })
   }
 }

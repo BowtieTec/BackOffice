@@ -100,18 +100,6 @@
             </div>
           </div>
           <div class = 'row justify-content-center'>
-            <div class = 'col-xl-6 col-lg-6 col-sm-12'>
-              <app-select-container
-                (change) = 'getCourtesies(this.parkingSelected)'
-                *ngIf = 'isSudo'
-                [data] = 'allParking'
-                [formGroup] = 'newCourtesyForm'
-                controlName = 'parkingId'
-                name = 'Parqueos'>
-              </app-select-container>
-            </div>
-          </div>
-          <div class = 'row justify-content-center'>
             <div class = 'col-xl-12 col-lg-12 col-sm-12'>
               <div class = 'text-center'>
                 <button
