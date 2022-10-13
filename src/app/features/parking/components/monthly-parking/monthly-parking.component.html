@@ -4,17 +4,6 @@
       <div class = "titleCards">
         <span><em class = "fas fa-sitemap"></em></span>Ver Parqueos mensuales
       </div>
-      <div class = "col-sm-12">
-        <div class = "m-3 relative ">
-          <app-select-container
-            (change) = "getMonthlySubscription()"
-            *ngIf = 'this.isSudo'
-            [data] = "this.allParking"
-            [formGroup] = "this.searchForm"
-            controlName = "parkingId"
-            name = "Parqueos"></app-select-container>
-        </div>
-      </div>
       <table [dtOptions] = "dtOptions"
              [dtTrigger] = "dtTrigger"
              aria-label = "Tabla de parqueos mensuales"

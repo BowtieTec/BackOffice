@@ -154,7 +154,7 @@
               <th id = '{{antenna.name + i}}'>{{antenna.courtesy_detail?.name || 'Sin nombre' | titlecase}} </th>
               <td>{{this.getTypeDescription(antenna.courtesy_detail!.type).name | titlecase}}</td>
               <td>{{antenna.courtesy_detail!.value | courtesyValue: antenna.courtesy_detail!.type}}</td>
-              <td>{{antenna.courtesy_detail!.company?.name}}</td>
+              <td>{{antenna.courtesy_detail!.company.name}}</td>
               <td>{{antenna.name | titlecase}}</td>
               <td>{{antenna.created_at | date: 'medium'}}</td>
               <td>

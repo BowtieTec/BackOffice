@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core'
-import {FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
+import {FormGroup, UntypedFormBuilder, Validators} from '@angular/forms'
 import {MessageService} from '../../../../shared/services/message.service'
 import {ParkingService} from '../../services/parking.service'
 import {UtilitiesService} from '../../../../shared/services/utilities.service'
@@ -17,7 +17,6 @@ import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
 import {ResponseModel} from '../../../../shared/model/Request.model'
 import {PermissionsService} from '../../../../shared/services/permissions.service'
 import {environment} from '../../../../../environments/environment'
-import {ParkingModel} from '../../models/Parking.model'
 
 @Component({
   selector: 'app-monthly-parking',
@@ -27,7 +26,6 @@ import {ParkingModel} from '../../models/Parking.model'
 export class MonthlyParkingComponent
   implements AfterViewInit, OnDestroy, OnInit {
   userSelected: MonthlyUserModel = new MonthlyUserModel()
-  userSearched: Array<MonthlyUserModel> = []
   profiles: ProfilesModel[] = []
   subscriptions: SubscriptionModel[] = []
   stationsByParking: GetStationModel[] = []
@@ -38,14 +36,12 @@ export class MonthlyParkingComponent
   dtElement!: DataTableDirective
   dtOptions: DataTables.Settings = DataTableOptions.getSpanishOptions(10)
   dtTrigger: Subject<any> = new Subject()
-  formGroup: UntypedFormGroup
+  formGroup: FormGroup
   searchForm: FormGroup
-  loadingUser = false
   createMonthlyParking = environment.createMonthlyParking
   deleteMonthlyParking = environment.deleteMonthlyParking
   cancelMonthlyParking = environment.cancelMonthlyParking
   disableMonthlyParking = environment.disableMonthlyParking
-  allParking: ParkingModel[] = Array<ParkingModel>()
   private actions: string[] = this.permissionService.actionsOfPermissions
 
   constructor(
@@ -188,9 +184,6 @@ export class MonthlyParkingComponent
       this.searchForm.get('parkingId')?.setValue(parkingId)
       this.getProfiles().then()
       this.getMonthlySubscription().then()
-    })
-    this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParking = parkingLot
     })
   }
 
