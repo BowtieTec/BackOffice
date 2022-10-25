@@ -25,8 +25,9 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
   dtElement!: DataTableDirective
   dtTrigger: Subject<any> = new Subject()
   formGroup: UntypedFormGroup
+  appUserForm: UntypedFormGroup
   users: NewUserModel[] = []
-
+  dtOptions: any = {};
   constructor(
     private userService: UserService,
     private formBuilder: UntypedFormBuilder,
@@ -36,28 +37,45 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
     private utilitiesService: UtilitiesService
   ) {
     this.formGroup = formBuilder.group({filter: ['']})
-  }
-
-  get dtOptions() {
-    return DataTableOptions.getSpanishOptions(10)
+    this.appUserForm = this.createEditUserAppForm()
   }
 
   get formUserAppValues(): updateUserApp {
     return {
-      id: this.formGroup.get('id')?.value,
-      name: this.formGroup.get('name')?.value,
-      last_name: this.formGroup.get('last_name')?.value,
-      email: this.formGroup.get('email')?.value,
-      phone_number: this.formGroup.get('phone')?.value
+      id: this.appUserForm.get('id')?.value,
+      name: this.appUserForm.get('name')?.value,
+      last_name: this.appUserForm.get('last_name')?.value,
+      email: this.appUserForm.get('email')?.value,
+      phone_number: this.appUserForm.get('phone')?.value
     }
   }
 
   ngOnInit(): void {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      processing: true,
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'copyHtml5',
+          exportOptions: {
+            columns: ':visible'
+          }
+        },
+        {
+          extend: 'excelHtml5',
+          exportOptions: {
+            columns: ':visible'
+          }
+        },
+      ]
+    };
     this.getUsersApp()
     this.subject.subscribe((user: NewUserModel) => {
       this.getUsersApp()
     })
-    this.formGroup = this.createEditUserAppForm()
+
   }
 
   ifHaveAction(action: string) {
@@ -104,7 +122,7 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async EditUserApp() {
-    if (this.formGroup.invalid) {
+    if (this.appUserForm.invalid) {
       this.message.error('', 'Datos no válidos o faltantes')
       return
     }
@@ -123,14 +141,9 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
       })
   }
 
-  open(contenido: any, user: NewUserModel) {
-    this.formGroup.controls['name'].setValue(user.name)
-    this.formGroup.controls['last_name'].setValue(user.last_name)
-    this.formGroup.controls['email'].setValue(user.email)
-    this.formGroup.controls['phone'].setValue(user.phone_number)
-    this.formGroup.controls['id'].setValue(user.id)
+  open(user: NewUserModel) {
+    this.appUserForm.setValue({id:user.id,name:user.name,last_name:user.last_name,email:user.email,phone:user.phone_number})
     this.getEmailEdit(user)
-    this.modal.open(contenido)
   }
 
   private getUsersApp() {

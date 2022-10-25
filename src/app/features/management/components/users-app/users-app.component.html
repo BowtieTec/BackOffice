@@ -34,73 +34,80 @@
       <td> {{user.validate_code}}</td>
       <td class = 'text-right'>
         <button
-          (click) = 'open(contenido,user)'
-          class = 'buttonRowEdit me-1'
-          title = 'Editar'><em class = 'fas fa-user-edit'></em>
+          (click)='open(user)'
+          class="buttonRowEdit me-1"
+          data-bs-target="#editProfile"
+          data-bs-toggle="modal"
+          title='Editar'><em class='fas fa-user-edit'></em>
         </button>
     </tr>
     </tbody>
   </table>
 
-  <ng-template #contenido
-               let-modal>
+</div>
 
-    <div class = 'modal-header'>
-      <h3 class = 'modal-title'
-          id = 'staticBackdropLabel'><span><em class = 'fas fa-user-edit'></em></span> Editar usuario</h3>
-      <button (click) = 'modal.close()'
-              aria-label = 'Close'
-              class = 'btn-close'
-              data-bs-dismiss = 'modal'
-              type = 'button'></button>
-    </div>
-    <div class = 'modal-body'>
-      <div class = 'row'>
-        <div class = 'col-xl-12 col-lg-12  col-sm-12'>
-          <app-input-container
-            [formGroup] = 'formGroup'
-            controlName = 'name'
-            name = 'Nombre'>
-          </app-input-container>
-        </div>
-        <div class = 'col-xl-12 col-lg-12  col-sm-12'>
-          <app-input-container
-            [formGroup] = 'formGroup'
-            controlName = 'last_name'
-            name = 'Apellido'>
-          </app-input-container>
-        </div>
-        <div class = 'col-xl-12 col-lg-12  col-sm-12'>
-          <app-input-container
-            [formGroup] = 'formGroup'
-            [readonly] = 'isEditEmail'
-            controlName = 'email'
-            name = 'Correo'>
-          </app-input-container>
-        </div>
-        <div class = 'col-xl-12 col-lg-12  col-sm-12'>
-          <app-input-container
-            [formGroup] = 'formGroup'
-            controlName = 'phone'
-            maxL = '13'
-            minL = '8'
-            name = 'Número de Télefono'
-            type = 'number'
-          >
-          </app-input-container>
+<div aria-hidden="true"
+     aria-labelledby="staticBackdropLabel"
+     class="modal fade"
+     id="editProfile"
+     tabindex="-1">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class='modal-header'>
+        <h3 class='modal-title'>Editar usuario</h3>
+        <button aria-label='Close'
+                class='btn-close'
+                data-bs-dismiss='modal'
+                type='button'></button>
+      </div>
+      <div class='modal-body'>
+        <div class='row'>
+          <div class='col-xl-12 col-lg-12  col-sm-12'>
+            <app-input-container
+              [formGroup]='this.appUserForm'
+              controlName='name'
+              name='Nombre'>
+            </app-input-container>
+          </div>
+          <div class='col-xl-12 col-lg-12  col-sm-12'>
+            <app-input-container
+              [formGroup]='this.appUserForm'
+              controlName='last_name'
+              name='Apellido'>
+            </app-input-container>
+          </div>
+          <div class='col-xl-12 col-lg-12  col-sm-12'>
+            <app-input-container
+              [formGroup]='this.appUserForm'
+              [readonly]='isEditEmail'
+              controlName='email'
+              name='Correo'>
+            </app-input-container>
+          </div>
+          <div class='col-xl-12 col-lg-12  col-sm-12'>
+            <app-input-container
+              [formGroup]='this.appUserForm'
+              [readonly]='true'
+              controlName='phone'
+              maxL='12'
+              minL='8'
+              name='Número de Télefono'
+            >
+            </app-input-container>
+          </div>
         </div>
       </div>
+      <div class='modal-footer'>
+        <button
+          class='btn btn-secondary'
+          data-bs-dismiss='modal'
+          type='button'>Close
+        </button>
+        <button (click)='EditUserApp()'
+                class='btn btn-primary'
+                type='button'>Guardar
+        </button>
+      </div>
     </div>
-    <div class = 'modal-footer'>
-      <button (click) = 'modal.close()'
-              class = 'btn btn-secondary'
-              data-bs-dismiss = 'modal'
-              type = 'button'>Close
-      </button>
-      <button (click) = 'EditUserApp()'
-              class = 'btn btn-primary'
-              type = 'button'>Guardar
-      </button>
-    </div>
-  </ng-template>
+  </div>
 </div>
