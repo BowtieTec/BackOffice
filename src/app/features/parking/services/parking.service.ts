@@ -55,7 +55,8 @@ export class ParkingService implements OnDestroy {
       this.getAllParking().then((data) => {
         this.parkingLotSubject$.next(data.data.parkings)
       })
-    ]).then()
+    ]).then(r => {
+    })
   }
 
   getCountries() {
@@ -301,9 +302,9 @@ export class ParkingService implements OnDestroy {
   }
 
   getParked(
-    parkedFormValues: { parkingId: string; status: string },
+    parkedFormValues: { parkingId: string; status: string, textToSearch: string },
     page = 1,
-    pageSize = 10
+    pageSize = 10,
   ) {
     return this.http
       .post<ResponseModel>(
@@ -331,7 +332,7 @@ export class ParkingService implements OnDestroy {
             recordsFiltered: res.data.recordsFiltered
           }
         })
-      )
+      ).toPromise()
   }
 
   getOutParked(

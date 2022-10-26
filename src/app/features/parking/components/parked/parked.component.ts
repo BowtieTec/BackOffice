@@ -10,6 +10,8 @@ import {MessageService} from '../../../../shared/services/message.service'
 import {environment} from '../../../../../environments/environment'
 import {PermissionsService} from '../../../../shared/services/permissions.service'
 import {ReportService} from '../../../report/components/service/report.service'
+import {getCurrentDataTablePage} from "../../../../shared/services/utilities.service";
+import {ADTSettings} from "angular-datatables/src/models/settings";
 
 @Component({
   selector: 'app-parked',
@@ -46,21 +48,24 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
     return this.authService.isSudo
   }
 
-  get dtOptions() {
+  get dtOptions(): ADTSettings {
     return {
       ...DataTableOptions.getSpanishOptions(10),
       serverSide: true,
-      deferLoading: 57,
       processing: true,
       ajax: (dataTablesParameters: any, callback: any) => {
         this.messageService.showLoading()
-        console.log(dataTablesParameters)
-        const lastPage = dataTablesParameters.draw;
+        const page = getCurrentDataTablePage(dataTablesParameters)
         this.parkingService
-          .getParked(this.getParkedFormValues(), lastPage)
-          .toPromise()
+          .getParked(
+            {
+              ...this.getParkedFormValues(),
+              textToSearch: dataTablesParameters.search.value
+            }
+            , page, dataTablesParameters.length)
           .then((data) => {
             this.parkedData = data.data
+            console.log(data)
             return callback({
               recordsTotal: data.recordsTotal,
               recordsFiltered: data.recordsTotal,
@@ -69,7 +74,6 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
           }).then(() => this.messageService.hideLoading())
       }
     }
-
   }
 
   async getInitialData() {
@@ -78,11 +82,10 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
         .get('parkingId')
         ?.setValue(this.authService.getParking().id)
     }
-    await this.getParkedData().then(() => this.rerender())
   }
 
   async refreshParkedData() {
-    return this.getParkedData().then(() => this.rerender())
+    this.rerender()
   }
 
   getTimeInParking(entry: ParkedModel) {
@@ -250,9 +253,9 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   private async getParkedData() {
+    console.log('Re')
     return this.parkingService
       .getParked(this.getParkedFormValues())
-      .toPromise()
       .then((data) => {
         this.parkedData = data.data
       })
