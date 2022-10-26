@@ -47,7 +47,6 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
   get isSudo() {
     return this.authService.isSudo
   }
-
   get dtOptions(): ADTSettings {
     return {
       ...DataTableOptions.getSpanishOptions(10),
@@ -65,10 +64,9 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
             , page, dataTablesParameters.length)
           .then((data) => {
             this.parkedData = data.data
-            console.log(data)
             return callback({
               recordsTotal: data.recordsTotal,
-              recordsFiltered: data.recordsTotal,
+              recordsFiltered: data.recordsFiltered,
               data: []
             })
           }).then(() => this.messageService.hideLoading())

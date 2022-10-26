@@ -1,9 +1,9 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core'
-import {UntypedFormBuilder} from '@angular/forms'
+import {FormGroup, UntypedFormBuilder, Validators} from '@angular/forms'
 import {MessageService} from '../../../../shared/services/message.service'
 import {PermissionsService} from '../../../../shared/services/permissions.service'
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
-import {UtilitiesService} from '../../../../shared/services/utilities.service'
+import {getCurrentDataTablePage, UtilitiesService} from '../../../../shared/services/utilities.service'
 import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
 import {Subject} from 'rxjs'
 import {DataTableDirective} from 'angular-datatables'
@@ -26,6 +26,8 @@ export class IssueLogComponent implements OnInit {
   startDate: any
   endDate: any
   valContext: any
+  searchLogForm: FormGroup
+  now: Date = new Date()
 
   constructor(
     private logService: IssueLogService,
@@ -35,16 +37,44 @@ export class IssueLogComponent implements OnInit {
     private modal: NgbModal,
     private utilitiesService: UtilitiesService
   ) {
+    this.searchLogForm = this.createLogForm()
   }
 
   get dtOptions() {
-    return DataTableOptions.getSpanishOptions(25)
+    return {
+      ...DataTableOptions.getSpanishOptions(25),
+      serverSide: true,
+      processing: true,
+      ajax: (dataTablesParameters: any, callback: any) => {
+        const {initDate, endDate, telephone} = this.searchLogForm.getRawValue()
+        if (endDate < initDate) {
+          this.message.error('', 'La fecha de inicio debe ser mayor a la fecha fin')
+          return
+        }
+        const page = getCurrentDataTablePage(dataTablesParameters)
+        this.logService
+          .getAllAppLogs(initDate, endDate, telephone, page, dataTablesParameters.length)
+          .toPromise()
+          .then((data) => {
+            console.log(data);
+            this.issues = data.data
+            this.message.hideLoading()
+            return callback({
+              recordsTotal: data.recordsTotal,
+              recordsFiltered: data.recordsFiltered,
+              data: []
+            })
+          })
+
+      }
+    }
   }
 
-  getIssues(initDate: string, endDate: string, telephone: string = '') {
-    this.getLogsApp(initDate, endDate, telephone)
-    this.subject.subscribe((issue: IssueModel) => {
-      this.getLogsApp(initDate, endDate, telephone)
+  createLogForm() {
+    return this.formBuilder.group({
+      initDate: [new Date(), [Validators.required]],
+      endDate: [new Date, [Validators.required]],
+      telephone: ['']
     })
   }
 
@@ -64,34 +94,10 @@ export class IssueLogComponent implements OnInit {
     this.modal.open(contenido)
   }
 
-  private rerender() {
+  rerender() {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy()
       this.dtTrigger.next()
     })
-  }
-
-  private getLogsApp(
-    initDate: string,
-    endDate: string,
-    telephone: string = ''
-  ) {
-    if (!telephone) {
-      this.message.error('', 'Debe de ingresar un número de teléfono')
-      return
-    }
-    if (endDate < initDate) {
-      this.message.error('', 'La fecha de inicio debe ser mayor a la fecha fin')
-      return
-    }
-    this.message.showLoading()
-    this.logService
-      .getAllAppLogs(initDate, endDate, telephone)
-      .toPromise()
-      .then((data) => {
-        this.issues = data
-        this.rerender()
-        this.message.hideLoading()
-      })
   }
 }

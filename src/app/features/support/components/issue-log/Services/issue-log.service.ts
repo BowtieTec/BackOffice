@@ -17,15 +17,16 @@ export class IssueLogService {
   ) {
   }
 
-  getAllAppLogs(initDate: string, endDate: string, telephone: string) {
+  getAllAppLogs(initDate: string, endDate: string, telephone: string = '', page: number = 1, per_page: number = 25) {
     this.messageService.showLoading()
     return this.http
       .get<ResponseModel>(
-        `${this.apiUrl}backoffice/log/getAllAppLogs/dates?initDate=${initDate}&endDate=${endDate}&telephone=${telephone}`
+        `${this.apiUrl}backoffice/log/getAllAppLogs/dates?initDate=${initDate}&endDate=${endDate}&telephone=${telephone}&page=${page}&per_page=${per_page}`
       )
       .pipe(
         map((res) => {
-          return res.data.map((item: any) => {
+          console.log(res.data.data);
+          res.data.data = res.data.data.map((item: any) => {
             return {
               level: item.level ?? '',
               message: item.message ?? '',
@@ -39,6 +40,7 @@ export class IssueLogService {
               phone_number: item.phone_number ?? ''
             }
           })
+          return res.data
         })
       )
   }
