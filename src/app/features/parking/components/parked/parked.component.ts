@@ -47,7 +47,28 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   get dtOptions() {
-    return DataTableOptions.getSpanishOptions(10)
+    return {
+      ...DataTableOptions.getSpanishOptions(10),
+      serverSide: true,
+      deferLoading: 57,
+      processing: true,
+      ajax: (dataTablesParameters: any, callback: any) => {
+        this.messageService.showLoading()
+        console.log(dataTablesParameters)
+        const lastPage = dataTablesParameters.draw;
+        this.parkingService
+          .getParked(this.getParkedFormValues(), lastPage)
+          .toPromise()
+          .then((data) => {
+            this.parkedData = data.data
+            return callback({
+              recordsTotal: data.recordsTotal,
+              recordsFiltered: data.recordsTotal,
+              data: []
+            })
+          }).then(() => this.messageService.hideLoading())
+      }
+    }
 
   }
 
@@ -58,9 +79,6 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
         ?.setValue(this.authService.getParking().id)
     }
     await this.getParkedData().then(() => this.rerender())
-    setInterval(() => {
-      if (!this.dtTrigger.closed) this.refreshParkedData()
-    }, 30000)
   }
 
   async refreshParkedData() {
@@ -232,7 +250,6 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   private async getParkedData() {
-
     return this.parkingService
       .getParked(this.getParkedFormValues())
       .toPromise()

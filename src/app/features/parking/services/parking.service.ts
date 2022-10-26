@@ -303,7 +303,7 @@ export class ParkingService implements OnDestroy {
   getParked(
     parkedFormValues: { parkingId: string; status: string },
     page = 1,
-    pageSize = 100
+    pageSize = 10
   ) {
     return this.http
       .post<ResponseModel>(
