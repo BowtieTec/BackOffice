@@ -7,7 +7,6 @@ import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
 import {UserService} from '../users/services/user.service'
 import {MessageService} from '../../../../shared/services/message.service'
 import {PermissionsService} from '../../../../shared/services/permissions.service'
-import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
 import {UtilitiesService} from '../../../../shared/services/utilities.service'
 
@@ -51,6 +50,7 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
+
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
@@ -72,8 +72,8 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
       ]
     };
     this.getUsersApp()
-    this.subject.subscribe((user: NewUserModel) => {
-      this.getUsersApp()
+    this.subject.subscribe(async (user: NewUserModel) => {
+      await this.getUsersApp()
     })
 
   }
@@ -132,29 +132,34 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
       .toPromise()
       .then((data) => {
         if (data.success) {
-          this.message.infoTimeOut('Se guardaron los cambios correctamente')
           this.getUsersApp()
           this.modal.dismissAll()
         } else {
           this.message.error('', data.message)
         }
-      })
+      }).then(() => this.message.OkTimeOut())
   }
 
   open(user: NewUserModel) {
-    this.appUserForm.setValue({id:user.id,name:user.name,last_name:user.last_name,email:user.email,phone:user.phone_number})
+    this.appUserForm.setValue({
+      id: user.id,
+      name: user.name,
+      last_name: user.last_name,
+      email: user.email,
+      phone: user.phone_number
+    })
     this.getEmailEdit(user)
   }
 
-  private getUsersApp() {
-    this.userService
+  private async getUsersApp() {
+    this.message.showLoading()
+    return this.userService
       .getUsersApp()
       .toPromise()
       .then((data) => {
         this.users = data.data.users
         this.rerender()
-        this.message.hideLoading()
-      })
+      }).then(() => this.message.hideLoading())
   }
 
   private rerender() {
@@ -177,8 +182,7 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
         ]
       ],
       phone: [
-        '',
-        [Validators.required]
+        ''
       ]
     })
   }

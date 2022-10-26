@@ -36,7 +36,7 @@ export class InputContainerComponent implements OnInit {
       this.formGroup.controls[this.controlName].addValidators([
         Validators.minLength(1),
         Validators.maxLength(parseInt(this.maxL)),
-        Validators.pattern(/^[^$%()=+&|*'\\";>#]*$/)
+        Validators.pattern(/^[^$%()=&|*'\\";>#]*$/)
       ])
     } else if (this.type == 'number') {
       this.formGroup.controls[this.controlName].addValidators([
