@@ -7,6 +7,7 @@ export class IssueModel {
   level: number = 0
   origin = 0
   userDevice = ''
+  version = ''
   name = ''
   phone_number = ''
   created_at = ''

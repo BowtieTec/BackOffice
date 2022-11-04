@@ -35,6 +35,7 @@ export class IssueLogService {
               name: item.user.name ?? '' + item.user.last_name ?? '',
               userDevice: item.user_device.model ?? '',
               context: item.context ?? '',
+              version: item.version ?? '',
               created_at:
                 new Date(item.created_at).toLocaleDateString('es-GT') +
                 ' ' +
