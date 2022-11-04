@@ -27,16 +27,19 @@ export class IssueLogService {
         map((res) => {
           return res.data.map((item: any) => {
             return {
-              level: item.level ?? '',
-              message: item.message ?? '',
-              name: item.full_name ?? '',
-              userDevice: item.model ?? '',
-              context: item.l_context ?? '',
+              level: item.log_code.level ?? '',
+              message: item.log_code.message ?? '',
+              aux_msg: item.message ?? '',
+              station_name: item.station?.name ?? '',
+              parking_name: item.station?.parking?.name ?? '',
+              name: item.user.name ?? '' + item.user.last_name ?? '',
+              userDevice: item.user_device.model ?? '',
+              context: item.context ?? '',
               created_at:
-                new Date(item.l_created_at).toLocaleDateString('es-GT') +
+                new Date(item.created_at).toLocaleDateString('es-GT') +
                 ' ' +
-                new Date(item.l_created_at).toLocaleTimeString('es-GT') ?? '',
-              phone_number: item.phone_number ?? ''
+                new Date(item.created_at).toLocaleTimeString('es-GT') ?? '',
+              phone_number: item.user.phone_number ?? ''
             }
           })
         })
