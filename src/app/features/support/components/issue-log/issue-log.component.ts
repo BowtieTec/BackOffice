@@ -47,9 +47,20 @@ export class IssueLogComponent implements OnInit {
       processing: true,
       ajax: (dataTablesParameters: any, callback: any) => {
         const {initDate, endDate, telephone} = this.searchLogForm.getRawValue()
+        if (this.searchLogForm.invalid) {
+          return callback({
+            recordsTotal: 0,
+            recordsFiltered: 0,
+            data: []
+          })
+        }
         if (endDate < initDate) {
           this.message.error('', 'La fecha de inicio debe ser mayor a la fecha fin')
-          return
+          return callback({
+            recordsTotal: 0,
+            recordsFiltered: 0,
+            data: []
+          })
         }
         const page = getCurrentDataTablePage(dataTablesParameters)
         this.logService
@@ -74,7 +85,7 @@ export class IssueLogComponent implements OnInit {
     return this.formBuilder.group({
       initDate: [new Date(), [Validators.required]],
       endDate: [new Date, [Validators.required]],
-      telephone: ['']
+      telephone: ['', [Validators.required]]
     })
   }
 

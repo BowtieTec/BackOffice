@@ -28,13 +28,13 @@ export class IssueLogService {
           console.log(res.data.data);
           res.data.data = res.data.data.map((item: any) => {
             return {
-              level: item.log_code.level ?? '',
-              message: item.log_code.message ?? '',
+              level: item.log_code?.level ?? 0,
+              message: item.log_code?.message ?? '',
               aux_msg: item.message ?? '',
               station_name: item.station?.name ?? '',
               parking_name: item.station?.parking?.name ?? '',
               name: item.user.name ?? '' + item.user.last_name ?? '',
-              userDevice: item.user_device.model ?? '',
+              userDevice: item.user_device?.model ?? '',
               context: item.context ?? '',
               version: item.version ?? '',
               created_at:
