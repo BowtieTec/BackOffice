@@ -6,6 +6,18 @@ body {
   font-size: 12px;
 }
 
+td {
+  text-align: center;
+}
+
+th {
+  text-align: center !important;
+}
+
+table.dataTable.thead.tr.th {
+  text-align: center;
+}
+
 .dt-button {
   background: #fff;
   color: #021C70;

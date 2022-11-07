@@ -9,6 +9,7 @@ import {Subject} from 'rxjs'
 import {DataTableDirective} from 'angular-datatables'
 import {IssueModel} from './issue/issue.module'
 import {IssueLogService} from './Services/issue-log.service'
+import {ADTSettings} from "angular-datatables/src/models/settings";
 
 @Component({
   selector: 'app-issue-log',
@@ -40,7 +41,7 @@ export class IssueLogComponent implements OnInit {
     this.searchLogForm = this.createLogForm()
   }
 
-  get dtOptions() {
+  get dtOptions(): ADTSettings {
     return {
       ...DataTableOptions.getSpanishOptions(25),
       serverSide: true,
