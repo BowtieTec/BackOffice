@@ -136,3 +136,7 @@ export class UtilitiesService {
     }
   }
 }
+
+export const getCurrentDataTablePage = (dataTablesParameters: any) => {
+  return dataTablesParameters.start == 0 ? 1 : (dataTablesParameters.start / dataTablesParameters.length) + 1;
+}

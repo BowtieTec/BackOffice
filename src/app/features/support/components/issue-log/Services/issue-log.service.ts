@@ -17,23 +17,24 @@ export class IssueLogService {
   ) {
   }
 
-  getAllAppLogs(initDate: string, endDate: string, telephone: string) {
+  getAllAppLogs(initDate: string, endDate: string, telephone: string = '', page: number = 1, per_page: number = 25) {
     this.messageService.showLoading()
     return this.http
       .get<ResponseModel>(
-        `${this.apiUrl}backoffice/log/getAllAppLogs/dates?initDate=${initDate}&endDate=${endDate}&telephone=${telephone}`
+        `${this.apiUrl}backoffice/log/getAllAppLogs/dates?initDate=${initDate}&endDate=${endDate}&telephone=${telephone}&page=${page}&per_page=${per_page}`
       )
       .pipe(
         map((res) => {
-          return res.data.map((item: any) => {
+          console.log(res.data.data);
+          res.data.data = res.data.data.map((item: any) => {
             return {
-              level: item.log_code.level ?? '',
-              message: item.log_code.message ?? '',
+              level: item.log_code?.level ?? 0,
+              message: item.log_code?.message ?? '',
               aux_msg: item.message ?? '',
               station_name: item.station?.name ?? '',
               parking_name: item.station?.parking?.name ?? '',
               name: item.user.name ?? '' + item.user.last_name ?? '',
-              userDevice: item.user_device.model ?? '',
+              userDevice: item.user_device?.model ?? '',
               context: item.context ?? '',
               version: item.version ?? '',
               created_at:
@@ -43,6 +44,7 @@ export class IssueLogService {
               phone_number: item.user.phone_number ?? ''
             }
           })
+          return res.data
         })
       )
   }

@@ -5,60 +5,45 @@
     </div>
     <div class = "row justify-content-center">
       <div class = "col-xl-2 col-lg-6 col-sm-12">
-        <div class = "mb-4 relative">
-          <label class = "text-secondary"
-                 style = "display:block">Teléfono</label>
-          <input
-            #telephone
-            (change) = "getIssues(initDate.value,endDate.value, telephone.value)"
-            class = "form-control inputClass datetimepicker"
-            maxlength = "12"
-            name = "telephone"
-            placeholder = "Teléfono"
-            type = "number"
-            value = ""
-          >
+        <app-input-container
+          [formGroup] = "searchLogForm"
+          controlName = "telephone"
+          maxL = "14"
+          name = "Teléfono"
+          type = "number"
+        ></app-input-container>
+      </div>
+      <div class = 'col-xl-4 col-lg-6 col-sm-12'>
+        <div class = 'mb-4 relative'>
+          <app-input-container
+            (change) = 'this.rerender()'
+            [formGroup] = 'searchLogForm'
+            [value] = "now | date: 'yyyy-MM-dd'"
+            controlName = 'initDate'
+            maxL = "{{now | date:'yyyy-MM-dd'}}"
+            name = 'Inicio de Búsqueda'
+            type = 'Date'
+          ></app-input-container>
         </div>
       </div>
-      <div class = "col-xl-2 col-lg-6 col-sm-12">
-        <div class = "mb-4 relative">
-          <label class = "text-secondary"
-                 style = "display:block">Fecha de inicio</label>
-          <input #initDate
-                 (change) = "getIssues(initDate.value,endDate.value, telephone.value)"
-                 [value] = "fechaActual"
-                 class = "form-control inputClass datetimepicker"
-                 for = "initDate"
-                 max = "{{nowDateTime | date: 'yyyy-MM-dd'}}"
-                 name = "initDate"
-                 placeholder = "Fecha/Hora de entrada"
-                 type = "Date"
-          >
+      <div class = 'col-xl-4 col-lg-6 col-sm-12'>
+        <div class = 'mb-4 relative'>
+          <app-input-container
+            (change) = 'this.rerender()'
+            [formGroup] = 'searchLogForm'
+            [value] = "now | date: 'yyyy-MM-dd'"
+            controlName = 'endDate'
+            maxL = "{{now | date:'yyyy-MM-dd'}}"
+            name = 'Fin de Búsqueda'
+            type = 'Date'
+          ></app-input-container>
         </div>
       </div>
-      <div class = "col-xl-2 col-lg-6 col-sm-12">
-        <div class = "mb-4 relative">
-          <label class = "text-secondary"
-                 style = "display:block">Fecha de fin</label>
-          <input
-            #endDate
-            (change) = "getIssues(initDate.value,endDate.value, telephone.value)"
-            [value] = "fechaActual"
-            class = "form-control inputClass datetimepicker"
-            for = "endDate"
-            max = "{{nowDateTime | date: 'yyyy-MM-dd'}}"
-            name = "endDate"
-            placeholder = "Fecha/Hora de salida"
-            type = "date"
-          >
-        </div>
-      </div>
-
     </div>
   </div>
 </div>
-
-<div class = 'row' *ngIf="issues.length > 0">
+<div *ngIf = "issues.length > 0"
+     class = 'row animate__animated animate__fadeIn'>
   <div class = "col-lg-12">
     <div class = "panelsWithOutMinHeight pb-4">
       <div class = "titleTicket">
@@ -121,7 +106,7 @@
       <td>
         <button
           (click) = 'openContext(issue.context,contenido)'
-          class = 'btn-input'
+          class = 'btn-secundary'
           title = 'Context'><em class = 'fas fa-eye'> Ver</em>
         </button>
       </td>

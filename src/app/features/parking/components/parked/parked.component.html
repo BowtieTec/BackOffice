@@ -5,21 +5,6 @@
         <span><em class = "fas fa-sitemap"></em></span> Lista de parqueo hoy
       </div>
 
-      <form [formGroup] = "parkedForm">
-        <div class = "row">
-          <div class = "col-xl-6 col-lg-6  col-sm-12">
-            <div class = "mb-4 relative">
-              <app-input-container (keydown.enter) = "this.refreshParkedData()"
-                                   [formGroup] = "parkedForm"
-                                   controlName = "textToSearch"
-                                   name = "Buscar"
-                                   textInfo = "Puede presionar enter para buscar. Puede buscar por nombre, apellido o número de teléfono.">
-              </app-input-container>
-
-            </div>
-          </div>
-        </div>
-      </form>
       <div class = "animate__animated animate__fadeInLeft">
         <div class = "titleCards">
           <span><em class = "fas fa-store"></em></span> Tabla de usuarios parqueados
