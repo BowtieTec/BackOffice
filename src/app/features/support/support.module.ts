@@ -8,6 +8,7 @@ import {SharedModule} from 'src/app/shared/shared.module';
 import {SupportRoutingModule} from './support-routing.module';
 import {IssueLogComponent} from './components/issue-log/issue-log.component';
 import {DataTablesModule} from 'angular-datatables'
+import {NgxJsonViewerModule} from "ngx-json-viewer";
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {DataTablesModule} from 'angular-datatables'
     NgbModule,
     SharedModule,
     SupportRoutingModule,
-    DataTablesModule
+    DataTablesModule,
+    NgxJsonViewerModule
   ]
 })
 export class SupportModule {

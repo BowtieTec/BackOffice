@@ -127,9 +127,8 @@
   </div>
   <div class = 'modal-body'>
     <div class = 'list-group'>
-      <textarea [value] = 'valContext'
-                readonly
-                rows = '5'></textarea>
+      <ngx-json-viewer [depth] = "3"
+                       [json] = "valContext"></ngx-json-viewer>
     </div>
   </div>
   <hr>

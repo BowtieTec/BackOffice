@@ -25,7 +25,6 @@ export class IssueLogService {
       )
       .pipe(
         map((res) => {
-          console.log(res.data.data);
           res.data.data = res.data.data.map((item: any) => {
             return {
               level: item.log_code?.level ?? 0,

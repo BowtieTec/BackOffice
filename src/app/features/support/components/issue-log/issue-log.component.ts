@@ -68,7 +68,6 @@ export class IssueLogComponent implements OnInit {
           .getAllAppLogs(initDate, endDate, telephone, page, dataTablesParameters.length)
           .toPromise()
           .then((data) => {
-            console.log(data);
             this.issues = data.data
             this.message.hideLoading()
             return callback({
@@ -102,7 +101,8 @@ export class IssueLogComponent implements OnInit {
   }
 
   openContext(data: string, contenido: any) {
-    this.valContext = data
+    console.log(JSON.stringify(data))
+    this.valContext = JSON.parse(JSON.stringify(data))
     this.modal.open(contenido)
   }
 

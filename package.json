@@ -44,6 +44,7 @@
     "jspdf-autotable": "3",
     "ng-apexcharts": "1",
     "ng-recaptcha": "9",
+    "ngx-json-viewer": "^3.2.1-alpha.0",
     "ngx-toastr": "14",
     "rxjs": "~6",
     "sweetalert2": "11",
@@ -63,6 +64,7 @@
     "@types/node": "12",
     "devextreme-cli": "latest",
     "devextreme-themebuilder": "21",
+    "eslint": "^8.20.0",
     "jasmine-core": "3",
     "karma": "6",
     "karma-chrome-launcher": "3",
@@ -70,7 +72,6 @@
     "karma-jasmine": "4",
     "karma-jasmine-html-reporter": "1",
     "prettier": "2.7.1",
-    "eslint": "^8.20.0",
     "typescript": "4"
   },
   "browser": {
