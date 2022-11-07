@@ -37,7 +37,15 @@
               "jspdf-autotable",
               "exceljs",
               "raf",
-              "core-js"
+              "core-js",
+              "rgbcolor",
+              "jszip",
+              "devexpress-diagram",
+              "devexpress-gantt",
+              "devextreme-quill",
+              "file-saver",
+              "apexcharts",
+              "sweetalert2"
             ],
             "assets": [
               "src/favicon.ico",
