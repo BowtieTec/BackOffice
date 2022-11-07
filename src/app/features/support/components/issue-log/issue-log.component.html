@@ -43,6 +43,32 @@
   </div>
 </div>
 
+<div class = 'row' *ngIf="issues.length > 0">
+  <div class = "col-lg-12">
+    <div class = "panelsWithOutMinHeight pb-4">
+      <div class = "titleTicket">
+        Información del usuario
+      </div>
+      <div class = "row mt-2">
+        <div class = "col-2 mt-2 mb-2"><b>Nombre:</b></div>
+        <div class = "col-10 mt-2 mb-2"><h6>{{this.issues[0]?.name}}</h6></div>
+      </div>
+      <div class = "row mt-2">
+        <div class = "col-2 mt-2 mb-2"><b>Número de teléfono:</b></div>
+        <div class = "col-10 mt-2 mb-2"><h6>{{this.issues[0]?.phone_number}}</h6></div>
+      </div>
+      <div class = "row">
+        <div class = "col-2 mt-2 mb-2"><b>Módelo del teléfono:</b></div>
+        <div class = "col-10 mt-2 mb-2"><h6>{{this.issues[0]?.userDevice}}</h6></div>
+      </div>
+      <div class = "row">
+        <div class = "col-2 mt-2 mb-2"><b>Versión</b></div>
+        <div class = "col-10 mt-2 mb-2"><h6>{{this.issues[0]?.version}}</h6></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class = "panels animate__animated animate__fadeInLeft">
   <div class = "titleCards">
     <span><em class = "fas fa-users"></em></span> Filtro de Bitácora
@@ -55,11 +81,11 @@
          datatable>
     <thead>
     <tr>
-      <th scope = "col">Nombre</th>
-      <th scope = "col">Teléfono</th>
-      <th scope = "col">Mensaje</th>
-      <th scope = "col">Modelo del Teléfono</th>
       <th scope = "col">Fecha</th>
+      <th scope = "col">Mensaje</th>
+      <th scope = "col">Mensaje Auxiliar</th>
+      <th scope = "col">Estación</th>
+      <th scope = "col">Parqueo</th>
       <th scope = "col">Nivel</th>
       <th scope = 'col'>Opciones</th>
     </tr>
@@ -67,11 +93,12 @@
     <tbody>
     <tr *ngFor = 'let issue of issues'
         class = 'animate__animated animate__fadeIn'>
-      <td>{{issue.name}}</td>
-      <td>{{issue.phone_number}}</td>
-      <td>{{issue.message}}</td>
-      <td> {{issue.userDevice}}</td>
       <td> {{issue.created_at}}</td>
+      <td>{{issue.message}}</td>
+      <td>{{issue.aux_msg}}</td>
+      <td> {{issue.station_name}}</td>
+      <td> {{issue.parking_name}}</td>
+
       <td style = 'position: relative'>
         <div style = 'display: inline-block'>{{issue.level}}</div>
         <div [ngClass] = "issue.level < 4 ? 'typeIssue lowstatus' : 'typeIssue highstatus'"></div>
