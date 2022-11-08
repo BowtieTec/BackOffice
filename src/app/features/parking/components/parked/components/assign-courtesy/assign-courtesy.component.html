@@ -28,9 +28,11 @@
                class = 'courtesyLink'>
             <a (click) = 'assignCourtesy(item)'
                class = ' flex-column align-items-start '>
-              <div class = 'd-flex w-100 justify-content-between'>
-                <h5 class = 'mb-1'>{{item.name}}</h5>
-                <small class = 'text-muted'> {{item.company?.name | titlecase}} </small>
+              <div class = 'd-flex w-50'>
+                <div>
+                  <h5 class = 'mb-1'>{{item.name}}</h5>
+                  <h5 class = 'text-muted'>{{item.company?.name}}</h5>
+                </div>
               </div>
             </a>
           </div>
