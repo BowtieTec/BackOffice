@@ -52,7 +52,7 @@ export class ResgisteredUsersComponent
       this.getUsers(parkingId)
     })
     this.subject.subscribe((user: NewUserModel) => {
-      this.getUsers()
+      //this.getUsers() //try to use this if not working well
     })
   }
 
@@ -80,7 +80,6 @@ export class ResgisteredUsersComponent
       resolve('ok')
     }).then(() => {
       this.subject.next(user)
-
     })
   }
 
@@ -114,6 +113,7 @@ export class ResgisteredUsersComponent
       .getUsers(parkingId)
       .toPromise()
       .then((data) => {
+        console.log(data.data.administradores.data);
         const results = data.data.administradores.data
         results.forEach((result: any) => {
           result.role = result.role == null ? '' : result.role.id

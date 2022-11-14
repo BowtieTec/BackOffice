@@ -70,6 +70,7 @@ export class NewUserComponent implements OnInit {
         )
         this.newUserForm.controls['role'].setValue(user.role)
         this.newUserForm.controls['name'].setValue(user.name)
+        this.newUserForm.controls['company'].setValue(user.company.id)
         this.newUserForm.controls['parking'].setValue(
           user.parking.id ? user.parking.id : this.authService.getParking().id
         )
