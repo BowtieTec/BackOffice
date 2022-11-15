@@ -16,12 +16,13 @@ export class AssignCourtesyComponent implements OnInit, OnDestroy {
   courtesyTypes: CourtesyTypeModel[] = []
   isLoading: Boolean = true
   parkedSelected: ParkedModel = new ParkedModel()
-
+  courtesyClicked: CourtesyModel = new CourtesyModel()
   constructor(private courtesyService: CourtesyService, private messageService: MessageService) {
   }
 
   getStationaryCourtesies(parked: ParkedModel) {
     this.isLoading = true
+    console.log(parked)
     if (!parked.parking) {
       return
     }
@@ -45,6 +46,7 @@ export class AssignCourtesyComponent implements OnInit, OnDestroy {
 
   assignCourtesy(courtesy: CourtesyModel) {
     this.isLoading = true
+    this.courtesyClicked = courtesy
     this.courtesyService.assignCourtesy(this.parkedSelected.id, courtesy.id).then(() => this.isLoading = !this.courtesyService)
   }
 }

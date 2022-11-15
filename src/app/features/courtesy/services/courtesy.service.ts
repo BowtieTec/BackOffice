@@ -139,7 +139,7 @@ export class CourtesyService {
       .pipe(
         map((data) => {
           if (data.success) {
-            this.messageService.Ok()
+            this.messageService.OkTimeOut()
           } else {
             this.messageService.error(data.message)
           }

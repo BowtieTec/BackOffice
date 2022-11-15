@@ -4,7 +4,7 @@
      class = 'modal fade'
      id = 'assignCourtesy'
      tabindex = '-1'>
-  <div class = 'modal-dialog modal-dialog-centered modal-lg'>
+  <div class = 'modal-dialog modal-dialog-centered'>
     <div class = 'modal-content'>
       <div class = 'modal-header'>
         <h5 class = 'modal-title'
@@ -24,18 +24,16 @@
           </p>
         </div>
         <div *ngIf = 'courtesies.length > 0 && !isLoading'>
-          <div *ngFor = 'let item of courtesies'
-               class = 'courtesyLink'>
-            <a (click) = 'assignCourtesy(item)'
-               class = ' flex-column align-items-start '>
-              <div class = 'd-flex w-50'>
-                <div>
-                  <h5 class = 'mb-1'>{{item.name}}</h5>
-                  <h5 class = 'text-muted'>{{item.company?.name}}</h5>
-                </div>
-              </div>
-            </a>
+          <ul class="list-group">
+          <div *ngFor = 'let item of courtesies; let i'>
+              <button
+                (click) = 'assignCourtesy(item)'
+                type="button"
+                class="list-group-item list-group-item-action h6">
+                {{item.name}} <i *ngIf="courtesyClicked===item" class="far fa-check-circle"></i>
+              </button>
           </div>
+          </ul>
         </div>
         <div *ngIf = '!isLoading && courtesies.length == 0'>
           <figure class = 'text-center'>
