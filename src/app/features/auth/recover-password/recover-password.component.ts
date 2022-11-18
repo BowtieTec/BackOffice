@@ -62,7 +62,7 @@ export class RecoverPasswordComponent {
       .toPromise()
       .then((data) => {
         if (data.success) {
-          this.messageService.Ok('Código Enviado')
+          this.messageService.OkTimeOut('Código Enviado')
 
         } else {
           this.messageService.error('', data.message)

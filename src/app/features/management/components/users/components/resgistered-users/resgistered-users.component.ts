@@ -66,7 +66,7 @@ export class ResgisteredUsersComponent
       .deleteUser(user.id == undefined ? '' : user.id)
       .subscribe((data) => {
         if (data.success) {
-          this.message.Ok('Eliminado')
+          this.message.OkTimeOut('Eliminado')
           this.getUsers()
         } else {
           this.message.errorTimeOut('', data.message)
@@ -101,7 +101,7 @@ export class ResgisteredUsersComponent
     })
       .subscribe((data) => {
         if (data.success) {
-          this.message.Ok('Contraseña reiniciada')
+          this.message.OkTimeOut('Contraseña reiniciada')
         } else {
           this.message.errorTimeOut('', data.message)
         }

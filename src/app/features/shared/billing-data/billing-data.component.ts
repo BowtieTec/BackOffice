@@ -146,7 +146,7 @@ export class BillingDataComponent implements OnInit {
       this.parkingService.parkingStepFour.parkingId = this.parkingId
       this.parkingService.setStepFour().subscribe((data) => {
         if (data.success) {
-          this.message.Ok('Parqueo guardado.')
+          this.message.OkTimeOut('Parqueo guardado.')
         } else {
           this.utilitiesService.markAsTouched(this.stepFourForm)
           this.message.error('', data.message)

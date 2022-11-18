@@ -229,7 +229,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   downloadPDF(courtesies: CourtesyModel) {
-    this.messageService.showLoading()
+    this.toast.info('El archivo se descargará cuando esté listo', 'Generando archivo PDF')
     courtesies.id = !courtesies.id ? '' : courtesies.id
     this.courtesyService.getPDF(courtesies.id).subscribe((data) => {
       saveAs(data, courtesies.name + '.pdf')

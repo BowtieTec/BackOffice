@@ -78,14 +78,6 @@ export class MessageService {
     })
   }
 
-  Ok(title = 'Finalizado') {
-    this.hideLoading()
-    Swal.fire({
-      icon: 'success',
-      title
-    })
-  }
-
   OkTimeOut(title = 'Finalizado') {
     this.hideLoading()
     Swal.fire({

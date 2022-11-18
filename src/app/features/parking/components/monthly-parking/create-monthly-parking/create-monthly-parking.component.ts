@@ -210,7 +210,7 @@ export class CreateMonthlyParkingComponent implements OnInit {
     if (data.success) {
       this.getMonthlySubscription()
         .then(() => this.getProfiles())
-        .then(() => this.message.Ok())
+        .then(() => this.message.OkTimeOut())
     } else {
       this.message.error('', data.message)
     }
@@ -256,7 +256,7 @@ export class CreateMonthlyParkingComponent implements OnInit {
       .then(() => {
         this.cleanForm()
         console.log("Berny Cardona")
-        this.message.Ok('Guardado')
+        this.message.OkTimeOut('Guardado')
       })
       .catch()
 
