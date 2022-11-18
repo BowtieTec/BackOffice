@@ -15,7 +15,7 @@ import {ParkingService} from '../../../parking/services/parking.service'
 import {CompaniesModel} from '../../../management/components/users/models/companies.model'
 import {CompaniesService} from '../../../management/components/users/services/companies.service'
 import {SelectModel} from '../../../../shared/model/CommonModels'
-import {ToastrService} from 'ngx-toastr'
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-courtesy',
@@ -229,7 +229,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   downloadPDF(courtesies: CourtesyModel) {
-    this.toast.info('El archivo se descargará cuando esté listo', 'Generando archivo PDF')
+    this.messageService.OkTimeOut('...Generando archivo PDF')
     courtesies.id = !courtesies.id ? '' : courtesies.id
     this.courtesyService.getPDF(courtesies.id).subscribe((data) => {
       saveAs(data, courtesies.name + '.pdf')

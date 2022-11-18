@@ -1,10 +1,14 @@
 import {Injectable} from '@angular/core'
 import Swal from 'sweetalert2'
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
+  constructor() {
+  }
+
   loading = false
   footer =
     '<div class="text-center"> <bold> Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.</bold> </div>'
@@ -15,7 +19,6 @@ export class MessageService {
       now.getMonth() + 1
     }-${now.getDate() < 10 ? '0' : ''}${now.getDate()}T23:59`
   }
-
   showLoading() {
     this.loading = true
   }
@@ -81,10 +84,17 @@ export class MessageService {
   OkTimeOut(title = 'Finalizado') {
     this.hideLoading()
     Swal.fire({
+      toast: true,
       icon: 'success',
-      title,
-      timer: 1000,
-      showConfirmButton: false
+      text: title,
+      position: 'bottom-left',
+      showConfirmButton: false,
+      timer: 5000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
     })
   }
 
@@ -225,4 +235,6 @@ export class MessageService {
       return {result, dateToGetOut}
     })
   }
+
+
 }
