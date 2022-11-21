@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core'
 import {UserService} from '../../services/user.service'
-import {FormBuilder, FormGroup, Validators} from '@angular/forms'
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms'
 import {UtilitiesService} from '../../../../../../shared/services/utilities.service'
 import {NewUserModel} from '../../models/newUserModel'
 import {MessageService} from '../../../../../../shared/services/message.service'
@@ -12,6 +12,7 @@ import {AuthService} from '../../../../../../shared/services/auth.service'
 import {CompaniesService} from '../../services/companies.service'
 import {CompaniesModel} from '../../models/companies.model'
 import {Roles} from '../../utilities/User'
+import {ParkingModel} from "../../../../../parking/models/Parking.model";
 
 @Component({
   selector: 'app-new-user',
@@ -25,7 +26,7 @@ export class NewUserComponent implements OnInit {
   changeParkingAtCreateUser: string = environment.changeParkingAtCreateUser
   parkingId: string = this.authService.getParking().id
   companies: CompaniesModel[] = []
-
+  otherParkingLot: ParkingModel[] = this.authService.getUser().user.otherParkings
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
@@ -56,6 +57,7 @@ export class NewUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.addCheckboxes()
     this.subject.subscribe((user: NewUserModel) => {
       this.messageServices.showLoading()
       this.cleanForm()
@@ -80,7 +82,7 @@ export class NewUserComponent implements OnInit {
       }
       this.messageServices.hideLoading()
     })
-    this.authService.user$.subscribe(({parkingId}) => {
+    this.authService.user$.subscribe(({user, parkingId}) => {
       this.parkingId = parkingId
       this.newUserForm.get('parking')?.setValue(parkingId)
       this.parkingId = parkingId
@@ -107,6 +109,7 @@ export class NewUserComponent implements OnInit {
       this.messageServices.errorTimeOut('Datos incorrectos o faltantes.')
       return
     }
+    newUserValue.otherParkings = this.getOtherParkingLotsIdSelected()
     if (this.isEdit) {
       this.newUserForm.get('password')?.clearValidators()
       delete newUserValue.password
@@ -176,6 +179,10 @@ export class NewUserComponent implements OnInit {
       ])
   }
 
+  getParkingLotsFormArray() {
+    return this.newUserForm.controls['otherParkings'] as FormArray;
+  }
+
   clearPasswordValidations() {
     this.newUserForm.get('password')?.clearValidators()
   }
@@ -192,6 +199,20 @@ export class NewUserComponent implements OnInit {
 
   controlInvalid(control: string): boolean {
     return this.utilitiesService.controlInvalid(this.newUserForm, control)
+  }
+
+  private getOtherParkingLotsIdSelected() {
+    return this.newUserForm.value.otherParkings
+      .map((checked: boolean, i: number) => checked ? {id: this.otherParkingLot[i].id} : null)
+      .filter((v: any) => v !== null);
+  }
+
+  private addCheckboxes() {
+    this.otherParkingLot.forEach((item) => this.getParkingLotsFormArray().push(new FormControl({
+      value: true,
+      disabled: false
+    })));
+    console.log(this.getParkingLotsFormArray());
   }
 
   private createForm() {
@@ -216,7 +237,8 @@ export class NewUserComponent implements OnInit {
       ],
       role: ['b5b821bb-f919-4bae-9b6d-75a144fe2082', [Validators.required]],
       company: [],
-      parking: [this.parkingId, [Validators.required]]
+      parking: [this.parkingId, [Validators.required]],
+      otherParkings: new FormArray([])
     })
   }
 }

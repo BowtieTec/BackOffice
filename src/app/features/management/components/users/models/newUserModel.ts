@@ -14,6 +14,7 @@ export class NewUserModel {
   appleId?: string
   validate_code?: string = ''
   company?: string | null | any = ''
+  otherParkings?: []
 }
 
 export class updateUserApp {
