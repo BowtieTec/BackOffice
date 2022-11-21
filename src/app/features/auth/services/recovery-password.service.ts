@@ -40,10 +40,19 @@ export class RecoveryPasswordService {
     )
   }
 
-  requestNewPassword(recoveryModel: ChangePasswordModel) {
+  requestNewPassword(newPassword: string, userId: string) {
+    if (!userId) throw new Error('No se seleccionó un usuario')
+    const recoveryModel: ChangePasswordModel = {
+      newPassword,
+      newPasswordConfirmation: newPassword,
+      userId
+    }
     return this.http.post<ResponseModel>(
-      `${this.apiUrl}backoffice/recovery-password/requestNewPassword`,
+      `${this.apiUrl}backoffice/admin/reset-password`,
       recoveryModel
-    )
+    ).toPromise().then(({data}) => data)
+      .catch((err) => {
+        throw new Error(`No se pudo cambiar la contraseña: ${err.message}`)
+      })
   }
 }

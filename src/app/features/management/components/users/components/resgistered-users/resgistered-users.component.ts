@@ -91,21 +91,14 @@ export class ResgisteredUsersComponent
     this.dtTrigger.unsubscribe()
   }
 
-  restartPasswordUser(user: NewUserModel) {
-    const newPassword: string = this.utilitiesService.randomString() + '$$';
-
-    this.recoveryService.requestNewPassword({
-      newPassword,
-      newPasswordConfirmation: newPassword,
-      userId: user.id as string
-    })
-      .subscribe((data) => {
-        if (data.success) {
-          this.message.OkTimeOut('Contraseña reiniciada')
-        } else {
-          this.message.errorTimeOut('', data.message)
-        }
-      })
+  async restartPasswordUser(user: NewUserModel) {
+    const newPassword: string = this.utilitiesService.randomString();
+    try {
+      const data = await this.recoveryService.requestNewPassword(newPassword, user.id ?? '')
+      this.message.OkTimeOut('Contraseña cambiada. El usuario resivirá un correo con la nueva contraseña')
+    } catch (e: any) {
+      throw new Error(e)
+    }
   }
 
   private getUsers(parkingId: string = this.parkingId) {

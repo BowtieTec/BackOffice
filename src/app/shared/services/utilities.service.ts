@@ -77,9 +77,10 @@ export class UtilitiesService {
       'z'
     ]
     const allNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-    const len = 10
+    const symbols = ['$', '#', '!', '^', '&', '*']
+    const len = 11
 
-    const base = [...allCapsAlpha, ...allNumbers, ...allLowerAlpha]
+    const base = [...allCapsAlpha, ...allNumbers, ...allLowerAlpha, ...symbols]
 
     return [...Array(len)]
       .map((i) => base[(Math.random() * base.length) | 0])
