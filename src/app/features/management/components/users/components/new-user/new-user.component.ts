@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core'
 import {UserService} from '../../services/user.service'
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms'
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms'
 import {UtilitiesService} from '../../../../../../shared/services/utilities.service'
 import {NewUserModel} from '../../models/newUserModel'
 import {MessageService} from '../../../../../../shared/services/message.service'
@@ -62,6 +62,7 @@ export class NewUserComponent implements OnInit {
       this.messageServices.showLoading()
       this.cleanForm()
       if (user) {
+        console.log(user)
         this.clearPasswordValidations()
         this.newUserForm.controls['name'].setValue(user.name)
         this.newUserForm.controls['last_name'].setValue(user.last_name)
@@ -72,7 +73,9 @@ export class NewUserComponent implements OnInit {
         )
         this.newUserForm.controls['role'].setValue(user.role)
         this.newUserForm.controls['name'].setValue(user.name)
-        this.newUserForm.controls['company'].setValue(user.company.id)
+        if (user.company) {
+          this.newUserForm.controls['company'].setValue(user.company.id)
+        }
         this.newUserForm.controls['parking'].setValue(
           user.parking.id ? user.parking.id : this.authService.getParking().id
         )
@@ -92,6 +95,18 @@ export class NewUserComponent implements OnInit {
 
   isSudo() {
     return this.authService.isSudo
+  }
+
+  clearAllCheckboxes() {
+    this.getParkingLotsFormArray().controls.forEach((control: AbstractControl) => {
+      if (this.parkingId !== control.value) control.setValue(false);
+    });
+  }
+
+  selectAllCheckboxes() {
+    this.getParkingLotsFormArray().controls.forEach((control: AbstractControl) => {
+      control.setValue(true);
+    });
   }
 
   saveNewUser() {
@@ -195,6 +210,7 @@ export class NewUserComponent implements OnInit {
       .get('role')
       ?.setValue('b5b821bb-f919-4bae-9b6d-75a144fe2082')
     this.addPasswordValidations()
+    this.selectAllCheckboxes()
   }
 
   controlInvalid(control: string): boolean {
@@ -210,9 +226,9 @@ export class NewUserComponent implements OnInit {
   private addCheckboxes() {
     this.otherParkingLot.forEach((item) => this.getParkingLotsFormArray().push(new FormControl({
       value: true,
-      disabled: false
+      disabled: item.id === this.parkingId
     })));
-    console.log(this.getParkingLotsFormArray());
+
   }
 
   private createForm() {

@@ -1,16 +1,17 @@
 import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core'
-import {NewUserModel} from '../../models/newUserModel'
+import {getAdminsPaginatedModel, NewUserModel} from '../../models/newUserModel'
 import {UserService} from '../../services/user.service'
 import {Subject} from 'rxjs'
-import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms'
+import {FormGroup, UntypedFormBuilder} from '@angular/forms'
 import {DataTableOptions} from '../../../../../../shared/model/DataTableOptions'
 import {DataTableDirective} from 'angular-datatables'
 import {MessageService} from '../../../../../../shared/services/message.service'
 import {PermissionsService} from '../../../../../../shared/services/permissions.service'
 import {environment} from '../../../../../../../environments/environment'
 import {RecoveryPasswordService} from "../../../../../auth/services/recovery-password.service";
-import {UtilitiesService} from "../../../../../../shared/services/utilities.service";
+import {getCurrentDataTablePage, UtilitiesService} from "../../../../../../shared/services/utilities.service";
 import {AuthService} from "../../../../../../shared/services/auth.service";
+import {ADTSettings} from "angular-datatables/src/models/settings";
 
 @Component({
   selector: 'app-resgistered-users',
@@ -26,7 +27,7 @@ export class ResgisteredUsersComponent
   @ViewChild(DataTableDirective)
   dtElement!: DataTableDirective
   dtTrigger: Subject<any> = new Subject()
-  formGroup: UntypedFormGroup
+  formGroup: FormGroup
   users: NewUserModel[] = []
   parkingId: string = ''
 
@@ -42,17 +43,38 @@ export class ResgisteredUsersComponent
     this.formGroup = formBuilder.group({filter: ['']})
   }
 
-  get dtOptions() {
-    return DataTableOptions.getSpanishOptions(10)
+  get DtOptions(): ADTSettings {
+    return {
+      ...DataTableOptions.getSpanishOptions(10),
+      serverSide: true,
+      processing: true,
+      ajax: async (dataTablesParameters: any, callback: any) => {
+        const page = getCurrentDataTablePage(dataTablesParameters)
+        const data = await this.getUsers({
+          textToSearch: dataTablesParameters.search.value,
+          page,
+          pageSize: dataTablesParameters.length
+        })
+        this.users = data.admins
+        callback({
+          recordsTotal: data.recordsTotal,
+          recordsFiltered: data.recordsFiltered,
+          data: []
+        })
+        this.message.hideLoading()
+      }
+    }
   }
 
   ngOnInit(): void {
     this.authService.user$.subscribe(({parkingId}) => {
       this.parkingId = parkingId
-      this.getUsers(parkingId)
+      this.getUsers({textToSearch: '', page: 1, pageSize: 10}).then((data) => {
+        this.users = data.admins
+      })
     })
     this.subject.subscribe((user: NewUserModel) => {
-      //this.getUsers() //try to use this if not working well
+      //this.rerender() //try to use this if not working well
     })
   }
 
@@ -67,7 +89,7 @@ export class ResgisteredUsersComponent
       .subscribe((data) => {
         if (data.success) {
           this.message.OkTimeOut('Eliminado')
-          this.getUsers()
+          this.rerender()
         } else {
           this.message.errorTimeOut('', data.message)
         }
@@ -101,29 +123,17 @@ export class ResgisteredUsersComponent
     }
   }
 
-  private getUsers(parkingId: string = this.parkingId) {
-    this.userService
-      .getUsers(parkingId)
-      .toPromise()
-      .then((data) => {
-        console.log(data.data.administradores.data);
-        const results = data.data.administradores.data
-        results.forEach((result: any) => {
-          result.role = result.role == null ? '' : result.role.id
-        })
-        return results
-      })
-      .then((results) => {
-        this.users = results
-        this.rerender()
-        this.message.hideLoading()
-      })
-  }
-
-  private rerender() {
+  rerender() {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy()
       this.dtTrigger.next()
     })
+  }
+
+  private getUsers(data: getAdminsPaginatedModel) {
+    return this.userService
+      .getUsers(data)
+      .toPromise()
+      .then((data) => data.data)
   }
 }

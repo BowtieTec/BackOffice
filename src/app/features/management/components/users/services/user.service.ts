@@ -4,7 +4,7 @@ import {environment} from '../../../../../../environments/environment'
 import {HttpClient} from '@angular/common/http'
 import {ResponseModel} from '../../../../../shared/model/Request.model'
 import {RolesModel} from '../models/RolesModel'
-import {NewUserModel, updateUserApp} from '../models/newUserModel'
+import {getAdminsPaginatedModel, NewUserModel, updateUserApp} from '../models/newUserModel'
 import {Observable} from 'rxjs'
 import {AuthService} from '../../../../../shared/services/auth.service'
 
@@ -46,10 +46,10 @@ export class UserService {
     return this.http.get<ResponseModel>(`${this.apiUrl}backoffice/role`)
   }
 
-  getUsers(parkingId: string): Observable<any> {
+  getUsers(data: getAdminsPaginatedModel): Observable<any> {
     this.messageService.showLoading()
     return this.http.get<ResponseModel>(
-      `${this.apiUrl}backoffice/admin/admins?page=1&per_page=100&status=3&parkingId=${parkingId}`
+      `${this.apiUrl}backoffice/admin/admins?textToSearch=${data.textToSearch}&page=${data.page}&pageSize=${data.pageSize}`
     )
   }
 

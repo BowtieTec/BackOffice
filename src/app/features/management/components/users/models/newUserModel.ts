@@ -24,3 +24,8 @@ export class updateUserApp {
   email ? = ''
   phone_number?: string = ''
 }
+export interface getAdminsPaginatedModel {
+  textToSearch: string,
+  page: number,
+  pageSize: number
+}
