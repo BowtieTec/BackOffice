@@ -71,7 +71,7 @@ export class NewUserComponent implements OnInit {
         this.newUserForm.controls['password'].setValue(
           'EstaPuedeOnoSerLaContraseña100&'
         )
-        this.newUserForm.controls['role'].setValue(user.role)
+        this.newUserForm.controls['role'].setValue(user.role.id)
         this.newUserForm.controls['name'].setValue(user.name)
         if (user.company) {
           this.newUserForm.controls['company'].setValue(user.company.id)
@@ -83,6 +83,18 @@ export class NewUserComponent implements OnInit {
         this.isEdit = true
         this.utilitiesService.markAsUnTouched(this.newUserForm)
       }
+      this.otherParkingLot.forEach((item, index) => {
+        if (user.otherParkings && user.otherParkings.find((obj: any) => obj.id === item.id)) {
+          this.getParkingLotsFormArray().controls[index].setValue(true);
+        } else {
+          this.getParkingLotsFormArray().controls[index].setValue(false);
+        }
+        if (user.parking.id === item.id) {
+          this.getParkingLotsFormArray().controls[index].disable()
+        } else {
+          this.getParkingLotsFormArray().controls[index].enable()
+        }
+      })
       this.messageServices.hideLoading()
     })
     this.authService.user$.subscribe(({user, parkingId}) => {
@@ -99,7 +111,10 @@ export class NewUserComponent implements OnInit {
 
   clearAllCheckboxes() {
     this.getParkingLotsFormArray().controls.forEach((control: AbstractControl) => {
-      if (this.parkingId !== control.value) control.setValue(false);
+      if (this.parkingId !== control.value) {
+        control.setValue(false)
+        control.enable()
+      }
     });
   }
 

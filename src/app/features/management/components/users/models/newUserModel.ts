@@ -5,8 +5,8 @@ export class NewUserModel {
   user = ''
   email = ''
   phone_number?: string = ''
-  password?: string = ''
-  role = ''
+  password?: IRole
+  role: any
   parking: any
   status?: number
   Admin?: string
@@ -24,8 +24,14 @@ export class updateUserApp {
   email ? = ''
   phone_number?: string = ''
 }
+
 export interface getAdminsPaginatedModel {
   textToSearch: string,
   page: number,
   pageSize: number
+}
+
+export interface IRole {
+  id: string,
+  name: string
 }
