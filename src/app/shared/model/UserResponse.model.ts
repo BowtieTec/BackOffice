@@ -47,6 +47,14 @@ export class ParkingAuthModel {
   url_logo: string = ''
 }
 
+export interface ParkingCheckModel {
+  id: string
+  name: string
+  checked: boolean
+  disabled: boolean
+}
+
+
 export class RoleAuthModel {
   id = ''
   name = ''

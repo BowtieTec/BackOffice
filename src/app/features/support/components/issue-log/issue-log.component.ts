@@ -3,7 +3,7 @@ import {FormGroup, UntypedFormBuilder, Validators} from '@angular/forms'
 import {MessageService} from '../../../../shared/services/message.service'
 import {PermissionsService} from '../../../../shared/services/permissions.service'
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
-import {getCurrentDataTablePage, UtilitiesService} from '../../../../shared/services/utilities.service'
+import {getCurrentDataTablePage} from '../../../../shared/services/utilities.service'
 import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
 import {Subject} from 'rxjs'
 import {DataTableDirective} from 'angular-datatables'
@@ -35,8 +35,7 @@ export class IssueLogComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private message: MessageService,
     private permissionsService: PermissionsService,
-    private modal: NgbModal,
-    private utilitiesService: UtilitiesService
+    private modal: NgbModal
   ) {
     this.searchLogForm = this.createLogForm()
   }
@@ -101,7 +100,6 @@ export class IssueLogComponent implements OnInit {
   }
 
   openContext(data: string, contenido: any) {
-    console.log(JSON.stringify(data))
     this.valContext = JSON.parse(JSON.stringify(data))
     this.modal.open(contenido)
   }

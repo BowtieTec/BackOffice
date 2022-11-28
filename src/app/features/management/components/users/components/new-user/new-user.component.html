@@ -47,12 +47,39 @@
         </app-input-container>
       </div>
       <div *ngIf = 'this.selectedRoleIsCourtesy'
-           class = 'col-xl-12 col-lg-12  col-sm-12'>
+           class = 'col-xl-12 col-lg-12 col-sm-12'>
         <app-select-container [data] = 'companies'
                               [formGroup] = 'newUserForm'
                               controlName = 'company'
                               name = "Local">
         </app-select-container>
+      </div>
+      <div class = 'col-xl-12 col-lg-12 col-sm-12 mb-1 ms-3'>
+        <button
+          (click) = 'selectAllCheckboxes()'
+          class = 'btn btn-outline-dark form-check-inline'>
+          Marcar todos
+        </button>
+        <button
+          (click) = 'clearAllCheckboxes()'
+          class = 'btn btn-outline-dark form-check-inline'>
+          Desmarcar todos
+        </button>
+      </div>
+      <div class = 'col-xl-12 col-lg-12 col-sm-12 ms-2'>
+        <div *ngFor = "let parking of this.getParkingLotsFormArray().controls; let i = index"
+             class = "form-check-inline col-sm-5 m-1"
+             formArrayName = "otherParkings">
+          <input [formControlName] = "i"
+                 [id] = "otherParkingLot[i].id"
+                 [value] = "otherParkingLot[i].id"
+                 class = "form-check-input"
+                 type = "checkbox">
+          <label [for] = "otherParkingLot[i].id"
+                 class = "form-check-label ms-1">
+            {{otherParkingLot[i].name}}
+          </label>
+        </div>
       </div>
     </div>
     <div class = 'col-xl-12 col-lg-12 col-sm-12'>
