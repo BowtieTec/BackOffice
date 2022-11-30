@@ -83,24 +83,28 @@ export class NewUserComponent implements OnInit {
         this.isEdit = true
         this.utilitiesService.markAsUnTouched(this.newUserForm)
       }
-      this.otherParkingLot.forEach((item, index) => {
-        if (user.otherParkings && user.otherParkings.find((obj: any) => obj.id === item.id)) {
-          this.getParkingLotsFormArray().controls[index].setValue(true);
-        } else {
-          this.getParkingLotsFormArray().controls[index].setValue(false);
-        }
-        if (user.parking.id === item.id) {
-          this.getParkingLotsFormArray().controls[index].disable()
-        } else {
-          this.getParkingLotsFormArray().controls[index].enable()
-        }
-      })
+      if (user?.otherParkings) {
+        this.otherParkingLot.forEach((item, index) => {
+          if (user.otherParkings?.find((obj: any) => obj.id === item.id)) {
+            this.getParkingLotsFormArray().controls[index].setValue(true);
+          } else {
+            this.getParkingLotsFormArray().controls[index].setValue(false);
+          }
+          if (user.parking.id === item.id) {
+            this.getParkingLotsFormArray().controls[index].disable()
+          } else {
+            this.getParkingLotsFormArray().controls[index].enable()
+          }
+
+        })
+      }
       this.messageServices.hideLoading()
     })
     this.authService.user$.subscribe(({user, parkingId}) => {
       this.parkingId = parkingId
       this.newUserForm.get('parking')?.setValue(parkingId)
       this.parkingId = parkingId
+      this.clearAllCheckboxes()
       this.getCompanies().then()
     })
   }
@@ -110,8 +114,11 @@ export class NewUserComponent implements OnInit {
   }
 
   clearAllCheckboxes() {
-    this.getParkingLotsFormArray().controls.forEach((control: AbstractControl) => {
-      if (this.parkingId !== control.value) {
+    this.getParkingLotsFormArray().controls.forEach((control: AbstractControl, index) => {
+      if (this.otherParkingLot[index].id === this.newUserForm.get('parking')?.value) {
+        control.setValue(true)
+        control.disable()
+      } else {
         control.setValue(false)
         control.enable()
       }
