@@ -62,7 +62,7 @@ export class AuthService implements OnDestroy {
       .then((data) => {
         if (data.success) {
           this.saveUser(data.data)
-          this.message.OkTimeOut('!Listo!')
+          this.message.OkTimeOut('¡Listo!')
           this.route.navigate(['/home/parking']).catch()
         } else {
           this.cleanUser()
