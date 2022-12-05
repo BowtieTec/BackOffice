@@ -113,16 +113,21 @@ export class NewUserComponent implements OnInit {
     return this.authService.isSudo
   }
 
-  clearAllCheckboxes() {
+  selectDefaultCheckBox() {
     this.getParkingLotsFormArray().controls.forEach((control: AbstractControl, index) => {
       if (this.otherParkingLot[index].id === this.newUserForm.get('parking')?.value) {
         control.setValue(true)
         control.disable()
-      } else {
-        control.setValue(false)
-        control.enable()
       }
     });
+  }
+
+  clearAllCheckboxes() {
+    this.getParkingLotsFormArray().controls.forEach((control: AbstractControl, index) => {
+      control.setValue(false)
+      control.enable()
+    });
+    this.selectDefaultCheckBox()
   }
 
   selectAllCheckboxes() {
@@ -138,6 +143,7 @@ export class NewUserComponent implements OnInit {
       return
     }
     let newUserValue: NewUserModel = this.newUserForm.getRawValue()
+    console.log(newUserValue.otherParkings)
     if (!this.selectedRoleIsCourtesy) {
       newUserValue.company = null
     }
@@ -147,6 +153,7 @@ export class NewUserComponent implements OnInit {
       return
     }
     newUserValue.otherParkings = this.getOtherParkingLotsIdSelected()
+    console.log(newUserValue.otherParkings)
     if (this.isEdit) {
       this.newUserForm.get('password')?.clearValidators()
       delete newUserValue.password
@@ -240,9 +247,12 @@ export class NewUserComponent implements OnInit {
   }
 
   private getOtherParkingLotsIdSelected() {
-    return this.newUserForm.value.otherParkings
+    const otherParkingsLot = this.newUserForm.value.otherParkings
       .map((checked: boolean, i: number) => checked ? {id: this.otherParkingLot[i].id} : null)
       .filter((v: any) => v !== null);
+    otherParkingsLot.push({id: this.parkingId})
+
+    return otherParkingsLot
   }
 
   private addCheckboxes() {
