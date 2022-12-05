@@ -117,7 +117,7 @@ export class ResgisteredUsersComponent
     const newPassword: string = this.utilitiesService.randomString();
     try {
       const data = await this.recoveryService.requestNewPassword(newPassword, user.id ?? '')
-      this.message.OkTimeOut('Contraseña cambiada. El usuario resivirá un correo con la nueva contraseña')
+      this.message.OkTimeOut('Contraseña cambiada. El usuario recibirá un correo con la nueva contraseña.')
     } catch (e: any) {
       throw new Error(e)
     }
