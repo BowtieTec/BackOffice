@@ -62,7 +62,6 @@ export class NewUserComponent implements OnInit {
       this.messageServices.showLoading()
       this.cleanForm()
       if (user) {
-        console.log(user)
         this.clearPasswordValidations()
         this.newUserForm.controls['name'].setValue(user.name)
         this.newUserForm.controls['last_name'].setValue(user.last_name)
@@ -84,19 +83,7 @@ export class NewUserComponent implements OnInit {
         this.utilitiesService.markAsUnTouched(this.newUserForm)
       }
       if (user?.otherParkings) {
-        this.otherParkingLot.forEach((item, index) => {
-          if (user.otherParkings?.find((obj: any) => obj.id === item.id)) {
-            this.getParkingLotsFormArray().controls[index].setValue(true);
-          } else {
-            this.getParkingLotsFormArray().controls[index].setValue(false);
-          }
-          if (user.parking.id === item.id) {
-            this.getParkingLotsFormArray().controls[index].disable()
-          } else {
-            this.getParkingLotsFormArray().controls[index].enable()
-          }
-
-        })
+        this.fillOtherParkingLotArrayCheckBox(user)
       }
       this.messageServices.hideLoading()
     })
@@ -143,7 +130,6 @@ export class NewUserComponent implements OnInit {
       return
     }
     let newUserValue: NewUserModel = this.newUserForm.getRawValue()
-    console.log(newUserValue.otherParkings)
     if (!this.selectedRoleIsCourtesy) {
       newUserValue.company = null
     }
@@ -153,7 +139,6 @@ export class NewUserComponent implements OnInit {
       return
     }
     newUserValue.otherParkings = this.getOtherParkingLotsIdSelected()
-    console.log(newUserValue.otherParkings)
     if (this.isEdit) {
       this.newUserForm.get('password')?.clearValidators()
       delete newUserValue.password
@@ -239,7 +224,7 @@ export class NewUserComponent implements OnInit {
       .get('role')
       ?.setValue('b5b821bb-f919-4bae-9b6d-75a144fe2082')
     this.addPasswordValidations()
-    this.selectAllCheckboxes()
+    this.fillOtherParkingLotArrayCheckBox()
   }
 
   controlInvalid(control: string): boolean {
@@ -247,11 +232,12 @@ export class NewUserComponent implements OnInit {
   }
 
   private getOtherParkingLotsIdSelected() {
-    const otherParkingsLot = this.newUserForm.value.otherParkings
+    let otherParkingsLot = this.newUserForm.value.otherParkings
       .map((checked: boolean, i: number) => checked ? {id: this.otherParkingLot[i].id} : null)
       .filter((v: any) => v !== null);
-    otherParkingsLot.push({id: this.parkingId})
+      otherParkingsLot.push({id: this.parkingId})
 
+    console.log(otherParkingsLot)
     return otherParkingsLot
   }
 
@@ -287,6 +273,22 @@ export class NewUserComponent implements OnInit {
       company: [],
       parking: [this.parkingId, [Validators.required]],
       otherParkings: new FormArray([])
+    })
+  }
+
+  private fillOtherParkingLotArrayCheckBox (user: NewUserModel = this.authService.getUser().user as NewUserModel) {
+    this.otherParkingLot.forEach((item, index) => {
+      if (user.otherParkings?.find((obj: any) => obj.id === item.id)) {
+        this.getParkingLotsFormArray().controls[index].setValue(true);
+      } else {
+        this.getParkingLotsFormArray().controls[index].setValue(false);
+      }
+      if (user.parking.id === item.id) {
+        this.getParkingLotsFormArray().controls[index].disable()
+      } else {
+        this.getParkingLotsFormArray().controls[index].enable()
+      }
+
     })
   }
 }
