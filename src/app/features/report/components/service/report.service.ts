@@ -33,6 +33,7 @@ export class ReportService {
       .pipe(
         map((res) => {
           return res.data.map((item: any) => {
+            console.log(item);
             return {
               phone_key: item.user.phone_number,
               paymentStatus: item.status == 2 ? 'Pendiente de Pago' : 'Exitoso',
@@ -54,6 +55,7 @@ export class ReportService {
               ),
               transaction: item.payment[0]?.trace_number ?? '',
               courtesy: item.courtesy?.courtesy_details?.name ?? '',
+              company: item.courtesy?.courtesy_details?.company.name ?? '',
               typePayment:
                 item.payment_type == 0
                   ? 'Tarjeta C/D'

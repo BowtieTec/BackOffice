@@ -12,7 +12,7 @@
               [formGroup] = 'reportForm'
               [value] = "now | date: 'yyyy-MM-dd'"
               controlName = 'startDate'
-              maxL = "{{now | date:'dd-MM-yyyy'}}"
+              maxL = "{{now | date:'yyyy-MM-dd'}}"
               name = 'Inicio de Búsqueda'
               type = 'Date'
             ></app-input-container>
@@ -64,7 +64,6 @@
               caption = "Sub Monto"
               dataField = "subtotal"
               dataType = "number"
-              format = "currency"
               format = "Q ,###,###,##0.00"
               width = "125"
             ></dxi-column>
@@ -72,7 +71,6 @@
               caption = "Descuento"
               dataField = "discount"
               dataType = "number"
-              format = "currency"
               format = "Q ,###,###,##0.00"
               width = "125"
             ></dxi-column>
@@ -80,11 +78,9 @@
               caption = "Total "
               dataField = "total"
               dataType = "number"
-              format = "currency"
               format = "Q ,###,###,##0.00"
             ></dxi-column>
             <dxi-column
-              caption = "Tiempo estacionado "
               caption = "Tiempo estacionado"
               dataField = "timeIn"
               dataType = "text"
