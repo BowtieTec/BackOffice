@@ -91,7 +91,7 @@ export class NewUserComponent implements OnInit {
       this.parkingId = parkingId
       this.newUserForm.get('parking')?.setValue(parkingId)
       this.parkingId = parkingId
-      this.clearAllCheckboxes()
+      this.selectAllCheckboxes()
       this.getCompanies().then()
     })
   }
@@ -139,6 +139,7 @@ export class NewUserComponent implements OnInit {
       return
     }
     newUserValue.otherParkings = this.getOtherParkingLotsIdSelected()
+    console.log(newUserValue.otherParkings)
     if (this.isEdit) {
       this.newUserForm.get('password')?.clearValidators()
       delete newUserValue.password
@@ -225,6 +226,7 @@ export class NewUserComponent implements OnInit {
       ?.setValue('b5b821bb-f919-4bae-9b6d-75a144fe2082')
     this.addPasswordValidations()
     this.fillOtherParkingLotArrayCheckBox()
+    this.selectAllCheckboxes()
   }
 
   controlInvalid(control: string): boolean {
@@ -236,8 +238,6 @@ export class NewUserComponent implements OnInit {
       .map((checked: boolean, i: number) => checked ? {id: this.otherParkingLot[i].id} : null)
       .filter((v: any) => v !== null);
       otherParkingsLot.push({id: this.parkingId})
-
-    console.log(otherParkingsLot)
     return otherParkingsLot
   }
 
