@@ -22,6 +22,7 @@ import {RadioContainerComponent} from './forms/radio-container/radio-container.c
 import {CardPlaceholderComponent} from './card-placeholder/card-placeholder.component';
 import {ListCheckboxContainerComponent} from './forms/list-checkbox-container/list-checkbox-container.component'
 import {NgSelectModule} from "@ng-select/ng-select";
+import {TimeAgoPipe} from './pipes/time-ago.pipe';
 
 @NgModule({
   declarations: [
@@ -32,44 +33,46 @@ import {NgSelectModule} from "@ng-select/ng-select";
     BarChartComponent,
     LoadingComponent,
     TimePipe,
-    FilterPipe,
-    Page404Component,
-    InputContainerComponent,
-    SelectContainerComponent,
-    TextAreaContainerComponent,
-    CheckboxContainerComponent,
-    CourtesyValuePipe,
-    CourtesyChartComponent,
-    RadioContainerComponent,
-    CardPlaceholderComponent,
-    ListCheckboxContainerComponent
+      FilterPipe,
+      Page404Component,
+      InputContainerComponent,
+      SelectContainerComponent,
+      TextAreaContainerComponent,
+      CheckboxContainerComponent,
+      CourtesyValuePipe,
+      CourtesyChartComponent,
+      RadioContainerComponent,
+      CardPlaceholderComponent,
+      ListCheckboxContainerComponent,
+      TimeAgoPipe
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    NgbPaginationModule,
-    ReactiveFormsModule,
-    FormsModule,
-    NgSelectModule
-  ],
-  exports: [
-    LeftPanelComponent,
-    HeaderComponent,
-    LocationPanelComponent,
-    CardKpiComponent,
-    BarChartComponent,
-    LoadingComponent,
-    TimePipe,
-    FilterPipe,
-    InputContainerComponent,
-    SelectContainerComponent,
-    TextAreaContainerComponent,
-    CheckboxContainerComponent,
-    CourtesyValuePipe,
-    CourtesyChartComponent,
-    RadioContainerComponent,
-    ListCheckboxContainerComponent
-  ]
+    imports: [
+        CommonModule,
+        RouterModule,
+        NgbPaginationModule,
+        ReactiveFormsModule,
+        FormsModule,
+        NgSelectModule
+    ],
+    exports: [
+        LeftPanelComponent,
+        HeaderComponent,
+        LocationPanelComponent,
+        CardKpiComponent,
+        BarChartComponent,
+        LoadingComponent,
+        TimePipe,
+        FilterPipe,
+        InputContainerComponent,
+        SelectContainerComponent,
+        TextAreaContainerComponent,
+        CheckboxContainerComponent,
+        CourtesyValuePipe,
+        CourtesyChartComponent,
+        RadioContainerComponent,
+        ListCheckboxContainerComponent,
+        TimeAgoPipe
+    ]
 })
 export class SharedModule {
 }
