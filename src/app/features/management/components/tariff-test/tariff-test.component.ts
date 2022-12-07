@@ -6,7 +6,7 @@ import {ParkingModel} from 'src/app/features/parking/models/Parking.model'
 import {ParkingService} from 'src/app/features/parking/services/parking.service'
 import {MessageService} from 'src/app/shared/services/message.service'
 import {TariffTestService} from './services/tariff-test.service'
-import {tariffTestModel} from './models/tariff-test.model'
+import {IParamsCustomTariff, tariffTestModel} from './models/tariff-test.model'
 import {TicketTestModule} from './models/ticket-test.module'
 import {UtilitiesService} from 'src/app/shared/services/utilities.service'
 import {CourtesyService} from '../../../courtesy/services/courtesy.service'
@@ -23,7 +23,7 @@ export class TariffTestComponent implements OnInit {
   allParkingLot: ParkingModel[] = []
   courtesies: CourtesyModel[] = []
   courtesyDetail: any
-  tariffOfTicket: any[] = []
+  tariffOfTicket: IParamsCustomTariff[] = []
   ticket: TicketTestModule
   listExist = false
   ListTicketTest: TicketTestModule[] = []
@@ -98,8 +98,8 @@ export class TariffTestComponent implements OnInit {
         this.tariffOfTicket = []
         x.ticket.tariff.forEach((rule: any) => {
           rule.params.forEach((param: any) => {
+            console.log({param});
             this.tariffOfTicket.push(param.tariff)
-            console.log(param.tariff);
           })
         })
       })
