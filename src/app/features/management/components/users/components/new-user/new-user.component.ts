@@ -27,6 +27,7 @@ export class NewUserComponent implements OnInit {
   parkingId: string = this.authService.getParking().id
   companies: CompaniesModel[] = []
   otherParkingLot: ParkingModel[] = this.authService.getUser().user.otherParkings
+  otherParkingLogSelected: ParkingModel[] = []
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
@@ -91,7 +92,7 @@ export class NewUserComponent implements OnInit {
       this.parkingId = parkingId
       this.newUserForm.get('parking')?.setValue(parkingId)
       this.parkingId = parkingId
-      this.selectAllCheckboxes()
+      this.clearAllCheckboxes()
       this.getCompanies().then()
     })
   }
@@ -105,6 +106,9 @@ export class NewUserComponent implements OnInit {
       if (this.otherParkingLot[index].id === this.newUserForm.get('parking')?.value) {
         control.setValue(true)
         control.disable()
+        if (!this.otherParkingLogSelected.includes(this.otherParkingLot[index])) {
+          this.otherParkingLogSelected.push(this.otherParkingLot[index])
+        }
       }
     });
   }
@@ -114,6 +118,7 @@ export class NewUserComponent implements OnInit {
       control.setValue(false)
       control.enable()
     });
+    this.otherParkingLogSelected = [];
     this.selectDefaultCheckBox()
   }
 
@@ -124,6 +129,7 @@ export class NewUserComponent implements OnInit {
   }
 
   saveNewUser() {
+    console.log(this.otherParkingLogSelected)
     this.messageServices.showLoading()
     if (this.newUserForm.invalid && !this.isEdit) {
       this.messageServices.error('', 'Datos no válidos o faltantes')
@@ -225,7 +231,6 @@ export class NewUserComponent implements OnInit {
       .get('role')
       ?.setValue('b5b821bb-f919-4bae-9b6d-75a144fe2082')
     this.addPasswordValidations()
-    this.fillOtherParkingLotArrayCheckBox()
     this.selectAllCheckboxes()
   }
 
@@ -233,12 +238,13 @@ export class NewUserComponent implements OnInit {
     return this.utilitiesService.controlInvalid(this.newUserForm, control)
   }
 
-  private getOtherParkingLotsIdSelected() {
-    let otherParkingsLot = this.newUserForm.value.otherParkings
-      .map((checked: boolean, i: number) => checked ? {id: this.otherParkingLot[i].id} : null)
-      .filter((v: any) => v !== null);
-      otherParkingsLot.push({id: this.parkingId})
-    return otherParkingsLot
+  onChangeCheckbox(i: number, parking: ParkingModel, $event: Event) {
+    const checked = ($event.target as HTMLInputElement).checked;
+    if (checked) {
+      this.otherParkingLogSelected.push(parking)
+    } else {
+      this.otherParkingLogSelected = this.otherParkingLogSelected.filter((item) => item.id !== parking.id)
+    }
   }
 
   private addCheckboxes() {
@@ -290,5 +296,9 @@ export class NewUserComponent implements OnInit {
       }
 
     })
+  }
+
+  private getOtherParkingLotsIdSelected(): string[] {
+    return this.otherParkingLogSelected.map(x => x.id)
   }
 }
