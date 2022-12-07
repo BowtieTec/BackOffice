@@ -43,9 +43,31 @@
           <p *ngIf = "this.ticket.days > 0"> Días: {{this.ticket.days}} </p>
           <p *ngIf = "this.ticket.hour > 0"> Horas: {{this.ticket.hour}} </p>
           <p *ngIf = "this.ticket.minute > 0"> Min.: {{this.ticket.minute}} </p>
+          <br>
+          <div class = "list-group">
+            <div *ngFor = "let rule of tariffOfTicket">
+              <a class = "list-group-item list-group-item-action flex-column align-items-start">
+                <div class = "d-flex w-100 justify-content-between">
+                  <h5 class = "mb-1">{{rule.name}}</h5>
+                  <small>Ultima actualización: {{rule.updated_at | timeAgo}}</small>
+                </div>
+                <p class = "mb-1">{{rule.description}}</p>
+                <small class = "text-muted">Evento: {{rule.event}}</small>
+              </a>
+            </div>
+          </div>
         </div>
-        <div class = "col-md-6 ">
-          <b>Total a pagar:</b><br><br><b><h4>{{this.ticket.amount | currency:'GTQ'}}</h4></b>
+        <div class = "col-md-6">
+          <ul class = "list-group list-group-flush">
+            <li *ngIf = "courtesyDetail"
+                class = "list-group-item">Total sin descuento:<br><br><b>
+              <h6>{{this.ticket.amount_origin | currency:'GTQ'}}</h6></b></li>
+            <li *ngIf = "courtesyDetail"
+                class = "list-group-item">Descuento:<br><br><b><h6>{{this.ticket.amount_disount | currency:'GTQ'}}</h6>
+            </b></li>
+            <li class = "list-group-item">Total a pagar:<br><br><b><h4>{{this.ticket.amount | currency:'GTQ'}}</h4></b>
+            </li>
+          </ul>
         </div>
         ​
       </div>
@@ -99,5 +121,3 @@
     ​
   </div>
 </div>
-
-

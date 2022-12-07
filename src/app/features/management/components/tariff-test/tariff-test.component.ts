@@ -22,6 +22,8 @@ export class TariffTestComponent implements OnInit {
   tariffTestForm: FormGroup
   allParkingLot: ParkingModel[] = []
   courtesies: CourtesyModel[] = []
+  courtesyDetail: any
+  tariffOfTicket: any[] = []
   ticket: TicketTestModule
   listExist = false
   ListTicketTest: TicketTestModule[] = []
@@ -88,9 +90,19 @@ export class TariffTestComponent implements OnInit {
       return
     }
 
-    this.ticket = await this.testService
+    await this.testService
       .getTariffTest(newTest)
-      .then((x) => x.ticket)
+      .then((x) => {
+        this.ticket = x.ticket
+        this.courtesyDetail = x.courtesy
+        this.tariffOfTicket = []
+        x.ticket.tariff.forEach((rule: any) => {
+          rule.params.forEach((param: any) => {
+            this.tariffOfTicket.push(param.tariff)
+            console.log(param.tariff);
+          })
+        })
+      })
     this.addItem(this.ticket)
   }
 

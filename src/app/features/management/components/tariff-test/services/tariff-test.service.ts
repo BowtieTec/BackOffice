@@ -25,6 +25,7 @@ export class TariffTestService {
       .pipe(
         map((x: ResponseModel) => {
           if (x.success) {
+            console.log(x);
             this.messageService.hideLoading()
             return x.data
           } else {
