@@ -47,7 +47,6 @@ export class UserService {
   }
 
   getUsers(data: getAdminsPaginatedModel): Observable<any> {
-    this.messageService.showLoading()
     return this.http.get<ResponseModel>(
       `${this.apiUrl}backoffice/admin/admins?textToSearch=${data.textToSearch}&page=${data.page}&pageSize=${data.pageSize}`
     )

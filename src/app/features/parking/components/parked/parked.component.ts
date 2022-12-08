@@ -53,7 +53,6 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
       serverSide: true,
       processing: true,
       ajax: (dataTablesParameters: any, callback: any) => {
-        this.messageService.showLoading()
         const page = getCurrentDataTablePage(dataTablesParameters)
         this.parkingService
           .getParked(

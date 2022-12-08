@@ -33,7 +33,6 @@ export class DataTableOptions {
       responsive: true,
       dom: 'Bfrtip',
       buttons: [
-        'csv', 'copy'
       ],
       language: this.language,
     }
