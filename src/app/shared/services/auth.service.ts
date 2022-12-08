@@ -1,7 +1,7 @@
 import {Injectable, OnDestroy} from '@angular/core'
 import {UserRequestModel} from '../model/UserRequest.model'
 import {HttpClient} from '@angular/common/http'
-import {AuthModel, AuthParkingModel, ParkingAuthModel, UserResponseModel} from '../model/UserResponse.model'
+import {AuthModel, AuthParkingModel, ParkingAuthModel, UserModel, UserResponseModel} from '../model/UserResponse.model'
 import {environment} from '../../../environments/environment'
 import {MessageService} from './message.service'
 import {EncryptionService} from './encryption.service'
@@ -31,14 +31,14 @@ export class AuthService implements OnDestroy {
   }
 
   saveUser(user: AuthModel) {
-    if(user.user.parking.id != this.getParking().id) {
-      sessionStorage.setItem(
-        this.crypto.encryptKey('User'),
-        this.crypto.encrypt(JSON.stringify(user).replace('/n', ''))
-      )
-      this.userSubject$.next({user: user.user, parkingId: user.user.parking.id})
+    if(user.user.parking?.id == this.getParking()?.id && user.user.parking && this.getParking()) {
+      return
     }
-
+    sessionStorage.setItem(
+      this.crypto.encryptKey('User'),
+      this.crypto.encrypt(JSON.stringify(user).replace('/n', ''))
+    )
+    this.userSubject$.next({user: user.user, parkingId: user.user.parking.id})
   }
 
   getUser(): AuthModel {
@@ -54,7 +54,7 @@ export class AuthService implements OnDestroy {
   }
 
   getParking() {
-    return this.getUser().user.parking
+    return this.getUser().user?.parking
   }
 
   login(login: UserRequestModel) {
@@ -74,6 +74,7 @@ export class AuthService implements OnDestroy {
         }
       })
       .catch((data) => {
+        console.log(data)
         if (!data.error.success) {
           this.message.error(data.error.message);
           return
