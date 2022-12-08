@@ -51,18 +51,21 @@ export class RolesComponent implements OnInit {
 
   changeRole() {
     this.messageServices.showLoading()
-    this.getPermissionsForRole(this.roleIdSelected).then(
-      (data: PermissionsModel[]) => {
-        this.cleanAllPermission()
-        data.forEach((item: any) => {
-          const found = this.allPermissions.find((x) => x.id == item.id)
-          if (found) {
-            found.checked = true
-          }
-        })
-        this.messageServices.hideLoading()
-      }
-    )
+    console.log(this.roleIdSelected)
+    if(this.roleIdSelected != ''){
+      this.getPermissionsForRole(this.roleIdSelected).then(
+        (data: PermissionsModel[]) => {
+          this.cleanAllPermission()
+          data.forEach((item: any) => {
+            const found = this.allPermissions.find((x) => x.id == item.id)
+            if (found) {
+              found.checked = true
+            }
+          })
+          this.messageServices.hideLoading()
+        }
+      )
+    }
   }
 
   cleanAllPermission() {

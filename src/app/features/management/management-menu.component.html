@@ -10,7 +10,7 @@
       <app-users></app-users>
     </ng-template>
   </ng-container>
-  <ng-container *ngIf = 'ifHaveAction(changePermissions)'
+  <ng-container *ngIf = 'ifHaveAction(changePermissions) && getIsSudo()'
                 [ngbNavItem] = "2">
     <a ngbNavLink><em class = 'fas fa-magic'></em> Roles</a>
     <ng-template ngbNavContent>
