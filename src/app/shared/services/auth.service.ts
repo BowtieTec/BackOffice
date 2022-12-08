@@ -31,11 +31,14 @@ export class AuthService implements OnDestroy {
   }
 
   saveUser(user: AuthModel) {
-    sessionStorage.setItem(
-      this.crypto.encryptKey('User'),
-      this.crypto.encrypt(JSON.stringify(user).replace('/n', ''))
-    )
-    this.userSubject$.next({user: user.user, parkingId: user.user.parking.id})
+    if(user.user.parking.id != this.getParking().id) {
+      sessionStorage.setItem(
+        this.crypto.encryptKey('User'),
+        this.crypto.encrypt(JSON.stringify(user).replace('/n', ''))
+      )
+      this.userSubject$.next({user: user.user, parkingId: user.user.parking.id})
+    }
+
   }
 
   getUser(): AuthModel {

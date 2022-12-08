@@ -57,26 +57,17 @@ export class NewUserComponent implements OnInit {
     return this.permissionService.ifHaveAction(action)
   }
  fillFormWithUser (user: NewUserModel) {
-  this.newUserForm.controls['name'].setValue(user.name)
-  this.newUserForm.controls['last_name'].setValue(user.last_name)
-  this.newUserForm.controls['email'].setValue(user.email)
-  this.newUserForm.controls['user'].setValue(user.user)
-  this.newUserForm.controls['password'].setValue(
-    'EstaPuedeOnoSerLaContraseña100&'
-  )
-  this.newUserForm.controls['role'].setValue(user.role.id)
-  this.newUserForm.controls['name'].setValue(user.name)
-  if (user.company) {
-    this.newUserForm.controls['company'].setValue(user.company.id)
-  }else{
-    this.newUserForm.patchValue({
-      company: null
-    })
-  }
-  this.newUserForm.controls['parking'].setValue(
-    user.parking.id ? user.parking.id : this.authService.getParking().id
-  )
-  this.newUserForm.controls['id'].setValue(user.id)
+   this.newUserForm.patchValue({
+     name: user.name || '',
+     last_name: user.last_name || '',
+     email: user.email || '',
+     role: user.role.id || '',
+     user: user.user || '',
+     password: 'EstaPuedeOnoSerLaContraseña100&'|| '',
+     company: user.company?.id || user.company || null,
+     parking: user.parking.id || this.authService.getParking().id,
+     id: user.id || null
+   })
   this.isEdit = true
   this.utilitiesService.markAsUnTouched(this.newUserForm)
 }
@@ -86,21 +77,22 @@ export class NewUserComponent implements OnInit {
        this.messageServices.showLoading()
       this.parkingId = parkingId
       this.newUserForm.get('parking')?.setValue(parkingId)
-      this.parkingId = parkingId
       this.clearAllCheckboxes()
        await this.getCompanies()
        this.messageServices.hideLoading()
     })
-       this.subject.subscribe(async(user: NewUserModel) => {
-         this.cleanForm()
-         if (user) {
-           this.clearPasswordValidations()
-           this.fillFormWithUser(user)
-         }
-         if (user?.otherParkings) {
-           this.fillOtherParkingLotArrayCheckBox(user)
-         }
-         await this.authService.saveNewParking(user.parking)
+       this.subject.subscribe(async(user: NewUserModel | null) => {
+        if(user){
+          this.cleanForm()
+          if (user) {
+            this.clearPasswordValidations()
+            this.fillFormWithUser(user)
+          }
+          if (user?.otherParkings) {
+            this.fillOtherParkingLotArrayCheckBox(user)
+          }
+          await this.authService.saveNewParking(user.parking)
+        }
       })
   }
 
@@ -136,7 +128,6 @@ export class NewUserComponent implements OnInit {
   }
 
   saveNewUser() {
-    console.log(this.otherParkingLogSelected)
     this.messageServices.showLoading()
     if (this.newUserForm.invalid && !this.isEdit) {
       this.messageServices.error('', 'Datos no válidos o faltantes')
@@ -166,7 +157,8 @@ export class NewUserComponent implements OnInit {
           }
         })
         .then((data) => {
-          this.subject.next(data)
+      this.cleanForm()
+          this.subject.next()
           this.messageServices.OkTimeOut('Usuario editado con éxito.')
         })
     } else {
@@ -221,9 +213,6 @@ export class NewUserComponent implements OnInit {
     this.newUserForm.reset()
     this.isEdit = false
     this.newUserForm.get('parking')?.setValue(this.parkingId)
-    this.newUserForm
-      .get('role')
-      ?.setValue('b5b821bb-f919-4bae-9b6d-75a144fe2082')
     this.addPasswordValidations()
     this.selectAllCheckboxes()
   }

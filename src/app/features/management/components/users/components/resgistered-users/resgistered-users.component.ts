@@ -74,7 +74,9 @@ export class ResgisteredUsersComponent
       })
     })
     this.subject.subscribe((user: NewUserModel) => {
-      //this.rerender() //try to use this if not working well
+      if(!user){
+        this.rerender()
+      }
     })
   }
 
@@ -97,12 +99,7 @@ export class ResgisteredUsersComponent
   }
 
   async editTheUser(user: NewUserModel) {
-    const loading = new Promise((resolve, reject) => {
-      this.message.showLoading()
-      resolve('ok')
-    }).then(() => {
-      this.subject.next(user)
-    })
+    this.subject.next(user)
   }
 
   ngAfterViewInit(): void {
