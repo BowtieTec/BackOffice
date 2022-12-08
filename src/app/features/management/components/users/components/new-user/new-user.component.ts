@@ -56,7 +56,7 @@ export class NewUserComponent implements OnInit {
   ifHaveAction(action: string) {
     return this.permissionService.ifHaveAction(action)
   }
-fillFormWithUser(user: NewUserModel) {
+ fillFormWithUser (user: NewUserModel) {
   this.newUserForm.controls['name'].setValue(user.name)
   this.newUserForm.controls['last_name'].setValue(user.last_name)
   this.newUserForm.controls['email'].setValue(user.email)
@@ -67,10 +67,7 @@ fillFormWithUser(user: NewUserModel) {
   this.newUserForm.controls['role'].setValue(user.role.id)
   this.newUserForm.controls['name'].setValue(user.name)
   if (user.company) {
-    //this.newUserForm.controls['company'].setValue(user.company.id)
-    this.newUserForm.patchValue({
-      company: user.company.id
-    })
+    this.newUserForm.controls['company'].setValue(user.company.id)
   }else{
     this.newUserForm.patchValue({
       company: null
@@ -85,25 +82,25 @@ fillFormWithUser(user: NewUserModel) {
 }
   ngOnInit(): void {
     this.addCheckboxes()
-     this.authService.user$.subscribe(({user, parkingId}) => {
+     this.authService.user$.subscribe(async({user, parkingId}) => {
+       this.messageServices.showLoading()
       this.parkingId = parkingId
       this.newUserForm.get('parking')?.setValue(parkingId)
       this.parkingId = parkingId
       this.clearAllCheckboxes()
-      this.getCompanies().then()
+       await this.getCompanies()
+       this.messageServices.hideLoading()
     })
        this.subject.subscribe(async(user: NewUserModel) => {
-        this.messageServices.showLoading()
-        this.cleanForm()
-        if (user) {
-          await this.authService.saveNewParking(user.parking)
-          this.clearPasswordValidations()
-          this.fillFormWithUser(user)
-        }
-        if (user?.otherParkings) {
-          this.fillOtherParkingLotArrayCheckBox(user)
-        }
-        this.messageServices.hideLoading()
+         this.cleanForm()
+         if (user) {
+           this.clearPasswordValidations()
+           this.fillFormWithUser(user)
+         }
+         if (user?.otherParkings) {
+           this.fillOtherParkingLotArrayCheckBox(user)
+         }
+         await this.authService.saveNewParking(user.parking)
       })
   }
 
