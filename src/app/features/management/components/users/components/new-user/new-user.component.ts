@@ -56,52 +56,55 @@ export class NewUserComponent implements OnInit {
   ifHaveAction(action: string) {
     return this.permissionService.ifHaveAction(action)
   }
-
+fillFormWithUser(user: NewUserModel) {
+  this.newUserForm.controls['name'].setValue(user.name)
+  this.newUserForm.controls['last_name'].setValue(user.last_name)
+  this.newUserForm.controls['email'].setValue(user.email)
+  this.newUserForm.controls['user'].setValue(user.user)
+  this.newUserForm.controls['password'].setValue(
+    'EstaPuedeOnoSerLaContraseña100&'
+  )
+  this.newUserForm.controls['role'].setValue(user.role.id)
+  this.newUserForm.controls['name'].setValue(user.name)
+  if (user.company) {
+    //this.newUserForm.controls['company'].setValue(user.company.id)
+    this.newUserForm.patchValue({
+      company: user.company.id
+    })
+  }else{
+    this.newUserForm.patchValue({
+      company: null
+    })
+  }
+  this.newUserForm.controls['parking'].setValue(
+    user.parking.id ? user.parking.id : this.authService.getParking().id
+  )
+  this.newUserForm.controls['id'].setValue(user.id)
+  this.isEdit = true
+  this.utilitiesService.markAsUnTouched(this.newUserForm)
+}
   ngOnInit(): void {
     this.addCheckboxes()
-    this.subject.subscribe((user: NewUserModel) => {
-      this.messageServices.showLoading()
-      this.cleanForm()
-      if (user) {
-        this.clearPasswordValidations()
-        this.newUserForm.controls['name'].setValue(user.name)
-        this.newUserForm.controls['last_name'].setValue(user.last_name)
-        this.newUserForm.controls['email'].setValue(user.email)
-        this.newUserForm.controls['user'].setValue(user.user)
-        this.newUserForm.controls['password'].setValue(
-          'EstaPuedeOnoSerLaContraseña100&'
-        )
-        this.newUserForm.controls['role'].setValue(user.role.id)
-        this.newUserForm.controls['name'].setValue(user.name)
-        if (user.company) {
-          //this.newUserForm.controls['company'].setValue(user.company.id)
-          this.newUserForm.patchValue({
-            company: user.company.id
-          })
-        }else{
-          this.newUserForm.patchValue({
-            company: null
-          })
-        }
-        this.newUserForm.controls['parking'].setValue(
-          user.parking.id ? user.parking.id : this.authService.getParking().id
-        )
-        this.newUserForm.controls['id'].setValue(user.id)
-        this.isEdit = true
-        this.utilitiesService.markAsUnTouched(this.newUserForm)
-      }
-      if (user?.otherParkings) {
-        this.fillOtherParkingLotArrayCheckBox(user)
-      }
-      this.messageServices.hideLoading()
-    })
-    this.authService.user$.subscribe(({user, parkingId}) => {
+     this.authService.user$.subscribe(({user, parkingId}) => {
       this.parkingId = parkingId
       this.newUserForm.get('parking')?.setValue(parkingId)
       this.parkingId = parkingId
       this.clearAllCheckboxes()
       this.getCompanies().then()
     })
+       this.subject.subscribe(async(user: NewUserModel) => {
+        this.messageServices.showLoading()
+        this.cleanForm()
+        if (user) {
+          await this.authService.saveNewParking(user.parking)
+          this.clearPasswordValidations()
+          this.fillFormWithUser(user)
+        }
+        if (user?.otherParkings) {
+          this.fillOtherParkingLotArrayCheckBox(user)
+        }
+        this.messageServices.hideLoading()
+      })
   }
 
   isSudo() {
@@ -152,7 +155,6 @@ export class NewUserComponent implements OnInit {
       return
     }
     newUserValue.otherParkings = this.getOtherParkingLotsIdSelected()
-    console.log(newUserValue.otherParkings)
     if (this.isEdit) {
       this.newUserForm.get('password')?.clearValidators()
       delete newUserValue.password
@@ -167,20 +169,8 @@ export class NewUserComponent implements OnInit {
           }
         })
         .then((data) => {
-          this.userService
-            .saveRole(this.newUserForm.getRawValue().role, data.admin.id)
-            .toPromise()
-            .then((dataRole) => {
-              if (dataRole.success) {
-                this.cleanForm()
-                this.messageServices.OkTimeOut('Guardado')
-              } else {
-                this.messageServices.error('', dataRole.message)
-              }
-            })
-            .then(() => {
-              this.subject.next()
-            })
+          this.subject.next(data)
+          this.messageServices.OkTimeOut('Usuario editado con éxito.')
         })
     } else {
       delete newUserValue.id
