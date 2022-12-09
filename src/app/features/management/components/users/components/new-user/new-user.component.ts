@@ -125,6 +125,7 @@ export class NewUserComponent implements OnInit {
     this.getParkingLotsFormArray().controls.forEach((control: AbstractControl) => {
       control.setValue(true);
     });
+    this.otherParkingLogSelected = this.otherParkingLot;
   }
 
   saveNewUser() {
@@ -258,7 +259,7 @@ export class NewUserComponent implements OnInit {
           Validators.pattern(environment.settings.passwordPattern)
         ]
       ],
-      role: ['b5b821bb-f919-4bae-9b6d-75a144fe2082', [Validators.required]],
+      role: [null, [Validators.required]],
       company: [],
       parking: [this.parkingId, [Validators.required]],
       otherParkings: new FormArray([])
