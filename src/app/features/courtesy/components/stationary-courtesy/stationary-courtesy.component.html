@@ -163,10 +163,10 @@
                         class = "buttonRowEdit buttonIcon me-1"
                         title = "Editar"><em class = "fas fa-edit"></em>
                 </button>
-                <button (click) = " openParkingToCourtesy(antenna.courtesy_detail?.id,contenido) "
-                        *ngIf = "ifHaveAction(addParkingToCourtesyStationary)"
-                        class = "buttonRowAlert buttonIcon"
-                        title = "Agregar Parqueo"><em class = "fas fa-parking"></em>
+                <button (click)="openParkingToCourtesy(antenna.courtesy_detail?.id,contenido) "
+                        *ngIf="ifHaveAction(addParkingToCourtesyStationary)"
+                        class="buttonRowAlert buttonIcon"
+                        title="Agregar Parqueo"><em class="fas fa-parking"></em>
                 </button>
               </td>
             </tr>

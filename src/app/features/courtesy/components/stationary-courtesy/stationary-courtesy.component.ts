@@ -260,12 +260,8 @@ export class StationaryCourtesyComponent
       return {
         id: p.id,
         name: p.name,
-        isChecked: this.courtesyHasParking.find((element) => element.id == p.id)
-          ? true
-          : false,
-        disable: this.courtesyHasParking.find((element) => element.id == p.id)
-          ? true
-          : false
+        isChecked: !!this.courtesyHasParking.find((element) => element.id == p.id),
+        disable: !!this.courtesyHasParking.find((element) => element.id == p.id)
       }
     })
 
