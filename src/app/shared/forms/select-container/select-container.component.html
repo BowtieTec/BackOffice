@@ -2,7 +2,8 @@
      class = "m-2 relative">
   <label class = "labelInput"
          style = "display: block;">{{this.name}}</label>
-  <ng-select formControlName = "{{controlName}}"
+  <ng-select [placeholder]="this.name"
+             formControlName="{{controlName}}"
              notFoundText = "No se encontraron coincidencias">
     <ng-option *ngFor = "let item of data"
                [value] = "item.id"

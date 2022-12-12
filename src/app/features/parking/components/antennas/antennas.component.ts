@@ -24,7 +24,6 @@ export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
   idEditAntenna = ''
   accessList: AccessModel[] = this.parkingService.getAccesses()
   antennas: CreateParkingStepFiveModel[] = new Array<CreateParkingStepFiveModel>()
-  allParking: ParkingModel[] = Array<ParkingModel>()
   /*Table*/
   @ViewChild(DataTableDirective) dtElement!: DataTableDirective
   dtTrigger: Subject<any> = new Subject()
@@ -173,14 +172,10 @@ export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
       .then((data: ResponseModel) => {
         if (data.success) {
           this.antennas = data.data.stations
-          this.rerender()
         } else {
           this.message.error('', data.message)
         }
         return data
-      })
-      .catch(() => {
-        return
       })
   }
 
@@ -198,11 +193,8 @@ export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
         this.parkingId = parkingId
         this.stepFiveForm.get('parking')?.setValue(parkingId)
       }
-      this.getInitialData().catch()
-    })
+       this.getInitialData().then(() => this.rerender())
 
-    this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParking = parkingLot
     })
   }
 

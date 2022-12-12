@@ -22,7 +22,6 @@ export class AssignCourtesyComponent implements OnInit, OnDestroy {
 
   getStationaryCourtesies(parked: ParkedModel) {
     this.isLoading = true
-    console.log(parked)
     if (!parked.parking) {
       return
     }

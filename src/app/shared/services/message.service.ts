@@ -57,7 +57,7 @@ export class MessageService {
     })
   }
 
-  warningTimeOut(text = '', title = '!Cuidado!') {
+  warningTimeOut(text = '', title = '¡Cuidado!') {
     this.hideLoading()
     Swal.fire({
       icon: 'warning',

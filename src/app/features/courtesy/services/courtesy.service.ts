@@ -89,7 +89,7 @@ export class CourtesyService {
   getCourtesiesByParking(id: string): Observable<CourtesyModel[]> {
     return this.http
       .get<ResponseModel>(
-        `${this.apiUrl}backoffice/cortesy/cortesiesDetails/${id}`
+        `${this.apiUrl}backoffice/cortesy/cortesiesDetailsStationary/${id}`
       )
       .pipe(
         map((data) => {

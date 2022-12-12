@@ -152,6 +152,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   getCourtesies(parkingId = this.parkingId) {
+    console.log('courtesie')
     return this.courtesyService
       .getCourtesys(parkingId)
       .toPromise()
@@ -197,7 +198,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
       const newCourtesy: CourtesyModel = this.getCourtesy()
 
       this.cleanCourtesyForm()
-      this.courtesyService.saveCourtesy(newCourtesy).subscribe((data) => {
+      this.courtesyService.saveCourtesy(newCourtesy).subscribe(async (data) => {
         if (data.success) {
           this.toast.success(
             'Cortesía creada satisfactoriamente',
@@ -207,9 +208,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
           this.messageService.error('No pudo crearse la cortesía', data.message)
         }
         this.cantCourtesiesCreating--
-        this.getCourtesies().then(() => {
-          this.messageService.hideLoading()
-        })
+        await this.getCourtesies()
       })
     } else {
       this.messageService.errorTimeOut(
@@ -255,16 +254,16 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   private createForm() {
     return this.formBuilder.group({
       name: ['', [Validators.required]],
-      type: ['0', [Validators.required]],
-      value: ['0', [Validators.required, Validators.min(0)]],
+      type: [null, [Validators.required]],
+      value: [null, [Validators.required, Validators.min(0)]],
       valueTimeMinutes: [0, [Validators.max(60), Validators.min(0)]],
       quantity: [
         '',
         [Validators.required, Validators.min(2), Validators.max(100)]
       ],
       parkingId: [this.authService.getParking().id],
-      companyId: ['', [Validators.required, Validators.minLength(2)]],
-      condition: [1, [Validators.required, Validators.minLength(1)]],
+      companyId: [null, [Validators.required]],
+      condition: [null, [Validators.required]],
       cantHours: [0, [Validators.required]]
     })
   }
