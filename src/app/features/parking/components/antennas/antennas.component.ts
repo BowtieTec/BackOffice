@@ -8,7 +8,6 @@ import {ResponseModel} from '../../../../shared/model/Request.model'
 import {AuthService} from '../../../../shared/services/auth.service'
 import {PermissionsService} from '../../../../shared/services/permissions.service'
 import {environment} from '../../../../../environments/environment'
-import {ParkingModel} from '../../models/Parking.model'
 import {DataTableDirective} from 'angular-datatables'
 import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
 import {Subject} from 'rxjs'
@@ -166,15 +165,19 @@ export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   getInitialData() {
+    this.message.showLoading()
     return this.parkingService
       .getAntennas(this.parkingId)
       .toPromise()
       .then((data: ResponseModel) => {
         if (data.success) {
           this.antennas = data.data.stations
+          this.rerender()
         } else {
           this.message.error('', data.message)
         }
+
+        this.message.hideLoading()
         return data
       })
   }
@@ -193,7 +196,7 @@ export class AntennasComponent implements AfterViewInit, OnDestroy, OnInit {
         this.parkingId = parkingId
         this.stepFiveForm.get('parking')?.setValue(parkingId)
       }
-       this.getInitialData().then(() => this.rerender())
+      this.getInitialData().then()
 
     })
   }
