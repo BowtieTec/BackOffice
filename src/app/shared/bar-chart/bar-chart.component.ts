@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core'
+import {Component, Input, OnDestroy, OnInit} from '@angular/core'
 import * as ApexCharts from 'apexcharts'
 import {DashboardService} from '../services/dashboard.service'
 import {AuthService} from '../services/auth.service'
@@ -9,7 +9,7 @@ import {MessageService} from '../services/message.service'
   templateUrl: './bar-chart.component.html',
   styleUrls: ['./bar-chart.component.css']
 })
-export class BarChartComponent implements OnInit {
+export class BarChartComponent implements OnInit, OnDestroy {
   @Input() tipo = ''
   @Input() fecha = ''
   @Input() parking = ''
@@ -1136,5 +1136,9 @@ export class BarChartComponent implements OnInit {
           }
         }
       })
+  }
+
+  ngOnDestroy(): void {
+    this.parking = ''
   }
 }
