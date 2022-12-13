@@ -130,11 +130,11 @@ export class StationaryCourtesyComponent
       parkingId: [this.parkingId, [Validators.required]],
       value: [0, [Validators.required, Validators.min(0)]],
       valueTimeMinutes: [0, [Validators.max(60), Validators.min(0)]],
-      type: ['0', [Validators.required]],
+      type: [null, [Validators.required]],
       name: ['', [Validators.required]],
-      stationId: ['0', [Validators.required, Validators.minLength(5)]],
-      companyId: ['0', [Validators.required, Validators.minLength(5)]],
-      condition: [1, [Validators.required]],
+      stationId: [null, [Validators.required, Validators.minLength(5)]],
+      companyId: [null, [Validators.required, Validators.minLength(5)]],
+      condition: [null, [Validators.required]],
       cantHours: [0]
     })
   }
