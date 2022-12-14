@@ -215,7 +215,7 @@ export class NewUserComponent implements OnInit {
     this.isEdit = false
     this.newUserForm.get('parking')?.setValue(this.parkingId)
     this.addPasswordValidations()
-    this.selectAllCheckboxes()
+    this.clearAllCheckboxes()
   }
 
   controlInvalid(control: string): boolean {
