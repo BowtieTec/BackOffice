@@ -6,12 +6,12 @@ import Swal from 'sweetalert2'
   providedIn: 'root'
 })
 export class MessageService {
-  constructor() {
-  }
-
   loading = false
   footer =
     '<div class="text-center"> <bold> Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.</bold> </div>'
+
+  constructor() {
+  }
 
   get nowTimeFormat() {
     const now = new Date()
@@ -19,6 +19,7 @@ export class MessageService {
       now.getMonth() + 1
     }-${now.getDate() < 10 ? '0' : ''}${now.getDate()}T23:59`
   }
+
   showLoading() {
     this.loading = true
   }

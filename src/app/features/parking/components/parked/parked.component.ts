@@ -47,6 +47,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
   get isSudo() {
     return this.authService.isSudo
   }
+
   get dtOptions(): ADTSettings {
     return {
       ...DataTableOptions.getSpanishOptions(10),

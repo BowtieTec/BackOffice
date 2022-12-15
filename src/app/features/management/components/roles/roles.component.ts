@@ -52,7 +52,7 @@ export class RolesComponent implements OnInit {
   changeRole() {
     this.messageServices.showLoading()
     console.log(this.roleIdSelected)
-    if(this.roleIdSelected != ''){
+    if (this.roleIdSelected != '') {
       this.getPermissionsForRole(this.roleIdSelected).then(
         (data: PermissionsModel[]) => {
           this.cleanAllPermission()

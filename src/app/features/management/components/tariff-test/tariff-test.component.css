@@ -19,6 +19,7 @@ p {
   margin-left: 8px;
   border-radius: 12px;
 }
+
 .timecontainer {
   padding: 10px 40px;
   position: relative;
@@ -45,16 +46,16 @@ p {
 
 .timecontainer::before {
   content: " ";
-    transform: rotate3d(0, 0, 1, -45deg);
-    position: absolute;
-    background: #ffffff;
-    top: 45%;
-    width: 15px;
-    height: 15px;
-    z-index: 1;
-    left: 33px;
-    border-top: 2px solid #171e73;
-    border-left: 2px solid #171e73;
+  transform: rotate3d(0, 0, 1, -45deg);
+  position: absolute;
+  background: #ffffff;
+  top: 45%;
+  width: 15px;
+  height: 15px;
+  z-index: 1;
+  left: 33px;
+  border-top: 2px solid #171e73;
+  border-left: 2px solid #171e73;
 }
 
 .right::after {

@@ -45,7 +45,8 @@
               "devextreme-quill",
               "file-saver",
               "apexcharts",
-              "sweetalert2"
+              "sweetalert2",
+              "luxon"
             ],
             "assets": [
               "src/favicon.ico",
@@ -56,7 +57,8 @@
               "node_modules/devextreme/dist/css/dx.light.css",
               "src/styles.css",
               "node_modules/datatables.net-dt/css/jquery.dataTables.css",
-              "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/@ng-select/ng-select/themes/default.theme.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",

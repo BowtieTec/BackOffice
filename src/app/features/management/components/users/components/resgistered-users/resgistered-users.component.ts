@@ -74,7 +74,7 @@ export class ResgisteredUsersComponent
       })
     })
     this.subject.subscribe((user: NewUserModel) => {
-      if(!user){
+      if (!user) {
         this.rerender()
       }
     })

@@ -4,6 +4,7 @@ export class tariffTestModel {
   exit_date: Date = new Date()
   courtesyId? = ''
 }
+
 export interface IParamsCustomTariff {
   id: string
   name: string

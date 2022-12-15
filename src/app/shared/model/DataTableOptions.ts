@@ -32,8 +32,7 @@ export class DataTableOptions {
       pageLength: pageLength,
       responsive: true,
       dom: 'Bfrtip',
-      buttons: [
-      ],
+      buttons: [],
       language: this.language,
     }
   }

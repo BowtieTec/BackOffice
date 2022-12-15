@@ -28,6 +28,7 @@ export class NewUserComponent implements OnInit {
   companies: CompaniesModel[] = []
   otherParkingLot: ParkingModel[] = this.authService.getUser().user.otherParkings
   otherParkingLogSelected: ParkingModel[] = []
+
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
@@ -56,44 +57,46 @@ export class NewUserComponent implements OnInit {
   ifHaveAction(action: string) {
     return this.permissionService.ifHaveAction(action)
   }
- fillFormWithUser (user: NewUserModel) {
-   this.newUserForm.patchValue({
-     name: user.name || '',
-     last_name: user.last_name || '',
-     email: user.email || '',
-     role: user.role.id || '',
-     user: user.user || '',
-     password: 'EstaPuedeOnoSerLaContraseña100&'|| '',
-     company: user.company?.id || user.company || null,
-     parking: user.parking.id || this.authService.getParking().id,
-     id: user.id || null
-   })
-  this.isEdit = true
-  this.utilitiesService.markAsUnTouched(this.newUserForm)
-}
+
+  fillFormWithUser(user: NewUserModel) {
+    this.newUserForm.patchValue({
+      name: user.name || '',
+      last_name: user.last_name || '',
+      email: user.email || '',
+      role: user.role.id || '',
+      user: user.user || '',
+      password: 'EstaPuedeOnoSerLaContraseña100&' || '',
+      company: user.company?.id || user.company || null,
+      parking: user.parking.id || this.authService.getParking().id,
+      id: user.id || null
+    })
+    this.isEdit = true
+    this.utilitiesService.markAsUnTouched(this.newUserForm)
+  }
+
   ngOnInit(): void {
     this.addCheckboxes()
-     this.authService.user$.subscribe(async({user, parkingId}) => {
-       this.messageServices.showLoading()
+    this.authService.user$.subscribe(async ({user, parkingId}) => {
+      this.messageServices.showLoading()
       this.parkingId = parkingId
       this.newUserForm.get('parking')?.setValue(parkingId)
       this.clearAllCheckboxes()
-       await this.getCompanies()
-       this.messageServices.hideLoading()
+      await this.getCompanies()
+      this.messageServices.hideLoading()
     })
-       this.subject.subscribe(async(user: NewUserModel | null) => {
-        if(user){
-          this.cleanForm()
-          if (user) {
-            this.clearPasswordValidations()
-            this.fillFormWithUser(user)
-          }
-          if (user?.otherParkings) {
-            this.fillOtherParkingLotArrayCheckBox(user)
-          }
-          await this.authService.saveNewParking(user.parking)
+    this.subject.subscribe(async (user: NewUserModel | null) => {
+      if (user) {
+        this.cleanForm()
+        if (user) {
+          this.clearPasswordValidations()
+          this.fillFormWithUser(user)
         }
-      })
+        if (user?.otherParkings) {
+          this.fillOtherParkingLotArrayCheckBox(user)
+        }
+        await this.authService.saveNewParking(user.parking)
+      }
+    })
   }
 
   isSudo() {
@@ -158,7 +161,7 @@ export class NewUserComponent implements OnInit {
           }
         })
         .then((data) => {
-      this.cleanForm()
+          this.cleanForm()
           this.subject.next()
           this.messageServices.OkTimeOut('Usuario editado con éxito.')
         })
@@ -266,7 +269,7 @@ export class NewUserComponent implements OnInit {
     })
   }
 
-  private fillOtherParkingLotArrayCheckBox (user: NewUserModel = this.authService.getUser().user as NewUserModel) {
+  private fillOtherParkingLotArrayCheckBox(user: NewUserModel = this.authService.getUser().user as NewUserModel) {
     this.otherParkingLot.forEach((item, index) => {
       if (user.otherParkings?.find((obj: any) => obj.id === item.id)) {
         this.getParkingLotsFormArray().controls[index].setValue(true);

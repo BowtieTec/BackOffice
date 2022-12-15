@@ -38,33 +38,44 @@
       <div
         class = "row">
         <div class = "col-md-6">
-          <p style="font-size: 18px;">
-            <b style="color: #0F1D71;">Tiempo total: </b>
+          <p style = "font-size: 18px;">
+            <b style = "color: #0F1D71;">Tiempo total: </b>
             <span *ngIf = "this.ticket.days > 0"> {{this.ticket.days}} días </span>
             <span *ngIf = "this.ticket.hour > 0">  {{this.ticket.hour}} horas </span>
             <span *ngIf = "this.ticket.minute > 0">  {{this.ticket.minute}} minutos</span>
           </p>
-                    <!-- <p *ngIf = "this.ticket.minute > 0"> Min.:  </p> -->
+          <!-- <p *ngIf = "this.ticket.minute > 0"> Min.:  </p> -->
           <br>
-          
-          <div style="background: #f2f2f2; border-radius: 12px; padding: 12px;">
 
-            <table class="table table-borderless">
-             
+          <div style = "background: #f2f2f2; border-radius: 12px; padding: 12px;">
+
+            <table class = "table table-borderless">
+
               <tbody>
-                <tr *ngIf = "courtesyDetail;" class="table borderless">
-                  <td class="text-start" style="font-size: 18px;">Total sin descuento:</td>
-                  <td class="text-end" style="font-size: 18px;"><b>{{this.ticket.amount_origin | currency:'GTQ'}}</b> </td>
-                </tr>
-                <tr *ngIf = "courtesyDetail" style="border-bottom: 2px solid #666 !Important;">
-                 
-                  <td class="text-start" style="font-size: 18px;">Descuento:</td>
-                  <td class="text-end" style="font-size: 18px;"><b>{{this.ticket.amount_disount | currency:'GTQ'}}</b> </td>
-                </tr>
-                <tr class="table borderless">
-                  <td class="text-start" style="font-size: 18px;">Total a pagar:</td>
-                  <td class="text-end" style="font-size: 18px;"><b>{{this.ticket.amount | currency:'GTQ'}}</b> </td>
-                </tr>
+              <tr *ngIf = "courtesyDetail;"
+                  class = "table borderless">
+                <td class = "text-start"
+                    style = "font-size: 18px;">Total sin descuento:
+                </td>
+                <td class = "text-end"
+                    style = "font-size: 18px;"><b>{{this.ticket.amount_origin | currency:'GTQ'}}</b></td>
+              </tr>
+              <tr *ngIf = "courtesyDetail"
+                  style = "border-bottom: 2px solid #666 !Important;">
+
+                <td class = "text-start"
+                    style = "font-size: 18px;">Descuento:
+                </td>
+                <td class = "text-end"
+                    style = "font-size: 18px;"><b>{{this.ticket.amount_disount | currency:'GTQ'}}</b></td>
+              </tr>
+              <tr class = "table borderless">
+                <td class = "text-start"
+                    style = "font-size: 18px;">Total a pagar:
+                </td>
+                <td class = "text-end"
+                    style = "font-size: 18px;"><b>{{this.ticket.amount | currency:'GTQ'}}</b></td>
+              </tr>
               </tbody>
             </table>
             <!-- <ul class = "">
@@ -78,13 +89,14 @@
               </li>
             </ul> -->
           </div>
-          
+
 
         </div>
         <div class = "col-md-6">
-          <div class="timeline">
-            <div  *ngFor = "let rule of tariffOfTicket"  class="timecontainer contentright">
-              <div class="timecontent">
+          <div class = "timeline">
+            <div *ngFor = "let rule of tariffOfTicket"
+                 class = "timecontainer contentright">
+              <div class = "timecontent">
                 <div class = "d-flex w-100 justify-content-between">
                   <h5 class = "mb-1">{{rule.name}}</h5>
                   <small>{{rule.updated_at | timeAgo}}</small>
@@ -92,9 +104,9 @@
                 <p class = "mb-1">{{rule.description}}</p>
                 <small class = "text-muted">Evento: {{rule.event}}</small>
               </div>
-              
+
             </div>
-            
+
           </div>
           <!-- <div class = "list-group">
             <div *ngFor = "let rule of tariffOfTicket">
@@ -109,7 +121,7 @@
             </div>
           </div> -->
         </div>
-        
+
         ​
       </div>
       <div class = "row">

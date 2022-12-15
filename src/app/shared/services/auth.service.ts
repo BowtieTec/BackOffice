@@ -1,7 +1,7 @@
 import {Injectable, OnDestroy} from '@angular/core'
 import {UserRequestModel} from '../model/UserRequest.model'
 import {HttpClient} from '@angular/common/http'
-import {AuthModel, AuthParkingModel, ParkingAuthModel, UserModel, UserResponseModel} from '../model/UserResponse.model'
+import {AuthModel, AuthParkingModel, ParkingAuthModel, UserResponseModel} from '../model/UserResponse.model'
 import {environment} from '../../../environments/environment'
 import {MessageService} from './message.service'
 import {EncryptionService} from './encryption.service'
@@ -31,7 +31,7 @@ export class AuthService implements OnDestroy {
   }
 
   saveUser(user: AuthModel) {
-    if(user.user.parking?.id == this.getParking()?.id && user.user.parking && this.getParking()) {
+    if (user.user.parking?.id == this.getParking()?.id && user.user.parking && this.getParking()) {
       return
     }
     sessionStorage.setItem(

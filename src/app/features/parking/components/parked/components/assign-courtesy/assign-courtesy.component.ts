@@ -17,6 +17,7 @@ export class AssignCourtesyComponent implements OnInit, OnDestroy {
   isLoading: Boolean = true
   parkedSelected: ParkedModel = new ParkedModel()
   courtesyClicked: CourtesyModel = new CourtesyModel()
+
   constructor(private courtesyService: CourtesyService, private messageService: MessageService) {
   }
 

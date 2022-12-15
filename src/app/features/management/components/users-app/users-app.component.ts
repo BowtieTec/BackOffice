@@ -27,6 +27,7 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
   appUserForm: UntypedFormGroup
   users: NewUserModel[] = []
   dtOptions: any = {};
+
   constructor(
     private userService: UserService,
     private formBuilder: UntypedFormBuilder,
