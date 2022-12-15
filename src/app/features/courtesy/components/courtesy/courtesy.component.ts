@@ -131,19 +131,17 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   getCourtesy(): CourtesyModel {
+    const type = this.newCourtesyForm.controls['type'].value
     const minutes: number =
-      this.newCourtesyForm.getRawValue().valueTimeMinutes / 60 <= 0
-        ? 0
-        : this.newCourtesyForm.getRawValue().valueTimeMinutes / 60
+      this.newCourtesyForm.getRawValue().valueTimeMinutes > 0 ? this.newCourtesyForm.getRawValue().valueTimeMinutes / 60 : 0
     const value: number =
       Number(this.newCourtesyForm.getRawValue().value) + Number(minutes)
     return {
       parkingId: this.parkingId,
       name: this.newCourtesyForm.controls['name'].value,
-      type: this.newCourtesyForm.controls['type'].value,
+      type,
       value,
-      valueTimeMinutes:
-        this.newCourtesyForm.controls['valueTimeMinutes'].value / 60,
+      valueTimeMinutes: this.newCourtesyForm.controls['valueTimeMinutes'].value > 0 ? this.newCourtesyForm.controls['valueTimeMinutes'].value / 60 : 0,
       quantity: this.newCourtesyForm.controls['quantity'].value,
       companyId: this.newCourtesyForm.controls['companyId'].value,
       condition: this.newCourtesyForm.controls['condition'].value,
@@ -178,18 +176,22 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
 
   cleanCourtesyForm() {
     this.newCourtesyForm.get('name')?.setValue('')
-    this.newCourtesyForm.get('value')?.setValue('')
-    this.newCourtesyForm.get('quantity')?.setValue('')
+    this.newCourtesyForm.get('value')?.setValue(0)
+    this.newCourtesyForm.get('type')?.setValue(0)
+    this.newCourtesyForm.get('quantity')?.setValue(0)
     this.newCourtesyForm
       .get('parkingId')
       ?.setValue(this.authService.getParking().id)
     this.newCourtesyForm.get('cantHours')?.setValue(0)
     this.newCourtesyForm.get('valueTimeMinutes')?.setValue(0)
     this.utilitiesService.markAsUnTouched(this.newCourtesyForm)
+
   }
 
   saveCourtesy() {
+    this.validateValue()
     console.log(this.newCourtesyForm)
+    console.log(this.getCourtesy())
     if (this.newCourtesyForm.valid) {
       this.cantCourtesiesCreating++
       this.messageService.info(
@@ -197,9 +199,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
         'Creando cortesías'
       )
       const newCourtesy: CourtesyModel = this.getCourtesy()
-
-      this.cleanCourtesyForm()
-      this.courtesyService.saveCourtesy(newCourtesy).subscribe(async (data) => {
+      this.courtesyService.saveCourtesy(newCourtesy).then(async (data) => {
         if (data.success) {
           this.toast.success(
             'Cortesía creada satisfactoriamente',
@@ -210,10 +210,12 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
         }
         this.cantCourtesiesCreating--
         await this.getCourtesies()
-      })
+      }).catch((err) => {
+        this.cantCourtesiesCreating--
+        throw new Error(err.message)
+      }).then(() => this.cleanCourtesyForm());
     } else {
       this.utilitiesService.markAsTouched(this.newCourtesyForm)
-      this.controlInvalid('value')
       this.messageService.errorTimeOut(
         'Datos faltantes o incorrectos',
         'Por favor, verificar que los datos son correctos y estan completos.'
@@ -239,6 +241,22 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
     })
   }
 
+  validateValue() {
+    const type = this.newCourtesyForm.get('type')?.value
+    if (type == 1) {
+      this.newCourtesyForm.get('value')?.setValidators([Validators.required, Validators.min(0), Validators.max(100)])
+      this.newCourtesyForm.get('value')?.updateValueAndValidity()
+      return
+    }
+    if (type == 4) {
+      this.newCourtesyForm.get('value')?.setValidators([Validators.required, Validators.min(0), Validators.max(24)])
+      this.newCourtesyForm.get('value')?.updateValueAndValidity()
+      return
+    }
+    this.newCourtesyForm.get('value')?.setValidators([Validators.required, Validators.max(100), Validators.min(0)])
+    this.newCourtesyForm.get('value')?.updateValueAndValidity()
+  }
+
   getNewConditions() {
     this.newCourtesyForm.controls['value'].updateValueAndValidity()
   }
@@ -256,16 +274,16 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
     return this.formBuilder.group({
       name: ['', [Validators.required]],
       type: [null, [Validators.required]],
-      value: [null, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      value: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
       valueTimeMinutes: [0, [Validators.max(60), Validators.min(0), Validators.max(59)]],
       quantity: [
         '',
         [Validators.required, Validators.min(2), Validators.max(100)]
       ],
       parkingId: [this.authService.getParking().id],
-      companyId: [null, [Validators.required]],
+      companyId: ['', [Validators.required]],
       condition: [null, [Validators.required]],
-      cantHours: [0, [Validators.required, Validators.max(24), Validators.min(0)]]
+      cantHours: [0, [Validators.max(24), Validators.min(0)]]
     })
   }
 

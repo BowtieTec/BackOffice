@@ -57,7 +57,7 @@ export class CourtesyService {
     return this.http.post<ResponseModel>(
       `${this.apiUrl}backoffice/cortesy/create`,
       newCourtesy
-    )
+    ).toPromise()
   }
 
   getTypeCourtesyDescription(type: number): string {

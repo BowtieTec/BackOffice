@@ -6,6 +6,7 @@
              formControlName = "{{controlName}}"
              notFoundText = "No se encontraron coincidencias">
     <ng-option *ngFor = "let item of data"
+               [value] = "item.id"
                class = "inputClass">{{item.name | titlecase}}</ng-option>
   </ng-select>
   <div *ngIf = "controlInvalid(controlName)"
