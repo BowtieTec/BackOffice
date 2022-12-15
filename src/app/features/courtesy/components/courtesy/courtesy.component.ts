@@ -189,6 +189,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   saveCourtesy() {
+    console.log(this.newCourtesyForm)
     if (this.newCourtesyForm.valid) {
       this.cantCourtesiesCreating++
       this.messageService.info(
@@ -211,6 +212,8 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
         await this.getCourtesies()
       })
     } else {
+      this.utilitiesService.markAsTouched(this.newCourtesyForm)
+      this.controlInvalid('value')
       this.messageService.errorTimeOut(
         'Datos faltantes o incorrectos',
         'Por favor, verificar que los datos son correctos y estan completos.'
@@ -237,9 +240,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   getNewConditions() {
-    this.typeOfCondition = this.courtesyService.getNewConditions(
-      this.newCourtesyForm.getRawValue().type
-    )
+    this.newCourtesyForm.controls['value'].updateValueAndValidity()
   }
 
   ngOnInit(): void {
@@ -255,8 +256,8 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
     return this.formBuilder.group({
       name: ['', [Validators.required]],
       type: [null, [Validators.required]],
-      value: [null, [Validators.required, Validators.min(0)]],
-      valueTimeMinutes: [0, [Validators.max(60), Validators.min(0)]],
+      value: [null, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      valueTimeMinutes: [0, [Validators.max(60), Validators.min(0), Validators.max(59)]],
       quantity: [
         '',
         [Validators.required, Validators.min(2), Validators.max(100)]
@@ -264,7 +265,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
       parkingId: [this.authService.getParking().id],
       companyId: [null, [Validators.required]],
       condition: [null, [Validators.required]],
-      cantHours: [0, [Validators.required]]
+      cantHours: [0, [Validators.required, Validators.max(24), Validators.min(0)]]
     })
   }
 

@@ -116,9 +116,11 @@ export class StationaryCourtesyComponent
   }
 
   getNewConditions() {
+
     this.typeOfCondition = this.courtesyService.getNewConditions(
       this.stationaryForm.getRawValue().type
     )
+
   }
 
   ifHaveAction(action: string) {
@@ -128,14 +130,14 @@ export class StationaryCourtesyComponent
   createForm(): FormGroup {
     return this.formBuilder.group({
       parkingId: [this.parkingId, [Validators.required]],
-      value: [0, [Validators.required, Validators.min(0)]],
-      valueTimeMinutes: [0, [Validators.max(60), Validators.min(0)]],
+      value: [null, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      valueTimeMinutes: [0, [Validators.max(60), Validators.min(0), Validators.max(59)]],
       type: [null, [Validators.required]],
       name: ['', [Validators.required]],
       stationId: [null, [Validators.required, Validators.minLength(5)]],
       companyId: [null, [Validators.required, Validators.minLength(5)]],
       condition: [null, [Validators.required]],
-      cantHours: [0]
+      cantHours: [0, [Validators.required, Validators.max(24), Validators.min(0)]]
     })
   }
 
