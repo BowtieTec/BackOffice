@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core'
-import {FormGroup, UntypedFormBuilder, Validators} from '@angular/forms'
+import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms'
 import {MessageService} from '../../../../shared/services/message.service'
 import {ParkingService} from '../../../parking/services/parking.service'
 import {UtilitiesService} from '../../../../shared/services/utilities.service'
@@ -59,7 +59,7 @@ export class StationaryCourtesyComponent
   private actions: string[] = this.permissionService.actionsOfPermissions
 
   constructor(
-    private formBuilder: UntypedFormBuilder,
+    private formBuilder: FormBuilder,
     private message: MessageService,
     private parkingService: ParkingService,
     private utilitiesService: UtilitiesService,
@@ -93,9 +93,9 @@ export class StationaryCourtesyComponent
     }
   }
 
-  InputValueFromNewCourtesy() {
+  inputValueFromNewCourtesy() {
     const type = this.stationaryForm.get('type')?.value
-    return this.courtesyService.InputValueFromNewCourtesy(type)
+    this.courtesyService.InputValueFromNewCourtesy(type)
   }
 
   getNewConditions() {
@@ -111,7 +111,10 @@ export class StationaryCourtesyComponent
   }
 
   createForm(): FormGroup {
-    return this.courtesyService.createCourtesyFormGroup(this.authService.getParking().id)
+    const courtesyForm = this.courtesyService.createCourtesyFormGroup(this.authService.getParking().id)
+    courtesyForm.addControl('stationId', new FormControl(null, []))
+  return courtesyForm
+
   }
 
   async getTypeCourtesies(): Promise<SelectModel[]> {

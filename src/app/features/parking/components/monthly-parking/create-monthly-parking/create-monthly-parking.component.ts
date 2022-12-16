@@ -255,7 +255,6 @@ export class CreateMonthlyParkingComponent implements OnInit {
       })
       .then(() => {
         this.cleanForm()
-        console.log("Berny Cardona")
         this.message.OkTimeOut('Guardado')
       })
       .catch()

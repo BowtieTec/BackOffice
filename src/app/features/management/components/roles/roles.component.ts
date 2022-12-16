@@ -51,7 +51,6 @@ export class RolesComponent implements OnInit {
 
   changeRole() {
     this.message.showLoading()
-    console.log(this.roleIdSelected)
     if (this.roleIdSelected != '') {
       this.getPermissionsForRole(this.roleIdSelected).then(
         (data: PermissionsModel[]) => {

@@ -2,7 +2,6 @@ import {FormGroup} from "@angular/forms";
 
 
 export const courtesyValue = (frm: FormGroup) => {
-  console.log('asdf')
   const value = frm.get('value')?.value;
   const type = frm.get('type')?.value;
 

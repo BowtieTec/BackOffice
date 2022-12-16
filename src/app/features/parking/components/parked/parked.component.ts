@@ -251,7 +251,6 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   private async getParkedData() {
-    console.log('Re')
     return this.parkingService
       .getParked(this.getParkedFormValues())
       .then((data) => {

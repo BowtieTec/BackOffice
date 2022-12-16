@@ -33,7 +33,6 @@ export class ReportService {
       .pipe(
         map((res) => {
           return res.data.map((item: any) => {
-            console.log(item);
             return {
               phone_key: item.user.phone_number,
               paymentStatus: item.status == 2 ? 'Pendiente de Pago' : 'Exitoso',

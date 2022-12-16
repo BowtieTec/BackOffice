@@ -28,7 +28,6 @@ export class AssignCourtesyComponent implements OnInit, OnDestroy {
     }
     this.courtesyService.getCourtesiesByParking(parked.parkingId).toPromise().then(data => {
       this.courtesies = data.filter(x => x.haveStation)
-      console.log(this.courtesies);
     }).then(() => this.isLoading = !this.isLoading)
   }
 

@@ -119,7 +119,6 @@ export class BillingReportComponent implements OnInit {
         if (data.success) {
           this.report = data.data
           this.dataSource = data.data
-          console.log(data.data);
           this.rerender()
         } else {
           this.message.error('', data.message)

@@ -84,22 +84,17 @@ export class UtilitiesService {
     let newPassword = [...Array(len)]
       .map((i) => base[(Math.random() * base.length) | 0])
     if (newPassword.filter((item) => allCapsAlpha.includes(item)).length == 0) {
-      console.log('no hay mayusculas: ', newPassword.join())
       newPassword.push(allCapsAlpha[(Math.random() * allCapsAlpha.length) | 0])
     }
     if (newPassword.filter((item) => allLowerAlpha.includes(item)).length == 0) {
       newPassword.push(allLowerAlpha[(Math.random() * allLowerAlpha.length) | 0])
-      console.log('no hay minusculas: ', newPassword.join())
     }
     if (newPassword.filter((item) => allNumbers.includes(item)).length == 0) {
       newPassword.push(allNumbers[(Math.random() * allNumbers.length) | 0])
-      console.log('no hay numeros: ', newPassword.join())
     }
     if (newPassword.filter((item) => symbols.includes(item)).length == 0) {
       newPassword.push(symbols[(Math.random() * symbols.length) | 0])
-      console.log('no hay simbolos: ', newPassword.join())
     }
-    console.log(newPassword.join(''))
     return newPassword.join('');
   }
 

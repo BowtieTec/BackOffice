@@ -98,7 +98,6 @@ export class TariffTestComponent implements OnInit {
         this.tariffOfTicket = []
         x.ticket.tariff.forEach((rule: any) => {
           rule.params.forEach((param: any) => {
-            console.log({param});
             this.tariffOfTicket.push(param.tariff)
           })
         })
