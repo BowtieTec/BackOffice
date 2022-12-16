@@ -114,7 +114,8 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
 
   getCourtesy(): CourtesyModel {
     return {
-      ...this.courtesyService.getCourtesyFormValue(this.newCourtesyForm, this.parkingId)
+      ...this.courtesyService.getCourtesyFormValue(this.newCourtesyForm, this.parkingId),
+      quantity: this.newCourtesyForm.controls['quantity'].value
     }
   }
 

@@ -24,6 +24,13 @@
             <div *ngIf = 'ifHaveAction(createCourtesyStationary)'>
               <div class = 'row justify-content-center'>
                 <div class = 'col-md-6 col-sm-12'>
+                  <app-input-container
+                    [formGroup] = 'stationaryForm'
+                    controlName = 'name'
+                    name = 'Nombre de la cortesía'>
+                  </app-input-container>
+                </div>
+                <div class = 'col-md-6 col-sm-12'>
                   <app-select-container
                     (change) = "this.getNewConditions()"
                     [data] = ' this.typeCourtesies'
@@ -32,13 +39,7 @@
                     name = 'Tipos de cortesía'>
                   </app-select-container>
                 </div>
-                <div class = 'col-md-6 col-sm-12'>
-                  <app-input-container
-                    [formGroup] = 'stationaryForm'
-                    controlName = 'name'
-                    name = 'Nombre de la cortesía'>
-                  </app-input-container>
-                </div>
+
                 <div class = 'col-md-6 col-sm-12'>
                   <app-input-container
                     [formGroup] = 'stationaryForm'
@@ -56,29 +57,7 @@
                     type = 'number'>
                   </app-input-container>
                 </div>
-                <div class = 'col-md-6 col-sm-12 '>
-                  <div class = 'relative'>
-                    <app-select-container
-                      [data] = ' this.allAntennas'
-                      [formGroup] = 'this.stationaryForm'
-                      controlName = 'stationId'
-                      name = 'Estaciones'
-                      style = 'position: relative; display: inline-block; width: 100%;'>
-                    </app-select-container>
-                    <button
-                      *ngIf = 'ifHaveAction(addStationsCourtesyStationary)'
-                      class = 'btn-primary btn-input animate__animated animate__fadeInDown'
-                      data-bs-target = '#exampleModal'
-                      data-bs-toggle = 'modal'
-                      style = 'position: absolute;
-                      right: 0; margin-bottom: 7px !important;
-                       top: 7px;
-                    display: inline-block;
-                    padding: 9px!important;'
-                      type = 'button'>+
-                    </button>
-                  </div>
-                </div>
+
                 <div class = 'col-xl-6 col-sm-12'>
                   <app-select-container
                     [data] = 'typeOfCondition'
@@ -104,6 +83,29 @@
                     controlName = 'companyId'
                     name = 'Local'>
                   </app-select-container>
+                </div>
+                <div class = 'col-md-6 col-sm-12 '>
+                  <div class = 'relative'>
+                    <app-select-container
+                      [data] = ' this.allAntennas'
+                      [formGroup] = 'this.stationaryForm'
+                      controlName = 'stationId'
+                      name = 'Estaciones'
+                      style = 'position: relative; display: inline-block; width: 100%;'>
+                    </app-select-container>
+                    <button
+                      *ngIf = 'ifHaveAction(addStationsCourtesyStationary)'
+                      class = 'btn-primary btn-input animate__animated animate__fadeInDown'
+                      data-bs-target = '#exampleModal'
+                      data-bs-toggle = 'modal'
+                      style = 'position: absolute;
+                      right: 0; margin-bottom: 7px !important;
+                       top: 7px;
+                    display: inline-block;
+                    padding: 9px!important;'
+                      type = 'button'>+
+                    </button>
+                  </div>
                 </div>
               </div>
               <div class = 'row '>
@@ -199,7 +201,6 @@
             type = "button">Agregar
 
     </button>
-
     <button
       (click) = 'this.modal.close()'
       class = 'btn btn-secondary'

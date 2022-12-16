@@ -173,18 +173,17 @@ export class CourtesyService {
     })
   }
   getCourtesyFormValue(form: FormGroup, parkingId: string){
-    const type = form.controls['type'].value
+    const type = form.getRawValue()?.type
     const minutes: number =
       form.getRawValue().valueTimeMinutes > 0 ? form.getRawValue().valueTimeMinutes / 60 : 0
     const value: number =
-      Number(form.getRawValue().value) + Number(minutes)
+      Number(form.getRawValue()?.value) + Number(minutes)
     return {
         parkingId: parkingId,
         name: form.controls['name'].value,
         type,
         value,
         valueTimeMinutes: form.controls['valueTimeMinutes'].value > 0 ? form.controls['valueTimeMinutes'].value / 60 : 0,
-        quantity: form.controls['quantity'].value,
         companyId: form.controls['companyId'].value,
         condition: form.controls['condition'].value,
         cantHours: form.controls['cantHours'].value

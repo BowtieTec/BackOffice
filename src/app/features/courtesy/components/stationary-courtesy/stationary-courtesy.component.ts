@@ -95,7 +95,7 @@ export class StationaryCourtesyComponent
 
   inputValueFromNewCourtesy() {
     const type = this.stationaryForm.get('type')?.value
-    this.courtesyService.InputValueFromNewCourtesy(type)
+    return this.courtesyService.InputValueFromNewCourtesy(type)
   }
 
   getNewConditions() {
