@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/c
 import {CourtesyService} from '../../services/courtesy.service'
 import {MessageService} from '../../../../shared/services/message.service'
 import {CourtesyModel, CourtesyTypeModel} from '../../models/Courtesy.model'
-import {FormBuilder, FormGroup, Validators} from '@angular/forms'
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms'
 import {UtilitiesService} from '../../../../shared/services/utilities.service'
 import {AuthService} from '../../../../shared/services/auth.service'
 import {DataTableDirective} from 'angular-datatables'
@@ -73,7 +73,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
     return this.newCourtesyForm.get('condition')?.value
   }
 
-  InputValueFromNewCourtesy() {
+  inputValueFromNewCourtesy() {
     const type = this.newCourtesyForm.get('type')?.value
     return this.courtesyService.InputValueFromNewCourtesy(type)
   }
@@ -119,7 +119,6 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   getCourtesies(parkingId = this.parkingId) {
-    console.log('courtesie')
     return this.courtesyService
       .getCourtesys(parkingId)
       .toPromise()
@@ -154,13 +153,10 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
     this.newCourtesyForm.get('cantHours')?.setValue(0)
     this.newCourtesyForm.get('valueTimeMinutes')?.setValue(0)
     this.utilitiesService.markAsUnTouched(this.newCourtesyForm)
-
   }
 
   saveCourtesy() {
     this.validateValue()
-    console.log(this.newCourtesyForm)
-    console.log(this.getCourtesy())
     if (this.newCourtesyForm.valid) {
       this.cantCourtesiesCreating++
       this.message.info(
@@ -226,10 +222,6 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
     this.newCourtesyForm.get('value')?.updateValueAndValidity()
   }
 
-  getNewConditions() {
-    this.newCourtesyForm.controls['value'].updateValueAndValidity()
-  }
-
   ngOnInit(): void {
     this.authService.user$.subscribe(({parkingId, user}) => {
       this.message.showLoading()
@@ -239,8 +231,11 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
     })
   }
 
-  private createForm() {
-    return this.courtesyService.createCourtesyFormGroup(this.authService.getParking().id)
+  private createForm(): FormGroup {
+    const parkingId = this.authService.getParking().id
+    const courtesyForm = this.courtesyService.createCourtesyFormGroup(parkingId)
+    courtesyForm.addControl('quantity', new FormControl('', [Validators.required, Validators.min(2), Validators.max(100)]))
+    return courtesyForm
   }
 
   private rerender() {

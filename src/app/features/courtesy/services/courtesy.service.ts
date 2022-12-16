@@ -8,7 +8,7 @@ import {map} from 'rxjs/operators'
 import {Observable} from 'rxjs'
 import {MessageService} from '../../../shared/services/message.service'
 import {ParkingModel} from '../../parking/models/Parking.model'
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 
 
 @Injectable({
@@ -159,17 +159,13 @@ export class CourtesyService {
       .toPromise()
   }
 
-   createCourtesyFormGroup(parkingId: string) {
+  createCourtesyFormGroup(parkingId: string): FormGroup {
     const formBuilder = new FormBuilder()
     return formBuilder.group({
       name: ['', [Validators.required]],
       type: [null, [Validators.required]],
       value: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
       valueTimeMinutes: [0, [Validators.max(60), Validators.min(0), Validators.max(59)]],
-      quantity: [
-        '',
-        [Validators.required, Validators.min(2), Validators.max(100)]
-      ],
       parkingId: [parkingId],
       companyId: ['', [Validators.required]],
       condition: [null, [Validators.required]],
