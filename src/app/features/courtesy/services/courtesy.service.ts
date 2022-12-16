@@ -8,6 +8,7 @@ import {map} from 'rxjs/operators'
 import {Observable} from 'rxjs'
 import {MessageService} from '../../../shared/services/message.service'
 import {ParkingModel} from '../../parking/models/Parking.model'
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 
 @Injectable({
@@ -33,7 +34,17 @@ export class CourtesyService {
   getTypes() {
     return this.http.get<ResponseModel>(
       `${this.apiUrl}backoffice/cortesy/typeCortesies`
-    )
+    ).toPromise()
+      .then((data) => {
+        if (data.success) {
+          return data.data.type.filter((x: any) => x.id != 3)
+        } else {
+          this.messageService.errorTimeOut(
+            '',
+            'No se pudo cargar la información inicial. Intente mas tarde.'
+          )
+        }
+      })
   }
 
   getParkingForCourtesy(courtesyDetailId: string) {
@@ -146,5 +157,52 @@ export class CourtesyService {
         })
       )
       .toPromise()
+  }
+
+   createCourtesyFormGroup(parkingId: string) {
+    const formBuilder = new FormBuilder()
+    return formBuilder.group({
+      name: ['', [Validators.required]],
+      type: [null, [Validators.required]],
+      value: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
+      valueTimeMinutes: [0, [Validators.max(60), Validators.min(0), Validators.max(59)]],
+      quantity: [
+        '',
+        [Validators.required, Validators.min(2), Validators.max(100)]
+      ],
+      parkingId: [parkingId],
+      companyId: ['', [Validators.required]],
+      condition: [null, [Validators.required]],
+      cantHours: [0, [Validators.max(24), Validators.min(0)]]
+    })
+  }
+  getCourtesyFormValue(form: FormGroup, parkingId: string){
+    const type = form.controls['type'].value
+    const minutes: number =
+      form.getRawValue().valueTimeMinutes > 0 ? form.getRawValue().valueTimeMinutes / 60 : 0
+    const value: number =
+      Number(form.getRawValue().value) + Number(minutes)
+    return {
+        parkingId: parkingId,
+        name: form.controls['name'].value,
+        type,
+        value,
+        valueTimeMinutes: form.controls['valueTimeMinutes'].value > 0 ? form.controls['valueTimeMinutes'].value / 60 : 0,
+        quantity: form.controls['quantity'].value,
+        companyId: form.controls['companyId'].value,
+        condition: form.controls['condition'].value,
+        cantHours: form.controls['cantHours'].value
+    }
+  }
+  InputValueFromNewCourtesy(type: number) {
+    return type == 0
+      ? 'Valor de tarifa fija'
+      : type == 1
+        ? 'Porcentaje de descuento'
+        : type == 2
+          ? 'Valor de descuento'
+          : type == 4
+            ? 'Cantidad de horas'
+            : 'Valor'
   }
 }

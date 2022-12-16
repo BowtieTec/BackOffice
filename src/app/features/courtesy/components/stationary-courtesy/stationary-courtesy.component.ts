@@ -88,31 +88,14 @@ export class StationaryCourtesyComponent
 
   get stationaryCourtesiesFormValue(): CreateStationaryCourtesy {
     return {
-      parkingId: this.stationaryForm.get('parkingId')?.value,
-      value:
-        Number(this.stationaryForm.get('value')?.value) +
-        Number(this.stationaryForm.get('valueTimeMinutes')?.value / 60),
-      valueTimeMinutes: this.stationaryForm.get('valueTimeMinutes')?.value,
-      type: this.stationaryForm.get('type')?.value,
-      name: this.stationaryForm.get('name')?.value,
-      stationId: this.stationaryForm.get('stationId')?.value,
-      companyId: this.stationaryForm.controls['companyId'].value,
-      condition: this.stationaryForm.controls['condition'].value,
-      cantHours: this.stationaryForm.controls['cantHours'].value
+        ...this.courtesyService.getCourtesyFormValue(this.stationaryForm, this.parkingId),
+      stationId: this.stationaryForm.get('stationId')?.value
     }
   }
 
-  get InputValueFromNewCourtesy() {
-    const type = this.stationaryForm.getRawValue().type
-    return type == 0
-      ? 'Valor de tarifa fija'
-      : type == 1
-        ? 'Porcentaje de descuento'
-        : type == 2
-          ? 'Valor de descuento'
-          : type == 4
-            ? 'Cantidad de horas'
-            : 'Valor'
+  InputValueFromNewCourtesy() {
+    const type = this.stationaryForm.get('type')?.value
+    return this.courtesyService.InputValueFromNewCourtesy(type)
   }
 
   getNewConditions() {
@@ -128,30 +111,12 @@ export class StationaryCourtesyComponent
   }
 
   createForm(): FormGroup {
-    return this.formBuilder.group({
-      parkingId: [this.parkingId, [Validators.required]],
-      value: [null, [Validators.required, Validators.min(0), Validators.max(1000)]],
-      valueTimeMinutes: [0, [Validators.max(60), Validators.min(0), Validators.max(59)]],
-      type: [null, [Validators.required]],
-      name: ['', [Validators.required]],
-      stationId: [null, [Validators.required, Validators.minLength(5)]],
-      companyId: [null, [Validators.required, Validators.minLength(5)]],
-      condition: [null, [Validators.required]],
-      cantHours: [0, [Validators.required, Validators.max(24), Validators.min(0)]]
-    })
+    return this.courtesyService.createCourtesyFormGroup(this.authService.getParking().id)
   }
 
   async getTypeCourtesies(): Promise<SelectModel[]> {
-    return this.courtesyService
-      .getTypes()
-      .toPromise()
-      .then((x) => {
-        return x.data.type.filter((x: any) => x.id != 3)
-      })
-  }
+    return await this.courtesyService.getTypes()
 
-  validateParam(param: any) {
-    return param ? param : 'Sin valor'
   }
 
   async getCourtesiesStationary(
@@ -189,14 +154,14 @@ export class StationaryCourtesyComponent
       return Promise.all([
         this.getTypeCourtesies(),
         this.getCourtesiesStationary(),
-        this.courtesyService.getTypes().toPromise(),
+        this.courtesyService.getTypes().then(),
         this.companyService.getCompanies(this.parkingId).toPromise(),
         this.searchAntennasByParking()
       ])
         .then((resp) => {
           this.typeCourtesies = resp[0]
           this.stationsCourtesies = resp[1]
-          this.courtesyTypes = resp[2].data.type
+          this.courtesyTypes = resp[2]
           this.allCompanies = resp[3]
           // ignore resp [5]
         })

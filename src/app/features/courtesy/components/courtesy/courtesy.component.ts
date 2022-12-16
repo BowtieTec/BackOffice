@@ -73,17 +73,9 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
     return this.newCourtesyForm.get('condition')?.value
   }
 
-  get InputValueFromNewCourtesy() {
+  InputValueFromNewCourtesy() {
     const type = this.newCourtesyForm.get('type')?.value
-    return type == 0
-      ? 'Valor de tarifa fija'
-      : type == 1
-        ? 'Porcentaje de descuento'
-        : type == 2
-          ? 'Valor de descuento'
-          : type == 4
-            ? 'Cantidad de horas'
-            : 'Valor'
+    return this.courtesyService.InputValueFromNewCourtesy(type)
   }
 
   getTypeDescription(id: number) {
@@ -104,18 +96,8 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   getInitialData() {
     return this.courtesyService
       .getTypes()
-      .toPromise()
       .then((data) => {
-        if (data.success) {
-          this.courtesyTypes = data.data.type.filter((x: any) => x.id != 3)
-        } else {
-          this.messageService.errorTimeOut(
-            '',
-            'No se pudo cargar la información inicial. Intente mas tarde.'
-          )
-        }
-      })
-      .then(() => {
+        this.courtesyTypes = data
         return this.getCourtesies()
       })
       .then(() => {
@@ -131,21 +113,8 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   getCourtesy(): CourtesyModel {
-    const type = this.newCourtesyForm.controls['type'].value
-    const minutes: number =
-      this.newCourtesyForm.getRawValue().valueTimeMinutes > 0 ? this.newCourtesyForm.getRawValue().valueTimeMinutes / 60 : 0
-    const value: number =
-      Number(this.newCourtesyForm.getRawValue().value) + Number(minutes)
     return {
-      parkingId: this.parkingId,
-      name: this.newCourtesyForm.controls['name'].value,
-      type,
-      value,
-      valueTimeMinutes: this.newCourtesyForm.controls['valueTimeMinutes'].value > 0 ? this.newCourtesyForm.controls['valueTimeMinutes'].value / 60 : 0,
-      quantity: this.newCourtesyForm.controls['quantity'].value,
-      companyId: this.newCourtesyForm.controls['companyId'].value,
-      condition: this.newCourtesyForm.controls['condition'].value,
-      cantHours: this.newCourtesyForm.controls['cantHours'].value
+      ...this.courtesyService.getCourtesyFormValue(this.newCourtesyForm, this.parkingId)
     }
   }
 
@@ -271,20 +240,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   private createForm() {
-    return this.formBuilder.group({
-      name: ['', [Validators.required]],
-      type: [null, [Validators.required]],
-      value: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
-      valueTimeMinutes: [0, [Validators.max(60), Validators.min(0), Validators.max(59)]],
-      quantity: [
-        '',
-        [Validators.required, Validators.min(2), Validators.max(100)]
-      ],
-      parkingId: [this.authService.getParking().id],
-      companyId: ['', [Validators.required]],
-      condition: [null, [Validators.required]],
-      cantHours: [0, [Validators.max(24), Validators.min(0)]]
-    })
+    return this.courtesyService.createCourtesyFormGroup(this.authService.getParking().id)
   }
 
   private rerender() {
