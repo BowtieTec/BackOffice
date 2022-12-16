@@ -18,7 +18,7 @@ export class PermissionsService implements OnInit {
   constructor(
     private http: HttpClient,
     private auth: AuthService,
-    private messageService: MessageService
+    private message: MessageService
   ) {
     this.getMenuOptionsValidated(this.auth.getUser().user.id).then()
   }

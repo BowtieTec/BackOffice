@@ -18,7 +18,7 @@ export class UserService {
   private apiUrl = environment.serverAPI
 
   constructor(
-    private messageService: MessageService,
+    private message: MessageService,
     private authService: AuthService,
     private http: HttpClient
   ) {
@@ -26,7 +26,7 @@ export class UserService {
   }
 
   getInitialData() {
-    this.messageService.showLoading()
+    this.message.showLoading()
     this.getRoles()
       .toPromise()
       .then((data: ResponseModel) => {
@@ -34,15 +34,15 @@ export class UserService {
         return data
       })
       .then((data) => {
-        this.messageService.hideLoading()
+        this.message.hideLoading()
       })
       .then(() => {
-        this.messageService.hideLoading()
+        this.message.hideLoading()
       })
   }
 
   getRoles() {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http.get<ResponseModel>(`${this.apiUrl}backoffice/role`)
   }
 
@@ -53,14 +53,14 @@ export class UserService {
   }
 
   getUsersApp(): Observable<any> {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http.get<ResponseModel>(
       `${this.apiUrl}backoffice/user/userApp/`
     )
   }
 
   getAdminsByParking() {
-    this.messageService.showLoading()
+    this.message.showLoading()
     this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/admin/admins?page=1&per_page=100&status=3`
@@ -80,7 +80,7 @@ export class UserService {
             validate_code: administrator.validate_code
           })
         })
-        this.messageService.hideLoading()
+        this.message.hideLoading()
       })
   }
 

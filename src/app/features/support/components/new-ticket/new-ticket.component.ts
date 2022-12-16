@@ -23,7 +23,7 @@ export class NewTicketComponent {
     private permissionService: PermissionsService,
     private formBuilder: UntypedFormBuilder,
     private authService: AuthService,
-    private messageService: MessageService,
+    private message: MessageService,
     private utilitiesService: UtilitiesService,
     private supportTicketService: SupportTicketService,
     private router: Router
@@ -44,7 +44,7 @@ export class NewTicketComponent {
 
   async sendSupportTicket() {
     if (this.supportTicketForm.invalid) {
-      this.messageService.error('', 'Datos no válidos o faltantes')
+      this.message.error('', 'Datos no válidos o faltantes')
       return
     }
     const newTicket = this.formSupportTicketValues
@@ -54,12 +54,12 @@ export class NewTicketComponent {
       .toPromise()
 
     if (response) {
-      this.messageService.infoTimeOut(
+      this.message.infoTimeOut(
         'Se ha enviado su petición, pronto recibirá una notificación en su correo'
       )
       this.reloadComponent()
     } else {
-      this.messageService.error('', 'No se pudo enviar la solicitud')
+      this.message.error('', 'No se pudo enviar la solicitud')
     }
   }
 

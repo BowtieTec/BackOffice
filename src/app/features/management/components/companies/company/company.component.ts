@@ -40,7 +40,7 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
     private authService: AuthService,
     private formBuilder: UntypedFormBuilder,
     private parkingService: ParkingService,
-    private messageService: MessageService,
+    private message: MessageService,
     private permissionService: PermissionsService
   ) {
     this.formGroup = formBuilder.group({filter: ['']})
@@ -70,7 +70,7 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
 
   editTheCompany(company: CompaniesModel) {
     if (!company.id) {
-      this.messageService.error(
+      this.message.error(
         'Esta compañía no existe o no se seleciono una correcta.'
       )
       return
@@ -89,7 +89,7 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
 
   async saveCompany() {
     if (this.companiesForm.invalid) {
-      this.messageService.error('', 'Datos no válidos o faltantes')
+      this.message.error('', 'Datos no válidos o faltantes')
       return
     }
     const newCompany = this.formCompanyValues
@@ -116,12 +116,12 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
 
   async deleteTheCompany(company: CompaniesModel) {
     if (!company.id) {
-      this.messageService.errorTimeOut(
+      this.message.errorTimeOut(
         'Esta compañía no existe o no se seleccionó una correcta.'
       )
       return
     }
-    const response = await this.messageService
+    const response = await this.message
       .areYouSure(
         `¿Esta seguro que desea deshabilitar ${company.name}?`,
         'Si',

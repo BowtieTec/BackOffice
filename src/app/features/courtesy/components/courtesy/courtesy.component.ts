@@ -44,7 +44,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
 
   constructor(
     private courtesyService: CourtesyService,
-    private messageService: MessageService,
+    private message: MessageService,
     private formBuilder: FormBuilder,
     private utilitiesService: UtilitiesService,
     private authService: AuthService,
@@ -128,7 +128,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
           this.courtesies = data.data
           this.rerender()
         } else {
-          this.messageService.error('', data.message)
+          this.message.error('', data.message)
         }
       })
   }
@@ -163,7 +163,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
     console.log(this.getCourtesy())
     if (this.newCourtesyForm.valid) {
       this.cantCourtesiesCreating++
-      this.messageService.info(
+      this.message.info(
         'Recibirá una pequeña notificación cuando la cortesía haya terminado de crearse. Tomar en cuenta que entre mayor sea el numero, mas tiempo se necesita para crearse.',
         'Creando cortesías'
       )
@@ -175,7 +175,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
             'Cortesía creada'
           )
         } else {
-          this.messageService.error('No pudo crearse la cortesía', data.message)
+          this.message.error('No pudo crearse la cortesía', data.message)
         }
         this.cantCourtesiesCreating--
         await this.getCourtesies()
@@ -185,7 +185,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
       }).then(() => this.cleanCourtesyForm());
     } else {
       this.utilitiesService.markAsTouched(this.newCourtesyForm)
-      this.messageService.errorTimeOut(
+      this.message.errorTimeOut(
         'Datos faltantes o incorrectos',
         'Por favor, verificar que los datos son correctos y estan completos.'
       )
@@ -202,11 +202,11 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   downloadPDF(courtesies: CourtesyModel) {
-    this.messageService.OkTimeOut('...Generando archivo PDF')
+    this.message.OkTimeOut('...Generando archivo PDF')
     courtesies.id = !courtesies.id ? '' : courtesies.id
     this.courtesyService.getPDF(courtesies.id).subscribe((data) => {
       saveAs(data, courtesies.name + '.pdf')
-      this.messageService.OkTimeOut()
+      this.message.OkTimeOut()
     })
   }
 
@@ -232,10 +232,10 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.authService.user$.subscribe(({parkingId, user}) => {
-      this.messageService.showLoading()
+      this.message.showLoading()
       this.parkingId = parkingId
       this.newCourtesyForm.get('parkingId')?.setValue(parkingId)
-      this.getInitialData().finally(() => this.messageService.hideLoading())
+      this.getInitialData().finally(() => this.message.hideLoading())
     })
   }
 

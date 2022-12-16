@@ -47,7 +47,7 @@ export class ParkingDayReportComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private reportService: ReportService,
-    private messageService: MessageService,
+    private message: MessageService,
     private utilitiesService: UtilitiesService,
     private authService: AuthService,
     private permissionService: PermissionsService,
@@ -63,7 +63,7 @@ export class ParkingDayReportComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.messageService.showLoading()
+    this.message.showLoading()
     this.dtOptions = DataTableOptions.getSpanishOptions(10)
     this.authService.user$.subscribe(({parkingId}) => {
       this.reportForm.get('parkingId')?.setValue(parkingId)
@@ -78,13 +78,13 @@ export class ParkingDayReportComponent implements OnInit {
   getReport() {
     const {startDate, endDate, parkingId} = this.reportForm.getRawValue()
     if (endDate < startDate) {
-      this.messageService.error(
+      this.message.error(
         '',
         'La fecha de inicio debe ser mayor a la fecha fin'
       )
       return
     }
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.reportService
       .getParkingRpt(startDate, endDate, parkingId)
       .toPromise()
@@ -94,7 +94,7 @@ export class ParkingDayReportComponent implements OnInit {
         this.rerender()
       })
       .then(() => {
-        this.messageService.hideLoading()
+        this.message.hideLoading()
       })
   }
 
@@ -104,7 +104,7 @@ export class ParkingDayReportComponent implements OnInit {
 
   exportGrid() {
     if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
+      this.message.infoTimeOut('No hay información para exportar')
       return
     }
     const doc = new jsPDF()
@@ -118,7 +118,7 @@ export class ParkingDayReportComponent implements OnInit {
 
   onExporting(e: any) {
     if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
+      this.message.infoTimeOut('No hay información para exportar')
       return
     }
     const {startDate, endDate, parkingId} = this.reportForm.getRawValue()

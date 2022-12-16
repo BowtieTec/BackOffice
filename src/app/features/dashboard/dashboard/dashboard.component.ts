@@ -125,7 +125,7 @@ export class DashboardComponent implements OnInit {
     private auth: AuthService,
     private permissionService: PermissionsService,
     private parkingService: ParkingService,
-    private messageService: MessageService
+    private message: MessageService
   ) {
     if (this.ifHaveAction('graficosIngresoVehiculos')) {
       this.idTabActiva = 'ingresos'
@@ -148,7 +148,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.messageService.showLoading()
+    this.message.showLoading()
     this.parkingService.parkingLot$.subscribe((parkingLot) => {
       this.allParking = parkingLot
     })
@@ -180,7 +180,7 @@ export class DashboardComponent implements OnInit {
         this.searchMes(this.cortesiasEstacionarias)
         this.searchAnio(this.cortesiasEstacionarias)
       }
-      this.messageService.hideLoading()
+      this.message.hideLoading()
     })*/
 
   }

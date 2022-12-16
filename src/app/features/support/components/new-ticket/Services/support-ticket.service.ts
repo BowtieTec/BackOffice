@@ -13,13 +13,13 @@ export class SupportTicketService {
   apiUrl = environment.serverAPI
 
   constructor(
-    private messageService: MessageService,
+    private message: MessageService,
     private http: HttpClient
   ) {
   }
 
   sendSupportTicket(supportTicketModel: supportTicketModel) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .post<ResponseModel>(
         `${this.apiUrl}backoffice/support/sendTicket`,
@@ -28,10 +28,10 @@ export class SupportTicketService {
       .pipe(
         map((x: ResponseModel) => {
           if (x.success) {
-            this.messageService.hideLoading()
+            this.message.hideLoading()
             return x.success
           } else {
-            this.messageService.error('', x.message)
+            this.message.error('', x.message)
             return []
           }
         })

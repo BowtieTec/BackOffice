@@ -12,7 +12,7 @@ export class RolesService {
   private apiUrl = environment.serverAPI
 
   constructor(
-    private messageService: MessageService,
+    private message: MessageService,
     private http: HttpClient
   ) {
   }

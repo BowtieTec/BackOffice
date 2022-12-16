@@ -33,7 +33,7 @@ export class NewUserComponent implements OnInit {
     private userService: UserService,
     private formBuilder: FormBuilder,
     private utilitiesService: UtilitiesService,
-    private messageServices: MessageService,
+    private message: MessageService,
     private parkingService: ParkingService,
     private permissionService: PermissionsService,
     private authService: AuthService,
@@ -77,12 +77,12 @@ export class NewUserComponent implements OnInit {
   ngOnInit(): void {
     this.addCheckboxes()
     this.authService.user$.subscribe(async ({user, parkingId}) => {
-      this.messageServices.showLoading()
+      this.message.showLoading()
       this.parkingId = parkingId
       this.newUserForm.get('parking')?.setValue(parkingId)
       this.clearAllCheckboxes()
       await this.getCompanies()
-      this.messageServices.hideLoading()
+      this.message.hideLoading()
     })
     this.subject.subscribe(async (user: NewUserModel | null) => {
       if (user) {
@@ -132,9 +132,9 @@ export class NewUserComponent implements OnInit {
   }
 
   saveNewUser() {
-    this.messageServices.showLoading()
+    this.message.showLoading()
     if (this.newUserForm.invalid && !this.isEdit) {
-      this.messageServices.error('', 'Datos no válidos o faltantes')
+      this.message.error('', 'Datos no válidos o faltantes')
       return
     }
     let newUserValue: NewUserModel = this.newUserForm.getRawValue()
@@ -143,7 +143,7 @@ export class NewUserComponent implements OnInit {
     }
     if (!newUserValue) {
       this.utilitiesService.markAsTouched(this.newUserForm)
-      this.messageServices.errorTimeOut('Datos incorrectos o faltantes.')
+      this.message.errorTimeOut('Datos incorrectos o faltantes.')
       return
     }
     newUserValue.otherParkings = this.getOtherParkingLotsIdSelected()
@@ -157,13 +157,13 @@ export class NewUserComponent implements OnInit {
           if (data.success) {
             return data.data
           } else {
-            this.messageServices.error('', data.message)
+            this.message.error('', data.message)
           }
         })
         .then((data) => {
           this.cleanForm()
           this.subject.next()
-          this.messageServices.OkTimeOut('Usuario editado con éxito.')
+          this.message.OkTimeOut('Usuario editado con éxito.')
         })
     } else {
       delete newUserValue.id
@@ -173,9 +173,9 @@ export class NewUserComponent implements OnInit {
         .toPromise()
         .then((data) => {
           if (data.success) {
-            this.messageServices.OkTimeOut('Guardado')
+            this.message.OkTimeOut('Guardado')
           } else {
-            this.messageServices.error('', data.message)
+            this.message.error('', data.message)
           }
           this.cleanForm()
           this.isEdit = false

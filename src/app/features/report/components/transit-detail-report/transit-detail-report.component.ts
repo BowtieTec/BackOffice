@@ -31,7 +31,7 @@ export class TransitDetailReportComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private messageService: MessageService,
+    private message: MessageService,
     private parkingService: ParkingService,
     private permissionService: PermissionsService,
     private reportService: ReportService
@@ -53,10 +53,10 @@ export class TransitDetailReportComponent implements OnInit {
   }
 
   getReport() {
-    this.messageService.showLoading()
+    this.message.showLoading()
     const {startDate, endDate, parkingId} = this.reportForm.getRawValue()
     if (endDate < startDate) {
-      this.messageService.error(
+      this.message.error(
         '',
         'La fecha de fin debe ser mayor a la fecha de inicio'
       )
@@ -68,7 +68,7 @@ export class TransitDetailReportComponent implements OnInit {
       .then((data) => {
         this.dataSource = data
       })
-      .then(() => this.messageService.hideLoading())
+      .then(() => this.message.hideLoading())
   }
 
   ifHaveAction(action: string) {
@@ -78,7 +78,7 @@ export class TransitDetailReportComponent implements OnInit {
   onExporting(e: any) {
     const {startDate, endDate, parkingId} = this.reportForm.getRawValue()
     if (this.dataSource.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
+      this.message.infoTimeOut('No hay información para exportar')
       return
     }
     const header = [

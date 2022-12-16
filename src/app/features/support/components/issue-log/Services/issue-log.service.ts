@@ -12,13 +12,13 @@ export class IssueLogService {
   apiUrl = environment.serverAPI
 
   constructor(
-    private messageService: MessageService,
+    private message: MessageService,
     private http: HttpClient
   ) {
   }
 
   getAllAppLogs(initDate: string, endDate: string, telephone: string = '', page: number = 1, per_page: number = 25) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/log/getAllAppLogs/dates?initDate=${initDate}&endDate=${endDate}&telephone=${telephone}&page=${page}&per_page=${per_page}`

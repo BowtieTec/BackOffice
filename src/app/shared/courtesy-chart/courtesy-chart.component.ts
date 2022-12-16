@@ -72,7 +72,7 @@ export class CourtesyChartComponent implements OnInit {
     private auth: AuthService,
     private dashboardService: DashboardService,
     private companyService: CompaniesService,
-    private messageService: MessageService
+    private message: MessageService
   ) {
   }
 
@@ -141,7 +141,7 @@ export class CourtesyChartComponent implements OnInit {
         )
       }
     } catch (err: any) {
-      this.messageService.error('', err.message)
+      this.message.error('', err.message)
     }
   }
 
@@ -208,7 +208,7 @@ export class CourtesyChartComponent implements OnInit {
         }
       })
     } catch (err: any) {
-      this.messageService.error('', err.message)
+      this.message.error('', err.message)
     }
   }
 

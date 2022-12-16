@@ -55,7 +55,7 @@ export class BillingReportComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private reportService: ReportService,
-    private messageService: MessageService,
+    private message: MessageService,
     private utilitiesService: UtilitiesService,
     private authService: AuthService,
     private permissionService: PermissionsService,
@@ -71,7 +71,7 @@ export class BillingReportComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.messageService.showLoading()
+    this.message.showLoading()
     this.dtOptions = DataTableOptions.getSpanishOptions(10)
 
     this.authService.user$.subscribe(({parkingId}) => {
@@ -89,7 +89,7 @@ export class BillingReportComponent implements OnInit {
   }
 
   getReport() {
-    this.messageService.showLoading()
+    this.message.showLoading()
     const {
       startDate,
       endDate,
@@ -105,7 +105,7 @@ export class BillingReportComponent implements OnInit {
     let _startDate = new Date(startDate).toISOString().split('T')[0] + ' 00:00:00'
     let _endDate = new Date(endDate).toISOString().split('T')[0] + ' 23:59:59'
     if (endDate < startDate) {
-      this.messageService.error(
+      this.message.error(
         '',
         'La fecha de inicio debe ser mayor a la fecha fin'
       )
@@ -122,15 +122,15 @@ export class BillingReportComponent implements OnInit {
           console.log(data.data);
           this.rerender()
         } else {
-          this.messageService.error('', data.message)
+          this.message.error('', data.message)
         }
       })
-      .then(() => this.messageService.hideLoading())
+      .then(() => this.message.hideLoading())
   }
 
   onExporting(e: any) {
     if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
+      this.message.infoTimeOut('No hay información para exportar')
       return
     }
     const {startDate, endDate, parkingId} = this.reportForm.getRawValue()
@@ -355,7 +355,7 @@ export class BillingReportComponent implements OnInit {
 
   exportGrid() {
     if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
+      this.message.infoTimeOut('No hay información para exportar')
       return
     }
     const doc = new jsPDF()
@@ -385,5 +385,3 @@ export class BillingReportComponent implements OnInit {
     })
   }
 }
-
-

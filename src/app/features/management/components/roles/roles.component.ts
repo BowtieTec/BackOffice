@@ -18,7 +18,7 @@ export class RolesComponent implements OnInit {
     private userService: UserService,
     private utilitiesService: UtilitiesService,
     private roleService: RolesService,
-    private messageServices: MessageService
+    private message: MessageService
   ) {
   }
 
@@ -35,13 +35,13 @@ export class RolesComponent implements OnInit {
   }
 
   getAllPermissions() {
-    this.messageServices.showLoading()
+    this.message.showLoading()
     this.roleService
       .getAllPermissions()
       .toPromise()
       .then((data) => {
         this.allPermissions = data.data.permissions
-        this.messageServices.hideLoading()
+        this.message.hideLoading()
       })
   }
 
@@ -50,7 +50,7 @@ export class RolesComponent implements OnInit {
   }
 
   changeRole() {
-    this.messageServices.showLoading()
+    this.message.showLoading()
     console.log(this.roleIdSelected)
     if (this.roleIdSelected != '') {
       this.getPermissionsForRole(this.roleIdSelected).then(
@@ -62,7 +62,7 @@ export class RolesComponent implements OnInit {
               found.checked = true
             }
           })
-          this.messageServices.hideLoading()
+          this.message.hideLoading()
         }
       )
     }
@@ -80,7 +80,7 @@ export class RolesComponent implements OnInit {
         if (data.success) {
           return data.data.roles.find((x: any) => x.id == id).permissions
         } else {
-          this.messageServices.error(
+          this.message.error(
             '',
             'No se pudo cargar la información solicitada. Error: ' +
             data.message
@@ -107,16 +107,16 @@ export class RolesComponent implements OnInit {
         .savePermissionsForRole(permissionsToSave)
         .subscribe((data) => {
           if (data.success) {
-            this.messageServices.OkTimeOut()
+            this.message.OkTimeOut()
           } else {
-            this.messageServices.error(
+            this.message.error(
               '',
               'Los permisos no pudieron guardarse. ' + data.message
             )
           }
         })
     } else {
-      this.messageServices.warning('Debe seleccionar un rol para continuar')
+      this.message.warning('Debe seleccionar un rol para continuar')
     }
   }
 }

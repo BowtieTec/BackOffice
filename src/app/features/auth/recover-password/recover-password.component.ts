@@ -20,7 +20,7 @@ export class RecoverPasswordComponent {
 
   constructor(
     private formBuilder: UntypedFormBuilder,
-    private messageService: MessageService,
+    private message: MessageService,
     private recoveryService: RecoveryPasswordService,
     private route: Router
   ) {
@@ -62,14 +62,14 @@ export class RecoverPasswordComponent {
       .toPromise()
       .then((data) => {
         if (data.success) {
-          this.messageService.OkTimeOut('Código Enviado')
+          this.message.OkTimeOut('Código Enviado')
 
         } else {
-          this.messageService.error('', data.message)
+          this.message.error('', data.message)
         }
         return data.success
       }).catch(err => {
-        this.messageService.error('', err.error.message)
+        this.message.error('', err.error.message)
         return false
       })
 
@@ -87,10 +87,10 @@ export class RecoverPasswordComponent {
       .then((data) => {
         if (data.success) {
           this.token = data.data
-          this.messageService.OkTimeOut('Código correcto')
+          this.message.OkTimeOut('Código correcto')
           this.userId = data.data
         } else {
-          this.messageService.error('', data.message)
+          this.message.error('', data.message)
         }
         return data.success
       })
@@ -98,14 +98,14 @@ export class RecoverPasswordComponent {
 
   validations() {
     if (!this.emailControl?.valid && this.step == 1) {
-      this.messageService.errorTimeOut('', 'Correo no valido')
+      this.message.errorTimeOut('', 'Correo no valido')
       return false
     }
     if (
       !this.recoveryPasswordForm.get('validate_code')?.valid &&
       this.step == 2
     ) {
-      this.messageService.errorTimeOut(
+      this.message.errorTimeOut(
         '',
         'El código de confirmación es necesario'
       )
@@ -115,7 +115,7 @@ export class RecoverPasswordComponent {
   }
 
   async changeStep(currentStep: number) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     let isEmailSend: boolean = false
     let isCodeRight: boolean = false
     if (!this.validations()) {
@@ -124,7 +124,7 @@ export class RecoverPasswordComponent {
 
     if (currentStep == 1) {
       if (this.emailControl?.invalid) {
-        this.messageService.error('', 'Por favor, ingrese un correo válido.')
+        this.message.error('', 'Por favor, ingrese un correo válido.')
         return
       }
       isEmailSend = await this.sendConfirmation(this.emailControl?.value.trim())
@@ -142,20 +142,20 @@ export class RecoverPasswordComponent {
         return
       }
     }
-    this.messageService.hideLoading()
+    this.message.hideLoading()
   }
 
   recoveryPassword() {
-    this.messageService.showLoading()
+    this.message.showLoading()
     if (this.newPasswordControl?.value != this.newPasswordConfControl?.value) {
-      this.messageService.error('', 'Las contraseñas no coinciden')
+      this.message.error('', 'Las contraseñas no coinciden')
       return
     }
     if (
       !this.newPasswordControl?.valid &&
       !this.newPasswordConfControl?.valid
     ) {
-      this.messageService.error(
+      this.message.error(
         '',
         'La nueva contraseña debe contener al menos un número, una letra mayúscula y un símbolo: @$!%*#?&'
       )
@@ -166,13 +166,13 @@ export class RecoverPasswordComponent {
       .toPromise()
       .then((data) => {
         if (data.success) {
-          this.messageService.OkTimeOut('Contraseña cambiada correctamente')
+          this.message.OkTimeOut('Contraseña cambiada correctamente')
           this.route.navigate(['/'])
         } else {
-          this.messageService.error('', data.message)
+          this.message.error('', data.message)
         }
       }).catch((x) => {
-      this.messageService.error(x.message)
+      this.message.error(x.message)
     })
   }
 

@@ -49,7 +49,7 @@ export class DurationReportComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private reportService: ReportService,
-    private messageService: MessageService,
+    private message: MessageService,
     private utilitiesService: UtilitiesService,
     private authService: AuthService,
     private permissionService: PermissionsService,
@@ -82,13 +82,13 @@ export class DurationReportComponent implements OnInit {
       new Date(startDate).toISOString().split('T')[0] + 'T00:00:00'
     let _endDate = new Date(endDate).toISOString().split('T')[0] + 'T23:59:59'
     if (endDate < startDate) {
-      this.messageService.error(
+      this.message.error(
         '',
         'La fecha de inicio debe ser mayor a la fecha fin'
       )
       return
     }
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.reportService
       .getDurationRpt(_startDate, _endDate, parkingId)
       .toPromise()
@@ -98,17 +98,17 @@ export class DurationReportComponent implements OnInit {
           this.dataSource = data.data
           this.rerender()
         } else {
-          this.messageService.error('', data.message)
+          this.message.error('', data.message)
         }
       })
       .finally(() => {
-        this.messageService.hideLoading()
+        this.message.hideLoading()
       })
   }
 
   onExporting(e: any) {
     if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
+      this.message.infoTimeOut('No hay información para exportar')
       return
     }
     const {startDate, endDate, parkingId} = this.reportForm.value
@@ -312,7 +312,7 @@ export class DurationReportComponent implements OnInit {
 
   exportGrid() {
     if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
+      this.message.infoTimeOut('No hay información para exportar')
       return
     }
     const doc = new jsPDF()

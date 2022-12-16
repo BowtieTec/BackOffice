@@ -13,22 +13,22 @@ export class TariffTestService {
   apiUrl = environment.serverAPI
 
   constructor(
-    private messageService: MessageService,
+    private message: MessageService,
     private http: HttpClient
   ) {
   }
 
   getTariffTest(testModel: tariffTestModel) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .post<ResponseModel>(`${this.apiUrl}test/calculateTariff`, testModel)
       .pipe(
         map((x: ResponseModel) => {
           if (x.success) {
-            this.messageService.hideLoading()
+            this.message.hideLoading()
             return x.data
           } else {
-            this.messageService.error('', x.message)
+            this.message.error('', x.message)
             return []
           }
         })

@@ -36,7 +36,7 @@ export class TariffTestComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private authService: AuthService,
     private parkingService: ParkingService,
-    private messageService: MessageService,
+    private message: MessageService,
     private testService: TariffTestService,
     private courtesyService: CourtesyService,
     private utilitiesService: UtilitiesService
@@ -78,12 +78,12 @@ export class TariffTestComponent implements OnInit {
 
   async getTariffTest() {
     if (this.tariffTestForm.invalid) {
-      this.messageService.error('', 'Datos no válidos o faltantes')
+      this.message.error('', 'Datos no válidos o faltantes')
       return
     }
     const newTest = this.formTariffTestValues
     if (newTest.entry_date > newTest.exit_date) {
-      this.messageService.error(
+      this.message.error(
         '',
         'Datos no válidos, la fecha de salida debe ser mayor o igual a la de entrada'
       )

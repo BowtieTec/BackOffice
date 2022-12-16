@@ -38,7 +38,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
     private formBuilder: FormBuilder,
     private parkingService: ParkingService,
     private authService: AuthService,
-    private messageService: MessageService,
+    private message: MessageService,
     private permissionService: PermissionsService,
     private reportService: ReportService
   ) {
@@ -69,7 +69,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
               recordsFiltered: data.recordsFiltered,
               data: []
             })
-          }).then(() => this.messageService.hideLoading())
+          }).then(() => this.message.hideLoading())
       }
     }
   }
@@ -140,7 +140,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
         this.ifHaveAction(this.getOutWithPayment)
       ) {
         const statusWillUpdate =
-          await this.messageService.areYouSureWithCancelAndInput(
+          await this.message.areYouSureWithCancelAndInput(
             '¿Dejar salir a usuario con el cobro pendiente o cancelado?',
             'Salir y cobrar a la tarjeta',
             'Salir sin cobrar',
@@ -181,14 +181,14 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
       !this.dateOutToGetOut ||
       (!this.isValidDate(this.dateOutToGetOut) && parked.type == 0)
     ) {
-      this.messageService.error('Debe seleccionar una fecha de salida valida')
+      this.message.error('Debe seleccionar una fecha de salida valida')
       return
     }
     if (parked.type == 1) {
       this.dateOutToGetOut = new Date()
     }
     if (this.dateOutToGetOut <= new Date(parked.entry_date)) {
-      this.messageService.error(
+      this.message.error(
         'La fecha y hora de salida debe ser mayor a la de entrada.'
       )
       return
@@ -196,7 +196,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
     if (payment_method == -1) {
       return
     }
-    const result = await this.messageService.areYouSure(
+    const result = await this.message.areYouSure(
       `¿Está seguro que desea sacar al usuario ${parked.user_name} ${
         parked.last_name
       } del parqueo ${
@@ -204,23 +204,23 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
       } con fecha y hora de salida ${this.dateOutToGetOut.toLocaleString()}?`
     )
     if (result.isDenied) {
-      this.messageService.infoTimeOut(
+      this.message.infoTimeOut(
         '!No te preocupes!, no se hicieron cambios.'
       )
       return
     }
 
     if (result.isConfirmed) {
-      this.messageService.showLoading()
+      this.message.showLoading()
       this.parkingService
         .getOutParked(parked.id, payment_method, this.dateOutToGetOut)
         .then((data) => {
           if (data.success) {
             this.refreshParkedData()
-            this.messageService.OkTimeOut(data.message)
+            this.message.OkTimeOut(data.message)
             this.dateOutToGetOut = new Date()
           } else {
-            this.messageService.error('', data.message)
+            this.message.error('', data.message)
           }
         })
     }

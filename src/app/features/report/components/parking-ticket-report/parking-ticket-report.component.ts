@@ -51,7 +51,7 @@ export class ParkingTicketReportComponent implements OnInit {
     private formBuilder: FormBuilder,
     private auth: AuthService,
     private reportService: ReportService,
-    private messageService: MessageService,
+    private message: MessageService,
     private utilitiesService: UtilitiesService,
     private authService: AuthService,
     private permissionService: PermissionsService,
@@ -80,13 +80,13 @@ export class ParkingTicketReportComponent implements OnInit {
   getReport() {
     const {startDate, endDate, parkingId} = this.reportForm.value
     if (endDate < startDate) {
-      this.messageService.error(
+      this.message.error(
         '',
         'La fecha de inicio debe ser mayor a la fecha fin'
       )
       return
     }
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.reportService
       .getTicketsRpt(startDate, endDate, parkingId)
       .toPromise()
@@ -96,17 +96,17 @@ export class ParkingTicketReportComponent implements OnInit {
           this.dataSource = data.data
           this.rerender()
         } else {
-          this.messageService.error('', data.message)
+          this.message.error('', data.message)
         }
       })
       .then(() => {
-        this.messageService.hideLoading()
+        this.message.hideLoading()
       })
   }
 
   exportGrid() {
     if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
+      this.message.infoTimeOut('No hay información para exportar')
       return
     }
     const doc = new jsPDF()
@@ -120,7 +120,7 @@ export class ParkingTicketReportComponent implements OnInit {
 
   onExporting(e: any) {
     if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
+      this.message.infoTimeOut('No hay información para exportar')
       return
     }
     const {startDate, endDate, parkingId} = this.reportForm.value

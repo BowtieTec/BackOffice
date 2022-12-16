@@ -19,7 +19,7 @@ export class CourtesyService {
 
   constructor(
     private http: HttpClient,
-    private messageService: MessageService
+    private message: MessageService
   ) {
   }
 
@@ -39,7 +39,7 @@ export class CourtesyService {
         if (data.success) {
           return data.data.type.filter((x: any) => x.id != 3)
         } else {
-          this.messageService.errorTimeOut(
+          this.message.errorTimeOut(
             '',
             'No se pudo cargar la información inicial. Intente mas tarde.'
           )
@@ -139,7 +139,7 @@ export class CourtesyService {
 
   async assignCourtesy(parkedId: string, courtesyDetailId: string | undefined) {
     if (!courtesyDetailId || !parkedId) {
-      this.messageService.error('', 'Datos inválidos o faltantes')
+      this.message.error('', 'Datos inválidos o faltantes')
       return
     }
     return this.http
@@ -150,9 +150,9 @@ export class CourtesyService {
       .pipe(
         map((data) => {
           if (data.success) {
-            this.messageService.OkTimeOut()
+            this.message.OkTimeOut()
           } else {
-            this.messageService.error(data.message)
+            this.message.error(data.message)
           }
         })
       )

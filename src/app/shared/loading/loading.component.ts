@@ -8,10 +8,10 @@ import {MessageService} from '../services/message.service'
   styleUrls: ['./loading.component.css']
 })
 export class LoadingComponent {
-  constructor(private router: Router, private messageService: MessageService) {
+  constructor(private router: Router, private message: MessageService) {
   }
 
   get loading() {
-    return this.messageService.loading
+    return this.message.loading
   }
 }

@@ -41,7 +41,7 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     private auth: AuthService,
     private reportService: ReportService,
-    private messageService: MessageService,
+    private message: MessageService,
     private utilitiesService: UtilitiesService,
     private authService: AuthService,
     private permissionService: PermissionsService,
@@ -56,7 +56,7 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.messageService.showLoading()
+    this.message.showLoading()
     this.dtOptions = DataTableOptions.getSpanishOptions(10)
     this.authService.user$.subscribe(({parkingId}) => {
       this.reportForm.get('parkingId')?.setValue(parkingId)
@@ -72,13 +72,13 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
     let {startDate, endDate, parkingId, telephone} = this.reportForm.value
     telephone = telephone ?? ''
     if (endDate < startDate) {
-      this.messageService.error(
+      this.message.error(
         '',
         'La fecha de inicio debe ser mayor a la fecha fin'
       )
       return
     }
-    this.messageService.showLoading()
+    this.message.showLoading()
 
     return this.reportService
       .getPaymentsRpt(startDate, endDate, parkingId, telephone)
@@ -87,7 +87,7 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
         this.report = data
         this.dataSource = data
       })
-      .finally(() => this.messageService.hideLoading())
+      .finally(() => this.message.hideLoading())
   }
 
   ngAfterViewInit() {
@@ -96,7 +96,7 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
 
   exportGrid() {
     if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
+      this.message.infoTimeOut('No hay información para exportar')
       return
     }
     const doc = new jsPDF()
@@ -110,7 +110,7 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
 
   onExporting(e: any) {
     if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
+      this.message.infoTimeOut('No hay información para exportar')
       return
     }
     const {startDate, endDate, parkingId, telephone} = this.reportForm.value

@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
     private auth: AuthService,
     private router: Router,
     private permissions: PermissionsService,
-    private messageService: MessageService,
+    private message: MessageService,
     private crypto: EncryptionService,
   ) {
   }
@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     if (sessionStorage.getItem(this.crypto.encryptKey('User')) == undefined) {
-      this.messageService.infoTimeOut(
+      this.message.infoTimeOut(
         'Debe iniciar sesión para acceder a las funcionalidades.',
         'Iniciar sesión'
       )
