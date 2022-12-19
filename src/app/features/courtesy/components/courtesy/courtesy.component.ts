@@ -145,9 +145,9 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
 
   cleanCourtesyForm() {
     this.newCourtesyForm.get('name')?.setValue('')
-    this.newCourtesyForm.get('value')?.setValue(0)
-    this.newCourtesyForm.get('type')?.setValue(0)
-    this.newCourtesyForm.get('quantity')?.setValue(0)
+    this.newCourtesyForm.get('value')?.setValue(null)
+    this.newCourtesyForm.get('type')?.setValue(null)
+    this.newCourtesyForm.get('quantity')?.setValue(null)
     this.newCourtesyForm
       .get('parkingId')
       ?.setValue(this.authService.getParking().id)
