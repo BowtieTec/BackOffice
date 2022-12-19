@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core'
-import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms'
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms'
 import {MessageService} from '../../../../shared/services/message.service'
 import {ParkingService} from '../../../parking/services/parking.service'
 import {UtilitiesService} from '../../../../shared/services/utilities.service'
@@ -159,7 +159,7 @@ export class StationaryCourtesyComponent
         this.getCourtesiesStationary(),
         this.courtesyService.getTypes().then(),
         this.companyService.getCompanies(this.parkingId).toPromise(),
-        this.searchAntennasByParking()
+       // this.searchAntennasByParking()
       ])
         .then((resp) => {
           this.typeCourtesies = resp[0]
