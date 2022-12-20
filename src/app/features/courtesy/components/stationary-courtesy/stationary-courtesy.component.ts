@@ -159,7 +159,7 @@ export class StationaryCourtesyComponent
         this.getCourtesiesStationary(),
         this.courtesyService.getTypes().then(),
         this.companyService.getCompanies(this.parkingId).toPromise(),
-       // this.searchAntennasByParking()
+        this.searchAntennasByParking()
       ])
         .then((resp) => {
           this.typeCourtesies = resp[0]
