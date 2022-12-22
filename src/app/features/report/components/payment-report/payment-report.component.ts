@@ -79,7 +79,9 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
       return
     }
     this.message.showLoading()
-
+    startDate = startDate.toISOString().split('T')[0]
+    endDate = endDate.toISOString().split('T')[0]
+    console.log({startDate, endDate, parkingId, telephone})
     return this.reportService
       .getPaymentsRpt(startDate, endDate, parkingId, telephone)
       .toPromise()
