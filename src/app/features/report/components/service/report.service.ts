@@ -26,6 +26,7 @@ export class ReportService {
     parqueo: string,
     telephone: string = ''
   ) {
+    console.log({initDate, endDate, parqueo, telephone})
     return this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/report/getPagos/dates?initDate=${initDate}&endDate=${endDate}&parqueo=${parqueo}&telephone=${telephone}`
