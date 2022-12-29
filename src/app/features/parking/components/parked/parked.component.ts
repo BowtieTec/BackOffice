@@ -75,6 +75,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   async getInitialData() {
+    setInterval(() => this.rerender(), 600000)
     if (this.isSudo) {
       await this.parkedForm
         .get('parkingId')
