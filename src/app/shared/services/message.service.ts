@@ -99,14 +99,16 @@ export class MessageService {
     })
   }
 
-  infoTimeOut(text: string, title = '') {
+  infoTimeOut(text: string, title = '', timer = 10000) {
     this.hideLoading()
     Swal.fire({
+      toast: true,
       icon: 'info',
+      position: 'bottom-left',
       title,
       text,
-      timer: 2000,
-      showConfirmButton: true
+      timer: 20000,
+      timerProgressBar: true,
     })
   }
 

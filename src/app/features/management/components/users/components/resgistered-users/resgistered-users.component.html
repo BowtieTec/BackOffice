@@ -2,7 +2,7 @@
   <div class = "titleCards">
     <span><em class = "fas fa-users"></em></span> Usuarios Administradores registrados
   </div>
-
+<button (click)="exportTable()" class="btn btn-outline-secondary">Exportar</button>
   <table [dtOptions] = "DtOptions"
          [dtTrigger] = "dtTrigger"
          aria-label = "Tabla de usuarios"
