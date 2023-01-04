@@ -7,6 +7,7 @@ import {RolesModel} from '../models/RolesModel'
 import {getAdminsPaginatedModel, NewUserModel, updateUserApp} from '../models/newUserModel'
 import {Observable} from 'rxjs'
 import {AuthService} from '../../../../../shared/services/auth.service'
+import {saveAs} from "file-saver";
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,14 @@ export class UserService {
     return this.http.get<ResponseModel>(
       `${this.apiUrl}backoffice/admin/admins?textToSearch=${data.textToSearch}&page=${data.page}&pageSize=${data.pageSize}`
     )
+  }
+  exportAdminTable(): Promise<any> {
+    return this.http.get<ResponseModel>(
+      `${this.apiUrl}backoffice/admin/export`, {responseType: 'blob' as 'json'}
+    ).toPromise().then((data: any) => {
+      const downloadURL = window.URL.createObjectURL(data);
+      saveAs(downloadURL, `Administradores ${new Date().toLocaleDateString()}.xlsx`);
+    })
   }
 
   getUsersApp(): Observable<any> {

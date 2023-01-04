@@ -133,4 +133,10 @@ export class ResgisteredUsersComponent
       .toPromise()
       .then((data) => data.data)
   }
+
+  async exportTable() {
+    this.message.infoTimeOut('Descargando...', '', 0)
+    await this.userService.exportAdminTable()
+    this.message.OkTimeOut()
+  }
 }
