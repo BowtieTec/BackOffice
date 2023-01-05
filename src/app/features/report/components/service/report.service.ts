@@ -19,7 +19,6 @@ export class ReportService {
 
   constructor(private http: HttpClient) {
   }
-
   getPaymentsRpt(
     initDate: string,
     endDate: string,
@@ -34,6 +33,7 @@ export class ReportService {
       .pipe(
         map((res) => {
           return res.data.map((item: any) => {
+            const payment = item.payment.find((x: any) => x.is_aproved && x.billing)
             return {
               phone_key: item.user.phone_number,
               paymentStatus: item.status == 2 ? 'Pendiente de Pago' : 'Exitoso',
@@ -45,15 +45,15 @@ export class ReportService {
               invoice:
                 item.status == 2
                   ? 'Pendiente de Pago'
-                  : item.payment[0]?.billing?.fiscal_number ??
+                  : payment?.billing?.fiscal_number ??
                   (item.total > 0 ? 'No generada' : 'No requerida'),
-              invoiceDate: item.payment[0]?.billing?.certification_time ?? '',
-              paymentDate: item.payment[0]?.created_at ?? '',
+              invoiceDate: payment?.billing?.certification_time ?? '',
+              paymentDate: payment?.created_at ?? '',
               timeIn: this.descriptionOfDiffOfTime(
                 new Date(item.entry_date),
                 new Date(item.exit_date)
               ),
-              transaction: item.payment[0]?.trace_number ?? '',
+              transaction: payment?.trace_number ?? '',
               courtesy: item.courtesy?.courtesy_details?.name ?? '',
               company: item.courtesy?.courtesy_details?.company.name ?? '',
               typePayment:
@@ -118,7 +118,9 @@ export class ReportService {
       `${this.apiUrl}backoffice/report/courtesiesStationDetail/dates?initDate=${initDate}&endDate=${endDate}&parqueo=${parqueo}`
     )
   }
-
+isApproved(payment: any) {
+    return payment.is_aproved == true && payment.billing
+}
   getTransitDetailRpt(initDate: Date, endDate: Date, parqueo: string) {
     const _initDate = new Date(initDate).toISOString().split('T')[0]
     const _endDate = new Date(endDate).toISOString().split('T')[0]
@@ -129,6 +131,7 @@ export class ReportService {
       .pipe(
         map((res) => {
           return res.data.map((item: any) => {
+            const payment = item.payment.find((x: any) => x.is_aproved && x.billing)
             return {
               phone_key: item.user?.phone_number ?? '',
               entry_date: item.entry_date
@@ -153,8 +156,8 @@ export class ReportService {
                     : item.payment_type == 3
                       ? 'Salida gratuita'
                       : '',
-              transaction: item.payment[0]?.trace_number ?? '',
-              invoice: item.payment[0]?.billing?.fiscal_number ?? '',
+              transaction: payment?.trace_number ?? '',
+              invoice: payment?.billing?.fiscal_number ?? '',
               entry_station: item.entry_station?.name ?? '',
               exit_station: item.exit_station?.name ?? '',
               type:
