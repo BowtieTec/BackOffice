@@ -80,8 +80,8 @@ export class CreateMonthlyParkingComponent implements OnInit {
         if (data.success) {
           this.stationsByParking = data.data.stations
           /*
-          Para ver ejemplo de como se ver[ia con estaciones privadas,
-          solo se debe comentar las siguientes dos lineas que pertenecen al filter:
+          Para ver ejemplo de como se vería con estaciones privadas,
+          solo se debe comentar las siguientes dos líneas que pertenecen al filter:
           */
           this.stationsByParking = this.stationsByParking.filter(
             (x) => x.isPrivate
@@ -110,11 +110,12 @@ export class CreateMonthlyParkingComponent implements OnInit {
   }
 
   getInitialData() {
+    this.message.showLoading()
     return Promise.all([
       this.getProfiles(),
       this.getMonthlySubscription(),
       this.getAntennasByParking()
-    ])
+    ]).then(()  => this.message.hideLoading())
   }
 
   ngOnInit(): void {
