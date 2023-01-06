@@ -223,8 +223,10 @@ isApproved(payment: any) {
       )
   }
 
-  descriptionOfDiffOfTime(oldTime: Date, timeNow: Date): string {
-    if (!timeNow) {
+  descriptionOfDiffOfTime(oldTime: Date, timeNow: Date | null | undefined): string {
+    oldTime = new Date(oldTime)
+    timeNow = new Date(timeNow || new Date())
+    if (timeNow == null) {
       return 'No ha salido del parqueo'
     }
     let days: number = timeNow.getDay() - oldTime.getDay()
@@ -281,10 +283,10 @@ isApproved(payment: any) {
                 : '',
               exit_date: item?.exit_date
                 ? item?.exit_date.toLocaleString()
-                : '',
+                : 'No ha salido',
               timeIn: this.descriptionOfDiffOfTime(
-                new Date(item?.entry_date),
-                new Date(item?.exit_date)
+                item?.entry_date,
+                item?.exit_date
               ),
               entry_station: item?.entry_station?.name ?? '',
               exit_station: item?.exit_station?.name ?? '',
