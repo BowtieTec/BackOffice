@@ -147,6 +147,7 @@ export class NewUserComponent implements OnInit {
       return
     }
     newUserValue.otherParkings = this.getOtherParkingLotsIdSelected()
+    console.log(newUserValue.otherParkings);
     if (this.isEdit) {
       this.newUserForm.get('password')?.clearValidators()
       delete newUserValue.password
@@ -273,6 +274,7 @@ export class NewUserComponent implements OnInit {
     this.otherParkingLot.forEach((item, index) => {
       if (user.otherParkings?.find((obj: any) => obj.id === item.id)) {
         this.getParkingLotsFormArray().controls[index].setValue(true);
+        this.otherParkingLogSelected.push(item)
       } else {
         this.getParkingLotsFormArray().controls[index].setValue(false);
       }
