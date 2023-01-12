@@ -9,8 +9,7 @@ import {Subject} from 'rxjs'
 import {MessageService} from '../../../../shared/services/message.service'
 import {environment} from '../../../../../environments/environment'
 import {PermissionsService} from '../../../../shared/services/permissions.service'
-import {ReportService} from '../../../report/components/service/report.service'
-import {getCurrentDataTablePage} from "../../../../shared/services/utilities.service";
+import {getCurrentDataTablePage, UtilitiesService} from "../../../../shared/services/utilities.service";
 import {ADTSettings} from "angular-datatables/src/models/settings";
 
 @Component({
@@ -40,7 +39,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
     private authService: AuthService,
     private message: MessageService,
     private permissionService: PermissionsService,
-    private reportService: ReportService
+    private utility: UtilitiesService
   ) {
   }
 
@@ -92,7 +91,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
     const exit_date: Date = entry.exit_date
       ? new Date(entry.exit_date)
       : new Date()
-    return this.reportService.descriptionOfDiffOfTime(entry_date, exit_date)
+    return this.utility.descriptionOfDiffOfTime(entry_date, exit_date)
   }
 
   createForm(): FormGroup {
@@ -249,13 +248,5 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
     this.parkingService.parkingLot$.subscribe((parkingLot) => {
       this.allParking = parkingLot
     })
-  }
-
-  private async getParkedData() {
-    return this.parkingService
-      .getParked(this.getParkedFormValues())
-      .then((data) => {
-        this.parkedData = data.data
-      })
   }
 }

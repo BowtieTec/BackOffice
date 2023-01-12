@@ -4,11 +4,7 @@ import {HttpClient} from '@angular/common/http'
 import {ResponseModel} from 'src/app/shared/model/Request.model'
 import {payFilter} from '../model/paymentModel'
 import {map} from 'rxjs/operators'
-//import * as jsPDF from 'jspdf';
-
-const EXCEL_TYPE =
-  'application/vnd.openxlmformats-officedocument.spreedsheetml.sheet; charset = UTF-8'
-const EXCEL_EXT = '.xlsx'
+import {UtilitiesService} from "../../../../shared/services/utilities.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +13,9 @@ export class ReportService {
   payDate: payFilter[] = new Array<payFilter>()
   private apiUrl = environment.serverAPI
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private utility: UtilitiesService) {
   }
+
   getPaymentsRpt(
     initDate: string,
     endDate: string,
@@ -49,7 +46,7 @@ export class ReportService {
                   (item.total > 0 ? 'No generada' : 'No requerida'),
               invoiceDate: payment?.billing?.certification_time ?? '',
               paymentDate: payment?.created_at ?? '',
-              timeIn: this.descriptionOfDiffOfTime(
+              timeIn: this.utility.descriptionOfDiffOfTime(
                 new Date(item.entry_date),
                 new Date(item.exit_date)
               ),
@@ -140,7 +137,7 @@ isApproved(payment: any) {
               exit_date: item.exit_date
                 ? new Date(item.exit_date).toLocaleString()
                 : '',
-              timeIn: this.descriptionOfDiffOfTime(
+              timeIn: this.utility.descriptionOfDiffOfTime(
                 new Date(item.entry_date),
                 new Date(item.exit_date || new Date())
               ),
@@ -223,43 +220,22 @@ isApproved(payment: any) {
       )
   }
 
-  descriptionOfDiffOfTime(oldTime: Date, timeNow: Date | null | undefined): string {
-    oldTime = new Date(oldTime)
-    timeNow = new Date(timeNow || new Date())
-    if (timeNow == null) {
-      return 'No ha salido del parqueo'
-    }
-    let days: number = timeNow.getDay() - oldTime.getDay()
-    let hours: number = timeNow.getHours() - oldTime.getHours()
-    let minutes: number = timeNow.getMinutes() - oldTime.getMinutes()
-    if (minutes < 0) {
-      hours--
-      minutes += 60
-    }
-    if (hours < 0) {
-      days--
-      hours += 24
-    }
-    if (days < 0) {
-      days += 7
-    }
-    let response: string = ''
+  dateDiffInDays(oldDate: Date, currentDate: Date) {
+    const date1 = new Date(oldDate);
+    const date2 = new Date(currentDate);
 
-    if (days > 0 && hours > 0 && minutes > 0)
-      return `${days} días, ${hours} horas y ${minutes} minutos`
-    if (days > 0 && hours > 0 && minutes === 0)
-      return `${days} días, ${hours} horas`
-    if (days > 0 && hours === 0 && minutes > 0)
-      return `${days} días y ${minutes} minutos`
-    if (days > 0 && hours === 0 && minutes === 0) return `${days} días`
-    if (days === 0 && hours > 0 && minutes > 0)
-      return `${hours} horas y ${minutes} minutos`
-    if (days === 0 && hours > 0 && minutes === 0) return `${hours} horas`
-    if (days === 0 && hours === 0 && minutes > 0) return `${minutes} minutos`
-    if (days === 0 && hours === 0 && minutes === 0) return '0 minutos'
+    // One day in milliseconds
+    const oneDay = 1000 * 60 * 60 * 24;
 
-    return response
+    // Calculating the time difference between two dates
+    const diffInTime = date2.getTime() - date1.getTime();
+
+    // Calculating the no. of days between two dates
+    const diffInDays = Math.round(diffInTime / oneDay);
+    console.log(diffInDays)
+    return diffInDays;
   }
+
 
   getParkingRpt(initDate: string, endDate: string, parqueo: string) {
     const _initDate = new Date(initDate).toISOString().split('T')[0]
@@ -284,7 +260,7 @@ isApproved(payment: any) {
               exit_date: item?.exit_date
                 ? item?.exit_date.toLocaleString()
                 : 'No ha salido',
-              timeIn: this.descriptionOfDiffOfTime(
+              timeIn: this.utility.descriptionOfDiffOfTime(
                 item?.entry_date,
                 item?.exit_date
               ),

@@ -13,8 +13,6 @@ import {DxDataGridComponent} from 'devextreme-angular'
 import {exportDataGrid as exportDataGridToPdf} from 'devextreme/pdf_exporter'
 import {Workbook} from 'exceljs'
 import {saveAs} from 'file-saver'
-
-import {ParkingService} from '../../../parking/services/parking.service'
 import * as logoFile from '../logoEbi'
 import {FormBuilder, FormGroup} from '@angular/forms'
 
@@ -42,11 +40,9 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
     private auth: AuthService,
     private reportService: ReportService,
     private message: MessageService,
-    private utilitiesService: UtilitiesService,
+    private utility: UtilitiesService,
     private authService: AuthService,
-    private permissionService: PermissionsService,
-    private excelService: ReportService,
-    private parkingService: ParkingService
+    private permissionService: PermissionsService
   ) {
     this.reportForm = this.createReportForm()
   }
@@ -115,7 +111,7 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
       this.message.infoTimeOut('No hay información para exportar')
       return
     }
-    const {startDate, endDate, parkingId, telephone} = this.reportForm.value
+    const {startDate, endDate} = this.reportForm.value
     const header = [
       '',
       'Teléfono',
@@ -342,7 +338,7 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
     const oldTime: Date = new Date(rowData.entry_date)
     const timeNow: Date = new Date(rowData.exit_date)
 
-    return this.reportService.descriptionOfDiffOfTime(oldTime, timeNow)
+    return this.utility.descriptionOfDiffOfTime(oldTime, timeNow)
   }
 
   private createReportForm() {
@@ -352,14 +348,5 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
       parkingId: ['0'],
       telephone: ['']
     })
-  }
-
-  private rerender() {
-    if (this.dtElement != undefined) {
-      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        dtInstance.destroy()
-        this.dtTrigger.next()
-      })
-    }
   }
 }

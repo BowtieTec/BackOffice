@@ -42,6 +42,8 @@
     "js-sha512": "^0",
     "jspdf": "^2",
     "jspdf-autotable": "^3",
+    "moment": "^2.29.4",
+    "momnet": "^2.29.1",
     "ng-apexcharts": "^1",
     "ng-recaptcha": "^9",
     "ngx-json-viewer": "^3.2.1-alpha.0",

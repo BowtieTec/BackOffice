@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core'
 import {AbstractControl, UntypedFormArray, UntypedFormControl, UntypedFormGroup} from '@angular/forms'
+import * as moment from "moment/moment";
 
 @Injectable({
   providedIn: 'root'
@@ -82,7 +83,7 @@ export class UtilitiesService {
 
     const base = [...allCapsAlpha, ...allNumbers, ...allLowerAlpha, ...symbols]
     let newPassword = [...Array(len)]
-      .map((i) => base[(Math.random() * base.length) | 0])
+      .map(() => base[(Math.random() * base.length) | 0])
     if (newPassword.filter((item) => allCapsAlpha.includes(item)).length == 0) {
       newPassword.push(allCapsAlpha[(Math.random() * allCapsAlpha.length) | 0])
     }
@@ -146,6 +147,30 @@ export class UtilitiesService {
     for (const controlsKey in form.controls) {
       form.controls[controlsKey].enable()
     }
+  }
+
+  descriptionOfDiffOfTime(oldTime: Date, timeNow: Date | null | undefined): string {
+    oldTime = new Date(oldTime)
+    timeNow = new Date(timeNow || new Date())
+    if (timeNow == null) {
+      return 'No ha salido del parqueo'
+    }
+    let days: number = Math.round(moment.duration(timeNow.getTime() - oldTime.getTime()).asDays())
+    let hours: number = Math.round(moment.duration(timeNow.getTime() - oldTime.getTime()).hours())
+    let minutes: number = Math.round(moment.duration(timeNow.getTime() - oldTime.getTime()).minutes())
+
+    let response: string = ''
+    if (days > 0) {
+      response += `${days} día(s) `
+    }
+    if (hours > 0) {
+      response += ` ${hours} hora(s) `
+    }
+    if (minutes > 0) {
+      response += ` ${minutes} minuto(s)`
+    }
+
+    return response
   }
 }
 
