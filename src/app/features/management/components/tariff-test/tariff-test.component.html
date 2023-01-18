@@ -44,7 +44,6 @@
             <span *ngIf = "this.ticket.hour > 0">  {{this.ticket.hour}} horas </span>
             <span *ngIf = "this.ticket.minute > 0">  {{this.ticket.minute}} minutos</span>
           </p>
-          <!-- <p *ngIf = "this.ticket.minute > 0"> Min.:  </p> -->
           <br>
 
           <div style = "background: #f2f2f2; border-radius: 12px; padding: 12px;">
@@ -78,16 +77,6 @@
               </tr>
               </tbody>
             </table>
-            <!-- <ul class = "">
-              <li *ngIf = "courtesyDetail"
-                  class = "list-group-item">Total sin descuento:<b>
-                <h6>{{this.ticket.amount_origin | currency:'GTQ'}}</h6></b></li>
-              <li *ngIf = "courtesyDetail"
-                  class = "list-group-item">Descuento:<b><h6>{{this.ticket.amount_disount | currency:'GTQ'}}</h6>
-              </b></li>
-              <li class = "list-group-item">Total a pagar:<b><h4>{{this.ticket.amount | currency:'GTQ'}}</h4></b>
-              </li>
-            </ul> -->
           </div>
 
 
@@ -106,22 +95,8 @@
               </div>
 
             </div>
-
           </div>
-          <!-- <div class = "list-group">
-            <div *ngFor = "let rule of tariffOfTicket">
-              <a class = "list-group-item list-group-item-action flex-column align-items-start">
-                <div class = "d-flex w-100 justify-content-between">
-                  <h5 class = "mb-1">{{rule.name}}</h5>
-                  <small>{{rule.updated_at | timeAgo}}</small>
-                </div>
-                <p class = "mb-1">{{rule.description}}</p>
-                <small class = "text-muted">Evento: {{rule.event}}</small>
-              </a>
-            </div>
-          </div> -->
         </div>
-
         ​
       </div>
       <div class = "row">
