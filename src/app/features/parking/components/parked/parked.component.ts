@@ -9,7 +9,8 @@ import {Subject} from 'rxjs'
 import {MessageService} from '../../../../shared/services/message.service'
 import {environment} from '../../../../../environments/environment'
 import {PermissionsService} from '../../../../shared/services/permissions.service'
-import {ReportService} from '../../../report/components/service/report.service'
+import {getCurrentDataTablePage, UtilitiesService} from "../../../../shared/services/utilities.service";
+import {ADTSettings} from "angular-datatables/src/models/settings";
 
 @Component({
   selector: 'app-parked',
@@ -25,7 +26,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
   parked$ = new Subject<ParkedModel>()
   @ViewChild(DataTableDirective) dtElement!: DataTableDirective
   dtTrigger: Subject<any> = new Subject()
-  formGroup: FormGroup = this.formBuilder.group({ filter: [''] })
+  formGroup: FormGroup = this.formBuilder.group({filter: ['']})
 
   getOutWithPayment = environment.getOutWithPaymentDoneParkedParking
   getOutWithoutPayment = environment.getOutWithoutPaymentDoneParkedParking
@@ -36,34 +37,53 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
     private formBuilder: FormBuilder,
     private parkingService: ParkingService,
     private authService: AuthService,
-    private messageService: MessageService,
+    private message: MessageService,
     private permissionService: PermissionsService,
-    private reportService: ReportService
-  ) {}
+    private utility: UtilitiesService
+  ) {
+  }
 
   get isSudo() {
     return this.authService.isSudo
   }
 
-  get dtOptions() {
-    return DataTableOptions.getSpanishOptions(10)
-
+  get dtOptions(): ADTSettings {
+    return {
+      ...DataTableOptions.getSpanishOptions(10),
+      serverSide: true,
+      processing: true,
+      ajax: (dataTablesParameters: any, callback: any) => {
+        const page = getCurrentDataTablePage(dataTablesParameters)
+        this.parkingService
+          .getParked(
+            {
+              ...this.getParkedFormValues(),
+              textToSearch: dataTablesParameters.search.value
+            }
+            , page, dataTablesParameters.length)
+          .then((data) => {
+            this.parkedData = data.data
+            return callback({
+              recordsTotal: data.recordsTotal,
+              recordsFiltered: data.recordsFiltered,
+              data: []
+            })
+          }).then(() => this.message.hideLoading())
+      }
+    }
   }
 
   async getInitialData() {
+    setInterval(() => this.rerender(), 600000)
     if (this.isSudo) {
       await this.parkedForm
         .get('parkingId')
         ?.setValue(this.authService.getParking().id)
     }
-    await this.getParkedData().then(() => this.rerender())
-    setInterval(() => {
-      if (!this.dtTrigger.closed) this.refreshParkedData()
-    }, 30000)
   }
 
   async refreshParkedData() {
-    return this.getParkedData().then(() => this.rerender())
+    this.rerender()
   }
 
   getTimeInParking(entry: ParkedModel) {
@@ -71,7 +91,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
     const exit_date: Date = entry.exit_date
       ? new Date(entry.exit_date)
       : new Date()
-    return this.reportService.descriptionOfDiffOfTime(entry_date, exit_date)
+    return this.utility.descriptionOfDiffOfTime(entry_date, exit_date)
   }
 
   createForm(): FormGroup {
@@ -120,7 +140,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
         this.ifHaveAction(this.getOutWithPayment)
       ) {
         const statusWillUpdate =
-          await this.messageService.areYouSureWithCancelAndInput(
+          await this.message.areYouSureWithCancelAndInput(
             '¿Dejar salir a usuario con el cobro pendiente o cancelado?',
             'Salir y cobrar a la tarjeta',
             'Salir sin cobrar',
@@ -161,14 +181,14 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
       !this.dateOutToGetOut ||
       (!this.isValidDate(this.dateOutToGetOut) && parked.type == 0)
     ) {
-      this.messageService.error('Debe seleccionar una fecha de salida valida')
+      this.message.error('Debe seleccionar una fecha de salida valida')
       return
     }
     if (parked.type == 1) {
       this.dateOutToGetOut = new Date()
     }
     if (this.dateOutToGetOut <= new Date(parked.entry_date)) {
-      this.messageService.error(
+      this.message.error(
         'La fecha y hora de salida debe ser mayor a la de entrada.'
       )
       return
@@ -176,7 +196,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
     if (payment_method == -1) {
       return
     }
-    const result = await this.messageService.areYouSure(
+    const result = await this.message.areYouSure(
       `¿Está seguro que desea sacar al usuario ${parked.user_name} ${
         parked.last_name
       } del parqueo ${
@@ -184,23 +204,23 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
       } con fecha y hora de salida ${this.dateOutToGetOut.toLocaleString()}?`
     )
     if (result.isDenied) {
-      this.messageService.infoTimeOut(
+      this.message.infoTimeOut(
         '!No te preocupes!, no se hicieron cambios.'
       )
       return
     }
 
     if (result.isConfirmed) {
-      this.messageService.showLoading()
+      this.message.showLoading()
       this.parkingService
         .getOutParked(parked.id, payment_method, this.dateOutToGetOut)
         .then((data) => {
           if (data.success) {
             this.refreshParkedData()
-            this.messageService.Ok(data.message)
+            this.message.OkTimeOut(data.message)
             this.dateOutToGetOut = new Date()
           } else {
-            this.messageService.error('', data.message)
+            this.message.error('', data.message)
           }
         })
     }
@@ -220,7 +240,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.user$.subscribe(({ parkingId }) => {
+    this.authService.user$.subscribe(({parkingId}) => {
       this.parkedForm.get('parkingId')?.setValue(parkingId)
       this.getInitialData().then()
     })
@@ -228,14 +248,5 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
     this.parkingService.parkingLot$.subscribe((parkingLot) => {
       this.allParking = parkingLot
     })
-  }
-
-  private async getParkedData() {
-    return this.parkingService
-      .getParked(this.getParkedFormValues())
-      .toPromise()
-      .then((data) => {
-        this.parkedData = data.data
-      })
   }
 }

@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core'
-import { RankInputModel } from '../model/RankTariff.model'
-import { RuleModelSaved } from '../model/Tariff.model'
+import {Injectable} from '@angular/core'
+import {RankInputModel} from '../model/RankTariff.model'
+import {RuleModelSaved} from '../model/Tariff.model'
 
 @Injectable({
   providedIn: 'root'

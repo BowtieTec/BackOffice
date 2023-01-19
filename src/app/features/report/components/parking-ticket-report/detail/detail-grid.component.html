@@ -1,24 +1,26 @@
 <dx-data-grid
-  (onExporting)="onExporting($event)"
-  [dataSource]="tasksDataSource"
+  (onExporting) = "onExporting($event)"
+  [dataSource] = "tasksDataSource"
 >
-  <dxi-column dataField="fecha" dataType="datetime" format="dd/MM/yyyy hh:mm a "
-              sortOrder="asc"></dxi-column>
+  <dxi-column dataField = "fecha"
+              dataType = "datetime"
+              format = "dd/MM/yyyy hh:mm a "
+              sortOrder = "asc"></dxi-column>
   <dxi-column
-    dataField="phone_key"
-    caption="ID"
+    caption = "ID"
+    dataField = "phone_key"
   ></dxi-column>
-  <dxi-column dataField="total"
-              dataType="number"
-              format="currency"
-              format="Q ,###,###,##0.00"></dxi-column>
-  <dxi-column dataField="descuento"
-              dataType="number"
-              format="currency"
-              format="Q ,###,###,##0.00"></dxi-column>
-  <dxi-column dataField="pagado"
-              dataType="number"
-              format="currency"
-              format="Q ,###,###,##0.00"></dxi-column>
-  <dxo-export [enabled]="true"></dxo-export>
+  <dxi-column dataField = "total"
+              dataType = "number"
+              format = "currency"
+              format = "Q ,###,###,##0.00"></dxi-column>
+  <dxi-column dataField = "descuento"
+              dataType = "number"
+              format = "currency"
+              format = "Q ,###,###,##0.00"></dxi-column>
+  <dxi-column dataField = "pagado"
+              dataType = "number"
+              format = "currency"
+              format = "Q ,###,###,##0.00"></dxi-column>
+  <dxo-export [enabled] = "true"></dxo-export>
 </dx-data-grid>

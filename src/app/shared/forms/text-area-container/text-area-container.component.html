@@ -1,10 +1,11 @@
-<div [formGroup]="formGroup">
-  <textarea [class.is-invalid]="controlInvalid(controlName)"
-            class=" inputClass"
-            formControlName="{{controlName}}"
-            placeholder="{{name}}:"
-            rows="5">
+<div [formGroup] = "formGroup">
+  <textarea [class.is-invalid] = "controlInvalid(controlName)"
+            class = " inputClass"
+            formControlName = "{{controlName}}"
+            placeholder = "{{name}}:"
+            rows = "5">
                     </textarea>
-  <div *ngIf="controlInvalid(controlName)"
-         class="text-danger animate__animated animate__fadeIn mb-1">* El valor no es valido</div>
+  <div *ngIf = "controlInvalid(controlName)"
+       class = "text-danger animate__animated animate__fadeIn mb-1">* El valor no es valido
+  </div>
 </div>

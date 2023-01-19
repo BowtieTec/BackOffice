@@ -1,10 +1,10 @@
-import { ErrorHandler, Injectable, NgZone } from '@angular/core'
-import { MessageService } from '../../shared/services/message.service'
-import { Router } from '@angular/router'
-import { AuthService } from '../../shared/services/auth.service'
-import { throwError } from 'rxjs'
-import { environment } from '../../../environments/environment'
-import { HttpErrorResponse } from '@angular/common/http'
+import {ErrorHandler, Injectable, NgZone} from '@angular/core'
+import {MessageService} from '../../shared/services/message.service'
+import {Router} from '@angular/router'
+import {AuthService} from '../../shared/services/auth.service'
+import {throwError} from 'rxjs'
+import {environment} from '../../../environments/environment'
+import {HttpErrorResponse} from '@angular/common/http'
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
@@ -13,10 +13,15 @@ export class GlobalErrorHandler implements ErrorHandler {
     private router: Router,
     private auth: AuthService,
     private zone: NgZone
-  ) {}
+  ) {
+  }
 
   handleError(error: Response | HttpErrorResponse | any) {
     const errorString = error.toString()
+    if (error.error?.message) {
+      this.message.error(error.error.message)
+      return
+    }
     if (errorString.includes('Recipient address rejected: Domain not found')) {
       this.message.error('Parece que el correo no existe. Por favor verifique')
       return
@@ -91,8 +96,12 @@ export class GlobalErrorHandler implements ErrorHandler {
       this.goToLogin()
       return
     }
-    this.message.error('Error no manejado. Por favor contacte al administrador')
-    if (!environment.production) console.error('Error: ', error)
+    if (!environment.production) {
+      this.message.error('Error no manejado. Por favor contacte al administrador')
+      console.error('Error: ', error)
+      return
+    }
+    console.error('Error: ', error)
     throw Error(error)
   }
 

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { HistoryCourtesyComponent } from './history-courtesy.component';
+import {HistoryCourtesyComponent} from './history-courtesy.component';
 
 describe('HistoryCourtesyComponent', () => {
   let component: HistoryCourtesyComponent;
@@ -8,9 +8,9 @@ describe('HistoryCourtesyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HistoryCourtesyComponent ]
+      declarations: [HistoryCourtesyComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(HistoryCourtesyComponent);
     component = fixture.componentInstance;

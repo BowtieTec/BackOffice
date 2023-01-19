@@ -13,8 +13,8 @@ import {BehaviorSubject, Observable} from "rxjs";
   providedIn: 'root'
 })
 export class AuthService implements OnDestroy {
-  private apiUrl = environment.serverAPI
   isSudo: boolean = false
+  private apiUrl = environment.serverAPI
   private userSubject$: BehaviorSubject<AuthParkingModel> = new BehaviorSubject<AuthParkingModel>({
     user: this.getUser().user,
     parkingId: this.getUser().user?.parking?.id
@@ -31,6 +31,9 @@ export class AuthService implements OnDestroy {
   }
 
   saveUser(user: AuthModel) {
+    if (user.user.parking?.id == this.getParking()?.id && user.user.parking && this.getParking()) {
+      return
+    }
     sessionStorage.setItem(
       this.crypto.encryptKey('User'),
       this.crypto.encrypt(JSON.stringify(user).replace('/n', ''))
@@ -38,7 +41,7 @@ export class AuthService implements OnDestroy {
     this.userSubject$.next({user: user.user, parkingId: user.user.parking.id})
   }
 
-    getUser(): AuthModel {
+  getUser(): AuthModel {
     const sentence = sessionStorage.getItem(this.crypto.encryptKey('User'))
     return {
       ...JSON.parse(this.crypto.decrypt(sentence!))
@@ -51,7 +54,7 @@ export class AuthService implements OnDestroy {
   }
 
   getParking() {
-    return this.getUser().user.parking
+    return this.getUser().user?.parking
   }
 
   login(login: UserRequestModel) {
@@ -62,7 +65,7 @@ export class AuthService implements OnDestroy {
       .then((data) => {
         if (data.success) {
           this.saveUser(data.data)
-          this.message.OkTimeOut('!Listo!')
+          this.message.OkTimeOut('¡Listo!')
           this.route.navigate(['/home/parking']).catch()
         } else {
           this.cleanUser()
@@ -71,6 +74,7 @@ export class AuthService implements OnDestroy {
         }
       })
       .catch((data) => {
+        console.log(data)
         if (!data.error.success) {
           this.message.error(data.error.message);
           return

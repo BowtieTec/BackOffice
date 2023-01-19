@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core'
 import {AbstractControl, UntypedFormArray, UntypedFormControl, UntypedFormGroup} from '@angular/forms'
+import * as moment from "moment/moment";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class UtilitiesService {
     form.get(control)?.setErrors(error)
   }
 
-  randomString() {
+  randomString(): string {
     const allCapsAlpha = [
       'A',
       'B',
@@ -77,13 +78,25 @@ export class UtilitiesService {
       'z'
     ]
     const allNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-    const len = 10
+    const symbols = ['$', '#', '!', '^', '&', '*']
+    const len = 11
 
-    const base = [...allCapsAlpha, ...allNumbers, ...allLowerAlpha]
-
-    return [...Array(len)]
-      .map((i) => base[(Math.random() * base.length) | 0])
-      .join('')
+    const base = [...allCapsAlpha, ...allNumbers, ...allLowerAlpha, ...symbols]
+    let newPassword = [...Array(len)]
+      .map(() => base[(Math.random() * base.length) | 0])
+    if (newPassword.filter((item) => allCapsAlpha.includes(item)).length == 0) {
+      newPassword.push(allCapsAlpha[(Math.random() * allCapsAlpha.length) | 0])
+    }
+    if (newPassword.filter((item) => allLowerAlpha.includes(item)).length == 0) {
+      newPassword.push(allLowerAlpha[(Math.random() * allLowerAlpha.length) | 0])
+    }
+    if (newPassword.filter((item) => allNumbers.includes(item)).length == 0) {
+      newPassword.push(allNumbers[(Math.random() * allNumbers.length) | 0])
+    }
+    if (newPassword.filter((item) => symbols.includes(item)).length == 0) {
+      newPassword.push(symbols[(Math.random() * symbols.length) | 0])
+    }
+    return newPassword.join('');
   }
 
   markAsUnTouched(form: UntypedFormGroup) {
@@ -135,4 +148,32 @@ export class UtilitiesService {
       form.controls[controlsKey].enable()
     }
   }
+
+  descriptionOfDiffOfTime(oldTime: Date, timeNow: Date | null | undefined): string {
+    oldTime = new Date(oldTime)
+    timeNow = new Date(timeNow || new Date())
+    if (timeNow == null) {
+      return 'No ha salido del parqueo'
+    }
+    let days: number = Math.round(moment.duration(timeNow.getTime() - oldTime.getTime()).asDays())
+    let hours: number = Math.round(moment.duration(timeNow.getTime() - oldTime.getTime()).hours())
+    let minutes: number = Math.round(moment.duration(timeNow.getTime() - oldTime.getTime()).minutes())
+
+    let response: string = ''
+    if (days > 0) {
+      response += `${days} día(s) `
+    }
+    if (hours > 0) {
+      response += ` ${hours} hora(s) `
+    }
+    if (minutes > 0) {
+      response += ` ${minutes} minuto(s)`
+    }
+
+    return response
+  }
+}
+
+export const getCurrentDataTablePage = (dataTablesParameters: any) => {
+  return dataTablesParameters.start == 0 ? 1 : (dataTablesParameters.start / dataTablesParameters.length) + 1;
 }

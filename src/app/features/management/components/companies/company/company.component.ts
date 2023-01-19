@@ -11,7 +11,6 @@ import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
 import {DataTableOptions} from '../../../../../shared/model/DataTableOptions'
 import {CompaniesModel} from '../../users/models/companies.model'
 import {ParkingService} from '../../../../parking/services/parking.service'
-import {ParkingModel} from '../../../../parking/models/Parking.model'
 import {MessageService} from '../../../../../shared/services/message.service'
 
 @Component({
@@ -24,7 +23,6 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
   companiesForm: UntypedFormGroup
   companies: CompaniesModel[] = []
   states: Array<any> = this.companyService.states
-  allParkingLot: ParkingModel[] = []
   @ViewChild(DataTableDirective) dtElement!: DataTableDirective
   /*Table*/
   @Input() subject: Subject<NewUserModel> = new Subject<NewUserModel>()
@@ -42,7 +40,7 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
     private authService: AuthService,
     private formBuilder: UntypedFormBuilder,
     private parkingService: ParkingService,
-    private messageService: MessageService,
+    private message: MessageService,
     private permissionService: PermissionsService
   ) {
     this.formGroup = formBuilder.group({filter: ['']})
@@ -72,7 +70,7 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
 
   editTheCompany(company: CompaniesModel) {
     if (!company.id) {
-      this.messageService.error(
+      this.message.error(
         'Esta compañía no existe o no se seleciono una correcta.'
       )
       return
@@ -91,7 +89,7 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
 
   async saveCompany() {
     if (this.companiesForm.invalid) {
-      this.messageService.error('', 'Datos no válidos o faltantes')
+      this.message.error('', 'Datos no válidos o faltantes')
       return
     }
     const newCompany = this.formCompanyValues
@@ -118,12 +116,12 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
 
   async deleteTheCompany(company: CompaniesModel) {
     if (!company.id) {
-      this.messageService.errorTimeOut(
+      this.message.errorTimeOut(
         'Esta compañía no existe o no se seleccionó una correcta.'
       )
       return
     }
-    const response = await this.messageService
+    const response = await this.message
       .areYouSure(
         `¿Esta seguro que desea deshabilitar ${company.name}?`,
         'Si',
@@ -145,6 +143,13 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTrigger.unsubscribe()
   }
 
+  ngOnInit(): void {
+    this.authService.user$.subscribe(({parkingId}) => {
+      this.parkingId = parkingId
+      this.companiesForm.get('parking')?.setValue(parkingId)
+      this.getInitialData().catch()
+    })
+  }
 
   private async getInitialData() {
     await this.getCompanies().then(() => this.rerender())
@@ -177,16 +182,5 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
         this.dtTrigger.next()
       })
     }
-  }
-
-  ngOnInit(): void {
-    this.authService.user$.subscribe(({parkingId}) => {
-      this.parkingId = parkingId
-      this.companiesForm.get('parking')?.setValue(parkingId)
-      this.getInitialData().catch()
-    })
-    this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParkingLot = parkingLot
-    })
   }
 }

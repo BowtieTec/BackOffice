@@ -1,8 +1,8 @@
-import { Component } from '@angular/core'
-import { AuthService } from '../services/auth.service'
-import { Router } from '@angular/router'
-import { MessageService } from '../services/message.service'
-import { AuthModel, ParkingAuthModel } from '../model/UserResponse.model'
+import {Component} from '@angular/core'
+import {AuthService} from '../services/auth.service'
+import {Router} from '@angular/router'
+import {MessageService} from '../services/message.service'
+import {AuthModel, ParkingAuthModel} from '../model/UserResponse.model'
 
 @Component({
   selector: 'app-header',
@@ -17,7 +17,7 @@ export class HeaderComponent {
   constructor(
     private auth: AuthService,
     private route: Router,
-    private messageService: MessageService
+    private message: MessageService
   ) {
     this.parkingId = this.authData.user.parking.id
     this.defaultParking = this.authData.user.parking.id
@@ -25,9 +25,9 @@ export class HeaderComponent {
 
   logout() {
     this.auth.cleanUser()
-    this.messageService.showLoading()
+    this.message.showLoading()
     this.route.navigate(['/']).then(() => {
-      this.messageService.OkTimeOut('Sesión cerrada')
+      this.message.OkTimeOut('Sesión cerrada')
     })
   }
 

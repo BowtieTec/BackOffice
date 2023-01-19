@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
-import { ListCheckboxService } from './service/list-checkbox.service'
-import { ListCheckModel } from '../../model/CommonModels'
-import { Subscription } from 'rxjs'
+import {Component, OnDestroy, OnInit} from '@angular/core'
+import {ListCheckboxService} from './service/list-checkbox.service'
+import {ListCheckModel} from '../../model/CommonModels'
+import {Subscription} from 'rxjs'
 
 @Component({
   selector: 'app-list-checkbox-container',
@@ -9,24 +9,28 @@ import { Subscription } from 'rxjs'
   styleUrls: ['./list-checkbox-container.component.css']
 })
 export class ListCheckboxContainerComponent implements OnInit, OnDestroy {
-  sub$:Subscription = Subscription.EMPTY
-  listChecks:ListCheckModel[] = []
-  constructor(private listCheckBoxService: ListCheckboxService) { }
+  sub$: Subscription = Subscription.EMPTY
+  listChecks: ListCheckModel[] = []
+
+  constructor(private listCheckBoxService: ListCheckboxService) {
+  }
+
+  get getListCheck() {
+    return this.listChecks
+  }
 
   ngOnInit(): void {
-    this.sub$ = this.listCheckBoxService.recivedData().subscribe((data)=> {
+    this.sub$ = this.listCheckBoxService.recivedData().subscribe((data) => {
       this.listChecks = data
     })
 
   }
-  get getListCheck(){
-    return this.listChecks
-  }
-  unselectAll(){
-    this.listChecks.forEach(element =>  element.isChecked = element.disable ? element.isChecked : false)
+
+  unselectAll() {
+    this.listChecks.forEach(element => element.isChecked = element.disable ? element.isChecked : false)
   }
 
-  selectAll(){
+  selectAll() {
     this.listChecks.forEach(element => element.isChecked = element.disable ? element.isChecked : true)
   }
 

@@ -1,14 +1,6 @@
 <div class = 'panels'>
   <div class = 'titleCards'>
     <span> <em class = 'fas fa-comment-dollar'></em> </span> Tarifa
-    <app-select-container
-      (change) = 'getTariffs()'
-      *ngIf = 'isSudo'
-      [data] = 'allParking'
-      [formGroup] = 'generalDataForm'
-      controlName = 'parkingId'
-      name = 'Parqueo'
-    ></app-select-container>
   </div>
   <div *ngIf = 'ifHaveAction(createTariff)'>
     <div

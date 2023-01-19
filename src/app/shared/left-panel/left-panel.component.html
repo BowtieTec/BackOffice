@@ -14,8 +14,8 @@
         *ngFor = "let option of menu"
         class = "nav-item optionLeftMenu"
         routerLinkActive = "active">
-        <a class = "nav-link"
-           *ngIf = "ifHaveModule(option.module)"
+        <a *ngIf = "ifHaveModule(option.module)"
+           class = "nav-link"
            routerLink = "{{option.path}}">
           <span><em class = "fas {{option.icon}}"></em></span>
           {{option.description}}</a>

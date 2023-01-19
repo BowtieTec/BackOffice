@@ -1,39 +1,42 @@
-<div *ngIf="timeRange == 3" class="animate__animated animate__fadeInUp " id="Blocks">
+<div *ngIf = "timeRange == 3"
+     class = "animate__animated animate__fadeInUp "
+     id = "Blocks">
   <p><b>Por bloques de horas</b></p>
-  <form [formGroup]="blockForm" action="">
-    <div class="row justify-content-center">
-      <div class="col-md-6 mb-4">
+  <form [formGroup] = "blockForm"
+        action = "">
+    <div class = "row justify-content-center">
+      <div class = "col-md-6 mb-4">
         <app-input-container
-          [formGroup]="blockForm"
-          controlName="hourLowerLimit"
-          name="Limite inferior en horas"
-          type="number">
+          [formGroup] = "blockForm"
+          controlName = "hourLowerLimit"
+          name = "Limite inferior en horas"
+          type = "number">
         </app-input-container>
       </div>
-      <div class="col-md-6 mb-4">
+      <div class = "col-md-6 mb-4">
         <app-input-container
-          [formGroup]="blockForm"
-          controlName="minuteLowerLimit"
-          name="Limite inferior en minutos"
-          type="number">
+          [formGroup] = "blockForm"
+          controlName = "minuteLowerLimit"
+          name = "Limite inferior en minutos"
+          type = "number">
         </app-input-container>
       </div>
     </div>
-    <div class="row justify-content-center">
-      <div class="col-md-6 mb-4">
+    <div class = "row justify-content-center">
+      <div class = "col-md-6 mb-4">
         <app-input-container
-          [formGroup]="blockForm"
-          controlName="hourUpperLimit"
-          name="Limite superior en horas"
-          type="number">
+          [formGroup] = "blockForm"
+          controlName = "hourUpperLimit"
+          name = "Limite superior en horas"
+          type = "number">
         </app-input-container>
       </div>
-      <div class="col-md-6 mb-4">
+      <div class = "col-md-6 mb-4">
         <app-input-container
-          [formGroup]="blockForm"
-          controlName="minuteUpperLimit"
-          name="Limite superior en minutos"
-          type="number">
+          [formGroup] = "blockForm"
+          controlName = "minuteUpperLimit"
+          name = "Limite superior en minutos"
+          type = "number">
         </app-input-container>
       </div>
     </div>

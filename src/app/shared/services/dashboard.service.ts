@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-import { ResponseModel } from '../model/Request.model'
-import { environment } from '../../../environments/environment'
-import { AuthService } from './auth.service'
-import { map } from 'rxjs/operators'
-import { MessageService } from './message.service'
+import {Injectable} from '@angular/core'
+import {HttpClient} from '@angular/common/http'
+import {ResponseModel} from '../model/Request.model'
+import {environment} from '../../../environments/environment'
+import {AuthService} from './auth.service'
+import {map} from 'rxjs/operators'
+import {MessageService} from './message.service'
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,9 @@ export class DashboardService {
   constructor(
     private http: HttpClient,
     private auth: AuthService,
-    private messageService: MessageService
-  ) {}
+    private message: MessageService
+  ) {
+  }
 
   get actionsOfDashboard() {
     return this.actions
@@ -102,14 +103,14 @@ export class DashboardService {
     startDate: string,
     endDate: string
   ) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/dashboard/total-courtesies/${parkingId}/${startDate}/${endDate}`
       )
       .pipe(
         map((data) => {
-          this.messageService.hideLoading()
+          this.message.hideLoading()
           return data.data
         })
       )
@@ -120,14 +121,14 @@ export class DashboardService {
     startDate: string,
     endDate: string
   ) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/dashboard/company-courtesies/${parkingId}/${startDate}/${endDate}`
       )
       .pipe(
         map((data) => {
-          this.messageService.hideLoading()
+          this.message.hideLoading()
           return data.data
         })
       )
@@ -139,14 +140,14 @@ export class DashboardService {
     startDate: string,
     endDate: string
   ) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/dashboard/company-courtesies-type/${parkingId}/${companyId}/${startDate}/${endDate}`
       )
       .pipe(
         map((data) => {
-          this.messageService.hideLoading()
+          this.message.hideLoading()
           return data.data
         })
       )
@@ -158,14 +159,14 @@ export class DashboardService {
     startDate: string,
     endDate: string
   ) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/dashboard/company-courtesies-status/${parkingId}/${companyId}/${startDate}/${endDate}`
       )
       .pipe(
         map((data) => {
-          this.messageService.hideLoading()
+          this.message.hideLoading()
           return data.data
         })
       )
@@ -177,14 +178,14 @@ export class DashboardService {
     startDate: string,
     endDate: string
   ) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/dashboard/company-courtesies-type-value/${parkingId}/${companyId}/${startDate}/${endDate}`
       )
       .pipe(
         map((data) => {
-          this.messageService.hideLoading()
+          this.message.hideLoading()
           return data.data
         })
       )
@@ -232,14 +233,14 @@ export class DashboardService {
     startDate: string,
     endDate: string
   ) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/dashboard/total-courtesies-station/${parkingId}/${startDate}/${endDate}`
       )
       .pipe(
         map((data) => {
-          this.messageService.hideLoading()
+          this.message.hideLoading()
           return data.data
         })
       )
@@ -250,14 +251,14 @@ export class DashboardService {
     startDate: string,
     endDate: string
   ) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/dashboard/company-courtesies-station/${parkingId}/${startDate}/${endDate}`
       )
       .pipe(
         map((data) => {
-          this.messageService.hideLoading()
+          this.message.hideLoading()
           return data.data
         })
       )
@@ -269,14 +270,14 @@ export class DashboardService {
     startDate: string,
     endDate: string
   ) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/dashboard/company-courtesies-station-type/${parkingId}/${companyId}/${startDate}/${endDate}`
       )
       .pipe(
         map((data) => {
-          this.messageService.hideLoading()
+          this.message.hideLoading()
           return data.data
         })
       )
@@ -288,14 +289,14 @@ export class DashboardService {
     startDate: string,
     endDate: string
   ) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/dashboard/company-courtesies-station-status/${parkingId}/${companyId}/${startDate}/${endDate}`
       )
       .pipe(
         map((data) => {
-          this.messageService.hideLoading()
+          this.message.hideLoading()
           return data.data
         })
       )
@@ -307,14 +308,14 @@ export class DashboardService {
     startDate: string,
     endDate: string
   ) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/dashboard/company-courtesies-station-type-value/${parkingId}/${companyId}/${startDate}/${endDate}`
       )
       .pipe(
         map((data) => {
-          this.messageService.hideLoading()
+          this.message.hideLoading()
           return data.data
         })
       )

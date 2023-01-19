@@ -14,7 +14,6 @@
             class = "inputClass"
             id = "roleId"
             name = "roleId">
-            <option value = "">TIPO DE USUARIO</option>
             <option *ngFor = "let role of Roles"
                     value = "{{role.id}}">{{role.name}}</option>
           </select>

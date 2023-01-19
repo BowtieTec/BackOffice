@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { BlocksTariffFormComponent } from './blocks-tariff-form.component'
+import {BlocksTariffFormComponent} from './blocks-tariff-form.component'
 
 describe('BlocksTariffFormComponent', () => {
   let component: BlocksTariffFormComponent

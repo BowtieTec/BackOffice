@@ -3,162 +3,137 @@
       id = "form-wrapper"
       method = "post"
       name = "form-wrapper"
-      novalidate = "" >
+      novalidate = "">
   <div
-    class = >
+    class =>
     <div
-      class = "row justify-content-center" >
+      class = "row justify-content-center">
       <div *ngIf = "ifHaveAction(createAntennaAction)"
-           class = "titleCards" >
+           class = "titleCards">
         Agregar Antena
-      </div >
+      </div>
       <span *ngIf = "idEditAntenna"
-            class = "badge bg-warning text-dark animate__animated animate__flipInX " >Editando</span >
-      <div *ngIf = "ifHaveAction(createAntennaAction)" >
-        <div class = "row justify-content-center" >
-          <div *ngIf = "!this.isCreatingParking"
-               class = "row justify-content-center" >
-            <div class = "col-md-5 col-sm-12" >
-              <div class = "m-3 relative " >
-                <app-select-container
-                  (change) = "searchAntennasByParking()"
-                  [data] = "this.allParking"
-                  [formGroup] = "this.stepFiveForm"
-                  controlName = "parking"
-                  name = "Parqueos" ></app-select-container >
-              </div >
-            </div >
-            <div class = "col-md-5 col-sm-12" >
-              <div class = "m-3 relative " >
-                <app-select-container
-                  [data] = "this.accessList"
-                  [formGroup] = "this.stepFiveForm"
-                  controlName = "type_access"
-                  name = "Tipos de acceso" ></app-select-container >
-              </div >
-            </div >
-          </div >
-          <div class = "row justify-content-center" >
-            <div class = "col-md-5 col-sm-12" >
-              <div class = "m-3 relative " >
-                <app-input-container
-                  [formGroup] = "stepFiveForm"
-                  controlName = "name_access"
-
-                  name = "Nombre de acceso" >
-                </app-input-container >
-              </div >
-            </div >
-            <div class = "col-md-5 col-sm-12" >
-              <div class = "m-3 relative" >
-                <app-input-container
-                  [formGroup] = "stepFiveForm"
-                  controlName = "mac_access"
-                  name = "MAC" >
-                </app-input-container >
-              </div >
-            </div >
-          </div >
-          <div class = "row justify-content-center" >
-            <div class = "col-md-5 col-sm-12" >
-              <div class = "m-3 relative" >
-                <app-input-container
-                  [formGroup] = "stepFiveForm"
-                  controlName = "antenna_access"
-                  name = "Antena" >
-                </app-input-container >
-              </div >
-            </div >
-            <div class = "col-md-5 col-sm-12" >
-              <div class = "m-3 relative" >
-                <app-checkbox-container
-                  [formGroup] = "stepFiveForm"
-                  controlName = "isPrivate"
-                  name = "Privado" ></app-checkbox-container >
-              </div >
-            </div >
-          </div >
-          <div class = "d-flex justify-content-center m-3" >
+            class = "badge bg-warning text-dark animate__animated animate__flipInX ">Editando</span>
+      <div *ngIf = "ifHaveAction(createAntennaAction)">
+        <div class = "row justify-content-center">
+          <div class = "col-md-6 col-sm-12">
+            <app-select-container
+              [data] = "this.accessList"
+              [formGroup] = "this.stepFiveForm"
+              controlName = "type_access"
+              name = "Tipos de acceso"></app-select-container>
+          </div>
+          <div class = "col-md-6 col-sm-12">
+            <app-input-container
+              [formGroup] = "stepFiveForm"
+              controlName = "name_access"
+              name = "Nombre de acceso">
+            </app-input-container>
+          </div>
+          <div class = "col-md-6 col-sm-12">
+            <app-input-container
+              [formGroup] = "stepFiveForm"
+              controlName = "mac_access"
+              name = "MAC">
+            </app-input-container>
+          </div>
+          <div class = "col-md-6 col-sm-12">
+            <app-input-container
+              [formGroup] = "stepFiveForm"
+              controlName = "antenna_access"
+              name = "Antena">
+            </app-input-container>
+          </div>
+          <div>
+            <app-checkbox-container
+              [formGroup] = "stepFiveForm"
+              controlName = "isPrivate"
+              name = "Privado"></app-checkbox-container>
+          </div>
+          <div class = "d-flex justify-content-center m-3">
             <button (click) = "addAntenna()"
                     class = "btn btn-success animate__animated animate__fadeInDown"
-                    type = "button" >Guardar
-            </button >
+                    type = "button">Guardar
+            </button>
             <button (click) = "idEditAntenna = '' "
                     *ngIf = "idEditAntenna"
                     class = "btn btn-success animate__animated animate__fadeInDown"
-                    type = "button" >Cancelar edición
-            </button >
-          </div >
+                    type = "button">Cancelar edición
+            </button>
+          </div>
+          <hr>
+        </div>
+      </div>
 
-          <hr >
-        </div >
-      </div >
       <table
-        datatable
-        aria-label = "Tabla de antenas"
+
         [dtOptions] = "dtOptions"
         [dtTrigger] = "dtTrigger"
-        class = "table hover table-striped animate__animated animate__fadeInLeft " >
-        <thead >
-        <tr class = "text-center" >
-          <th scope = "col" >Nombre de acceso</th >
-          <th scope = "col" >Tipo de acceso</th >
-          <th scope = "col" >MAC</th >
-          <th scope = "col" >Antena</th >
-          <th scope = "col" >Parqueo</th >
-          <th scope = "col" >Privado o Público</th >
+        aria-label = "Tabla de antenas"
+        class = "table hover table-striped animate__animated animate__fadeInLeft "
+        datatable>
+        <thead>
+        <tr class = "text-center">
+          <th scope = "col">ID</th>
+          <th scope = "col">Nombre de acceso</th>
+          <th scope = "col">Tipo de acceso</th>
+          <th scope = "col">MAC</th>
+          <th scope = "col">Antena</th>
+          <th scope = "col">Parqueo</th>
+          <th scope = "col">Privado o Público</th>
           <th scope = "col"
-              style = "width: 17%" >Creada en:
-          </th >
-          <th scope = "col" >Acciones</th >
-        </tr >
-        </thead >
-        <tbody >
+              style = "width: 17%">Creada en:
+          </th>
+          <th scope = "col">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
         <tr *ngFor = "let antenna of antennas; index as i"
-            class = "animate__animated animate__fadeIn text-center" >
-          <th id = "{{antenna.name + i}}" >{{antenna.name}}</th >
-          <th id = "{{antenna.type + i}}" >{{getAccessName(antenna.type).name}}</th >
-          <td >{{antenna.mac}}</td >
-          <td >{{antenna.antena}}</td >
-          <td >{{antenna.parking.name}}</td >
-          <td >{{antenna.isPrivate ? 'Privado' : 'Público'}}</td >
-          <td >{{antenna.created_at  | date: 'medium'}}</td >
-          <td >
+            class = "animate__animated animate__fadeIn text-center">
+          <td>{{antenna.id}}</td>
+          <th id = "{{antenna.name + i}}">{{antenna.name}}</th>
+          <th id = "{{antenna.type + i}}">{{getAccessName(antenna.type).name}}</th>
+          <td>{{antenna.mac}}</td>
+          <td>{{antenna.antena}}</td>
+          <td>{{antenna.parking.name}}</td>
+          <td>{{antenna.isPrivate ? 'Privado' : 'Público'}}</td>
+          <td>{{antenna.created_at  | date: 'medium'}}</td>
+          <td>
             <button (click) = " editAntenna(antenna) "
                     *ngIf = "ifHaveAction(editAntennaAction)"
                     class = "buttonRowEdit"
-                    title = "Editar" ><em class = "fas fa-edit" ></em >
-            </button >
-            <button title = "Eliminar"
-                    (click) = "deleteAntenna(antenna)"
+                    title = "Editar"><em class = "fas fa-edit"></em>
+            </button>
+            <button (click) = "deleteAntenna(antenna)"
                     *ngIf = "ifHaveAction(deleteAntennaAction)"
-                    class = "buttonRowDelete m-1" ><em class = "fas fa-trash"
-                                                ></em >
-            </button >
-            <button title = "Descargar QR"
-                    (click) = "downloadQR(antenna)"
+                    class = "buttonRowDelete m-1"
+                    title = "Eliminar"><em class = "fas fa-trash"
+            ></em>
+            </button>
+            <button (click) = "downloadQR(antenna)"
                     *ngIf = "ifHaveAction(downloadQRAntennaAction)"
-                    class = "buttonRowQR m-1" ><em class = "fas fa-qrcode" ></em >
-            </button >
+                    class = "buttonRowQR m-1"
+                    title = "Descargar QR"><em class = "fas fa-qrcode"></em>
+            </button>
 
-          </td >
-        </tr >
-        </tbody >
-      </table >
-    </div >
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
     <div *ngIf = "this.isCreatingParking"
          class = "text-center"
-         id = "q-box__buttons" >
+         id = "q-box__buttons">
       <button (click) = "emmitStep(-1)"
               class = "btn btn-primary m-2 "
               id = "prev-btn"
-              type = "button" >Anterior
-      </button >
+              type = "button">Anterior
+      </button>
       <button (click) = "emmitStep(1)"
               class = "btn btn-primary m-2 "
               id = "next-btn"
-              type = "button" >Siguiente
-      </button >
-    </div >
-  </div >
-</form >
+              type = "button">Siguiente
+      </button>
+    </div>
+  </div>
+</form>

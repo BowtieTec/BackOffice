@@ -1,7 +1,7 @@
-import { Component } from '@angular/core'
-import { AuthService } from '../../shared/services/auth.service'
-import { PermissionsService } from '../../shared/services/permissions.service'
-import { environment } from '../../../environments/environment'
+import {Component} from '@angular/core'
+import {AuthService} from '../../shared/services/auth.service'
+import {PermissionsService} from '../../shared/services/permissions.service'
+import {environment} from '../../../environments/environment'
 import {ParkingService} from "./services/parking.service";
 
 @Component({
@@ -21,10 +21,13 @@ export class ParkingMenuComponent {
     private authService: AuthService,
     private permissionService: PermissionsService,
     private parkingService: ParkingService
-  ) {}
-get actions() {
+  ) {
+  }
+
+  get actions() {
     return this.permissionService.actionsOfPermissions
-}
+  }
+
   get parkingId() {
     return this.authService.getParking().id
   }

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { HourHalfCostComponent } from './hour-half-cost.component'
+import {HourHalfCostComponent} from './hour-half-cost.component'
 
 describe('HourHalfCostComponent', () => {
   let component: HourHalfCostComponent

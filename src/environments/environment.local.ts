@@ -1,13 +1,7 @@
-import {
-  DiscountOnWhat,
-  leftMenu,
-  permission,
-  settings,
-  TypeOfCondition
-} from './sharedVariables'
+import {DiscountOnWhat, leftMenu, permission, settings, TypeOfCondition} from './sharedVariables'
 
 const Ip = 'localhost'
-const Port = '3001'
+const Port = '3000'
 export const environment = {
   production: false,
   path: `https://${Ip}/public/`,

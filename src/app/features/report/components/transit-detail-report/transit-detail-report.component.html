@@ -2,19 +2,9 @@
   <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12 panelLeft animate__animated animate__fadeInLeft">
     <div class = "panelsWithOutMinHeight">
       <div class = "titleCards">
-        <span><i class = "fas fa-sitemap"></i></span> Reporte de Detalle de Pagos por Ticket
+        <span><i class = "fas fa-sitemap"></i></span> Reporte de Detalle de Transito
       </div>
       <div class = "row justify-content-center">
-        <div *ngIf = "isSudo"
-             class = "col-xl-4 col-lg-6 col-sm-12">
-          <app-select-container
-            (change) = "this.getReport()"
-            [data] = "allParking"
-            [formGroup] = "reportForm"
-            controlName = "parkingId"
-            name = "Parqueos"
-          ></app-select-container>
-        </div>
         <div class = 'col-xl-4 col-lg-6 col-sm-12'>
           <div class = 'mb-4 relative'>
             <app-input-container
@@ -22,7 +12,7 @@
               [formGroup] = 'reportForm'
               [value] = "now | date: 'yyyy-MM-dd'"
               controlName = 'startDate'
-              maxL = "{{now | date:'dd-MM-yyyy'}}"
+              maxL = "{{now | date:'yyyy-MM-dd'}}"
               name = 'Inicio de Búsqueda'
               type = 'Date'
             ></app-input-container>
@@ -110,3 +100,4 @@
       </div>
     </div>
   </div>
+</div>

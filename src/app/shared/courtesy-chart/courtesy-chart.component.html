@@ -1,64 +1,73 @@
-<div class = "row animate__animated animate__fadeInLeft" >
-    <div class = "col-lg-6 col-md-12 " >
-      <div class = "panels pieCortesies" >
-        <div id="graficaCortesiasLocal" ></div >
-          <div class = "col-xl-12 col-lg-12 col-sm-12">
-            <div class = "" ><br /><br /></div >
-          </div >
-      </div >
-    </div >
-    <div class = "col-lg-6 col-md-12 " >
-      <div class = "panels pieCortesies" >
-        <div id="graficaCortesiasTipo" ></div >
-          <div class = "col-xl-12 col-lg-12 col-sm-12">
-            <div class = "" >
-              <label class = "labelInput" style = "display:block" >Local</label >
-              <select
-                class = "inputClass"
-                (change)="onChangeType($any($event.target).value)"
-                >
-                <option value="0" selected>---- Todos los locales ----</option>
-                <option *ngFor = "let company of this.allCompanies"
-                        value = "{{company.id}}" >{{company.name}}</option >
-              </select >
-            </div >
-          </div >
-      </div >
-    </div >
-    <div class = "col-lg-6 col-md-12 " >
-      <div class = "panels pieCortesies" >
-        <div id="graficaCortesiasEstado" ></div >
-          <div class = "col-xl-12 col-lg-12 col-sm-12">
-            <div class = "" >
-              <label class = "labelInput" style = "display:block" >Local</label >
-              <select
-                class = "inputClass"
-                (change)="onChangeStatus($any($event.target).value)"
-                >
-                <option value="0" selected>---- Todos los locales ----</option>
-                <option *ngFor = "let company of this.allCompanies"
-                        value = "{{company.id}}" >{{company.name}}</option >
-              </select >
-            </div >
-          </div >
-      </div >
-    </div >
-    <div class = "col-lg-6 col-md-12 " >
-      <div class = "panels pieCortesies" >
-        <div id="graficaCortesiasTipoValor" ></div >
-          <div class = "col-xl-12 col-lg-12 col-sm-12">
-            <div class = "" >
-              <label class = "labelInput" style = "display:block" >Local</label >
-              <select
-                class = "inputClass"
-                (change)="onChangeTypeValue($any($event.target).value)"
-                >
-                <option value="0" selected>---- Todos los locales ----</option>
-                <option *ngFor = "let company of this.allCompanies"
-                        value = "{{company.id}}" >{{company.name}}</option >
-              </select >
-            </div >
-          </div >
-      </div >
-    </div >
-</div >
+<div class = "row animate__animated animate__fadeInLeft">
+  <div class = "col-lg-6 col-md-12 ">
+    <div class = "panels pieCortesies">
+      <div id = "graficaCortesiasLocal"></div>
+      <div class = "col-xl-12 col-lg-12 col-sm-12">
+        <div class = ""><br/><br/></div>
+      </div>
+    </div>
+  </div>
+  <div class = "col-lg-6 col-md-12 ">
+    <div class = "panels pieCortesies">
+      <div id = "graficaCortesiasTipo"></div>
+      <div class = "col-xl-12 col-lg-12 col-sm-12">
+        <div class = "">
+          <label class = "labelInput"
+                 style = "display:block">Local</label>
+          <select
+            (change) = "onChangeType($any($event.target).value)"
+            class = "inputClass"
+          >
+            <option selected
+                    value = "0">---- Todos los locales ----
+            </option>
+            <option *ngFor = "let company of this.allCompanies"
+                    value = "{{company.id}}">{{company.name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class = "col-lg-6 col-md-12 ">
+    <div class = "panels pieCortesies">
+      <div id = "graficaCortesiasEstado"></div>
+      <div class = "col-xl-12 col-lg-12 col-sm-12">
+        <div class = "">
+          <label class = "labelInput"
+                 style = "display:block">Local</label>
+          <select
+            (change) = "onChangeStatus($any($event.target).value)"
+            class = "inputClass"
+          >
+            <option selected
+                    value = "0">---- Todos los locales ----
+            </option>
+            <option *ngFor = "let company of this.allCompanies"
+                    value = "{{company.id}}">{{company.name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class = "col-lg-6 col-md-12 ">
+    <div class = "panels pieCortesies">
+      <div id = "graficaCortesiasTipoValor"></div>
+      <div class = "col-xl-12 col-lg-12 col-sm-12">
+        <div class = "">
+          <label class = "labelInput"
+                 style = "display:block">Local</label>
+          <select
+            (change) = "onChangeTypeValue($any($event.target).value)"
+            class = "inputClass"
+          >
+            <option selected
+                    value = "0">---- Todos los locales ----
+            </option>
+            <option *ngFor = "let company of this.allCompanies"
+                    value = "{{company.id}}">{{company.name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

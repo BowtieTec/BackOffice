@@ -1,14 +1,10 @@
-import { Injectable } from '@angular/core'
-import { environment } from '../../../../../environments/environment'
-import { HttpClient } from '@angular/common/http'
-import { ResponseModel } from 'src/app/shared/model/Request.model'
-import { payFilter } from '../model/paymentModel'
-import { map } from 'rxjs/operators'
-//import * as jsPDF from 'jspdf';
-
-const EXCEL_TYPE =
-  'application/vnd.openxlmformats-officedocument.spreedsheetml.sheet; charset = UTF-8'
-const EXCEL_EXT = '.xlsx'
+import {Injectable} from '@angular/core'
+import {environment} from '../../../../../environments/environment'
+import {HttpClient} from '@angular/common/http'
+import {ResponseModel} from 'src/app/shared/model/Request.model'
+import {payFilter} from '../model/paymentModel'
+import {map} from 'rxjs/operators'
+import {UtilitiesService} from "../../../../shared/services/utilities.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +13,8 @@ export class ReportService {
   payDate: payFilter[] = new Array<payFilter>()
   private apiUrl = environment.serverAPI
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private utility: UtilitiesService) {
+  }
 
   getPaymentsRpt(
     initDate: string,
@@ -25,6 +22,7 @@ export class ReportService {
     parqueo: string,
     telephone: string = ''
   ) {
+    console.log({initDate, endDate, parqueo, telephone})
     return this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/report/getPagos/dates?initDate=${initDate}&endDate=${endDate}&parqueo=${parqueo}&telephone=${telephone}`
@@ -32,6 +30,7 @@ export class ReportService {
       .pipe(
         map((res) => {
           return res.data.map((item: any) => {
+            const payment = item.payment.find((x: any) => x.is_aproved && x.billing)
             return {
               phone_key: item.user.phone_number,
               paymentStatus: item.status == 2 ? 'Pendiente de Pago' : 'Exitoso',
@@ -43,24 +42,25 @@ export class ReportService {
               invoice:
                 item.status == 2
                   ? 'Pendiente de Pago'
-                  : item.payment[0]?.billing?.fiscal_number ??
-                    (item.total > 0 ? 'No generada' : 'No requerida'),
-              invoiceDate: item.payment[0]?.billing?.certification_time ?? '',
-              paymentDate: item.payment[0]?.created_at ?? '',
-              timeIn: this.descriptionOfDiffOfTime(
+                  : payment?.billing?.fiscal_number ??
+                  (item.total > 0 ? 'No generada' : 'No requerida'),
+              invoiceDate: payment?.billing?.certification_time ?? '',
+              paymentDate: payment?.created_at ?? '',
+              timeIn: this.utility.descriptionOfDiffOfTime(
                 new Date(item.entry_date),
                 new Date(item.exit_date)
               ),
-              transaction: item.payment[0]?.trace_number ?? '',
+              transaction: payment?.trace_number ?? '',
               courtesy: item.courtesy?.courtesy_details?.name ?? '',
+              company: item.courtesy?.courtesy_details?.company.name ?? '',
               typePayment:
                 item.payment_type == 0
                   ? 'Tarjeta C/D'
                   : item.payment_type == 1
-                  ? 'Efectivo ó Pendiente de Pago'
-                  : item.payment_type == 3
-                  ? 'Salida gratuita'
-                  : ''
+                    ? 'Efectivo ó Pendiente de Pago'
+                    : item.payment_type == 3
+                      ? 'Salida gratuita'
+                      : ''
             }
           })
         })
@@ -115,7 +115,9 @@ export class ReportService {
       `${this.apiUrl}backoffice/report/courtesiesStationDetail/dates?initDate=${initDate}&endDate=${endDate}&parqueo=${parqueo}`
     )
   }
-
+isApproved(payment: any) {
+    return payment.is_aproved == true && payment.billing
+}
   getTransitDetailRpt(initDate: Date, endDate: Date, parqueo: string) {
     const _initDate = new Date(initDate).toISOString().split('T')[0]
     const _endDate = new Date(endDate).toISOString().split('T')[0]
@@ -126,6 +128,7 @@ export class ReportService {
       .pipe(
         map((res) => {
           return res.data.map((item: any) => {
+            const payment = item.payment.find((x: any) => x.is_aproved && x.billing)
             return {
               phone_key: item.user?.phone_number ?? '',
               entry_date: item.entry_date
@@ -134,7 +137,7 @@ export class ReportService {
               exit_date: item.exit_date
                 ? new Date(item.exit_date).toLocaleString()
                 : '',
-              timeIn: this.descriptionOfDiffOfTime(
+              timeIn: this.utility.descriptionOfDiffOfTime(
                 new Date(item.entry_date),
                 new Date(item.exit_date || new Date())
               ),
@@ -146,30 +149,30 @@ export class ReportService {
                 item.payment_type == 0
                   ? 'Tarjeta C/D'
                   : item.payment_type == 1
-                  ? 'Efectivo'
-                  : item.payment_type == 3
-                  ? 'Salida gratuita'
-                  : '',
-              transaction: item.payment[0]?.trace_number ?? '',
-              invoice: item.payment[0]?.billing?.fiscal_number ?? '',
+                    ? 'Efectivo'
+                    : item.payment_type == 3
+                      ? 'Salida gratuita'
+                      : '',
+              transaction: payment?.trace_number ?? '',
+              invoice: payment?.billing?.fiscal_number ?? '',
               entry_station: item.entry_station?.name ?? '',
               exit_station: item.exit_station?.name ?? '',
               type:
                 item.type == 0
                   ? 'ebigo Ticket'
                   : item.type == 1
-                  ? 'ebigo Mensual'
-                  : item.type == 5
-                  ? 'Test'
-                  : '',
+                    ? 'ebigo Mensual'
+                    : item.type == 5
+                      ? 'Test'
+                      : '',
               status:
                 item.status == 2
                   ? 'Puede salir'
                   : item.status == 1
-                  ? 'Dentro del parqueo'
-                  : item.status == 3 || item.status == 5
-                  ? 'Fuera del parqueo'
-                  : 'Intento fallido'
+                    ? 'Dentro del parqueo'
+                    : item.status == 3 || item.status == 5
+                      ? 'Fuera del parqueo'
+                      : 'Intento fallido'
             }
           })
         })
@@ -217,41 +220,22 @@ export class ReportService {
       )
   }
 
-  descriptionOfDiffOfTime(oldTime: Date, timeNow: Date): string {
-    if (!timeNow) {
-      return 'No ha salido del parqueo'
-    }
-    let days: number = timeNow.getDay() - oldTime.getDay()
-    let hours: number = timeNow.getHours() - oldTime.getHours()
-    let minutes: number = timeNow.getMinutes() - oldTime.getMinutes()
-    if (minutes < 0) {
-      hours--
-      minutes += 60
-    }
-    if (hours < 0) {
-      days--
-      hours += 24
-    }
-    if (days < 0) {
-      days += 7
-    }
-    let response: string = ''
+  dateDiffInDays(oldDate: Date, currentDate: Date) {
+    const date1 = new Date(oldDate);
+    const date2 = new Date(currentDate);
 
-    if (days > 0 && hours > 0 && minutes > 0)
-      return `${days} días, ${hours} horas y ${minutes} minutos`
-    if (days > 0 && hours > 0 && minutes === 0)
-      return `${days} días, ${hours} horas`
-    if (days > 0 && hours === 0 && minutes > 0)
-      return `${days} días y ${minutes} minutos`
-    if (days > 0 && hours === 0 && minutes === 0) return `${days} días`
-    if (days === 0 && hours > 0 && minutes > 0)
-      return `${hours} horas y ${minutes} minutos`
-    if (days === 0 && hours > 0 && minutes === 0) return `${hours} horas`
-    if (days === 0 && hours === 0 && minutes > 0) return `${minutes} minutos`
-    if (days === 0 && hours === 0 && minutes === 0) return '0 minutos'
+    // One day in milliseconds
+    const oneDay = 1000 * 60 * 60 * 24;
 
-    return response
+    // Calculating the time difference between two dates
+    const diffInTime = date2.getTime() - date1.getTime();
+
+    // Calculating the no. of days between two dates
+    const diffInDays = Math.round(diffInTime / oneDay);
+    console.log(diffInDays)
+    return diffInDays;
   }
+
 
   getParkingRpt(initDate: string, endDate: string, parqueo: string) {
     const _initDate = new Date(initDate).toISOString().split('T')[0]
@@ -275,10 +259,10 @@ export class ReportService {
                 : '',
               exit_date: item?.exit_date
                 ? item?.exit_date.toLocaleString()
-                : '',
-              timeIn: this.descriptionOfDiffOfTime(
-                new Date(item?.entry_date),
-                new Date(item?.exit_date)
+                : 'No ha salido',
+              timeIn: this.utility.descriptionOfDiffOfTime(
+                item?.entry_date,
+                item?.exit_date
               ),
               entry_station: item?.entry_station?.name ?? '',
               exit_station: item?.exit_station?.name ?? '',

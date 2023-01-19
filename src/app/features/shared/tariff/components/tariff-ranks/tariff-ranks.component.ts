@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core'
 
 @Component({
   selector: 'app-tariff-ranks',
@@ -9,9 +9,11 @@ export class TariffRanksComponent implements OnInit {
   @Input() timeRange!: number
   @Output() setNewTimeRange = new EventEmitter<number>()
 
-  constructor() {}
+  constructor() {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   emitNewTimeRange(timeRange: number) {
     this.setNewTimeRange.emit(timeRange)

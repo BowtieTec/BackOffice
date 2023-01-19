@@ -4,9 +4,10 @@ import {environment} from '../../../../../../environments/environment'
 import {HttpClient} from '@angular/common/http'
 import {ResponseModel} from '../../../../../shared/model/Request.model'
 import {RolesModel} from '../models/RolesModel'
-import {NewUserModel, updateUserApp} from '../models/newUserModel'
+import {getAdminsPaginatedModel, NewUserModel, updateUserApp} from '../models/newUserModel'
 import {Observable} from 'rxjs'
 import {AuthService} from '../../../../../shared/services/auth.service'
+import {saveAs} from "file-saver";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class UserService {
   private apiUrl = environment.serverAPI
 
   constructor(
-    private messageService: MessageService,
+    private message: MessageService,
     private authService: AuthService,
     private http: HttpClient
   ) {
@@ -26,7 +27,7 @@ export class UserService {
   }
 
   getInitialData() {
-    this.messageService.showLoading()
+    this.message.showLoading()
     this.getRoles()
       .toPromise()
       .then((data: ResponseModel) => {
@@ -34,34 +35,41 @@ export class UserService {
         return data
       })
       .then((data) => {
-        this.messageService.hideLoading()
+        this.message.hideLoading()
       })
       .then(() => {
-        this.messageService.hideLoading()
+        this.message.hideLoading()
       })
   }
 
   getRoles() {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http.get<ResponseModel>(`${this.apiUrl}backoffice/role`)
   }
 
-  getUsers(parkingId: string): Observable<any> {
-    this.messageService.showLoading()
+  getUsers(data: getAdminsPaginatedModel): Observable<any> {
     return this.http.get<ResponseModel>(
-      `${this.apiUrl}backoffice/admin/admins?page=1&per_page=100&status=3&parkingId=${parkingId}`
+      `${this.apiUrl}backoffice/admin/admins?textToSearch=${data.textToSearch}&page=${data.page}&pageSize=${data.pageSize}`
     )
+  }
+  exportAdminTable(): Promise<any> {
+    return this.http.get<ResponseModel>(
+      `${this.apiUrl}backoffice/admin/export`, {responseType: 'blob' as 'json'}
+    ).toPromise().then((data: any) => {
+      const downloadURL = window.URL.createObjectURL(data);
+      saveAs(downloadURL, `Administradores ${new Date().toLocaleDateString()}.xlsx`);
+    })
   }
 
   getUsersApp(): Observable<any> {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http.get<ResponseModel>(
       `${this.apiUrl}backoffice/user/userApp/`
     )
   }
 
   getAdminsByParking() {
-    this.messageService.showLoading()
+    this.message.showLoading()
     this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/admin/admins?page=1&per_page=100&status=3`
@@ -81,7 +89,7 @@ export class UserService {
             validate_code: administrator.validate_code
           })
         })
-        this.messageService.hideLoading()
+        this.message.hideLoading()
       })
   }
 

@@ -1,28 +1,21 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild
-} from '@angular/core'
-import { DxDataGridComponent } from 'devextreme-angular'
-import { DataTableDirective } from 'angular-datatables'
-import { Subject } from 'rxjs'
-import { ParkingModel } from '../../../parking/models/Parking.model'
-import { environment } from '../../../../../environments/environment'
-import { AuthService } from '../../../../shared/services/auth.service'
-import { ReportService } from '../service/report.service'
-import { MessageService } from '../../../../shared/services/message.service'
-import { UtilitiesService } from '../../../../shared/services/utilities.service'
-import { PermissionsService } from '../../../../shared/services/permissions.service'
-import { ParkingService } from '../../../parking/services/parking.service'
-import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
-import { jsPDF } from 'jspdf'
-import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter'
-import { Workbook } from 'exceljs'
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core'
+import {DxDataGridComponent} from 'devextreme-angular'
+import {DataTableDirective} from 'angular-datatables'
+import {Subject} from 'rxjs'
+import {environment} from '../../../../../environments/environment'
+import {AuthService} from '../../../../shared/services/auth.service'
+import {ReportService} from '../service/report.service'
+import {MessageService} from '../../../../shared/services/message.service'
+import {UtilitiesService} from '../../../../shared/services/utilities.service'
+import {PermissionsService} from '../../../../shared/services/permissions.service'
+import {ParkingService} from '../../../parking/services/parking.service'
+import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
+import {jsPDF} from 'jspdf'
+import {exportDataGrid as exportDataGridToPdf} from 'devextreme/pdf_exporter'
+import {Workbook} from 'exceljs'
 import * as logoFile from '../logoEbi'
-import { saveAs } from 'file-saver'
-import { FormBuilder, FormGroup } from '@angular/forms'
+import {saveAs} from 'file-saver'
+import {FormBuilder, FormGroup} from '@angular/forms'
 
 export interface historyOfCourtesy {
   completeName: string
@@ -39,7 +32,7 @@ export interface historyOfCourtesy {
   styleUrls: ['./history-courtesy.component.css']
 })
 export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
-  @ViewChild(DxDataGridComponent, { static: false })
+  @ViewChild(DxDataGridComponent, {static: false})
   dataGrid!: DxDataGridComponent
   dtElement!: DataTableDirective
   dtOptions: DataTables.Settings = {}
@@ -49,13 +42,12 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
   report: historyOfCourtesy[] = []
   dataSource: any
   now = new Date()
-  allParking: ParkingModel[] = Array<ParkingModel>()
   verTodosLosParqueosReport = environment.verTodosLosParqueosReport
 
   constructor(
     private auth: AuthService,
     private reportService: ReportService,
-    private messageService: MessageService,
+    private message: MessageService,
     private utilitiesService: UtilitiesService,
     private authService: AuthService,
     private permissionService: PermissionsService,
@@ -72,16 +64,9 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.dtOptions = DataTableOptions.getSpanishOptions(10)
-    this.authService.user$.subscribe(({ parkingId }) => {
+    this.authService.user$.subscribe(({parkingId}) => {
       this.reportForm.get('parkingId')?.setValue(parkingId)
       this.getReport()
-    })
-
-    this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParking = [
-        ...parkingLot,
-        { id: '0', name: '-- Todos los parqueos --' }
-      ]
     })
   }
 
@@ -90,11 +75,12 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
   }
 
   getReport() {
-    const { startDate, endDate, parkingId } = this.reportForm.getRawValue()
+    this.message.showLoading()
+    const {startDate, endDate, parkingId} = this.reportForm.getRawValue()
     let _startDate = new Date(startDate).toISOString().split('T')[0]
     let _endDate = new Date(endDate).toISOString().split('T')[0]
     if (endDate < startDate) {
-      this.messageService.error(
+      this.message.error(
         '',
         'La fecha de inicio debe ser mayor a la fecha fin'
       )
@@ -109,20 +95,20 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
           this.dataSource = data.data
           this.rerender()
         } else {
-          this.messageService.error('', data.message)
+          this.message.error('', data.message)
         }
       })
       .then(() => {
-        this.messageService.hideLoading()
+        this.message.hideLoading()
       })
   }
 
   onExporting(e: any) {
     if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
+      this.message.infoTimeOut('No hay información para exportar')
       return
     }
-    const { startDate, endDate, parkingId } = this.reportForm.getRawValue()
+    const {startDate, endDate, parkingId} = this.reportForm.getRawValue()
     const header = [
       '',
       'Parqueo',
@@ -149,38 +135,29 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
     worksheet.addRow([])
 
     const busienssRow = worksheet.addRow(['', '', '', 'ebiGO'])
-    busienssRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    busienssRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    busienssRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    busienssRow.alignment = {horizontal: 'center', vertical: 'middle'}
     busienssRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
     worksheet.mergeCells('D2:Q3')
-    let ParqueoReporte = 'Todos los parqueos'
-    if (parkingId != '0') {
-      const parqueoEncontrado = this.allParking.find(
-        (parqueos) => parqueos.id == parkingId
-      )
-      if (parqueoEncontrado) {
-        ParqueoReporte = parqueoEncontrado.name
-      }
-    }
-    const addressRow = worksheet.addRow(['', '', '', ParqueoReporte])
-    addressRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    addressRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    const addressRow = worksheet.addRow(['', '', '', this.authService.getParking().name])
+    addressRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    addressRow.alignment = {horizontal: 'center', vertical: 'middle'}
     addressRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -191,15 +168,15 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       '',
       'Reporte - Historial de cortesias'
     ])
-    titleRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    titleRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    titleRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    titleRow.alignment = {horizontal: 'center', vertical: 'middle'}
     titleRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -213,15 +190,15 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
     worksheet.addImage(logo, 'B3:C6')
     worksheet.addRow([])
     const infoRow = worksheet.addRow(['', 'Información General'])
-    infoRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    infoRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    infoRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    infoRow.alignment = {horizontal: 'center', vertical: 'middle'}
     infoRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -229,22 +206,22 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
     worksheet.addRow([])
     const header1 = worksheet.addRow([
       '',
-      'Fecha Inicio: ' + new Date(startDate).toLocaleDateString(),
+      'Fecha Inicio: ' + new Date(new Date(startDate).setDate(new Date(startDate).getDate() + 1)).toLocaleDateString(),
       '',
       '',
       '',
       '',
       '',
       '',
-      'Fecha Fin: ' + new Date(endDate).toLocaleDateString()
+      'Fecha Fin: ' + new Date(new Date(endDate).setDate(new Date(endDate).getDate() + 1)).toLocaleDateString()
     ])
     header1.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -260,17 +237,17 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       '',
       '',
       'Documento generado: ' +
-        new Date().toLocaleDateString('es-GT') +
-        '  ' +
-        new Date().toLocaleTimeString()
+      new Date().toLocaleDateString('es-GT') +
+      '  ' +
+      new Date().toLocaleTimeString()
     ])
     header2.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -285,14 +262,14 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
         cell.fill = {
           type: 'pattern',
           pattern: 'solid',
-          fgColor: { argb: 'FFFFFF00' },
-          bgColor: { argb: 'FF0000FF' }
+          fgColor: {argb: 'FFFFFF00'},
+          bgColor: {argb: 'FF0000FF'}
         }
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -320,10 +297,10 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       row.eachCell((cell, number) => {
         if (number > 1) {
           cell.border = {
-            top: { style: 'thin' },
-            left: { style: 'thin' },
-            bottom: { style: 'thin' },
-            right: { style: 'thin' }
+            top: {style: 'thin'},
+            left: {style: 'thin'},
+            bottom: {style: 'thin'},
+            right: {style: 'thin'}
           }
         }
       })
@@ -368,7 +345,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
 
   exportGrid() {
     if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
+      this.message.infoTimeOut('No hay información para exportar')
       return
     }
     const doc = new jsPDF()

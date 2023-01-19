@@ -1,13 +1,13 @@
-import { Component } from '@angular/core'
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms'
-import { Router } from '@angular/router'
-import { AuthModel } from 'src/app/shared/model/UserResponse.model'
-import { AuthService } from 'src/app/shared/services/auth.service'
-import { MessageService } from 'src/app/shared/services/message.service'
-import { PermissionsService } from 'src/app/shared/services/permissions.service'
-import { UtilitiesService } from 'src/app/shared/services/utilities.service'
-import { supportTicketModel } from './Models/support-ticket.module'
-import { SupportTicketService } from './Services/support-ticket.service'
+import {Component} from '@angular/core'
+import {FormGroup, UntypedFormBuilder, Validators} from '@angular/forms'
+import {Router} from '@angular/router'
+import {AuthModel} from 'src/app/shared/model/UserResponse.model'
+import {AuthService} from 'src/app/shared/services/auth.service'
+import {MessageService} from 'src/app/shared/services/message.service'
+import {PermissionsService} from 'src/app/shared/services/permissions.service'
+import {UtilitiesService} from 'src/app/shared/services/utilities.service'
+import {supportTicketModel} from './Models/support-ticket.module'
+import {SupportTicketService} from './Services/support-ticket.service'
 
 @Component({
   selector: 'app-new-ticket',
@@ -23,7 +23,7 @@ export class NewTicketComponent {
     private permissionService: PermissionsService,
     private formBuilder: UntypedFormBuilder,
     private authService: AuthService,
-    private messageService: MessageService,
+    private message: MessageService,
     private utilitiesService: UtilitiesService,
     private supportTicketService: SupportTicketService,
     private router: Router
@@ -44,7 +44,7 @@ export class NewTicketComponent {
 
   async sendSupportTicket() {
     if (this.supportTicketForm.invalid) {
-      this.messageService.error('', 'Datos no válidos o faltantes')
+      this.message.error('', 'Datos no válidos o faltantes')
       return
     }
     const newTicket = this.formSupportTicketValues
@@ -54,12 +54,12 @@ export class NewTicketComponent {
       .toPromise()
 
     if (response) {
-      this.messageService.infoTimeOut(
+      this.message.infoTimeOut(
         'Se ha enviado su petición, pronto recibirá una notificación en su correo'
       )
       this.reloadComponent()
     } else {
-      this.messageService.error('', 'No se pudo enviar la solicitud')
+      this.message.error('', 'No se pudo enviar la solicitud')
     }
   }
 

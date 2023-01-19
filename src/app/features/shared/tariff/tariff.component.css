@@ -1,8 +1,9 @@
 .form-check-label {
   margin-left: 10px;
 }
+
 label.btn .btn-outline-primary {
   color: #fff;
-  background-color: #415ba2!important;
-  border-color: #415ba2!important;
+  background-color: #415ba2 !important;
+  border-color: #415ba2 !important;
 }

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { LocationPanelComponent } from './location-panel.component'
+import {LocationPanelComponent} from './location-panel.component'
 
 describe('LocationPanelComponent', () => {
   let component: LocationPanelComponent

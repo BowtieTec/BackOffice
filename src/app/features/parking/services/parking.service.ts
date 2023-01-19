@@ -1,8 +1,8 @@
-import { Injectable, OnDestroy } from '@angular/core'
-import { environment } from '../../../../environments/environment'
-import { HttpClient } from '@angular/common/http'
-import { MessageService } from '../../../shared/services/message.service'
-import { ResponseModel } from '../../../shared/model/Request.model'
+import {Injectable, OnDestroy} from '@angular/core'
+import {environment} from '../../../../environments/environment'
+import {HttpClient} from '@angular/common/http'
+import {MessageService} from '../../../shared/services/message.service'
+import {ResponseModel} from '../../../shared/model/Request.model'
 import {
   AccessModel,
   CreateParkingFileModel,
@@ -11,25 +11,15 @@ import {
   CreateParkingStepOneModel,
   CreateParkingStepTwoModel
 } from '../models/CreateParking.model'
-import { Router } from '@angular/router'
-import { map } from 'rxjs/operators'
-import {
-  CurrencyOptionModel,
-  Day,
-  PaymentMethodModel,
-  SettingsOptionsModel
-} from '../models/SettingsOption.model'
-import { BehaviorSubject, Observable, Subscribable } from 'rxjs'
-import { CountriesModel } from '../models/Countries.model'
-import { CreateTariffModel } from '../models/Tariff.model'
-import { CreateProfilesModel } from '../models/MontlyParking.model'
-import {
-  CreateStation,
-  CreateStationaryCourtesy,
-  StationsCourtesyModel
-} from '../models/StationaryCourtesy.model'
-import { ParkedModel, ParkingModel } from '../models/Parking.model'
-import { listID } from '../../../shared/model/CommonModels'
+import {Router} from '@angular/router'
+import {map} from 'rxjs/operators'
+import {CurrencyOptionModel, Day, PaymentMethodModel, SettingsOptionsModel} from '../models/SettingsOption.model'
+import {BehaviorSubject, Observable, Subscribable} from 'rxjs'
+import {CountriesModel} from '../models/Countries.model'
+import {CreateTariffModel} from '../models/Tariff.model'
+import {CreateProfilesModel} from '../models/MontlyParking.model'
+import {CreateStation, CreateStationaryCourtesy, StationsCourtesyModel} from '../models/StationaryCourtesy.model'
+import {ParkedModel, ParkingModel} from '../models/Parking.model'
 
 @Injectable({
   providedIn: 'root'
@@ -65,7 +55,8 @@ export class ParkingService implements OnDestroy {
       this.getAllParking().then((data) => {
         this.parkingLotSubject$.next(data.data.parkings)
       })
-    ]).then()
+    ]).then(r => {
+    })
   }
 
   getCountries() {
@@ -79,7 +70,7 @@ export class ParkingService implements OnDestroy {
         map((data) => {
           if (!data.success) throw data.message
           this.settingsOptions = data.data
-          return { ...data.data }
+          return {...data.data}
         })
       )
   }
@@ -93,10 +84,10 @@ export class ParkingService implements OnDestroy {
 
   getAccesses(): Array<AccessModel> {
     return [
-      { id: 0, name: 'Entrada primaria' },
-      { id: 1, name: 'Salida primaria' },
-      { id: 2, name: 'Entrada secundaria' },
-      { id: 3, name: 'Salida secundaria' }
+      {id: 0, name: 'Entrada primaria'},
+      {id: 1, name: 'Salida primaria'},
+      {id: 2, name: 'Entrada secundaria'},
+      {id: 3, name: 'Salida secundaria'}
     ]
   }
 
@@ -205,7 +196,7 @@ export class ParkingService implements OnDestroy {
   getQR(stationID: string): Observable<Blob> {
     return this.http.get(
       `${this.apiUrl}backoffice/parking/station/${stationID}/downloadqr`,
-      { responseType: 'blob' }
+      {responseType: 'blob'}
     )
   }
 
@@ -311,9 +302,9 @@ export class ParkingService implements OnDestroy {
   }
 
   getParked(
-    parkedFormValues: { parkingId: string; status: string },
+    parkedFormValues: { parkingId: string; status: string, textToSearch: string },
     page = 1,
-    pageSize = 100
+    pageSize = 10,
   ) {
     return this.http
       .post<ResponseModel>(
@@ -341,7 +332,7 @@ export class ParkingService implements OnDestroy {
             recordsFiltered: res.data.recordsFiltered
           }
         })
-      )
+      ).toPromise()
   }
 
   getOutParked(
@@ -380,6 +371,7 @@ export class ParkingService implements OnDestroy {
       .toPromise()
       .then((data) => {
         if (data.success) {
+          console.log(data.data.stations)
           return data.data.stations
         }
         return new Array<StationsCourtesyModel>()
@@ -454,7 +446,7 @@ export class ParkingService implements OnDestroy {
     return this.http
       .put<ResponseModel>(
         `${this.apiUrl}backoffice/tariff/rule/active/${parkingId}`,
-        { isActive: newStatus }
+        {isActive: newStatus}
       )
       .toPromise()
   }

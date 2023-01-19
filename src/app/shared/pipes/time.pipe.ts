@@ -1,5 +1,5 @@
-import { Pipe, PipeTransform } from '@angular/core'
-import { TimeData } from '../../features/parking/models/CreateParking.model'
+import {Pipe, PipeTransform} from '@angular/core'
+import {TimeData} from '../../features/parking/models/CreateParking.model'
 
 @Pipe({
   name: 'time'

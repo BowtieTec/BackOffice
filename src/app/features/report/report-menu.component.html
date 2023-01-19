@@ -1,16 +1,16 @@
 <nav #nav = "ngbNav"
+     [activeId] = "3"
      class = "nav-tabs "
-     [activeId]="10"
      ngbNav>
   <ng-container *ngIf = "ifHaveAction(verDailyParkingReportTicket)"
-                [ngbNavItem]="1">
+                [ngbNavItem] = "1">
     <a ngbNavLink><em class = "fas fa-parking"></em> EbiGO Ticket General</a>
     <ng-template ngbNavContent>
       <app-parking-ticket-report></app-parking-ticket-report>
     </ng-template>
   </ng-container>
   <ng-container *ngIf = "ifHaveAction(verDailyParkingReport)"
-                [ngbNavItem]="2">
+                [ngbNavItem] = "2">
     <a ngbNavLink><em class = "fas fa-parking"></em> Entradas EbiGO Mensual</a>
     <ng-template ngbNavContent>
       <app-parking-day-report></app-parking-day-report>
@@ -18,42 +18,42 @@
   </ng-container>
 
   <ng-container *ngIf = "ifHaveAction(verCourtesiesReport)"
-                [ngbNavItem]="3">
+                [ngbNavItem] = "3">
     <a ngbNavLink><em class = "fas fa-magic"></em> Cortesias</a>
     <ng-template ngbNavContent>
       <app-courtesy-report></app-courtesy-report>
     </ng-template>
   </ng-container>
   <ng-container *ngIf = "ifHaveAction(verCourtesiesStationReport)"
-                [ngbNavItem]="4">
+                [ngbNavItem] = "4">
     <a ngbNavLink><em class = "fas fa-magic"></em> C. estacionarias</a>
     <ng-template ngbNavContent>
       <app-courtesy-station-report></app-courtesy-station-report>
     </ng-template>
   </ng-container>
   <ng-container *ngIf = "ifHaveAction(verDurationReport)"
-                [ngbNavItem]="5">
+                [ngbNavItem] = "5">
     <a ngbNavLink><em class = "fas fa-magic"></em> Duración</a>
     <ng-template ngbNavContent>
       <app-duration-report></app-duration-report>
     </ng-template>
   </ng-container>
   <ng-container *ngIf = "ifHaveAction(verHistoryOfCourtesy)"
-                [ngbNavItem]="6">
+                [ngbNavItem] = "6">
     <a ngbNavLink><em class = "fas fa-parking"></em> Historial de cortesias</a>
     <ng-template ngbNavContent>
       <app-history-courtesy></app-history-courtesy>
     </ng-template>
   </ng-container>
   <ng-container *ngIf = "ifHaveAction(verMenuPayment)"
-                [ngbNavItem]="7">
+                [ngbNavItem] = "7">
     <a ngbNavLink><em class = "fas fa-parking"></em> Detalle de Pagos Ticket</a>
     <ng-template ngbNavContent>
       <app-payment-report></app-payment-report>
     </ng-template>
   </ng-container>
   <ng-container *ngIf = "ifHaveAction(verMonthlyParkingReport)"
-                [ngbNavItem]="8">
+                [ngbNavItem] = "8">
     <a ngbNavLink><em class = "fas fa-parking"></em> Mensualidades de parqueo</a>
     <ng-template ngbNavContent>
       <app-parking-montly-payments-report></app-parking-montly-payments-report>
@@ -61,7 +61,7 @@
   </ng-container>
 
   <ng-container *ngIf = "ifHaveAction(verBillingReport)"
-                [ngbNavItem]="9">
+                [ngbNavItem] = "9">
     <a ngbNavLink><em class = "fas fa-parking"></em> Facturación</a>
     <ng-template ngbNavContent>
       <app-billing-report></app-billing-report>
@@ -69,7 +69,7 @@
   </ng-container>
 
   <ng-container *ngIf = "ifHaveAction(transitDetailReport)"
-                [ngbNavItem]="10">
+                [ngbNavItem] = "10">
     <a ngbNavLink><em class = "fas fa-road"></em> Detalle de transito</a>
     <ng-template ngbNavContent>
       <app-transit-detail-report></app-transit-detail-report>

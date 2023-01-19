@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core'
-import { PermissionsService } from 'src/app/shared/services/permissions.service'
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms'
-import { AuthService } from 'src/app/shared/services/auth.service'
-import { ParkingModel } from 'src/app/features/parking/models/Parking.model'
-import { ParkingService } from 'src/app/features/parking/services/parking.service'
-import { MessageService } from 'src/app/shared/services/message.service'
-import { TariffTestService } from './services/tariff-test.service'
-import { tariffTestModel } from './models/tariff-test.model'
-import { TicketTestModule } from './models/ticket-test.module'
-import { UtilitiesService } from 'src/app/shared/services/utilities.service'
-import { CourtesyService } from '../../../courtesy/services/courtesy.service'
-import { CourtesyModel } from '../../../courtesy/models/Courtesy.model'
-import { environment } from '../../../../../environments/environment'
+import {Component, OnInit} from '@angular/core'
+import {PermissionsService} from 'src/app/shared/services/permissions.service'
+import {FormGroup, UntypedFormBuilder, Validators} from '@angular/forms'
+import {AuthService} from 'src/app/shared/services/auth.service'
+import {ParkingModel} from 'src/app/features/parking/models/Parking.model'
+import {ParkingService} from 'src/app/features/parking/services/parking.service'
+import {MessageService} from 'src/app/shared/services/message.service'
+import {TariffTestService} from './services/tariff-test.service'
+import {IParamsCustomTariff, tariffTestModel} from './models/tariff-test.model'
+import {TicketTestModule} from './models/ticket-test.module'
+import {UtilitiesService} from 'src/app/shared/services/utilities.service'
+import {CourtesyService} from '../../../courtesy/services/courtesy.service'
+import {CourtesyModel} from '../../../courtesy/models/Courtesy.model'
+import {environment} from '../../../../../environments/environment'
 
 @Component({
   selector: 'app-tariff-test',
@@ -22,6 +22,8 @@ export class TariffTestComponent implements OnInit {
   tariffTestForm: FormGroup
   allParkingLot: ParkingModel[] = []
   courtesies: CourtesyModel[] = []
+  courtesyDetail: any
+  tariffOfTicket: IParamsCustomTariff[] = []
   ticket: TicketTestModule
   listExist = false
   ListTicketTest: TicketTestModule[] = []
@@ -34,7 +36,7 @@ export class TariffTestComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private authService: AuthService,
     private parkingService: ParkingService,
-    private messageService: MessageService,
+    private message: MessageService,
     private testService: TariffTestService,
     private courtesyService: CourtesyService,
     private utilitiesService: UtilitiesService
@@ -76,21 +78,30 @@ export class TariffTestComponent implements OnInit {
 
   async getTariffTest() {
     if (this.tariffTestForm.invalid) {
-      this.messageService.error('', 'Datos no válidos o faltantes')
+      this.message.error('', 'Datos no válidos o faltantes')
       return
     }
     const newTest = this.formTariffTestValues
     if (newTest.entry_date > newTest.exit_date) {
-      this.messageService.error(
+      this.message.error(
         '',
         'Datos no válidos, la fecha de salida debe ser mayor o igual a la de entrada'
       )
       return
     }
 
-    this.ticket = await this.testService
+    await this.testService
       .getTariffTest(newTest)
-      .then((x) => x.ticket)
+      .then((x) => {
+        this.ticket = x.ticket
+        this.courtesyDetail = x.courtesy
+        this.tariffOfTicket = []
+        x.ticket.tariff.forEach((rule: any) => {
+          rule.params.forEach((param: any) => {
+            this.tariffOfTicket.push(param.tariff)
+          })
+        })
+      })
     this.addItem(this.ticket)
   }
 
@@ -122,7 +133,7 @@ export class TariffTestComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.user$.subscribe(({ parkingId }) => {
+    this.authService.user$.subscribe(({parkingId}) => {
       this.parkingId = parkingId
       this.tariffTestForm.controls['parking'].setValue(parkingId)
       this.getInitialData().catch()

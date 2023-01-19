@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core'
+import {Injectable} from '@angular/core'
 import Swal from 'sweetalert2'
+
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,9 @@ export class MessageService {
   loading = false
   footer =
     '<div class="text-center"> <bold> Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.</bold> </div>'
+
+  constructor() {
+  }
 
   get nowTimeFormat() {
     const now = new Date()
@@ -54,7 +58,7 @@ export class MessageService {
     })
   }
 
-  warningTimeOut(text = '', title = '!Cuidado!') {
+  warningTimeOut(text = '', title = '¡Cuidado!') {
     this.hideLoading()
     Swal.fire({
       icon: 'warning',
@@ -78,32 +82,33 @@ export class MessageService {
     })
   }
 
-  Ok(title = 'Finalizado') {
-    this.hideLoading()
-    Swal.fire({
-      icon: 'success',
-      title
-    })
-  }
-
   OkTimeOut(title = 'Finalizado') {
     this.hideLoading()
     Swal.fire({
+      toast: true,
       icon: 'success',
-      title,
-      timer: 1000,
-      showConfirmButton: false
+      text: title,
+      position: 'bottom-left',
+      showConfirmButton: false,
+      timer: 7000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
     })
   }
 
-  infoTimeOut(text: string, title = '') {
+  infoTimeOut(text: string, title = '', timer = 10000) {
     this.hideLoading()
     Swal.fire({
+      toast: true,
       icon: 'info',
+      position: 'bottom-left',
       title,
       text,
-      timer: 2000,
-      showConfirmButton: true
+      timer: 20000,
+      timerProgressBar: true,
     })
   }
 
@@ -230,7 +235,9 @@ export class MessageService {
           dateToGetOut: dateToGetOut
         }
       }
-      return { result, dateToGetOut }
+      return {result, dateToGetOut}
     })
   }
+
+
 }

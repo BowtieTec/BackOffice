@@ -1,4 +1,4 @@
-.typeIssue{
+.typeIssue {
   display: inline-block;
   height: 15px;
   width: 15px;
@@ -8,9 +8,11 @@
   margin-bottom: -3px;
   top: 0;
 }
-.lowstatus{
+
+.lowstatus {
   background: rgb(74, 226, 137);
 }
-.highstatus{
+
+.highstatus {
   background: rgb(226, 74, 74);
 }

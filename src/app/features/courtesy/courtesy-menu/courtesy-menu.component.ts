@@ -1,7 +1,7 @@
-import { Component } from '@angular/core'
-import { AuthService } from '../../../shared/services/auth.service'
-import { PermissionsService } from '../../../shared/services/permissions.service'
-import { environment } from '../../../../environments/environment'
+import {Component} from '@angular/core'
+import {AuthService} from '../../../shared/services/auth.service'
+import {PermissionsService} from '../../../shared/services/permissions.service'
+import {environment} from '../../../../environments/environment'
 
 @Component({
   selector: 'app-courtesy-menu',
@@ -15,7 +15,8 @@ export class CourtesyMenuComponent {
   constructor(
     private authService: AuthService,
     private permissionService: PermissionsService
-  ) {}
+  ) {
+  }
 
   ifHaveAction(action: string) {
     return this.permissionService.ifHaveAction(action)

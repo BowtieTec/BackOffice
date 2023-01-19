@@ -1,29 +1,22 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms'
-import { UtilitiesService } from '../../../shared/services/utilities.service'
-import { MessageService } from '../../../shared/services/message.service'
-import { HolidayInputModel } from './model/HolidayTariff.model'
-import { RankInputModel } from './model/RankTariff.model'
-import { BlockInputModel } from './model/BlockTariff.model'
-import { DefaultInputModel } from './model/DefaultTariff.model'
-import { ParkingService } from '../../parking/services/parking.service'
-import { CurrencyPipe, DatePipe, Time } from '@angular/common'
-import { ValidationsService } from './service/validations.service'
-import { AuthService } from '../../../shared/services/auth.service'
-import { TariffFormsService } from './service/tariff-forms.service'
-import {
-  All,
-  FixedCostInputModel,
-  HourHalfInputModel,
-  IEvent,
-  Rules
-} from './model/Tariff.model'
-import { CreateTariffModel } from '../../parking/models/Tariff.model'
-import { BuildRulesService } from './service/build-rules.service'
-import { environment } from '../../../../environments/environment'
-import { PermissionsService } from '../../../shared/services/permissions.service'
-import { DailyInputModel } from './model/DailyTariff.model'
-import { ParkingModel } from '../../parking/models/Parking.model'
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core'
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms'
+import {UtilitiesService} from '../../../shared/services/utilities.service'
+import {MessageService} from '../../../shared/services/message.service'
+import {HolidayInputModel} from './model/HolidayTariff.model'
+import {RankInputModel} from './model/RankTariff.model'
+import {BlockInputModel} from './model/BlockTariff.model'
+import {DefaultInputModel} from './model/DefaultTariff.model'
+import {ParkingService} from '../../parking/services/parking.service'
+import {CurrencyPipe, DatePipe, Time} from '@angular/common'
+import {ValidationsService} from './service/validations.service'
+import {AuthService} from '../../../shared/services/auth.service'
+import {TariffFormsService} from './service/tariff-forms.service'
+import {All, FixedCostInputModel, HourHalfInputModel, IEvent, Rules} from './model/Tariff.model'
+import {CreateTariffModel} from '../../parking/models/Tariff.model'
+import {BuildRulesService} from './service/build-rules.service'
+import {environment} from '../../../../environments/environment'
+import {PermissionsService} from '../../../shared/services/permissions.service'
+import {DailyInputModel} from './model/DailyTariff.model'
 
 @Component({
   selector: 'app-tariff',
@@ -34,7 +27,6 @@ export class TariffComponent implements OnInit {
   @Input() parkingId!: string
   @Input() isCreatingParking!: boolean
   @Output() changeStep = new EventEmitter<number>()
-  allParking: ParkingModel[] = []
   timeRange = 1
   costType = 1
   tariffs: Array<any> = []
@@ -56,7 +48,7 @@ export class TariffComponent implements OnInit {
   constructor(
     private formBuilder: UntypedFormBuilder,
     private utilitiesService: UtilitiesService,
-    private messageService: MessageService,
+    private message: MessageService,
     private parkingService: ParkingService,
     private date: DatePipe,
     private currencyPipe: CurrencyPipe,
@@ -65,11 +57,12 @@ export class TariffComponent implements OnInit {
     private tariffForms: TariffFormsService,
     private buildRuleService: BuildRulesService,
     private permissionService: PermissionsService
-  ) {}
+  ) {
+  }
 
   get daysFormValues() {
     const days: number[] = []
-    const { mon, tue, wen, thu, fri, sat, sun } = this.justDaysValue
+    const {mon, tue, wen, thu, fri, sat, sun} = this.justDaysValue
 
     mon == true ? days.push(1) : false
     tue == true ? days.push(2) : false
@@ -117,7 +110,7 @@ export class TariffComponent implements OnInit {
 
   get daysValuesDescription() {
     const days: string[] = []
-    const { mon, tue, wen, thu, fri, sat, sun } = this.justDaysValue
+    const {mon, tue, wen, thu, fri, sat, sun} = this.justDaysValue
 
     mon == true ? days.push('Lunes') : false
     tue == true ? days.push('Martes') : false
@@ -405,13 +398,10 @@ export class TariffComponent implements OnInit {
   ngOnInit(): void {
     this.generalDataForm.get('parkingId')?.setValue(this.parkingId)
     if (!this.isCreatingParking) {
-      this.authService.user$.subscribe(({ parkingId }) => {
+      this.authService.user$.subscribe(({parkingId}) => {
         this.parkingId = parkingId
         this.generalDataForm.get('parkingId')?.setValue(parkingId)
         this.getTariffs().then()
-      })
-      this.parkingService.parkingLot$.subscribe((parkingLot) => {
-        this.allParking = parkingLot
       })
     }
   }
@@ -459,35 +449,37 @@ export class TariffComponent implements OnInit {
       hourCost: '',
       halfCost: '',
       whenIsAHalf: '1',
-      subtract: '0'
+      subtract: '0',
+      subtractMinutes: '0'
     })
     this.fixedCostForm.setValue({
       fixedCost: '',
       whenIsAHalf: '1',
-      subtract: '0'
+      subtract: '0',
+      subtractMinutes: '0'
     })
     this.costType = 1
   }
 
   emmitStep(number: number) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     this.changeStep.emit(number)
-    this.messageService.OkTimeOut()
+    this.message.OkTimeOut()
   }
 
   deleteTariff(id: string) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     this.parkingService
       .deleteTariff(id)
       .then((data) => {
-        if (!data.success) this.messageService.error('', data.message)
+        if (!data.success) this.message.error('', data.message)
 
         return data
       })
       .then((data) => {
         if (data.success) {
           this.getTariffs().catch()
-          this.messageService.OkTimeOut()
+          this.message.OkTimeOut()
         }
       })
   }
@@ -497,7 +489,7 @@ export class TariffComponent implements OnInit {
   }
 
   async getTariffs() {
-    this.messageService.showLoading()
+    this.message.showLoading()
     if (this.isSudo) this.parkingId = this.generalDataFormValues.parkingId
     return this.parkingService
       .getTariffsSaved(this.parkingId)
@@ -506,7 +498,7 @@ export class TariffComponent implements OnInit {
           this.tariffs = data.data.rules
         }
       })
-      .then(() => this.messageService.hideLoading())
+      .then(() => this.message.hideLoading())
   }
 
   saveRule() {
@@ -514,19 +506,20 @@ export class TariffComponent implements OnInit {
     if (!isValid) return
     const newRule = this.buildTariffJsonRules()
     if (!newRule.rules) {
-      this.messageService.error(
+      this.message.error(
         '',
         'No pudo obtenerse la tarifa para ser guardada.'
       )
       return
     }
+    this.message.showLoading()
     this.parkingService
       .setRule(newRule)
       .then((data) => {
         if (data.success) {
-          this.messageService.OkTimeOut()
+          this.message.OkTimeOut()
         } else {
-          this.messageService.error('', data.message)
+          this.message.error('', data.message)
         }
         return data
       })
@@ -537,7 +530,6 @@ export class TariffComponent implements OnInit {
       .catch((e) => {
         throw new Error(e.message)
       })
-    this.messageService.OkTimeOut()
   }
 
   validateForms() {
@@ -546,7 +538,7 @@ export class TariffComponent implements OnInit {
         this.dailyFormValues.costPerDay < 0 ||
         !this.dailyFormValues.costPerDay
       ) {
-        this.messageService.error(
+        this.message.error(
           'Debe escribir una cantidad valida en el costo por día'
         )
         return false
@@ -558,7 +550,7 @@ export class TariffComponent implements OnInit {
       this.principalScheduleForm?.errors?.datesInvalid &&
       this.hasGlobalSchedule
     ) {
-      this.messageService.error(
+      this.message.error(
         'Error en Horario global',
         'La segunda fecha "Hasta" debe ser mayor a la fecha "Desde".'
       )
@@ -568,7 +560,7 @@ export class TariffComponent implements OnInit {
       return false
     }
     if (this.daysFormValues.length < 1) {
-      this.messageService.error(
+      this.message.error(
         'No se seleccionaron dias',
         'Debe seleccionar al menos un dia.'
       )
@@ -576,7 +568,7 @@ export class TariffComponent implements OnInit {
     }
     if (!result) {
       if (this.formTimeRangeSelected?.errors?.datesInvalid) {
-        this.messageService.error(
+        this.message.error(
           'Error en Rangos',
           'La segunda fecha "Hasta" debe ser mayor a la fecha "Desde".'
         )
@@ -586,7 +578,7 @@ export class TariffComponent implements OnInit {
         return false
       }
       if (this.formTimeRangeSelected?.errors?.quantitiesInvalid) {
-        this.messageService.error(
+        this.message.error(
           'Error en Rangos',
           'El limite inferior es mayor al limite superior.'
         )
@@ -595,14 +587,14 @@ export class TariffComponent implements OnInit {
         })
         return false
       }
-      this.messageService.error(
+      this.message.error(
         '',
         'Formulario de Rangos inválido. Por favor validar que los datos sean correctos.'
       )
       return false
     }
     if (!this.isValidGeneralData) {
-      this.messageService.error(
+      this.message.error(
         '',
         'Formulario de datos generales inválido. Por favor validar que los datos sean correctos.'
       )
@@ -610,7 +602,7 @@ export class TariffComponent implements OnInit {
     }
 
     if (this.formCostTypeSelected?.invalid) {
-      this.messageService.error(
+      this.message.error(
         'Tipo de costo incorrecto',
         'Hace falta datos o no son correctos'
       )
@@ -620,14 +612,14 @@ export class TariffComponent implements OnInit {
   }
 
   changeStatusTariff(tariff: any) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     this.parkingService
       .tariffStatusUpdate(tariff.id, !tariff.isActive)
       .then((x: any) => {
         if (x.success) {
-          this.getTariffs().then(() => this.messageService.OkTimeOut())
+          this.getTariffs().then(() => this.message.OkTimeOut())
         } else {
-          this.messageService.error(x.message)
+          this.message.error(x.message)
         }
       })
   }

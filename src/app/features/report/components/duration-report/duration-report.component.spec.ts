@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { DurationReportComponent } from './duration-report.component'
+import {DurationReportComponent} from './duration-report.component'
 
 describe('DurationReportComponent', () => {
   let component: DurationReportComponent

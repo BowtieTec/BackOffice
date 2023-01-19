@@ -1,52 +1,54 @@
-<nav #nav="ngbNav" [activeId]="1"
-     class="nav-tabs animate__animated animate__zoomInLeft "
+<nav #nav = "ngbNav"
+     [activeId] = "1"
+     class = "nav-tabs animate__animated animate__zoomInLeft "
      ngbNav>
-  <ng-container *ngIf="ifHaveAction(listParkedParking)"
-                [ngbNavItem]="1">
-    <a ngbNavLink><em class="fas fa-parking"></em> Parqueos dia</a>
+  <ng-container *ngIf = "ifHaveAction(listParkedParking)"
+                [ngbNavItem] = "1">
+    <a ngbNavLink><em class = "fas fa-parking"></em> Parqueos dia</a>
     <ng-template ngbNavContent>
       <app-parked></app-parked>
     </ng-template>
   </ng-container>
-  <ng-container *ngIf="ifHaveAction(createParking)"
-                [ngbNavItem]="2">
+  <ng-container *ngIf = "ifHaveAction(createParking)"
+                [ngbNavItem] = "2">
     <a
-      ngbNavLink><em class="fas fa-plus-square"></em> Nuevo parqueo</a>
+      ngbNavLink><em class = "fas fa-plus-square"></em> Nuevo parqueo</a>
     <ng-template ngbNavContent>
       <app-new-parking></app-new-parking>
     </ng-template>
   </ng-container>
-  <ng-container *ngIf="ifHaveAction(listMonthlyParking)" [ngbNavItem]="3">
-    <a ngbNavLink><em class="fas fa-calendar-check"></em> Ver parqueos mensuales</a>
+  <ng-container *ngIf = "ifHaveAction(listMonthlyParking)"
+                [ngbNavItem] = "3">
+    <a ngbNavLink><em class = "fas fa-calendar-check"></em> Ver parqueos mensuales</a>
     <ng-template ngbNavContent>
       <app-monthly-parking></app-monthly-parking>
     </ng-template>
   </ng-container>
   <ng-container
     *ngIf = 'ifHaveAction(createMonthlyParking)'
-    [ngbNavItem]="4">
+    [ngbNavItem] = "4">
     <a ngbNavLink><em class = 'fas fa-calendar-check'></em> Crear parqueos mensuales</a>
     <ng-template ngbNavContent>
       <app-create-monthly-parking *ngIf = 'ifHaveAction(listMonthlyParking)'></app-create-monthly-parking>
     </ng-template>
   </ng-container>
-  <ng-container *ngIf="ifHaveAction(listAntennas)"
-                [ngbNavItem]="5">
-    <a ngbNavLink><em class="fas fa-broadcast-tower"></em> Antenas</a>
+  <ng-container *ngIf = "ifHaveAction(listAntennas)"
+                [ngbNavItem] = "5">
+    <a ngbNavLink><em class = "fas fa-broadcast-tower"></em> Antenas</a>
     <ng-template ngbNavContent>
 
-      <div class="row justify-content-center">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="panels">
-            <div class="titleCards">
-              <span><em class="fas fa-broadcast-tower"></em></span> Configuración de antenas
+      <div class = "row justify-content-center">
+        <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class = "panels">
+            <div class = "titleCards">
+              <span><em class = "fas fa-broadcast-tower"></em></span> Configuración de antenas
             </div>
-            <app-antennas [parkingId]="this.parkingId"></app-antennas>
+            <app-antennas [parkingId] = "this.parkingId"></app-antennas>
           </div>
         </div>
       </div>
     </ng-template>
   </ng-container>
 </nav>
-<div [ngbNavOutlet]="nav"
-     class="mt-2"></div>
+<div [ngbNavOutlet] = "nav"
+     class = "mt-2"></div>

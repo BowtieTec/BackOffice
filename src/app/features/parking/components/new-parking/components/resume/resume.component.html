@@ -1,88 +1,94 @@
-<div class='titleCards'>
+<div class = 'titleCards'>
   Parqueo creado
 </div>
 
 <h6>Datos generales</h6>
 
-<div class='row'>
-  <div class='col-lg-6 col-md-6 col-sm-12'>
-    <div class="panels">
-      <div class="titleCards mb-1">
+<div class = 'row'>
+  <div class = 'col-lg-6 col-md-6 col-sm-12'>
+    <div class = "panels">
+      <div class = "titleCards mb-1">
         <span>
-          <i class="fas fa-parking" aria-hidden="true"></i>
+          <i aria-hidden = "true"
+             class = "fas fa-parking"></i>
         </span>Información de parqueo
       </div>
-      <div class="row">
-        <div class="col-md-4 mt-2"><b>Nombre:</b></div>
-        <div class="col-md-8 mb-2">{{this.stepOne.name}}</div>
+      <div class = "row">
+        <div class = "col-md-4 mt-2"><b>Nombre:</b></div>
+        <div class = "col-md-8 mb-2">{{this.stepOne.name}}</div>
       </div>
-      <div class="row">
-        <div class="col-md-4 mt-2"><b>Dirección:</b></div>
-        <div class="col-md-8 mb-2">{{this.stepOne.address}}</div>
+      <div class = "row">
+        <div class = "col-md-4 mt-2"><b>Dirección:</b></div>
+        <div class = "col-md-8 mb-2">{{this.stepOne.address}}</div>
       </div>
-      <div class="row">
-        <div class="col-md-4 mt-2"><b>No. de parqueos:</b></div>
-        <div class="col-md-8 mb-2">{{this.stepOne.parking_spaces}}</div>
+      <div class = "row">
+        <div class = "col-md-4 mt-2"><b>No. de parqueos:</b></div>
+        <div class = "col-md-8 mb-2">{{this.stepOne.parking_spaces}}</div>
       </div>
-      <div class="row">
-        <div class="col-md-4 mt-2"><b>Parqueos especiales:</b></div>
-        <div class="col-md-8 mb-2">{{this.stepOne.special_parking_spaces}}</div>
+      <div class = "row">
+        <div class = "col-md-4 mt-2"><b>Parqueos especiales:</b></div>
+        <div class = "col-md-8 mb-2">{{this.stepOne.special_parking_spaces}}</div>
       </div>
-      <div class="row">
-        <div class="col-md-4 mt-2"><b>Tiempo de salida:</b></div>
-        <div class="col-md-8 mb-2">{{this.stepOne.minutes_to_exit}}</div>
+      <div class = "row">
+        <div class = "col-md-4 mt-2"><b>Tiempo de salida:</b></div>
+        <div class = "col-md-8 mb-2">{{this.stepOne.minutes_to_exit}}</div>
       </div>
     </div>
   </div>
-  <div class='col-lg-6 col-md-6 col-sm-12'>
-    <div class="panels">
-      <div class="titleCards mb-1">
+  <div class = 'col-lg-6 col-md-6 col-sm-12'>
+    <div class = "panels">
+      <div class = "titleCards mb-1">
         <span>
-          <i class="fas fa-parking" aria-hidden="true"></i>
+          <i aria-hidden = "true"
+             class = "fas fa-parking"></i>
         </span>Datos de facturación
       </div>
-      <div class="row">
-        <div class="col-md-4 mt-2"><b>Razón Social:</b></div>
-        <div class="col-md-8 mb-2">{{this.stepFour.business_name}}</div>
+      <div class = "row">
+        <div class = "col-md-4 mt-2"><b>Razón Social:</b></div>
+        <div class = "col-md-8 mb-2">{{this.stepFour.business_name}}</div>
       </div>
-      <div class="row">
-        <div class="col-md-4 mt-2"><b>No. de Nit:</b></div>
-        <div class="col-md-8 mb-2">{{this.stepFour.nit}}</div>
+      <div class = "row">
+        <div class = "col-md-4 mt-2"><b>No. de Nit:</b></div>
+        <div class = "col-md-8 mb-2">{{this.stepFour.nit}}</div>
       </div>
-      <div class="row">
-        <div class="col-md-4 mt-2"><b>Dirección:</b></div>
-        <div class="col-md-8 mb-2">{{this.stepFour.business_address}}</div>
+      <div class = "row">
+        <div class = "col-md-4 mt-2"><b>Dirección:</b></div>
+        <div class = "col-md-8 mb-2">{{this.stepFour.business_address}}</div>
       </div>
-      <div class="row">
-        <div class="col-md-4 mt-2"><b>Método de pago:</b></div>
+      <div class = "row">
+        <div class = "col-md-4 mt-2"><b>Método de pago:</b></div>
         <div class = 'col-md-8 mb-2'>{{this.getPayMethodById(this.stepFour.pay_method).name}}</div>
       </div>
-      <div class="row">
-        <div class="col-md-4 mt-2"><b>Moneda de facturación:</b></div>
-        <div class="col-md-8 mb-2">{{this.getCurrencyById(this.stepFour.currency).name}}</div>
+      <div class = "row">
+        <div class = "col-md-4 mt-2"><b>Moneda de facturación:</b></div>
+        <div class = "col-md-8 mb-2">{{this.getCurrencyById(this.stepFour.currency).name}}</div>
       </div>
     </div>
   </div>
 </div>
 
-<div class='panels'>
+<div class = 'panels'>
   <h6>Tabla de horarios</h6>
-  <table aria-label='Tabla de horarios' class='table'>
+  <table aria-label = 'Tabla de horarios'
+         class = 'table'>
     <thead>
-      <tr>
-        <th scope='col'>Día</th>
-        <th scope='col'>Desde</th>
-        <th scope='col'>Hasta</th>
-      </tr>
+    <tr>
+      <th scope = 'col'>Día</th>
+      <th scope = 'col'>Desde</th>
+      <th scope = 'col'>Hasta</th>
+    </tr>
     </thead>
     <tbody>
-      <tr *ngFor='let schedule of stepTwo.schedules'>
-        <td>{{this.getDayById(schedule.day).name}}</td>
-        <td>{{schedule.openning_time | time}}</td>
-        <td>{{schedule.closing_time | time}}</td>
-      </tr>
+    <tr *ngFor = 'let schedule of stepTwo.schedules'>
+      <td>{{this.getDayById(schedule.day).name}}</td>
+      <td>{{schedule.openning_time | time}}</td>
+      <td>{{schedule.closing_time | time}}</td>
+    </tr>
     </tbody>
   </table>
 </div>
-<button (click)='emmitStep(-1)' class='btn btn-primary m-2' id='prev-btn' type='button'>Anterior
+<button (click) = 'emmitStep(-1)'
+        class = 'btn btn-primary m-2'
+        id = 'prev-btn'
+        type = 'button'>Anterior
 </button>

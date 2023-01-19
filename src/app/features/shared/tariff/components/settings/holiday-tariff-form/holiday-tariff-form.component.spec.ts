@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { HolidayTariffFormComponent } from './holiday-tariff-form.component'
+import {HolidayTariffFormComponent} from './holiday-tariff-form.component'
 
 describe('HolidayTariffFormComponent', () => {
   let component: HolidayTariffFormComponent

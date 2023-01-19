@@ -8,7 +8,7 @@
   background: #fff;
   width: calc(100vw - 280px);
   border-bottom: 1px solid #e9e9e9;
-  z-index: 1;
+  z-index: 3;
 }
 
 #list-tab {
@@ -93,6 +93,6 @@
   .headerDashboard {
     width: 100vw;
     min-height: 75px;
-    z-index: 1;
+    z-index: 3;
   }
 }

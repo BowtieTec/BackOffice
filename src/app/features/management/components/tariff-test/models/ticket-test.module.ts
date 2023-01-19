@@ -6,6 +6,7 @@ export class TicketTestModule {
   amount_disount? = 0.0
   date_in = new Date()
   date_out = new Date()
-  tariff: [] = []
+  tariff: any[] = []
   parking = ''
+  amount_origin = 0
 }

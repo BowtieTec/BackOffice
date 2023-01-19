@@ -1,8 +1,8 @@
-import { Component } from '@angular/core'
-import { NewUserModel } from './models/newUserModel'
-import { Subject } from 'rxjs'
-import { PermissionsService } from '../../../../shared/services/permissions.service'
-import { environment } from '../../../../../environments/environment'
+import {Component} from '@angular/core'
+import {NewUserModel} from './models/newUserModel'
+import {Subject} from 'rxjs'
+import {PermissionsService} from '../../../../shared/services/permissions.service'
+import {environment} from '../../../../../environments/environment'
 
 @Component({
   selector: 'app-users',
@@ -14,7 +14,8 @@ export class UsersComponent {
   listUser = environment.listUser
   createUser = environment.createUser
 
-  constructor(private permissionService: PermissionsService) {}
+  constructor(private permissionService: PermissionsService) {
+  }
 
   ifHaveAction(action: string) {
     return this.permissionService.ifHaveAction(action)

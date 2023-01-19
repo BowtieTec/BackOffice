@@ -1,32 +1,16 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  ViewChild
-} from '@angular/core'
-import {
-  CreateStation,
-  StationsCourtesyModel
-} from '../../../../../parking/models/StationaryCourtesy.model'
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators
-} from '@angular/forms'
-import { MessageService } from '../../../../../../shared/services/message.service'
-import { ParkingService } from '../../../../../parking/services/parking.service'
-import { ParkingModel } from '../../../../../parking/models/Parking.model'
-import { AuthService } from '../../../../../../shared/services/auth.service'
-import { DataTableDirective } from 'angular-datatables'
-import { Subject } from 'rxjs'
-import { DataTableOptions } from '../../../../../../shared/model/DataTableOptions'
-import { UtilitiesService } from '../../../../../../shared/services/utilities.service'
-import { environment } from '../../../../../../../environments/environment'
-import { PermissionsService } from '../../../../../../shared/services/permissions.service'
+import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core'
+import {CreateStation, StationsCourtesyModel} from '../../../../../parking/models/StationaryCourtesy.model'
+import {FormGroup, UntypedFormBuilder, Validators} from '@angular/forms'
+import {MessageService} from '../../../../../../shared/services/message.service'
+import {ParkingService} from '../../../../../parking/services/parking.service'
+import {ParkingModel} from '../../../../../parking/models/Parking.model'
+import {AuthService} from '../../../../../../shared/services/auth.service'
+import {DataTableDirective} from 'angular-datatables'
+import {Subject} from 'rxjs'
+import {DataTableOptions} from '../../../../../../shared/model/DataTableOptions'
+import {UtilitiesService} from '../../../../../../shared/services/utilities.service'
+import {environment} from '../../../../../../../environments/environment'
+import {PermissionsService} from '../../../../../../shared/services/permissions.service'
 
 @Component({
   selector: 'app-antennas-from-courtesy',
@@ -34,13 +18,12 @@ import { PermissionsService } from '../../../../../../shared/services/permission
   styleUrls: ['./antennas-from-courtesy.component.css']
 })
 export class AntennasFromCourtesyComponent
-  implements AfterViewInit, OnDestroy, OnInit
-{
+  implements AfterViewInit, OnDestroy, OnInit {
   @Input() parkingId: string = this.authService.getParking().id
   @Output() stationsSaved = new EventEmitter<boolean>()
   stationsCourtesy: StationsCourtesyModel[] = []
   idEditAntenna = ''
-  antennasForm: UntypedFormGroup
+  antennasForm: FormGroup
   allParking: ParkingModel[] = Array<ParkingModel>()
   /* Permissions */
   editStationsCourtesyStationary: string =
@@ -52,7 +35,7 @@ export class AntennasFromCourtesyComponent
   @ViewChild(DataTableDirective)
   dtElement!: DataTableDirective
   dtTrigger: Subject<any> = new Subject()
-  formGroup: UntypedFormGroup
+  formGroup: FormGroup
   private actions: string[] = this.permissionService.actionsOfPermissions
 
   constructor(
@@ -64,7 +47,7 @@ export class AntennasFromCourtesyComponent
     private permissionService: PermissionsService
   ) {
     this.antennasForm = this.createAntennasForm()
-    this.formGroup = formBuilder.group({ filter: [''] })
+    this.formGroup = formBuilder.group({filter: ['']})
     this.getInitialData()
   }
 
@@ -79,9 +62,9 @@ export class AntennasFromCourtesyComponent
   get antennaFormValue(): CreateStation {
     return {
       parking: this.antennasForm.get('parkingId')?.value,
-      mac: this.antennasForm.get('mac')?.value,
-      name: this.antennasForm.get('name')?.value,
-      antena: this.antennasForm.get('antena')?.value
+      mac: this.antennasForm.get('mac')?.value.trim(),
+      name: this.antennasForm.get('name')?.value.trim(),
+      antena: this.antennasForm.get('antena')?.value.trim()
     }
   }
 
@@ -89,7 +72,7 @@ export class AntennasFromCourtesyComponent
     this.parkingService.parkingLot$.subscribe((parkingLot) => {
       this.allParking = parkingLot
     })
-    this.authService.user$.subscribe(({ parkingId }) => {
+    this.authService.user$.subscribe(({parkingId}) => {
       this.parkingId = parkingId
       this.antennasForm.get('parkingId')?.setValue(parkingId)
       this.getInitialData()
@@ -176,6 +159,7 @@ export class AntennasFromCourtesyComponent
 
   async createStationWithCourtesy() {
     if (this.antennasForm.invalid) {
+      this.utilitiesService.markAsTouched(this.antennasForm)
       this.message.errorTimeOut('', 'Datos incorrectos o faltantes.')
       return
     }
@@ -216,9 +200,9 @@ export class AntennasFromCourtesyComponent
   private createAntennasForm() {
     return this.formBuilder.group({
       parkingId: [this.parkingId, [Validators.required]],
-      mac: ['', [Validators.required]],
-      name: [null, [Validators.required, Validators.maxLength(50)]],
-      antena: ['']
+      mac: ['', [Validators.required, Validators.pattern('^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$')]],
+      name: ['', [Validators.required, Validators.maxLength(50)]],
+      antena: ['', [Validators.required, Validators.maxLength(36), Validators.minLength(36)]]
     })
   }
 

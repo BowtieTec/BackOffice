@@ -1,6 +1,6 @@
 <div class = 'row justify-content-center'>
   <span *ngIf = "idEditAntenna"
-        class = "badge bg-warning text-dark animate__animated animate__flipInX " >Editando</span >
+        class = "badge bg-warning text-dark animate__animated animate__flipInX ">Editando</span>
   <form
     [formGroup] = 'stationaryForm'
     class = 'needs-validation animate__animated animate__fadeInLeft form-group'
@@ -23,16 +23,12 @@
             </div>
             <div *ngIf = 'ifHaveAction(createCourtesyStationary)'>
               <div class = 'row justify-content-center'>
-                <div
-                  *ngIf = 'isSudo'
-                  class = 'col-md-6 col-sm-12'>
-                  <app-select-container
-                    (change) = 'searchAntennasByParking()'
-                    [data] = 'this.allParking'
-                    [formGroup] = 'this.stationaryForm'
-                    controlName = 'parkingId'
-                    name = 'Parqueos'>
-                  </app-select-container>
+                <div class = 'col-md-6 col-sm-12'>
+                  <app-input-container
+                    [formGroup] = 'stationaryForm'
+                    controlName = 'name'
+                    name = 'Nombre de la cortesía'>
+                  </app-input-container>
                 </div>
                 <div class = 'col-md-6 col-sm-12'>
                   <app-select-container
@@ -43,23 +39,17 @@
                     name = 'Tipos de cortesía'>
                   </app-select-container>
                 </div>
-                <div class = 'col-md-6 col-sm-12'>
-                  <app-input-container
-                    [formGroup] = 'stationaryForm'
-                    controlName = 'name'
-                    name = 'Nombre de la cortesía'>
-                  </app-input-container>
-                </div>
+
                 <div class = 'col-md-6 col-sm-12'>
                   <app-input-container
                     [formGroup] = 'stationaryForm'
                     controlName = 'value'
-                    name = '{{this.InputValueFromNewCourtesy}}'
+                    name = '{{this.inputValueFromNewCourtesy()}}'
                     type = 'number'>
                   </app-input-container>
                 </div>
-                <div class = 'col-xl-6 col-lg-6 col-sm-12 animate__animated animate__fadeInDown'
-                     *ngIf = 'this.stationaryCourtesiesFormValue.type == 4'>
+                <div *ngIf = 'this.stationaryCourtesiesFormValue.type == 4'
+                     class = 'col-xl-6 col-lg-6 col-sm-12 animate__animated animate__fadeInDown'>
                   <app-input-container
                     [formGroup] = 'this.stationaryForm'
                     controlName = 'valueTimeMinutes'
@@ -67,30 +57,7 @@
                     type = 'number'>
                   </app-input-container>
                 </div>
-                <div class = 'col-md-6 col-sm-12 '>
-                  <div class = 'relative'>
-                    <app-select-container
-                      [data] = ' this.allAntennas'
-                      [formGroup] = 'this.stationaryForm'
-                      controlName = 'stationId'
-                      name = 'Estaciones'
-                      style = 'position: relative; display: inline-block; width: 100%;'>
-                    </app-select-container>
-                    <span *ngIf="this.stationsCourtesies.length == 0" class="text-muted m-4">*Para crear una estación de cortesías, debe solicitarse con soporte.</span>
-                    <button
-                      *ngIf = 'ifHaveAction(addStationsCourtesyStationary)'
-                      class = 'btn-primary btn-input animate__animated animate__fadeInDown'
-                      data-bs-target = '#exampleModal'
-                      data-bs-toggle = 'modal'
-                      style = 'position: absolute;
-                      right: 0; margin-bottom: 7px !important;
-                      bottom: 0;
-                    display: inline-block;
-                    padding: 9px!important;'
-                      type = 'button'>+
-                    </button>
-                  </div>
-                </div>
+
                 <div class = 'col-xl-6 col-sm-12'>
                   <app-select-container
                     [data] = 'typeOfCondition'
@@ -117,6 +84,29 @@
                     name = 'Local'>
                   </app-select-container>
                 </div>
+                <div class = 'col-md-6 col-sm-12 '>
+                  <div class = 'relative'>
+                    <app-select-container
+                      [data] = ' this.allAntennas'
+                      [formGroup] = 'this.stationaryForm'
+                      controlName = 'stationId'
+                      name = 'Estaciones'
+                      style = 'position: relative; display: inline-block; width: 100%;'>
+                    </app-select-container>
+                    <button
+                      *ngIf = 'ifHaveAction(addStationsCourtesyStationary)'
+                      class = 'btn-primary btn-input animate__animated animate__fadeInDown'
+                      data-bs-target = '#exampleModal'
+                      data-bs-toggle = 'modal'
+                      style = 'position: absolute;
+                      right: 0; margin-bottom: 7px !important;
+                       top: 7px;
+                    display: inline-block;
+                    padding: 9px!important;'
+                      type = 'button'>+
+                    </button>
+                  </div>
+                </div>
               </div>
               <div class = 'row '>
                 <div class = 'd-grid gap-2 d-md-flex justify-content-md-center m-3'>
@@ -128,7 +118,7 @@
                   <button (click) = "idEditAntenna = '' "
                           *ngIf = "idEditAntenna"
                           class = "btn btn-success animate__animated animate__fadeInDown m-1"
-                          type = "button" >Cancelar edición
+                          type = "button">Cancelar edición
                   </button>
                 </div>
               </div>
@@ -156,7 +146,7 @@
                 scope = 'col'
                 style = 'width: 17%'>Creada en:
               </th>
-              <th scope='col'>Acciones</th>
+              <th scope = 'col'>Acciones</th>
             </tr>
             </thead>
             <tbody>
@@ -166,20 +156,20 @@
               <th id = '{{antenna.name + i}}'>{{antenna.courtesy_detail?.name || 'Sin nombre' | titlecase}} </th>
               <td>{{this.getTypeDescription(antenna.courtesy_detail!.type).name | titlecase}}</td>
               <td>{{antenna.courtesy_detail!.value | courtesyValue: antenna.courtesy_detail!.type}}</td>
-              <td>{{antenna.courtesy_detail!.company?.name}}</td>
+              <td>{{antenna.courtesy_detail?.company?.name || ''}}</td>
               <td>{{antenna.name | titlecase}}</td>
               <td>{{antenna.created_at | date: 'medium'}}</td>
               <td>
                 <button (click) = " editAntenna(antenna) "
                         *ngIf = "ifHaveAction(editCourtesyStationary)"
                         class = "buttonRowEdit buttonIcon me-1"
-                        title = "Editar" ><em class = "fas fa-edit" ></em >
-                </button >
-                <button (click) = " openParkingToCourtesy(antenna.courtesy_detail?.id,contenido) "
+                        title = "Editar"><em class = "fas fa-edit"></em>
+                </button>
+                <button (click) = "openParkingToCourtesy(antenna.courtesy_detail?.id,contenido) "
                         *ngIf = "ifHaveAction(addParkingToCourtesyStationary)"
                         class = "buttonRowAlert buttonIcon"
-                        title = "Agregar Parqueo" ><em class = "fas fa-parking" ></em >
-                </button >
+                        title = "Agregar Parqueo"><em class = "fas fa-parking"></em>
+                </button>
               </td>
             </tr>
             </tbody>
@@ -189,37 +179,69 @@
     </div>
   </form>
 </div>
-
 <ng-template #contenido
              let-modal>
+  <div class = "modal-header">
+    <h5 class = "modal-title">Agregar Parqueos a las cortesías</h5>
+    <button (click) = 'this.modal.close()'
+            aria-label = "Close"
+            class = "btn-close"
+            type = "button"></button>
+  </div>
+  <div class = "modal-body">
+    <div class = "list-group">
+      <app-list-checkbox-container></app-list-checkbox-container>
+    </div>
+  </div>
+  <hr>
+  <div class = "text-center">
+    <button (click) = "addParkingToCourtesy()"
+            class = "btn btn-primary me-1"
+            data-bs-dismiss = "modal"
+            type = "button">Agregar
 
-      <div class = "modal-header">
-        <h5 class = "modal-title">Agregar Parqueos a las cortesías</h5>
-        <button aria-label = "Close"
-                class = "btn-close"
-                (click)='this.modal.close()'
-                type = "button"></button>
-      </div>
-      <div class = "modal-body">
-          <div class = "list-group">
-            <app-list-checkbox-container></app-list-checkbox-container>
-          </div>
-      </div>
-      <hr>
-      <div class = "text-center">
-        <button (click) = "addParkingToCourtesy()"
-                class = "btn btn-primary me-1"
-                data-bs-dismiss = "modal"
-                type = "button">Agregar
-
-        </button>
-
-        <button
-                class = 'btn btn-secondary'
-                data-bs-dismiss = 'modal'
-                (click)='this.modal.close()'
-                type = "button">Cerrar
-        </button>
-      </div>
-
+    </button>
+    <button
+      (click) = 'this.modal.close()'
+      class = 'btn btn-secondary'
+      data-bs-dismiss = 'modal'
+      type = "button">Cerrar
+    </button>
+  </div>
 </ng-template>
+<!-- Modal -->
+<div
+  aria-hidden = 'true'
+  aria-labelledby = 'exampleModalLabel'
+  class = 'modal fade '
+  id = 'exampleModal'
+  tabindex = '-1'>
+  <div class = 'modal-dialog modal-xl '>
+    <div class = 'modal-content'>
+      <div class = 'modal-header'>
+        <h5
+          class = 'modal-title'
+          id = 'exampleModalLabel'>Administrar antenas de cortesías estáticas</h5>
+        <button
+          aria-label = 'Close'
+          class = 'btn-close'
+          data-bs-dismiss = 'modal'
+          type = 'button'></button>
+      </div>
+      <div class = 'modal-body'>
+        <app-antennas-from-courtesy
+          (stationsSaved) = 'searchAntennasByParking()'
+          [parkingId] = 'this.parkingId'>
+        </app-antennas-from-courtesy>
+      </div>
+      <div class = 'modal-footer'>
+        <button
+          class = 'btn btn-secondary'
+          data-bs-dismiss = 'modal'
+          type = 'button'>Close
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>

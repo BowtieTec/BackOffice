@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core'
+import {Component, Input, OnDestroy, OnInit} from '@angular/core'
 import * as ApexCharts from 'apexcharts'
 import {DashboardService} from '../services/dashboard.service'
 import {AuthService} from '../services/auth.service'
@@ -9,7 +9,7 @@ import {MessageService} from '../services/message.service'
   templateUrl: './bar-chart.component.html',
   styleUrls: ['./bar-chart.component.css']
 })
-export class BarChartComponent implements OnInit {
+export class BarChartComponent implements OnInit, OnDestroy {
   @Input() tipo = ''
   @Input() fecha = ''
   @Input() parking = ''
@@ -385,7 +385,7 @@ export class BarChartComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private dashboardService: DashboardService,
-    private messageService: MessageService
+    private message: MessageService
   ) {
 
   }
@@ -396,7 +396,7 @@ export class BarChartComponent implements OnInit {
   }
 
   ngOnChanges(): void {
-    this.messageService.showLoading()
+    this.message.showLoading()
     if (this.auth.isSudo) {
       this.parking = this.parking ? this.parking : this.auth.getParking().id
     } else {
@@ -408,17 +408,17 @@ export class BarChartComponent implements OnInit {
     const mes = partesFecha[1]
     const anio = partesFecha[0]
     if (this.tipo === 'Ingresos') {
-      this.periodo == 'dia' ? this.getDatosDiarios(this.parking, fecha).then(x => this.messageService.hideLoading()) :
-        this.periodo == 'mes' ? this.getDatosMes(this.parking, mes, anio).then(x => this.messageService.hideLoading()) :
-          this.periodo == 'anio' ? this.getDatosAnio(this.parking, anio).then(x => this.messageService.hideLoading()) : false
+      this.periodo == 'dia' ? this.getDatosDiarios(this.parking, fecha).then(x => this.message.hideLoading()) :
+        this.periodo == 'mes' ? this.getDatosMes(this.parking, mes, anio).then(x => this.message.hideLoading()) :
+          this.periodo == 'anio' ? this.getDatosAnio(this.parking, anio).then(x => this.message.hideLoading()) : false
     } else if (this.tipo === 'Flujo') {
-      this.periodo == 'dia' ? this.getDatosFlujoDiarios(this.parking, fecha).then(x => this.messageService.hideLoading()) :
-        this.periodo == 'mes' ? this.getDatosFlujoMes(this.parking, mes, anio).then(x => this.messageService.hideLoading()) :
-          this.periodo == 'anio' ? this.getDatosFlujoAnio(this.parking, anio).then(x => this.messageService.hideLoading()) : false
+      this.periodo == 'dia' ? this.getDatosFlujoDiarios(this.parking, fecha).then(x => this.message.hideLoading()) :
+        this.periodo == 'mes' ? this.getDatosFlujoMes(this.parking, mes, anio).then(x => this.message.hideLoading()) :
+          this.periodo == 'anio' ? this.getDatosFlujoAnio(this.parking, anio).then(x => this.message.hideLoading()) : false
     } else if (this.tipo === 'Cortesias') {
-      this.periodo == 'dia' ? this.getDatosCortesiasDiarios(this.datosUsuarioLogeado.id, fecha).then(x => this.messageService.hideLoading()) :
-        this.periodo == 'mes' ? this.getDatosCortesiasMes(this.datosUsuarioLogeado.id, mes, anio).then(x => this.messageService.hideLoading()) :
-          this.periodo == 'anio' ? this.getDatosCortesiasAnio(this.datosUsuarioLogeado.id, anio).then(x => this.messageService.hideLoading()) : false
+      this.periodo == 'dia' ? this.getDatosCortesiasDiarios(this.datosUsuarioLogeado.id, fecha).then(x => this.message.hideLoading()) :
+        this.periodo == 'mes' ? this.getDatosCortesiasMes(this.datosUsuarioLogeado.id, mes, anio).then(x => this.message.hideLoading()) :
+          this.periodo == 'anio' ? this.getDatosCortesiasAnio(this.datosUsuarioLogeado.id, anio).then(x => this.message.hideLoading()) : false
     } else if (this.tipo === 'CortesiasEstacionarias') {
       if (this.periodo == 'dia') {
         this.getDatosCortesiasEstacionariasDiarios(
@@ -481,7 +481,7 @@ export class BarChartComponent implements OnInit {
 
   //Entradas
   getDatosDiarios(parkingId: string, fecha: string) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.dashboardService
       .getDailyEntries(parkingId, fecha)
       .toPromise()
@@ -529,7 +529,7 @@ export class BarChartComponent implements OnInit {
           }
         }
 
-        this.messageService.hideLoading()
+        this.message.hideLoading()
       })
   }
 
@@ -1136,5 +1136,9 @@ export class BarChartComponent implements OnInit {
           }
         }
       })
+  }
+
+  ngOnDestroy(): void {
+    this.parking = ''
   }
 }

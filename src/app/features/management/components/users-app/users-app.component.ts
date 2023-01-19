@@ -1,26 +1,14 @@
-import {
-  AfterViewInit,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild
-} from '@angular/core'
-import { environment } from '../../../../../environments/environment'
-import { Subject } from 'rxjs'
-import { NewUserModel, updateUserApp } from '../users/models/newUserModel'
-import { DataTableDirective } from 'angular-datatables'
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators
-} from '@angular/forms'
-import { UserService } from '../users/services/user.service'
-import { MessageService } from '../../../../shared/services/message.service'
-import { PermissionsService } from '../../../../shared/services/permissions.service'
-import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { UtilitiesService } from '../../../../shared/services/utilities.service'
+import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core'
+import {environment} from '../../../../../environments/environment'
+import {Subject} from 'rxjs'
+import {NewUserModel, updateUserApp} from '../users/models/newUserModel'
+import {DataTableDirective} from 'angular-datatables'
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms'
+import {UserService} from '../users/services/user.service'
+import {MessageService} from '../../../../shared/services/message.service'
+import {PermissionsService} from '../../../../shared/services/permissions.service'
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap'
+import {UtilitiesService} from '../../../../shared/services/utilities.service'
 
 @Component({
   selector: 'app-users-app',
@@ -36,7 +24,9 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
   dtElement!: DataTableDirective
   dtTrigger: Subject<any> = new Subject()
   formGroup: UntypedFormGroup
+  appUserForm: UntypedFormGroup
   users: NewUserModel[] = []
+  dtOptions: any = {};
 
   constructor(
     private userService: UserService,
@@ -46,29 +36,47 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
     private modal: NgbModal,
     private utilitiesService: UtilitiesService
   ) {
-    this.formGroup = formBuilder.group({ filter: [''] })
-  }
-
-  get dtOptions() {
-    return DataTableOptions.getSpanishOptions(10)
+    this.formGroup = formBuilder.group({filter: ['']})
+    this.appUserForm = this.createEditUserAppForm()
   }
 
   get formUserAppValues(): updateUserApp {
     return {
-      id: this.formGroup.get('id')?.value,
-      name: this.formGroup.get('name')?.value,
-      last_name: this.formGroup.get('last_name')?.value,
-      email: this.formGroup.get('email')?.value,
-      phone_number: this.formGroup.get('phone')?.value
+      id: this.appUserForm.get('id')?.value,
+      name: this.appUserForm.get('name')?.value,
+      last_name: this.appUserForm.get('last_name')?.value,
+      email: this.appUserForm.get('email')?.value,
+      phone_number: this.appUserForm.get('phone')?.value
     }
   }
 
   ngOnInit(): void {
+
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      processing: true,
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'copyHtml5',
+          exportOptions: {
+            columns: ':visible'
+          }
+        },
+        {
+          extend: 'excelHtml5',
+          exportOptions: {
+            columns: ':visible'
+          }
+        },
+      ]
+    };
     this.getUsersApp()
-    this.subject.subscribe((user: NewUserModel) => {
-      this.getUsersApp()
+    this.subject.subscribe(async (user: NewUserModel) => {
+      await this.getUsersApp()
     })
-    this.formGroup = this.createEditUserAppForm()
+
   }
 
   ifHaveAction(action: string) {
@@ -115,7 +123,7 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async EditUserApp() {
-    if (this.formGroup.invalid) {
+    if (this.appUserForm.invalid) {
       this.message.error('', 'Datos no válidos o faltantes')
       return
     }
@@ -125,34 +133,34 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
       .toPromise()
       .then((data) => {
         if (data.success) {
-          this.message.infoTimeOut('Se guardaron los cambios correctamente')
           this.getUsersApp()
           this.modal.dismissAll()
         } else {
           this.message.error('', data.message)
         }
-      })
+      }).then(() => this.message.OkTimeOut())
   }
 
-  open(contenido: any, user: NewUserModel) {
-    this.formGroup.controls['name'].setValue(user.name)
-    this.formGroup.controls['last_name'].setValue(user.last_name)
-    this.formGroup.controls['email'].setValue(user.email)
-    this.formGroup.controls['phone'].setValue(user.phone_number)
-    this.formGroup.controls['id'].setValue(user.id)
+  open(user: NewUserModel) {
+    this.appUserForm.setValue({
+      id: user.id,
+      name: user.name,
+      last_name: user.last_name,
+      email: user.email,
+      phone: user.phone_number
+    })
     this.getEmailEdit(user)
-    this.modal.open(contenido)
   }
 
-  private getUsersApp() {
-    this.userService
+  private async getUsersApp() {
+    this.message.showLoading()
+    return this.userService
       .getUsersApp()
       .toPromise()
       .then((data) => {
         this.users = data.data.users
         this.rerender()
-        this.message.hideLoading()
-      })
+      }).then(() => this.message.hideLoading())
   }
 
   private rerender() {
@@ -175,8 +183,7 @@ export class UsersAppComponent implements OnInit, OnDestroy, AfterViewInit {
         ]
       ],
       phone: [
-        '',
-        [Validators.required]
+        ''
       ]
     })
   }

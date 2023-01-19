@@ -1,16 +1,17 @@
-<div [formGroup]="formGroup" class="m-1">
+<div [formGroup] = "formGroup"
+     class = "m-1">
   <input
-    [attr.name]="controlName"
-    autocomplete="off"
-    class="btn-check"
+    [attr.name] = "controlName"
     [attr.readonly] = 'true'
+    autocomplete = "off"
+    class = "btn-check"
     formControlName = '{{controlName}}'
-    id="{{randomString}}"
-    type="radio"
-    value="{{value}}">
+    id = "{{randomString}}"
+    type = "radio"
+    value = "{{value}}">
   <label
-    class="btn btn-outline-primary"
-    for="{{randomString}}">{{desc}}</label>
-  <small *ngIf="controlInvalid(controlName)"
-         class="text-danger animate__animated animate__fadeIn">*El valor no es válido</small>
+    class = "btn btn-outline-primary"
+    for = "{{randomString}}">{{desc}}</label>
+  <small *ngIf = "controlInvalid(controlName)"
+         class = "text-danger animate__animated animate__fadeIn">*El valor no es válido</small>
 </div>

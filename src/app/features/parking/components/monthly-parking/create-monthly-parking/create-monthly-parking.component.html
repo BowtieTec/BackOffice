@@ -9,16 +9,6 @@
         <div class = "row justify-content-center mb-4 ">
           <div class = "col-md-12 col-sm-12">
             <div class = "row justify-content-center ">
-              <div class = "col-sm-12" >
-                <div class = "m-3 relative " >
-                  <app-select-container
-                    [data] = "this.allParking"
-                    *ngIf='this.isSudo'
-                    [formGroup] = "this.monthlyForm"
-                    controlName = "parkingId"
-                    name = "Parqueos" ></app-select-container >
-                </div >
-              </div >
               <div class = "col-xl-6 col-lg-6 col-md-12 text-center mb-4 animate__animated animate__fadeInLeft">
                 <h6>Seleccione un usuario</h6>
                 <div class = "input-group mb-3">
@@ -66,8 +56,8 @@
                                aria-label = "Número de teléfono"
                                class = "inputClass form-control"
                                formControlName = "telephone"
+                               maxLength = "13"
                                placeholder = "Número de teléfono"
-                               maxLength ="13"
                                type = "number">
                         <button (click) = "searchUser()"
                                 class = "btn btn-primary btn-input"

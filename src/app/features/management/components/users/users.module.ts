@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core'
-import { CommonModule } from '@angular/common'
-import { SharedModule } from '../../../../shared/shared.module'
-import { UsersRoutingModule } from './users-routing.module'
-import { DataTablesModule } from 'angular-datatables'
+import {NgModule} from '@angular/core'
+import {CommonModule} from '@angular/common'
+import {SharedModule} from '../../../../shared/shared.module'
+import {UsersRoutingModule} from './users-routing.module'
+import {DataTablesModule} from 'angular-datatables'
 
 @NgModule({
   imports: [
@@ -13,4 +13,5 @@ import { DataTablesModule } from 'angular-datatables'
     DataTablesModule
   ]
 })
-export class UsersModule {}
+export class UsersModule {
+}

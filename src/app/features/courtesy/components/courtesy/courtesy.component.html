@@ -34,35 +34,25 @@
                 name = 'Nombre'>
               </app-input-container>
             </div>
-            <div class = 'col-xl-6 col-lg-6  col-sm-12'>
+            <div class = 'col-xl-6 col-lg-6 col-sm-12'>
               <app-select-container
                 [data] = 'courtesyTypes'
-                (change) = "this.getNewConditions()"
                 [formGroup] = 'newCourtesyForm'
                 controlName = 'type'
                 name = 'Tipo de cortesia'>
               </app-select-container>
             </div>
-          </div>
-          <div class = 'row justify-content-center'>
-            <div class = ' col-xl-6 col-lg-6  col-sm-12'>
-              <app-input-container
-                [formGroup] = 'newCourtesyForm'
-                controlName = 'quantity'
-                name = 'Cantidad de cortesías'
-                textInfo = 'Debe de crear mas de una cortesía'
-                type = 'number'></app-input-container>
-            </div>
+
             <div class = 'col-xl-6 col-lg-6 col-sm-12'>
               <app-input-container
                 [formGroup] = 'newCourtesyForm'
                 controlName = 'value'
-                name = '{{this.InputValueFromNewCourtesy}}'
+                name = '{{this.inputValueFromNewCourtesy()}}'
                 type = 'number'>
               </app-input-container>
             </div>
-            <div class = 'col-xl-6 col-lg-6 col-sm-12 animate__animated animate__fadeInDown'
-                 *ngIf = 'this.getCourtesy().type == 4'>
+            <div *ngIf = 'this.getCourtesy().type == 4'
+                 class = 'col-xl-6 col-lg-6 col-sm-12'>
               <app-input-container
                 [formGroup] = 'newCourtesyForm'
                 controlName = 'valueTimeMinutes'
@@ -70,8 +60,6 @@
                 type = 'number'>
               </app-input-container>
             </div>
-          </div>
-          <div class = 'row justify-content-center'>
             <div class = 'col-xl-6 col-lg-6 col-sm-12'>
               <app-select-container
                 [data] = 'typeOfCondition'
@@ -82,7 +70,7 @@
             </div>
             <div
               *ngIf = 'this.conditionValue == 2 || this.conditionValue == 3'
-              class = 'col-xl-6 col-lg-6 col-sm-12 animate__animated animate__fadeInDown'>
+              class = 'col-xl-6 col-lg-6 col-sm-12'>
               <app-input-container
                 [formGroup] = 'newCourtesyForm'
                 controlName = 'cantHours'
@@ -98,17 +86,14 @@
                 name = 'Local'>
               </app-select-container>
             </div>
-          </div>
-          <div class = 'row justify-content-center'>
-            <div class = 'col-xl-6 col-lg-6 col-sm-12'>
-              <app-select-container
-                (change) = 'getCourtesies(this.parkingSelected)'
-                *ngIf = 'isSudo'
-                [data] = 'allParking'
-                [formGroup] = 'newCourtesyForm'
-                controlName = 'parkingId'
-                name = 'Parqueos'>
-              </app-select-container>
+              <div class = ' col-xl-6 col-lg-6  col-sm-12'>
+                <app-input-container
+                  [formGroup] = 'newCourtesyForm'
+                  controlName = 'quantity'
+                  name = 'Cantidad de cortesías'
+                  textInfo = 'Debe de crear mas de una cortesía'
+                  type = 'number'></app-input-container>
+              </div>
             </div>
           </div>
           <div class = 'row justify-content-center'>
@@ -125,11 +110,11 @@
         </div>
       </div>
     </div>
-  </div>
 </form>
 <div
   *ngIf = 'ifHaveAction(listCourtesy)'
-  class = 'col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+  class = 'col-lg-12 col-md-12 col-sm-12 col-xs-12'
+  style = "z-index: 0;">
   <div class = 'panels'>
     <div class = 'row'>
       <div class = 'col-lg-12'>

@@ -6,6 +6,18 @@ body {
   font-size: 12px;
 }
 
+td {
+  text-align: center;
+}
+
+th {
+  text-align: center !important;
+}
+
+table.dataTable.thead.tr.th {
+  text-align: center;
+}
+
 .dt-button {
   background: #fff;
   color: #021C70;
@@ -828,11 +840,11 @@ nav > .nav-link.active {
   min-width: 30px !important;
 }
 
-.ng-select-container{
-  background:#f9f9f9!important;
-  border: 0!important;
-  border-bottom: 1px solid #c6c6c6!important;
-  border-radius: 0!important;
+.ng-select-container {
+  background: #f9f9f9 !important;
+  border: 0 !important;
+  border-bottom: 1px solid #c6c6c6 !important;
+  border-radius: 0 !important;
 }
 
 @media (max-width: 800px) {
@@ -896,7 +908,7 @@ nav > .nav-link.active {
   .headerDashboard {
     width: 100vw !important;
     min-height: 75px;
-    z-index: 2;
+    z-index: 4;
   }
 
   .search {

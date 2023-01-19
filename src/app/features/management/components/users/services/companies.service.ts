@@ -16,7 +16,7 @@ export class CompaniesService {
   companies: CompaniesModel[] = []
 
   constructor(
-    private messageService: MessageService,
+    private message: MessageService,
     private http: HttpClient,
     private permissions: PermissionsService
   ) {
@@ -39,16 +39,16 @@ export class CompaniesService {
     if (!this.permissions.ifHaveAction('listLocal')) {
       return NEVER
     }
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .get<ResponseModel>(`${this.apiUrl}backoffice/company/${parkingId}`)
       .pipe(
         map((x: ResponseModel) => {
           if (x.success) {
-            this.messageService.hideLoading()
+            this.message.hideLoading()
             return x.data
           } else {
-            this.messageService.error('', x.message)
+            this.message.error('', x.message)
             return []
           }
         })
@@ -56,48 +56,48 @@ export class CompaniesService {
   }
 
   createCompany(company: CompaniesModel, callback: () => void) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .post<ResponseModel>(`${this.apiUrl}backoffice/company`, company)
       .pipe(
         map((x) => {
           if (x.success) {
             callback()
-            this.messageService.OkTimeOut()
+            this.message.OkTimeOut()
           } else {
-            this.messageService.error(x.message)
+            this.message.error(x.message)
           }
         })
       )
   }
 
   editCompany(company: CompaniesModel, callback: () => void) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .put<ResponseModel>(`${this.apiUrl}backoffice/company`, company)
       .pipe(
         map((x) => {
           if (x.success) {
             callback()
-            this.messageService.OkTimeOut()
+            this.message.OkTimeOut()
           } else {
-            this.messageService.error(x.message)
+            this.message.error(x.message)
           }
         })
       )
   }
 
   deleteCompany(id: string, callback: () => void) {
-    this.messageService.showLoading()
+    this.message.showLoading()
     return this.http
       .delete<ResponseModel>(`${this.apiUrl}backoffice/company/${id}`)
       .pipe(
         map((x) => {
           if (x.success) {
             callback()
-            this.messageService.OkTimeOut()
+            this.message.OkTimeOut()
           } else {
-            this.messageService.error(x.message)
+            this.message.error(x.message)
           }
         })
       )

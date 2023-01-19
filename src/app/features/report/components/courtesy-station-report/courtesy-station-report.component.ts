@@ -1,23 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
-import { DataTableDirective } from 'angular-datatables'
-import { Subject } from 'rxjs'
-import { MessageService } from '../../../../shared/services/message.service'
-import { DataTableOptions } from '../../../../shared/model/DataTableOptions'
-import { ReportService } from '../service/report.service'
-import { UtilitiesService } from '../../../../shared/services/utilities.service'
-import { AuthService } from '../../../../shared/services/auth.service'
-import { PermissionsService } from '../../../../shared/services/permissions.service'
-import { environment } from 'src/environments/environment'
-import { jsPDF } from 'jspdf'
-import { DxDataGridComponent } from 'devextreme-angular'
-import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter'
-import { Workbook } from 'exceljs'
-import { saveAs } from 'file-saver'
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core'
+import {DataTableDirective} from 'angular-datatables'
+import {Subject} from 'rxjs'
+import {MessageService} from '../../../../shared/services/message.service'
+import {DataTableOptions} from '../../../../shared/model/DataTableOptions'
+import {ReportService} from '../service/report.service'
+import {UtilitiesService} from '../../../../shared/services/utilities.service'
+import {AuthService} from '../../../../shared/services/auth.service'
+import {PermissionsService} from '../../../../shared/services/permissions.service'
+import {environment} from 'src/environments/environment'
+import {jsPDF} from 'jspdf'
+import {DxDataGridComponent} from 'devextreme-angular'
+import {exportDataGrid as exportDataGridToPdf} from 'devextreme/pdf_exporter'
+import {Workbook} from 'exceljs'
+import {saveAs} from 'file-saver'
 
-import { ParkingService } from '../../../parking/services/parking.service'
-import { ParkingModel } from '../../../parking/models/Parking.model'
+import {ParkingService} from '../../../parking/services/parking.service'
 import * as logoFile from '../logoEbi'
-import { FormBuilder, FormGroup } from '@angular/forms'
+import {FormBuilder, FormGroup} from '@angular/forms'
 
 export interface desc {
   fecha: Date
@@ -34,7 +33,7 @@ export interface desc {
 })
 export class CourtesyStationReportComponent implements OnInit {
   //@ViewChild(DataTableDirective)
-  @ViewChild(DxDataGridComponent, { static: false })
+  @ViewChild(DxDataGridComponent, {static: false})
   dataGrid!: DxDataGridComponent
   dtElement!: DataTableDirective
   dtOptions: DataTables.Settings = {}
@@ -44,7 +43,6 @@ export class CourtesyStationReportComponent implements OnInit {
   report: desc[] = []
   dataSource: any
   now = new Date()
-  allParking: ParkingModel[] = Array<ParkingModel>()
   verTodosLosParqueosReport = environment.verTodosLosParqueosReport
   @ViewChild('inputParking') inputParking!: ElementRef
   fechaActual = new Date().toISOString().split('T')[0]
@@ -52,7 +50,7 @@ export class CourtesyStationReportComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private reportService: ReportService,
-    private messageService: MessageService,
+    private message: MessageService,
     private utilitiesService: UtilitiesService,
     private authService: AuthService,
     private permissionService: PermissionsService,
@@ -70,15 +68,9 @@ export class CourtesyStationReportComponent implements OnInit {
   ngOnInit(): void {
     this.dtOptions = DataTableOptions.getSpanishOptions(10)
 
-    this.authService.user$.subscribe(({ parkingId }) => {
+    this.authService.user$.subscribe(({parkingId}) => {
       this.reportForm.get('parkingId')?.setValue(parkingId)
       this.getReport()
-    })
-    this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParking = [
-        ...parkingLot,
-        { id: '0', name: '-- Todos los parqueos --' }
-      ]
     })
   }
 
@@ -87,13 +79,13 @@ export class CourtesyStationReportComponent implements OnInit {
   }
 
   getReport() {
-    const { startDate, endDate, parkingId } = this.reportForm.value
+    const {startDate, endDate, parkingId} = this.reportForm.value
     let _startDate =
       new Date(startDate).toISOString().split('T')[0] + 'T00:00:00.000Z'
     let _endDate =
       new Date(endDate).toISOString().split('T')[0] + 'T23:59:59.999Z'
     if (endDate < startDate) {
-      this.messageService.error(
+      this.message.error(
         '',
         'La fecha de inicio debe ser mayor a la fecha fin'
       )
@@ -108,20 +100,20 @@ export class CourtesyStationReportComponent implements OnInit {
           this.dataSource = data.data
           this.rerender()
         } else {
-          this.messageService.error('', data.message)
+          this.message.error('', data.message)
         }
       })
       .then(() => {
-        this.messageService.hideLoading()
+        this.message.hideLoading()
       })
   }
 
   onExporting(e: any) {
     if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
+      this.message.infoTimeOut('No hay información para exportar')
       return
     }
-    const { startDate, endDate, parkingId } = this.reportForm.value
+    const {startDate, endDate, parkingId} = this.reportForm.value
     const header = [
       '',
       'Cortesía',
@@ -141,38 +133,29 @@ export class CourtesyStationReportComponent implements OnInit {
     worksheet.addRow([])
 
     const busienssRow = worksheet.addRow(['', '', '', 'ebiGO'])
-    busienssRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    busienssRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    busienssRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    busienssRow.alignment = {horizontal: 'center', vertical: 'middle'}
     busienssRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
     worksheet.mergeCells('D2:J3')
-    let ParqueoReporte = 'Todos los parqueos'
-    if (parkingId != '0') {
-      const parqueoEncontrado = this.allParking.find(
-        (parqueos) => parqueos.id == parkingId
-      )
-      if (parqueoEncontrado) {
-        ParqueoReporte = parqueoEncontrado.name
-      }
-    }
-    const addressRow = worksheet.addRow(['', '', '', ParqueoReporte])
-    addressRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    addressRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    const addressRow = worksheet.addRow(['', '', '', this.authService.getParking().name])
+    addressRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    addressRow.alignment = {horizontal: 'center', vertical: 'middle'}
     addressRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -183,15 +166,15 @@ export class CourtesyStationReportComponent implements OnInit {
       '',
       'Reporte - Cortesias estacionarias'
     ])
-    titleRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    titleRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    titleRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    titleRow.alignment = {horizontal: 'center', vertical: 'middle'}
     titleRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -205,15 +188,15 @@ export class CourtesyStationReportComponent implements OnInit {
     worksheet.addImage(logo, 'B3:C6')
     worksheet.addRow([])
     const infoRow = worksheet.addRow(['', 'Información General'])
-    infoRow.font = { name: 'Calibri', family: 4, size: 11, bold: true }
-    infoRow.alignment = { horizontal: 'center', vertical: 'middle' }
+    infoRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
+    infoRow.alignment = {horizontal: 'center', vertical: 'middle'}
     infoRow.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -230,10 +213,10 @@ export class CourtesyStationReportComponent implements OnInit {
     header1.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -246,17 +229,17 @@ export class CourtesyStationReportComponent implements OnInit {
       '',
       '',
       'Documento generado: ' +
-        new Date().toLocaleDateString('es-GT') +
-        '  ' +
-        new Date().toLocaleTimeString()
+      new Date().toLocaleDateString('es-GT') +
+      '  ' +
+      new Date().toLocaleTimeString()
     ])
     header2.eachCell((cell, number) => {
       if (number > 1) {
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -271,14 +254,14 @@ export class CourtesyStationReportComponent implements OnInit {
         cell.fill = {
           type: 'pattern',
           pattern: 'solid',
-          fgColor: { argb: 'FFFFFF00' },
-          bgColor: { argb: 'FF0000FF' }
+          fgColor: {argb: 'FFFFFF00'},
+          bgColor: {argb: 'FF0000FF'}
         }
         cell.border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          bottom: { style: 'thin' },
-          right: { style: 'thin' }
+          top: {style: 'thin'},
+          left: {style: 'thin'},
+          bottom: {style: 'thin'},
+          right: {style: 'thin'}
         }
       }
     })
@@ -299,10 +282,10 @@ export class CourtesyStationReportComponent implements OnInit {
       row.eachCell((cell, number) => {
         if (number > 1) {
           cell.border = {
-            top: { style: 'thin' },
-            left: { style: 'thin' },
-            bottom: { style: 'thin' },
-            right: { style: 'thin' }
+            top: {style: 'thin'},
+            left: {style: 'thin'},
+            bottom: {style: 'thin'},
+            right: {style: 'thin'}
           }
         }
       })
@@ -345,7 +328,7 @@ export class CourtesyStationReportComponent implements OnInit {
 
   exportGrid() {
     if (this.report.length == 0) {
-      this.messageService.infoTimeOut('No hay información para exportar')
+      this.message.infoTimeOut('No hay información para exportar')
       return
     }
     const doc = new jsPDF()

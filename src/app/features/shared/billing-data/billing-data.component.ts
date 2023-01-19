@@ -1,13 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { MessageService } from '../../../shared/services/message.service'
-import { ParkingService } from '../../parking/services/parking.service'
-import { UtilitiesService } from '../../../shared/services/utilities.service'
-import { SettingsOptionsModel } from '../../parking/models/SettingsOption.model'
-import { CreateParkingStepFourModel } from '../../parking/models/CreateParking.model'
-import { Router } from '@angular/router'
-import { ParkingModel } from '../../parking/models/Parking.model'
-import { AuthService } from '../../../shared/services/auth.service'
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core'
+import {FormBuilder, FormGroup, Validators} from '@angular/forms'
+import {MessageService} from '../../../shared/services/message.service'
+import {ParkingService} from '../../parking/services/parking.service'
+import {UtilitiesService} from '../../../shared/services/utilities.service'
+import {SettingsOptionsModel} from '../../parking/models/SettingsOption.model'
+import {CreateParkingStepFourModel} from '../../parking/models/CreateParking.model'
+import {Router} from '@angular/router'
+import {AuthService} from '../../../shared/services/auth.service'
 
 @Component({
   selector: 'app-billing-data',
@@ -17,7 +16,6 @@ import { AuthService } from '../../../shared/services/auth.service'
 export class BillingDataComponent implements OnInit {
   stepFourForm: FormGroup = this.createForm()
   settingsOptions: SettingsOptionsModel
-  allParking: ParkingModel[] = []
 
   @Input() parkingId!: string
   @Input() showNavigationButtons = true
@@ -148,7 +146,7 @@ export class BillingDataComponent implements OnInit {
       this.parkingService.parkingStepFour.parkingId = this.parkingId
       this.parkingService.setStepFour().subscribe((data) => {
         if (data.success) {
-          this.message.Ok('Parqueo guardado.')
+          this.message.OkTimeOut('Parqueo guardado.')
         } else {
           this.utilitiesService.markAsTouched(this.stepFourForm)
           this.message.error('', data.message)
@@ -165,10 +163,7 @@ export class BillingDataComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.isCreatingParking) {
-      this.parkingService.parkingLot$.subscribe((parkingLot) => {
-        this.allParking = parkingLot
-      })
-      this.authService.user$.subscribe(({ parkingId }) => {
+      this.authService.user$.subscribe(({parkingId}) => {
         this.parkingId = parkingId
         this.stepFourForm.get('parkingId')?.setValue(parkingId)
         this.parkingIdSelected().then()
@@ -187,9 +182,9 @@ export class BillingDataComponent implements OnInit {
       business_name: this.stepFourForm.controls['business_name'].value,
       currency: this.stepFourForm.controls['currency'].value,
       is_our_bac_credential:
-        this.stepFourForm.controls['is_our_bac_credential'].value,
+      this.stepFourForm.controls['is_our_bac_credential'].value,
       is_our_visa_credential:
-        this.stepFourForm.controls['is_our_visa_credential'].value,
+      this.stepFourForm.controls['is_our_visa_credential'].value,
       nit: this.stepFourForm.controls['nit'].value,
       pay_method: this.stepFourForm.controls['pay_method'].value,
       visa_credential: {
@@ -197,7 +192,7 @@ export class BillingDataComponent implements OnInit {
         terminal: this.stepFourForm.controls['terminal'].value,
         merchant_user: this.stepFourForm.controls['merchant_id_visa'].value,
         merchant_password:
-          this.stepFourForm.controls['merchant_pass_visa'].value
+        this.stepFourForm.controls['merchant_pass_visa'].value
       },
       bac_credential: {
         url: this.stepFourForm.controls['url_bac'].value,
@@ -205,7 +200,7 @@ export class BillingDataComponent implements OnInit {
         acquirer_id: this.stepFourForm.controls['acquirer_id_bac'].value,
         pmtnpssw: this.stepFourForm.controls['pmtnpssw_bac'].value,
         purchase_currency:
-          this.stepFourForm.controls['purchase_currency_bac'].value
+        this.stepFourForm.controls['purchase_currency_bac'].value
       }
     }
   }

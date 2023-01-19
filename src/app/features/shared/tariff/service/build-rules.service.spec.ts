@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing'
+import {TestBed} from '@angular/core/testing'
 
-import { BuildRulesService } from './build-rules.service'
+import {BuildRulesService} from './build-rules.service'
 
 describe('BuildRulesService', () => {
   let service: BuildRulesService

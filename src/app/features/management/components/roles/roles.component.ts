@@ -4,7 +4,6 @@ import {UtilitiesService} from '../../../../shared/services/utilities.service'
 import {MessageService} from '../../../../shared/services/message.service'
 import {PermissionSaveModel, PermissionsModel} from './models/Permissions.model'
 import {RolesService} from './services/roles.service'
-import {RolesModel} from '../users/models/RolesModel'
 
 @Component({
   selector: 'app-roles',
@@ -14,18 +13,17 @@ import {RolesModel} from '../users/models/RolesModel'
 export class RolesComponent implements OnInit {
   allPermissions: PermissionsModel[] = []
   roleIdSelected = ''
-  roles: RolesModel[] = this.userService.roles
 
   constructor(
     private userService: UserService,
     private utilitiesService: UtilitiesService,
     private roleService: RolesService,
-    private messageServices: MessageService
+    private message: MessageService
   ) {
   }
 
   get Roles() {
-    return this.roles
+    return this.userService.roles
   }
 
   get getModules() {
@@ -37,13 +35,13 @@ export class RolesComponent implements OnInit {
   }
 
   getAllPermissions() {
-    this.messageServices.showLoading()
+    this.message.showLoading()
     this.roleService
       .getAllPermissions()
       .toPromise()
       .then((data) => {
         this.allPermissions = data.data.permissions
-        this.messageServices.hideLoading()
+        this.message.hideLoading()
       })
   }
 
@@ -52,19 +50,21 @@ export class RolesComponent implements OnInit {
   }
 
   changeRole() {
-    this.messageServices.showLoading()
-    this.getPermissionsForRole(this.roleIdSelected).then(
-      (data: PermissionsModel[]) => {
-        this.cleanAllPermission()
-        data.forEach((item: any) => {
-          const found = this.allPermissions.find((x) => x.id == item.id)
-          if (found) {
-            found.checked = true
-          }
-        })
-        this.messageServices.hideLoading()
-      }
-    )
+    this.message.showLoading()
+    if (this.roleIdSelected != '') {
+      this.getPermissionsForRole(this.roleIdSelected).then(
+        (data: PermissionsModel[]) => {
+          this.cleanAllPermission()
+          data.forEach((item: any) => {
+            const found = this.allPermissions.find((x) => x.id == item.id)
+            if (found) {
+              found.checked = true
+            }
+          })
+          this.message.hideLoading()
+        }
+      )
+    }
   }
 
   cleanAllPermission() {
@@ -79,7 +79,7 @@ export class RolesComponent implements OnInit {
         if (data.success) {
           return data.data.roles.find((x: any) => x.id == id).permissions
         } else {
-          this.messageServices.error(
+          this.message.error(
             '',
             'No se pudo cargar la información solicitada. Error: ' +
             data.message
@@ -106,16 +106,16 @@ export class RolesComponent implements OnInit {
         .savePermissionsForRole(permissionsToSave)
         .subscribe((data) => {
           if (data.success) {
-            this.messageServices.OkTimeOut()
+            this.message.OkTimeOut()
           } else {
-            this.messageServices.error(
+            this.message.error(
               '',
               'Los permisos no pudieron guardarse. ' + data.message
             )
           }
         })
     } else {
-      this.messageServices.warning('Debe seleccionar un rol para continuar')
+      this.message.warning('Debe seleccionar un rol para continuar')
     }
   }
 }

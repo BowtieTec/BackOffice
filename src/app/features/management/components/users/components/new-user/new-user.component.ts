@@ -1,18 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core'
-import { UserService } from '../../services/user.service'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { UtilitiesService } from '../../../../../../shared/services/utilities.service'
-import { NewUserModel } from '../../models/newUserModel'
-import { MessageService } from '../../../../../../shared/services/message.service'
-import { Subject } from 'rxjs'
-import { ParkingModel } from '../../../../../parking/models/Parking.model'
-import { ParkingService } from '../../../../../parking/services/parking.service'
-import { PermissionsService } from '../../../../../../shared/services/permissions.service'
-import { environment } from '../../../../../../../environments/environment'
-import { AuthService } from '../../../../../../shared/services/auth.service'
-import { CompaniesService } from '../../services/companies.service'
-import { CompaniesModel } from '../../models/companies.model'
-import { Roles } from '../../utilities/User'
+import {Component, Input, OnInit} from '@angular/core'
+import {UserService} from '../../services/user.service'
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms'
+import {UtilitiesService} from '../../../../../../shared/services/utilities.service'
+import {NewUserModel} from '../../models/newUserModel'
+import {MessageService} from '../../../../../../shared/services/message.service'
+import {Subject} from 'rxjs'
+import {ParkingService} from '../../../../../parking/services/parking.service'
+import {PermissionsService} from '../../../../../../shared/services/permissions.service'
+import {environment} from '../../../../../../../environments/environment'
+import {AuthService} from '../../../../../../shared/services/auth.service'
+import {CompaniesService} from '../../services/companies.service'
+import {CompaniesModel} from '../../models/companies.model'
+import {Roles} from '../../utilities/User'
+import {ParkingModel} from "../../../../../parking/models/Parking.model";
 
 @Component({
   selector: 'app-new-user',
@@ -23,16 +23,17 @@ export class NewUserComponent implements OnInit {
   @Input() subject = new Subject<NewUserModel>()
   newUserForm: FormGroup
   isEdit = false
-  allParking: ParkingModel[] = []
   changeParkingAtCreateUser: string = environment.changeParkingAtCreateUser
   parkingId: string = this.authService.getParking().id
   companies: CompaniesModel[] = []
+  otherParkingLot: ParkingModel[] = this.authService.getUser().user.otherParkings
+  otherParkingLogSelected: ParkingModel[] = []
 
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
     private utilitiesService: UtilitiesService,
-    private messageServices: MessageService,
+    private message: MessageService,
     private parkingService: ParkingService,
     private permissionService: PermissionsService,
     private authService: AuthService,
@@ -57,38 +58,44 @@ export class NewUserComponent implements OnInit {
     return this.permissionService.ifHaveAction(action)
   }
 
-  ngOnInit(): void {
-    this.subject.subscribe((user: NewUserModel) => {
-      this.messageServices.showLoading()
-      this.cleanForm()
-      if (user) {
-        this.clearPasswordValidations()
-        this.newUserForm.controls['name'].setValue(user.name)
-        this.newUserForm.controls['last_name'].setValue(user.last_name)
-        this.newUserForm.controls['email'].setValue(user.email)
-        this.newUserForm.controls['user'].setValue(user.user)
-        this.newUserForm.controls['password'].setValue(
-          'EstaPuedeOnoSerLaContraseña100&'
-        )
-        this.newUserForm.controls['role'].setValue(user.role)
-        this.newUserForm.controls['name'].setValue(user.name)
-        this.newUserForm.controls['parking'].setValue(
-          user.parking.id ? user.parking.id : this.authService.getParking().id
-        )
-        this.newUserForm.controls['id'].setValue(user.id)
-        this.isEdit = true
-        this.utilitiesService.markAsUnTouched(this.newUserForm)
-      }
-      this.messageServices.hideLoading()
+  fillFormWithUser(user: NewUserModel) {
+    this.newUserForm.patchValue({
+      name: user.name || '',
+      last_name: user.last_name || '',
+      email: user.email || '',
+      role: user.role.id || '',
+      user: user.user || '',
+      password: 'EstaPuedeOnoSerLaContraseña100&' || '',
+      company: user.company?.id || user.company || null,
+      parking: user.parking.id || this.authService.getParking().id,
+      id: user.id || null
     })
-    this.authService.user$.subscribe(({ parkingId }) => {
+    this.isEdit = true
+    this.utilitiesService.markAsUnTouched(this.newUserForm)
+  }
+
+  ngOnInit(): void {
+    this.addCheckboxes()
+    this.authService.user$.subscribe(async ({user, parkingId}) => {
+      this.message.showLoading()
       this.parkingId = parkingId
       this.newUserForm.get('parking')?.setValue(parkingId)
-      this.parkingId = parkingId
-      this.getCompanies().then()
+      this.clearAllCheckboxes()
+      await this.getCompanies()
+      this.message.hideLoading()
     })
-    this.parkingService.parkingLot$.subscribe((parkingLot) => {
-      this.allParking = parkingLot
+    this.subject.subscribe(async (user: NewUserModel | null) => {
+      if (user) {
+        this.cleanForm()
+        if (user) {
+          this.clearPasswordValidations()
+          this.fillFormWithUser(user)
+        }
+        if (user?.otherParkings) {
+          this.fillOtherParkingLotArrayCheckBox(user)
+        }
+        await this.authService.saveNewParking(user.parking)
+      }
     })
   }
 
@@ -96,21 +103,51 @@ export class NewUserComponent implements OnInit {
     return this.authService.isSudo
   }
 
+  selectDefaultCheckBox() {
+    this.getParkingLotsFormArray().controls.forEach((control: AbstractControl, index) => {
+      if (this.otherParkingLot[index].id === this.newUserForm.get('parking')?.value) {
+        control.setValue(true)
+        control.disable()
+        if (!this.otherParkingLogSelected.includes(this.otherParkingLot[index])) {
+          this.otherParkingLogSelected.push(this.otherParkingLot[index])
+        }
+      }
+    });
+  }
+
+  clearAllCheckboxes() {
+    this.getParkingLotsFormArray().controls.forEach((control: AbstractControl, index) => {
+      control.setValue(false)
+      control.enable()
+    });
+    this.otherParkingLogSelected = [];
+    this.selectDefaultCheckBox()
+  }
+
+  selectAllCheckboxes() {
+    this.getParkingLotsFormArray().controls.forEach((control: AbstractControl) => {
+      control.setValue(true);
+    });
+    this.otherParkingLogSelected = this.otherParkingLot;
+  }
+
   saveNewUser() {
-    this.messageServices.showLoading()
+    this.message.showLoading()
     if (this.newUserForm.invalid && !this.isEdit) {
-      this.messageServices.error('', 'Datos no válidos o faltantes')
+      this.message.error('', 'Datos no válidos o faltantes')
       return
     }
     let newUserValue: NewUserModel = this.newUserForm.getRawValue()
-    if(!this.selectedRoleIsCourtesy){
+    if (!this.selectedRoleIsCourtesy) {
       newUserValue.company = null
     }
     if (!newUserValue) {
       this.utilitiesService.markAsTouched(this.newUserForm)
-      this.messageServices.errorTimeOut('Datos incorrectos o faltantes.')
+      this.message.errorTimeOut('Datos incorrectos o faltantes.')
       return
     }
+    newUserValue.otherParkings = this.getOtherParkingLotsIdSelected()
+    console.log(newUserValue.otherParkings);
     if (this.isEdit) {
       this.newUserForm.get('password')?.clearValidators()
       delete newUserValue.password
@@ -121,24 +158,13 @@ export class NewUserComponent implements OnInit {
           if (data.success) {
             return data.data
           } else {
-            this.messageServices.error('', data.message)
+            this.message.error('', data.message)
           }
         })
         .then((data) => {
-          this.userService
-            .saveRole(this.newUserForm.getRawValue().role, data.admin.id)
-            .toPromise()
-            .then((dataRole) => {
-              if (dataRole.success) {
-                this.cleanForm()
-                this.messageServices.OkTimeOut('Guardado')
-              } else {
-                this.messageServices.error('', dataRole.message)
-              }
-            })
-            .then(() => {
-              this.subject.next()
-            })
+          this.cleanForm()
+          this.subject.next()
+          this.message.OkTimeOut('Usuario editado con éxito.')
         })
     } else {
       delete newUserValue.id
@@ -148,9 +174,9 @@ export class NewUserComponent implements OnInit {
         .toPromise()
         .then((data) => {
           if (data.success) {
-            this.messageServices.OkTimeOut('Guardado')
+            this.message.OkTimeOut('Guardado')
           } else {
-            this.messageServices.error('', data.message)
+            this.message.error('', data.message)
           }
           this.cleanForm()
           this.isEdit = false
@@ -180,6 +206,10 @@ export class NewUserComponent implements OnInit {
       ])
   }
 
+  getParkingLotsFormArray() {
+    return this.newUserForm.controls['otherParkings'] as FormArray;
+  }
+
   clearPasswordValidations() {
     this.newUserForm.get('password')?.clearValidators()
   }
@@ -188,14 +218,29 @@ export class NewUserComponent implements OnInit {
     this.newUserForm.reset()
     this.isEdit = false
     this.newUserForm.get('parking')?.setValue(this.parkingId)
-    this.newUserForm
-      .get('role')
-      ?.setValue('b5b821bb-f919-4bae-9b6d-75a144fe2082')
     this.addPasswordValidations()
+    this.clearAllCheckboxes()
   }
 
   controlInvalid(control: string): boolean {
     return this.utilitiesService.controlInvalid(this.newUserForm, control)
+  }
+
+  onChangeCheckbox(i: number, parking: ParkingModel, $event: Event) {
+    const checked = ($event.target as HTMLInputElement).checked;
+    if (checked) {
+      this.otherParkingLogSelected.push(parking)
+    } else {
+      this.otherParkingLogSelected = this.otherParkingLogSelected.filter((item) => item.id !== parking.id)
+    }
+  }
+
+  private addCheckboxes() {
+    this.otherParkingLot.forEach((item) => this.getParkingLotsFormArray().push(new FormControl({
+      value: true,
+      disabled: item.id === this.parkingId
+    })));
+
   }
 
   private createForm() {
@@ -218,9 +263,31 @@ export class NewUserComponent implements OnInit {
           Validators.pattern(environment.settings.passwordPattern)
         ]
       ],
-      role: ['b5b821bb-f919-4bae-9b6d-75a144fe2082', [Validators.required]],
+      role: [null, [Validators.required]],
       company: [],
-      parking: [this.parkingId, [Validators.required]]
+      parking: [this.parkingId, [Validators.required]],
+      otherParkings: new FormArray([])
     })
+  }
+
+  private fillOtherParkingLotArrayCheckBox(user: NewUserModel = this.authService.getUser().user as NewUserModel) {
+    this.otherParkingLot.forEach((item, index) => {
+      if (user.otherParkings?.find((obj: any) => obj.id === item.id)) {
+        this.getParkingLotsFormArray().controls[index].setValue(true);
+        this.otherParkingLogSelected.push(item)
+      } else {
+        this.getParkingLotsFormArray().controls[index].setValue(false);
+      }
+      if (user.parking.id === item.id) {
+        this.getParkingLotsFormArray().controls[index].disable()
+      } else {
+        this.getParkingLotsFormArray().controls[index].enable()
+      }
+
+    })
+  }
+
+  private getOtherParkingLotsIdSelected(): string[] {
+    return this.otherParkingLogSelected.map(x => x.id)
   }
 }

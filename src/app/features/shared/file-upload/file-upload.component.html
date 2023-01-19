@@ -10,14 +10,6 @@
       <span> <em class = 'fas fa-imges'></em></span> Archivos
     </div>
     <div class = 'container'>
-      <div *ngIf = 'isCreatingParking == false && this.getIsSudo()'
-           class = 'relative'>
-        <app-select-container
-          [data] = 'this.allParking'
-          [formGroup] = 'this.stepFourForm'
-          controlName = 'parkingId'
-          name = 'Parqueos'></app-select-container>
-      </div>
       <div class = 'relative'>
         <label class = 'labelInputFile'>Logo del parqueo:</label>
         <input (change) = 'onFileChangeLogo($event)'
