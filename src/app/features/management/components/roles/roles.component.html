@@ -1,8 +1,7 @@
-<form action = "">
-  <div class = "panels animate__animated animate__fadeInLeft">
-    <div class = "titleCards">
-      <span><em class = "fas fa-user"></em></span> Roles y permisos
-    </div>
+<app-panel-sub-module icon = "fas fa-user"
+                      title = "Roles y permisos">
+  <form action = "">
+
     <div class = "row justify-content-center">
 
       <div class = "col-xl-4 col-lg-8 col-md-12 col-xs-12 text-center">
@@ -12,6 +11,7 @@
             (change) = "changeRole()"
             [(ngModel)] = "roleIdSelected"
             class = "inputClass"
+            data-placeholder = "Seleccione un rol"
             id = "roleId"
             name = "roleId">
             <option *ngFor = "let role of Roles"
@@ -58,5 +58,5 @@
         </div>
       </div>
     </div>
-  </div>
-</form>
+  </form>
+</app-panel-sub-module>

@@ -23,6 +23,8 @@ import {CardPlaceholderComponent} from './card-placeholder/card-placeholder.comp
 import {ListCheckboxContainerComponent} from './forms/list-checkbox-container/list-checkbox-container.component'
 import {NgSelectModule} from "@ng-select/ng-select";
 import {TimeAgoPipe} from './pipes/time-ago.pipe';
+import {PanelSubModuleComponent} from './panel-sub-module/panel-sub-module.component';
+import {TitleCardsComponent} from './title-cards/title-cards.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,9 @@ import {TimeAgoPipe} from './pipes/time-ago.pipe';
     RadioContainerComponent,
     CardPlaceholderComponent,
     ListCheckboxContainerComponent,
-    TimeAgoPipe
+    TimeAgoPipe,
+    PanelSubModuleComponent,
+    TitleCardsComponent
   ],
   imports: [
     CommonModule,
@@ -71,7 +75,9 @@ import {TimeAgoPipe} from './pipes/time-ago.pipe';
     CourtesyChartComponent,
     RadioContainerComponent,
     ListCheckboxContainerComponent,
-    TimeAgoPipe
+    TimeAgoPipe,
+    PanelSubModuleComponent,
+    TitleCardsComponent
   ]
 })
 export class SharedModule {

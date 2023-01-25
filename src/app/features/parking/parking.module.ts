@@ -21,7 +21,8 @@ import {
   CreateMonthlyParkingComponent
 } from './components/monthly-parking/create-monthly-parking/create-monthly-parking.component'
 import {FeaturesModule} from '../features.module';
-import {AssignCourtesyComponent} from './components/parked/components/assign-courtesy/assign-courtesy.component'
+import {AssignCourtesyComponent} from './components/parked/components/assign-courtesy/assign-courtesy.component';
+import {ParkingLotComponent} from './components/parking-lot/parking-lot.component'
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {AssignCourtesyComponent} from './components/parked/components/assign-cou
     BillingDataComponent,
     ResumeComponent,
     ScheduleComponent,
-    AssignCourtesyComponent
+    AssignCourtesyComponent,
+    ParkingLotComponent
   ],
   imports: [
     CommonModule,

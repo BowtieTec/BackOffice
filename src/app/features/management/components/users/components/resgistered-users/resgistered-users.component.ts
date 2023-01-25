@@ -48,6 +48,7 @@ export class ResgisteredUsersComponent
       ...DataTableOptions.getSpanishOptions(10),
       serverSide: true,
       processing: true,
+      responsive: true,
       ajax: async (dataTablesParameters: any, callback: any) => {
         const page = getCurrentDataTablePage(dataTablesParameters)
         const data = await this.getUsers({
@@ -71,6 +72,7 @@ export class ResgisteredUsersComponent
       this.parkingId = parkingId
       this.getUsers({textToSearch: '', page: 1, pageSize: 10}).then((data) => {
         this.users = data.admins
+        console.log(this.users);
       })
     })
     this.subject.subscribe((user: NewUserModel) => {
@@ -99,6 +101,7 @@ export class ResgisteredUsersComponent
   }
 
   async editTheUser(user: NewUserModel) {
+    this.utilitiesService.goToElementById("locationPanel")
     this.subject.next(user)
   }
 
@@ -138,5 +141,10 @@ export class ResgisteredUsersComponent
     this.message.infoTimeOut('Descargando...', '', 0)
     await this.userService.exportAdminTable()
     this.message.OkTimeOut()
+  }
+
+  getOtherParkings(otherParkings: any[]) {
+    return otherParkings.map((parking) => parking.name).join(`,
+    `)
   }
 }

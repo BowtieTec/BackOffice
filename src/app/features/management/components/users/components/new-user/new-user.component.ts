@@ -186,7 +186,9 @@ export class NewUserComponent implements OnInit {
         })
         .then(() => {
           this.cleanForm()
+          this.utilitiesService.goToElementById("newUser")
           this.subject.next()
+
         })
     }
   }
