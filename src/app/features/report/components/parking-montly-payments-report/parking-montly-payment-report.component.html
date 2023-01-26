@@ -1,29 +1,25 @@
-<div class = 'row justify-content-center'>
-  <div class = 'col-lg-12 col-md-12 col-sm-12 col-xs-12 panelLeft animate__animated animate__fadeInLeft'>
-    <div class = 'panelsWithOutMinHeight'>
-      <div class = 'titleCards'>
-        <span><i class = 'fas fa-sitemap'></i></span> Mensualidades de parqueo
+<app-panel-sub-module icon = "fas fa-sitemap"
+                      title = "Mensualidades de parqueo">
+  <div class = 'row justify-content-center'>
+    <div class = 'col-xl-4 col-lg-6 col-sm-12'>
+      <div class = 'mb-4 relative'>
+        <app-input-container
+          (change) = 'this.getReport()'
+          [formGroup] = 'reportForm'
+          [value] = "now | date: 'yyyy-MM-dd'"
+          controlName = 'startDate'
+          maxL = "{{now | date:'dd-MM-yyyy'}}"
+          name = 'Inicio de Búsqueda'
+          type = 'Date'
+        ></app-input-container>
       </div>
-      <div class = 'row justify-content-center'>
-        <div class = 'col-xl-4 col-lg-6 col-sm-12'>
-          <div class = 'mb-4 relative'>
-            <app-input-container
-              (change) = 'this.getReport()'
-              [formGroup] = 'reportForm'
-              [value] = "now | date: 'yyyy-MM-dd'"
-              controlName = 'startDate'
-              maxL = "{{now | date:'dd-MM-yyyy'}}"
-              name = 'Inicio de Búsqueda'
-              type = 'Date'
-            ></app-input-container>
-          </div>
-        </div>
-        <div class = 'col-xl-4 col-lg-6 col-sm-12'>
-          <div class = 'mb-4 relative'>
-            <app-input-container
-              (change) = 'this.getReport()'
-              [formGroup] = 'reportForm'
-              [value] = "now | date: 'yyyy-MM-dd'"
+    </div>
+    <div class = 'col-xl-4 col-lg-6 col-sm-12'>
+      <div class = 'mb-4 relative'>
+        <app-input-container
+          (change) = 'this.getReport()'
+          [formGroup] = 'reportForm'
+          [value] = "now | date: 'yyyy-MM-dd'"
               controlName = 'endDate'
               maxL = "{{now | date:'yyyy-MM-dd'}}"
               name = 'Fin de Búsqueda'
@@ -45,11 +41,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class = 'col-lg-12 col-md-12 col-sm-12 col-xs-12'>
-    <div class = 'panels'>
-      <div class = 'row'>
         <dx-data-grid [columnHidingEnabled] = 'false'
                       [dataSource] = 'dataSource'
                       [showBorders] = 'true'
@@ -126,8 +117,4 @@
           </dxo-toolbar>
           <dxo-export [enabled] = 'true'></dxo-export>
         </dx-data-grid>
-      </div>
-    </div>
-  </div>
-</div>
-
+</app-panel-sub-module>

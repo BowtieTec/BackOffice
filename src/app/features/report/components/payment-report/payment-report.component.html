@@ -1,28 +1,25 @@
-<div class = "row justify-content-center">
-  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12 panelLeft animate__animated animate__fadeInLeft">
-    <div class = "panelsWithOutMinHeight">
-      <div class = "titleCards">
-        <span><i class = "fas fa-sitemap"></i></span> Reporte de Detalle de Pagos por Ticket
+<app-panel-sub-module icon = "fas fa-sitemap"
+                      title = "Detalle de pagos por ticket">
+
+  <div class = "row justify-content-center">
+    <div class = 'col-xl-4 col-lg-6 col-sm-12'>
+      <div class = 'mb-4 relative'>
+        <app-input-container
+          (change) = 'this.getReport()'
+          [formGroup] = 'reportForm'
+          [value] = "now | date: 'yyyy-MM-dd'"
+          controlName = 'startDate'
+          maxL = "{{now | date:'yyyy-MM-dd'}}"
+          name = 'Inicio de Búsqueda'
+          type = 'Date'
+        ></app-input-container>
       </div>
-      <div class = "row justify-content-center">
-        <div class = 'col-xl-4 col-lg-6 col-sm-12'>
-          <div class = 'mb-4 relative'>
-            <app-input-container
-              (change) = 'this.getReport()'
-              [formGroup] = 'reportForm'
-              [value] = "now | date: 'yyyy-MM-dd'"
-              controlName = 'startDate'
-              maxL = "{{now | date:'yyyy-MM-dd'}}"
-              name = 'Inicio de Búsqueda'
-              type = 'Date'
-            ></app-input-container>
-          </div>
-        </div>
-        <div class = 'col-xl-4 col-lg-6 col-sm-12'>
-          <div class = 'mb-4 relative'>
-            <app-input-container
-              (change) = 'this.getReport()'
-              [formGroup] = 'reportForm'
+    </div>
+    <div class = 'col-xl-4 col-lg-6 col-sm-12'>
+      <div class = 'mb-4 relative'>
+        <app-input-container
+          (change) = 'this.getReport()'
+          [formGroup] = 'reportForm'
               [value] = "now | date: 'yyyy-MM-dd'"
               controlName = 'endDate'
               maxL = "{{now | date:'yyyy-MM-dd'}}"
@@ -45,12 +42,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
-      <div class = "panels">
-        <div class = "row"
-             id = "exportable">
-
           <dx-data-grid [columnHidingEnabled] = "false"
                         [dataSource] = "dataSource"
                         [showBorders] = "true"
@@ -106,7 +97,4 @@
             </dxo-toolbar>
             <dxo-export [enabled] = "true"></dxo-export>
           </dx-data-grid>
-        </div>
-      </div>
-    </div>
-  </div>
+</app-panel-sub-module>

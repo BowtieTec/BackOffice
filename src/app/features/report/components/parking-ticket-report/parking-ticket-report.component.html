@@ -1,29 +1,25 @@
-<div class = 'row justify-content-center'>
-  <div class = 'col-lg-12 col-md-12 col-sm-12 col-xs-12 panelLeft animate__animated animate__fadeInLeft'>
-    <div class = 'panelsWithOutMinHeight'>
-      <div class = 'titleCards'>
-        <span><i class = 'fas fa-sitemap'></i></span> Reporte de parqueo diario (ticket)
+<app-panel-sub-module icon = "fas fa-sitemap"
+                      title = "Reporte de Tickets">
+  <div class = 'row justify-content-center'>
+    <div class = 'col-xl-4 col-lg-6 col-sm-12'>
+      <div class = 'mb-4 relative'>
+        <app-input-container
+          (change) = 'this.getReport()'
+          [formGroup] = 'reportForm'
+          [value] = "now | date: 'yyyy-MM-dd'"
+          controlName = 'startDate'
+          maxL = "{{now | date:'yyyy-MM-dd'}}"
+          name = 'Inicio de Búsqueda'
+          type = 'Date'
+        ></app-input-container>
       </div>
-      <div class = 'row justify-content-center'>
-        <div class = 'col-xl-4 col-lg-6 col-sm-12'>
-          <div class = 'mb-4 relative'>
-            <app-input-container
-              (change) = 'this.getReport()'
-              [formGroup] = 'reportForm'
-              [value] = "now | date: 'yyyy-MM-dd'"
-              controlName = 'startDate'
-              maxL = "{{now | date:'yyyy-MM-dd'}}"
-              name = 'Inicio de Búsqueda'
-              type = 'Date'
-            ></app-input-container>
-          </div>
-        </div>
-        <div class = 'col-xl-4 col-lg-6 col-sm-12'>
-          <div class = 'mb-4 relative'>
-            <app-input-container
-              (change) = 'this.getReport()'
-              [formGroup] = 'reportForm'
-              [value] = "now | date: 'yyyy-MM-dd'"
+    </div>
+    <div class = 'col-xl-4 col-lg-6 col-sm-12'>
+      <div class = 'mb-4 relative'>
+        <app-input-container
+          (change) = 'this.getReport()'
+          [formGroup] = 'reportForm'
+          [value] = "now | date: 'yyyy-MM-dd'"
               controlName = 'endDate'
               maxL = "{{now | date:'yyyy-MM-dd'}}"
               name = 'Fin de Búsqueda'
@@ -32,11 +28,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class = 'col-lg-12 col-md-12 col-sm-12 col-xs-12'>
-    <div class = 'panels'>
-      <div class = 'row'>
         <dx-data-grid [dataSource] = 'dataSource'
                       [showBorders] = 'true'
                       id = 'gridContainer'
@@ -77,13 +68,6 @@
           <dxo-search-panel [visible] = 'true'
                             placeholder = 'Buscar...'></dxo-search-panel>
           <dxo-toolbar>
-            <!-- <dxi-item location="after">
-               <dx-button
-                 icon="exportpdf"
-                 text="Exportar a PDF"
-                 (onClick)="exportGrid()"
-               ></dx-button>
-             </dxi-item>-->
             <dxi-item location = 'after'>
               <dx-button
                 (onClick) = 'onExporting($event)'
@@ -95,8 +79,4 @@
           </dxo-toolbar>
           <dxo-export [enabled] = 'true'></dxo-export>
         </dx-data-grid>
-      </div>
-    </div>
-  </div>
-</div>
-
+</app-panel-sub-module>
