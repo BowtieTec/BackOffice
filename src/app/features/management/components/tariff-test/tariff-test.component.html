@@ -1,23 +1,15 @@
-<div class = "row justify-content-md-center">
-  <div class = "col-xl-12 col-lg-10 col-md-12 col-sm-12">
-    ​
-    <div class = "panels">
-      <div class = "titleCards">
-                <span>
-                    <i aria-hidden = "true"
-                       class = "fas fa-info-circle"></i>
-                </span> Pruebas de tarifa
-      </div>
-      ​
-      <div class = "row">
-        <div class = "col-md-4 mb-4">
-          <app-select-container (change) = "this.courtesySelected()"
-                                [data] = "this.courtesies"
-                                [formGroup] = "tariffTestForm"
-                                [unselect] = "true"
-                                controlName = "courtesyId"
-                                name = "Cortesías"></app-select-container>
-        </div>
+<app-panel-sub-module icon = "fas fa-vial"
+                      title = "Pruebas de tarifa">
+
+  <div class = "row">
+    <div class = "col-md-4 mb-4">
+      <app-select-container (change) = "this.courtesySelected()"
+                            [data] = "this.courtesies"
+                            [formGroup] = "tariffTestForm"
+                            [unselect] = "true"
+                            controlName = "courtesyId"
+                            name = "Cortesías"></app-select-container>
+    </div>
         <div class = "col-md-4 mb-4">
           <app-input-container [formGroup] = "tariffTestForm"
                                controlName = "date_in"
@@ -78,16 +70,6 @@
               </tr>
               </tbody>
             </table>
-            <!-- <ul class = "">
-              <li *ngIf = "courtesyDetail"
-                  class = "list-group-item">Total sin descuento:<b>
-                <h6>{{this.ticket.amount_origin | currency:'GTQ'}}</h6></b></li>
-              <li *ngIf = "courtesyDetail"
-                  class = "list-group-item">Descuento:<b><h6>{{this.ticket.amount_disount | currency:'GTQ'}}</h6>
-              </b></li>
-              <li class = "list-group-item">Total a pagar:<b><h4>{{this.ticket.amount | currency:'GTQ'}}</h4></b>
-              </li>
-            </ul> -->
           </div>
 
 
@@ -104,22 +86,8 @@
                 <p class = "mb-1">{{rule.description}}</p>
                 <small class = "text-muted">Evento: {{rule.event}}</small>
               </div>
-
             </div>
-
           </div>
-          <!-- <div class = "list-group">
-            <div *ngFor = "let rule of tariffOfTicket">
-              <a class = "list-group-item list-group-item-action flex-column align-items-start">
-                <div class = "d-flex w-100 justify-content-between">
-                  <h5 class = "mb-1">{{rule.name}}</h5>
-                  <small>{{rule.updated_at | timeAgo}}</small>
-                </div>
-                <p class = "mb-1">{{rule.description}}</p>
-                <small class = "text-muted">Evento: {{rule.event}}</small>
-              </a>
-            </div>
-          </div> -->
         </div>
 
         ​
@@ -169,8 +137,4 @@
           </table>
         </div>
       </div>
-    </div>
-    ​
-    ​
-  </div>
-</div>
+</app-panel-sub-module>

@@ -1,14 +1,11 @@
-<form [formGroup] = 'stepFourForm'
-      class = 'needs-validation form-group'
-      id = 'form-wrapper'
-      method = 'post'
-      name = 'form-wrapper'>
-  <div *ngIf = 'settingsOptions'
-       class = 'form-group panels animate__animated animate__fadeInLeft'
-       id = 'steps-container'>
-    <div class = 'titleCards '>
-      <span> <em class = 'fas fa-imges'></em></span> Archivos
-    </div>
+<app-panel-sub-module icon = "fas fa-images"
+                      title = "Archivos">
+  <form *ngIf = 'settingsOptions'
+        [formGroup] = 'stepFourForm'
+        class = 'needs-validation form-group'
+        id = 'form-wrapper'
+        method = 'post'
+        name = 'form-wrapper'>
     <div class = 'container'>
       <div class = 'relative'>
         <label class = 'labelInputFile'>Logo del parqueo:</label>
@@ -117,5 +114,5 @@
               type = 'button'>Guardar
       </button>
     </div>
-  </div>
-</form>
+  </form>
+</app-panel-sub-module>

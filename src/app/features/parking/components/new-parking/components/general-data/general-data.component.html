@@ -1,6 +1,5 @@
-<div class = "titleCards">
-  Datos generales
-</div>
+<app-title-cards icon = ""
+                 title = "Datos generales"></app-title-cards>
 <div
   *ngIf = "ParkingId != ''"
   class = "alert alert-primary"
@@ -65,38 +64,43 @@
         controlName = "rules"
         name = "Reglamento interno"></app-text-area-container>
     </div>
-    <div class = "row">
-      <app-checkbox-container
-        [formGroup] = "stepOneForm"
-        controlName = "is_TAS"
-        name = "TAS"
-      ></app-checkbox-container>
-      <app-checkbox-container
-        [formGroup] = "stepOneForm"
-        controlName = "is_show_map"
-        name = "Mostrar en el mapa"
-      ></app-checkbox-container>
-      <div class = "row col-xl-10 col-lg-10 col-sm-10 ">
-        <div *ngIf = "stepOneForm.controls['is_show_map'].value"
-             class = "animate__animated animate__fadeIn">
-          <google-map (mapClick) = "addMapMark($event)"
-                      [center] = "coords"
-                      height = "500"
-                      width = "100%">
-            <map-marker
-              [position] = "coordsMark"></map-marker>
-          </google-map>
-        </div>
+    <div class = "row in">
+      <div class = "col-sm-1">
+        <app-checkbox-container
+          [formGroup] = "stepOneForm"
+          controlName = "is_TAS"
+          name = "TAS"
+        ></app-checkbox-container>
+      </div>
+      <div class = "col-sm-1 offset-1">
+        <app-checkbox-container
+          [formGroup] = "stepOneForm"
+          controlName = "is_show_map"
+          name = "Mostrar en el mapa"
+        ></app-checkbox-container>
       </div>
     </div>
-  </div>
-  <div class = "text-center"
-       id = "q-box__buttons">
-    <button (click) = "emmitStep(1)"
-            class = "btn btn-primary m-2"
-            id = "next-btn"
-            type = "button">Siguiente
-    </button>
-  </div>
+    <div class = "row col-xl-10 col-lg-10 col-sm-10 ">
+      <div *ngIf = "stepOneForm.controls['is_show_map'].value"
+           class = "animate__animated animate__fadeIn">
+        <google-map (mapClick) = "addMapMark($event)"
+                    [center] = "coords"
+                    height = "500"
+                    width = "100%">
+          <map-marker
+            [position] = "coordsMark"></map-marker>
+        </google-map>
+        </div>
+      </div>
 
+
+    <div class = "text-center"
+         id = "q-box__buttons">
+      <button (click) = "emmitStep(1)"
+              class = "btn btn-primary m-2"
+              id = "next-btn"
+              type = "button">Siguiente
+      </button>
+    </div>
+  </div>
 </form>

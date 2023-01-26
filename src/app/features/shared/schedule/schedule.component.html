@@ -1,14 +1,13 @@
-<form
-  [formGroup] = 'stepTwoForm'
-  class = 'needs-validation form-group'
-  id = 'form-wrapper'
-  method = 'post'
-  name = 'form-wrapper'
-  novalidate = ''>
-  <div class = 'panels animate__animated animate__fadeInLeft'>
-    <div class = 'titleCards'>
-      <span> <em class = 'fas fa-clock'></em></span> Horarios
-    </div>
+<app-panel-sub-module icon = "fas fa-clock"
+                      title = "Horarios">
+  <form
+    [formGroup] = 'stepTwoForm'
+    class = 'needs-validation form-group'
+    id = 'form-wrapper'
+    method = 'post'
+    name = 'form-wrapper'
+    novalidate = ''>
+
     <div class = "row">
       <div class = "col-xl-3 col-lg-4 col-md-6 col-sm-12 animate__animated animate__fadeInUp">
         <div class = "panelsWithOutMinHeight">
@@ -196,5 +195,5 @@
         </button>
       </div>
     </div>
-  </div>
-</form>
+  </form>
+</app-panel-sub-module>

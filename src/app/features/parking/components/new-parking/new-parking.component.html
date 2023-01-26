@@ -1,19 +1,15 @@
-<div class = "row justify-content-center">
-  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class = "panels">
-      <div class = "titleCards">
-        <span><em class = "fas fa-sitemap"></em></span> Nuevo parqueo
-      </div>
-      <div class = "progress">
-        <div [ngStyle] = "{'width': step * (100 / totalSteps ) + '%' }"
-             aria-valuemax = "100"
-             class = "progress-bar progress-bar-striped progress-bar-animated bg-primary"
-             role = "progressbar"></div>
-      </div>
-      <div
-        id = "qbox-container">
-        <form
-          [formGroup] = "newParkingForm"
+<app-panel-sub-module icon = "fas fa-sitemap"
+                      title = "Nuevo parqueo">
+  <div class = "progress">
+    <div [ngStyle] = "{'width': step * (100 / totalSteps ) + '%' }"
+         aria-valuemax = "100"
+         class = "progress-bar progress-bar-striped progress-bar-animated bg-primary"
+         role = "progressbar"></div>
+  </div>
+  <div
+    id = "qbox-container">
+    <form
+      [formGroup] = "newParkingForm"
           class = "needs-validation"
           id = "form-wrapper"
           method = "post"
@@ -88,13 +84,11 @@
               class = "btn btn-secondary m-2">Registrar
             </button>
           </div>
-        </form>
-      </div>
-    </div>
-    <div id = "preloader-wrapper">
-      <div id = "preloader"></div>
-      <div class = "preloader-section section-left"></div>
-      <div class = "preloader-section section-right"></div>
-    </div>
+    </form>
   </div>
-</div>
+  <div id = "preloader-wrapper">
+    <div id = "preloader"></div>
+    <div class = "preloader-section section-left"></div>
+    <div class = "preloader-section section-right"></div>
+  </div>
+</app-panel-sub-module>

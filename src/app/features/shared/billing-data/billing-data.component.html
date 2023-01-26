@@ -1,15 +1,14 @@
-<form [formGroup] = 'stepFourForm'
-      class = 'needs-validation form-group'
-      id = 'form-wrapper'
-      method = 'post'
-      name = 'form-wrapper'
-      novalidate = ''>
-  <div *ngIf = 'settingsOptions'
-       id = 'steps-container'>
-    <div class = 'panels animate__animated animate__fadeInLeft'>
-      <div class = 'titleCards '>
-        <span> <em class = 'fas fa-file-invoice'></em></span> Facturación
-      </div>
+<app-panel-sub-module icon = "fas fa-file-invoice"
+                      title = "Facturación">
+  <form [formGroup] = 'stepFourForm'
+        class = 'needs-validation form-group'
+        id = 'form-wrapper'
+        method = 'post'
+        name = 'form-wrapper'
+        novalidate = ''>
+    <div *ngIf = 'settingsOptions'
+         id = 'steps-container'>
+
       <div *ngIf = "isCreatingParking == false"
            class = "p-3 mb-4 bg-warning text-dark">Para editar la información de facturación necesitas volver
                                                    ingresar
@@ -224,5 +223,6 @@
         </button>
       </div>
     </div>
-  </div>
-</form>
+  </form>
+
+</app-panel-sub-module>

@@ -1,7 +1,5 @@
-<div class = 'panels animate__animated animate__fadeInLeft'>
-  <div class = 'titleCards'>
-    <span><em class = 'fas fa-users'></em></span> Usuarios registrados en la aplicación
-  </div>
+<app-panel-sub-module icon = "fas fa-users"
+                      title = "Usuarios registrados en la aplicación">
 
   <table [dtOptions] = 'dtOptions'
          [dtTrigger] = 'dtTrigger'
@@ -43,8 +41,6 @@
     </tr>
     </tbody>
   </table>
-
-</div>
 
 <div aria-hidden = "true"
      aria-labelledby = "staticBackdropLabel"
@@ -112,3 +108,4 @@
     </div>
   </div>
 </div>
+</app-panel-sub-module>
