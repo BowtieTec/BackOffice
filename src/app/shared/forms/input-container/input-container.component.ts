@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core'
-import {ControlContainer, FormGroupDirective, UntypedFormGroup, Validators} from '@angular/forms'
+import {Component, HostBinding, Input, OnInit} from '@angular/core'
+import {ControlContainer, FormGroup, FormGroupDirective, Validators} from '@angular/forms'
 import {UtilitiesService} from '../../services/utilities.service'
 
 @Component({
@@ -16,13 +16,15 @@ import {UtilitiesService} from '../../services/utilities.service'
 export class InputContainerComponent implements OnInit {
   @Input() name!: string
   @Input() controlName!: string
-  @Input() formGroup!: UntypedFormGroup
+  @Input() formGroup!: FormGroup
   @Input() type = 'text'
   @Input() textInfo = ''
   @Input() readonly: boolean = false
   @Input() minL = '0'
   @Input() maxL = '80'
   @Input() value: any
+  @Input() columns: number = 6
+  @HostBinding('class') class = `col-sm-${this.columns}`
 
   constructor(private utilitiesService: UtilitiesService) {
   }

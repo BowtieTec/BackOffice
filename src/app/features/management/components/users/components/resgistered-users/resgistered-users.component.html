@@ -1,50 +1,50 @@
-<div id = "usersRegistered">
-  <app-title-cards icon = "fas fa-users"
-                   title = "Usuarios Administradores registrados"></app-title-cards>
-  <table [dtOptions] = "DtOptions"
-         [dtTrigger] = "dtTrigger"
-         aria-label = "Tabla de usuarios"
-         class = "table table-striped responsive"
-         datatable>
-    <thead>
-    <div>
-      <button (click) = "exportTable()"
-              class = "btn btn-sm btn-outline-success "><i class = "far fa-file-excel"></i> Exportar
-      </button>
+<app-panel-sub-module icon = "fas fa-users"
+                      title = "Usuarios Administradores registrados">
+  <div id = "usersRegistered">
+    <table [dtOptions] = "DtOptions"
+           [dtTrigger] = "dtTrigger"
+           aria-label = "Tabla de usuarios"
+           class = "table table-striped responsive"
+           datatable>
+      <thead>
+      <div>
+        <button (click) = "exportTable()"
+                class = "btn btn-sm btn-outline-success "><i class = "far fa-file-excel"></i> Exportar
+        </button>
 
-    </div>
-    <tr>
-      <th scope = "col">Nombre
-      </th>
-      <th scope = "col">Email</th>
-      <th scope = "col">Usuario</th>
-      <th scope = "col">Role</th>
-      <th scope = "col">Local asignado</th>
-      <th scope = "col">Parqueo</th>
-      <th scope = "col">Estado</th>
-      <th scope = "col text-right"
-          style = "width: 10%"
-      >Acciones
-      </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor = "let user of users"
-        class = "animate__animated animate__fadeIn">
-      <td>{{user.name + ' ' + user.last_name}}</td>
-      <td>{{user.email}}</td>
-      <td>{{user.user}}</td>
-      <td>{{user.role?.name ?? ''}}</td>
-      <td>{{user.company?.name ?? ''}}</td>
-      <td> {{user.parking.name}}
-        <div *ngIf = "user.otherParkings && user.otherParkings.length > 1">
-          <i class = "recent-link text-decoration-none">
-            <button class = "buttonRowQR"
+      </div>
+      <tr>
+        <th scope = "col">Nombre
+        </th>
+        <th scope = "col">Email</th>
+        <th scope = "col">Usuario</th>
+        <th scope = "col">Role</th>
+        <th scope = "col">Local asignado</th>
+        <th scope = "col">Parqueo</th>
+        <th scope = "col">Estado</th>
+        <th scope = "col text-right"
+            style = "width: 10%"
+        >Acciones
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor = "let user of users"
+          class = "animate__animated animate__fadeIn">
+        <td>{{user.name + ' ' + user.last_name}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.user}}</td>
+        <td>{{user.role?.name ?? ''}}</td>
+        <td>{{user.company?.name ?? ''}}</td>
+        <td> {{user.parking.name}}
+          <div *ngIf = "user.otherParkings && user.otherParkings.length > 1">
+            <i class = "recent-link text-decoration-none">
+              <button class = "buttonRowQR"
+                      data-bs-target = "#exampleModal"
+                      data-bs-toggle = "modal">+{{ user.otherParkings.length - 1}}</button>
+              <span class = "hovercard"
                     data-bs-target = "#exampleModal"
-                    data-bs-toggle = "modal">+{{ user.otherParkings.length - 1}}</button>
-            <span class = "hovercard"
-                  data-bs-target = "#exampleModal"
-                  data-bs-toggle = "modal">
+                    data-bs-toggle = "modal">
               <div class = "tooltiptext">
                 <span *ngFor = "let parking of user.otherParkings.slice(0, 5)"
                       class = "text-light">{{parking.name}}</span>
@@ -52,37 +52,38 @@
                       class = "text-light">...</span>
               </div>
              </span>
-          </i>
-        </div>
-      </td>
-      <td>
+            </i>
+          </div>
+        </td>
+        <td>
         <span *ngIf = "user.status == 1"
               class = "badge bg-warning text-dark">No confirmado</span>
-        <span *ngIf = "user.status == 2"
-              class = "badge bg-success text-light">Activo</span>
-        <span *ngIf = "user.status == 0"
-              class = "badge bg-secondary text-light">Deshabilitado</span>
-      </td>
-      <td class = "text-right">
-        <button (click) = "editTheUser(user)"
-                *ngIf = "ifHaveAction(editUser)"
-                class = "buttonRowEdit me-1"
-                title = "Editar"><em class = "fas fa-user-edit"></em>
-        </button>
-        <button
-          (click) = "deleteTheUser(user)"
-          *ngIf = "ifHaveAction(deleteUser)"
-          class = "buttonRowDelete me-1"
-          title = 'Eliminar'><em class = "fas fa-user-times"></em>
-        </button>
-        <button
-          (click) = "restartPasswordUser(user)"
-          *ngIf = "ifHaveAction(restartPassword)"
-          class = "buttonRowDisable mt1-"
-          title = 'Reiniciar contraseña'><em class = "fas fa-key"></em>
-        </button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
+          <span *ngIf = "user.status == 2"
+                class = "badge bg-success text-light">Activo</span>
+          <span *ngIf = "user.status == 0"
+                class = "badge bg-secondary text-light">Deshabilitado</span>
+        </td>
+        <td class = "text-right">
+          <button (click) = "editTheUser(user)"
+                  *ngIf = "ifHaveAction(editUser)"
+                  class = "buttonRowEdit me-1"
+                  title = "Editar"><em class = "fas fa-user-edit"></em>
+          </button>
+          <button
+            (click) = "deleteTheUser(user)"
+            *ngIf = "ifHaveAction(deleteUser)"
+            class = "buttonRowDelete me-1"
+            title = 'Eliminar'><em class = "fas fa-user-times"></em>
+          </button>
+          <button
+            (click) = "restartPasswordUser(user)"
+            *ngIf = "ifHaveAction(restartPassword)"
+            class = "buttonRowDisable mt1-"
+            title = 'Reiniciar contraseña'><em class = "fas fa-key"></em>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</app-panel-sub-module>

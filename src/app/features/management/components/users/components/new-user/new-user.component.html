@@ -1,60 +1,62 @@
-<form [formGroup] = 'newUserForm'
-      id = "newUser"
-      autocomplete = 'off'>
-  <div>
-    <app-title-cards icon = "fas fa-users"
-                     title = "Crear Usuario"></app-title-cards>
-    <div class = 'row'>
-      <div class = 'col-xl-6 col-lg-12'>
-        <app-input-container [formGroup] = 'newUserForm'
-                             controlName = 'name'
-                             name = 'Nombre'>
-        </app-input-container>
+<app-panel-sub-module icon = "fas fa-users"
+                      title = "Crear Usuario">
+  <form [formGroup] = 'newUserForm'
+        autocomplete = 'off'
+        class = "row"
+        id = "newUser">
+
+    <app-input-container [formGroup] = 'newUserForm'
+                         controlName = 'name'
+                         name = 'Nombre'>
+    </app-input-container>
+    <app-input-container [formGroup] = 'newUserForm'
+                         controlName = 'last_name'
+                         name = 'Apellido'>
+    </app-input-container>
+    <app-input-container [formGroup] = 'newUserForm'
+                         [readonly] = 'isEdit'
+                         controlName = 'email'
+                         name = 'Correo'>
+    </app-input-container>
+    <app-select-container [data] = 'this.getRoles()'
+                          [formGroup] = 'newUserForm'
+                          controlName = 'role'
+                          name = 'Roles de usuario'>
+    </app-select-container>
+    <app-input-container [formGroup] = 'newUserForm'
+                         controlName = 'user'
+                         name = 'Alias'>
+    </app-input-container>
+    <app-input-container [formGroup] = 'newUserForm'
+                         [readonly] = 'isEdit'
+                         controlName = 'password'
+                         name = 'Contraseña'
+                         textInfo = 'La contraseña debe contener al menos 7 caracteres, una letra mayúscula y un dígito'
+                         type = 'password'>
+    </app-input-container>
+    <app-select-container *ngIf = 'this.selectedRoleIsCourtesy'
+                          [data] = 'companies'
+                          [formGroup] = 'newUserForm'
+                          controlName = 'company'
+                          name = "Local">
+    </app-select-container>
+    <div class = 'col-lg-12 ms-2'>
+      <div *ngFor = "let parking of this.getParkingLotsFormArray().controls; let i = index"
+           class = "form-check-inline col-sm-3 m-1"
+           formArrayName = "otherParkings">
+        <input (change) = "onChangeCheckbox(i, otherParkingLot[i], $event)"
+               [formControlName] = "i"
+               [id] = "otherParkingLot[i].id"
+               class = "form-check-input"
+               type = "checkbox">
+        <label [for] = "otherParkingLot[i].id"
+               class = "form-check-label ms-1">
+          {{otherParkingLot[i].name}}
+        </label>
       </div>
-      <div class = 'col-xl-6 col-lg-12 '>
-        <app-input-container [formGroup] = 'newUserForm'
-                             controlName = 'last_name'
-                             name = 'Apellido'>
-        </app-input-container>
-      </div>
-      <div class = 'col-xl-6 col-lg-12'>
-        <app-input-container [formGroup] = 'newUserForm'
-                             [readonly] = 'isEdit'
-                             controlName = 'email'
-                             name = 'Correo'>
-        </app-input-container>
-      </div>
-      <div class = 'col-xl-6 col-lg-12 col-xs-12'>
-        <app-select-container [data] = 'this.getRoles()'
-                              [formGroup] = 'newUserForm'
-                              controlName = 'role'
-                              name = 'Roles de usuario'>
-        </app-select-container>
-      </div>
-      <div class = 'col-xl-6 col-lg-12'>
-        <app-input-container [formGroup] = 'newUserForm'
-                             controlName = 'user'
-                             name = 'Alias'>
-        </app-input-container>
-      </div>
-      <div class = 'col-xl-6 col-lg-12'>
-        <app-input-container [formGroup] = 'newUserForm'
-                             [readonly] = 'isEdit'
-                             controlName = 'password'
-                             name = 'Contraseña'
-                             textInfo = 'La contraseña debe contener al menos 7 caracteres, una letra mayúscula y un dígito'
-                             type = 'password'>
-        </app-input-container>
-      </div>
-      <div *ngIf = 'this.selectedRoleIsCourtesy'
-           class = 'col-xl-6 col-lg-12'>
-        <app-select-container [data] = 'companies'
-                              [formGroup] = 'newUserForm'
-                              controlName = 'company'
-                              name = "Local">
-        </app-select-container>
-      </div>
-      <div class = 'col-xl-6 col-lg-12 mb-1 ms-3'>
+    </div>
+    <div class = 'col-sm-12'>
+      <div class = 'text-center'>
         <button
           (click) = 'selectAllCheckboxes()'
           class = 'btn btn-outline-dark form-check-inline'>
@@ -65,25 +67,6 @@
           class = 'btn btn-outline-dark form-check-inline'>
           Desmarcar todos
         </button>
-      </div>
-      <div class = 'col-lg-12 ms-2'>
-        <div *ngFor = "let parking of this.getParkingLotsFormArray().controls; let i = index"
-             class = "form-check-inline col-sm-3 m-1"
-             formArrayName = "otherParkings">
-          <input (change) = "onChangeCheckbox(i, otherParkingLot[i], $event)"
-                 [formControlName] = "i"
-                 [id] = "otherParkingLot[i].id"
-                 class = "form-check-input"
-                 type = "checkbox">
-          <label [for] = "otherParkingLot[i].id"
-                 class = "form-check-label ms-1">
-            {{otherParkingLot[i].name}}
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class = 'col-xl-6 col-lg-12'>
-      <div class = 'text-center'>
         <button (click) = 'saveNewUser()'
                 class = 'btn btn-success me-3'
                 type = 'button'>GUARDAR
@@ -96,5 +79,5 @@
       </div>
       <div class = 'mb-4 relative'></div>
     </div>
-  </div>
-</form>
+  </form>
+</app-panel-sub-module>

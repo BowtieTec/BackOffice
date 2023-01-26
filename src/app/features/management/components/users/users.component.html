@@ -1,13 +1,7 @@
-<app-panel-sub-module>
-  <div *ngIf = "ifHaveAction(createUser)"
-       class = " col-lg-12">
-    <app-new-user [subject] = "subject"></app-new-user>
-  </div>
-  <br>
-  <hr>
-  <br>
-  <div *ngIf = "ifHaveAction(listUser)"
-       class = "col-lg-12">
-    <app-resgistered-users [subject] = "subject"></app-resgistered-users>
-  </div>
-</app-panel-sub-module>
+<app-new-user *ngIf = "ifHaveAction(createUser)"
+              [subject] = "subject"
+              class = " col-lg-12"></app-new-user>
+
+<app-resgistered-users *ngIf = "ifHaveAction(listUser)"
+                       [subject] = "subject"
+                       class = "col-lg-12"></app-resgistered-users>

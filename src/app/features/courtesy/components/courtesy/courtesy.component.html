@@ -22,74 +22,57 @@
           Creando {{cantCourtesiesCreating}} {{cantCourtesiesCreating == 1 ? 'Cortesía' : 'Cortesías'}}
         </div>
       </div>
-      <div class = 'row justify-content-center'>
-        <div class = 'col-xl-6 col-lg-6 col-sm-12'>
-          <app-input-container
-            [formGroup] = 'newCourtesyForm'
-            controlName = 'name'
-            name = 'Nombre'>
-          </app-input-container>
-        </div>
-        <div class = 'col-xl-6 col-lg-6 col-sm-12'>
-          <app-select-container
-            [data] = 'courtesyTypes'
-            [formGroup] = 'newCourtesyForm'
-            controlName = 'type'
-            name = 'Tipo de cortesia'>
-          </app-select-container>
-        </div>
-
-        <div class = 'col-xl-6 col-lg-6 col-sm-12'>
+      <div class = 'form-group  row justify-content-center '>
+        <app-input-container [formGroup] = 'newCourtesyForm'
+                             class = "col-sm-6"
+                             controlName = 'name'
+                             name = 'Nombre'>
+        </app-input-container>
+        <app-select-container [data] = 'courtesyTypes'
+                              [formGroup] = 'newCourtesyForm'
+                              class = "col-sm-6"
+                              controlName = 'type'
+                              name = 'Tipo de cortesia'>
+        </app-select-container>
           <app-input-container
             [formGroup] = 'newCourtesyForm'
             controlName = 'value'
             name = '{{this.inputValueFromNewCourtesy()}}'
             type = 'number'>
           </app-input-container>
-        </div>
-        <div *ngIf = 'this.getCourtesy().type == 4'
-             class = 'col-xl-6 col-lg-6 col-sm-12'>
           <app-input-container
+            *ngIf = 'this.getCourtesy().type == 4'
             [formGroup] = 'newCourtesyForm'
             controlName = 'valueTimeMinutes'
             name = 'Cantidad de minutos'
             type = 'number'>
           </app-input-container>
-        </div>
-        <div class = 'col-xl-6 col-lg-6 col-sm-12'>
           <app-select-container
             [data] = 'typeOfCondition'
             [formGroup] = 'newCourtesyForm'
             controlName = 'condition'
             name = 'Tipo de condición'>
           </app-select-container>
-        </div>
-        <div
-          *ngIf = 'this.conditionValue == 2 || this.conditionValue == 3'
-          class = 'col-xl-6 col-lg-6 col-sm-12'>
           <app-input-container
+            *ngIf = 'this.conditionValue == 2 || this.conditionValue == 3'
             [formGroup] = 'newCourtesyForm'
             controlName = 'cantHours'
             name = 'Cantidad de horas'
             type = 'number'>
           </app-input-container>
-        </div>
-        <div class = 'col-xl-6 col-lg-6 col-sm-12'>
           <app-select-container
             [data] = 'allCompanies'
             [formGroup] = 'newCourtesyForm'
             controlName = 'companyId'
             name = 'Local'>
           </app-select-container>
-        </div>
-        <div class = ' col-xl-6 col-lg-6  col-sm-12'>
-          <app-input-container
-            [formGroup] = 'newCourtesyForm'
-            controlName = 'quantity'
-            name = 'Cantidad de cortesías'
-            textInfo = 'Debe de crear mas de una cortesía'
-            type = 'number'></app-input-container>
-        </div>
+        <app-input-container
+          [formGroup] = 'newCourtesyForm'
+          controlName = 'quantity'
+          name = 'Cantidad de cortesías'
+          textInfo = 'Debe de crear mas de una cortesía'
+          type = 'number'>
+        </app-input-container>
       </div>
     </div>
     <div class = 'row justify-content-center'>
