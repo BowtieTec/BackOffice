@@ -13,7 +13,6 @@ import {RolesComponent} from './components/roles/roles.component'
 import {CompanyComponent} from './components/companies/company/company.component'
 import {ParkingModule} from '../parking/parking.module'
 import {TariffTestComponent} from './components/tariff-test/tariff-test.component'
-import {UsersAppComponent} from './components/users-app/users-app.component'
 import {FeaturesModule} from "../features.module";
 
 @NgModule({
@@ -24,8 +23,7 @@ import {FeaturesModule} from "../features.module";
     UsersComponent,
     RolesComponent,
     CompanyComponent,
-    TariffTestComponent,
-    UsersAppComponent
+    TariffTestComponent
   ],
   imports: [
     CommonModule,
