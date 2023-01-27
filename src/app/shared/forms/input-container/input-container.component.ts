@@ -15,7 +15,6 @@ import {UtilitiesService} from '../../services/utilities.service'
 })
 export class InputContainerComponent implements OnInit {
   @Input() columns: number = 6
-
   @Input() name!: string
   @Input() controlName!: string
   @Input() formGroup!: FormGroup

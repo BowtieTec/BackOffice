@@ -24,16 +24,23 @@
           </p>
         </div>
         <div *ngIf = 'courtesies.length > 0 && !isLoading'>
-          <ul class = "list-group">
-            <div *ngFor = 'let item of courtesies; let i'>
-              <div class = 'row justify-content-between'>
+          <input (ngModelChange) = "searchCourtesies()"
+                 [(ngModel)] = "searchText"
+                 autofocus
+                 class = "form-control inputClass"
+                 placeholder = "Buscar cortesía"
+                 type = "text">
+          <ul class = "list-group m-4">
+            <div *ngFor = 'let item of courtesiesFiltered; let i'>
+              <div class = 'row justify-content-between animate__animated animate__fadeIn'>
                 <button
                   (click) = 'assignCourtesy(item)'
-                  class = "list-group-item list-group-item-action h6 col-4"
+                  class = "list-group-item list-group-item-action h6 col-4 "
                   type = "button">
-                  {{item.name}} <i *ngIf = "courtesyClicked===item"
-                                   class = "far fa-check-circle"></i>
-                  <span class = "text-muted offset col-4"> - {{item.company?.name || ''}}</span>
+                  <span class = "fw-bold">{{item.name}} <i *ngIf = "courtesyClicked===item"
+                                                           class = "far fa-check-circle"></i></span>
+                  <span class = "text-muted offset col-4 fw-normal"> - {{item.company?.name || ''}}</span>
+                  <span class = "text-muted offset col-4 fw-light"> - {{item.parking?.name ?? ''}}</span>
                 </button>
               </div>
             </div>

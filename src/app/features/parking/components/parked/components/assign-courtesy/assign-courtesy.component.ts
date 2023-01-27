@@ -13,11 +13,12 @@ import {MessageService} from "../../../../../../shared/services/message.service"
 export class AssignCourtesyComponent implements OnInit, OnDestroy {
   @Input() parked$: Subject<ParkedModel> = new Subject<ParkedModel>()
   courtesies: CourtesyModel[] = []
+  courtesiesFiltered: CourtesyModel[] = []
   courtesyTypes: CourtesyTypeModel[] = []
   isLoading: Boolean = true
   parkedSelected: ParkedModel = new ParkedModel()
   courtesyClicked: CourtesyModel = new CourtesyModel()
-
+  searchText: string = ''
   constructor(private courtesyService: CourtesyService, private message: MessageService) {
   }
 
@@ -27,10 +28,11 @@ export class AssignCourtesyComponent implements OnInit, OnDestroy {
       return
     }
     this.courtesyService.getCourtesiesByParking(parked.parkingId).toPromise().then(data => {
+      console.log(data)
       this.courtesies = data.filter(x => x.haveStation)
+      this.courtesiesFiltered = this.courtesies
     }).then(() => this.isLoading = !this.isLoading)
   }
-
   ngOnInit(): void {
     this.parked$.subscribe((parked: ParkedModel) => {
       this.getStationaryCourtesies(parked)
@@ -47,5 +49,14 @@ export class AssignCourtesyComponent implements OnInit, OnDestroy {
     this.isLoading = true
     this.courtesyClicked = courtesy
     this.courtesyService.assignCourtesy(this.parkedSelected.id, courtesy.id).then(() => this.isLoading = !this.courtesyService)
+  }
+
+  searchCourtesies() {
+    console.log(this.parkedSelected.parking)
+    if (this.searchText == '') {
+      this.courtesiesFiltered = this.courtesies
+      return
+    }
+    this.courtesiesFiltered = this.courtesies.filter((x) => `${x.name}${x.company?.name ?? ''}${this.parkedSelected.parking ?? ''}`.toLowerCase().includes(this.searchText.toLowerCase()))
   }
 }
