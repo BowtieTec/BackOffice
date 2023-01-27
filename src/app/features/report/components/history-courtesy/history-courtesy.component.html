@@ -1,22 +1,15 @@
 <app-panel-sub-module icon = "fas fa-sitemap"
-                      title = "Historial de cortesías">
-  <div class = 'row justify-content-center'>
-    <div class = 'col-xl-4 col-lg-6 col-sm-12'>
-      <div class = 'mb-4 relative'>
-        <app-input-container
-          (change) = 'this.getReport()'
-          [formGroup] = 'reportForm'
-          [value] = "now | date: 'yyyy-MM-dd'"
-          controlName = 'startDate'
-          maxL = "{{now | date:'yyyy-MM-dd'}}"
-          name = 'Inicio de Búsqueda'
-          type = 'Date'
-        ></app-input-container>
-      </div>
-    </div>
-    <div class = 'col-xl-4 col-lg-6 col-sm-12'>
-      <div class = 'mb-4 relative'>
-        <app-input-container
+                      title = "Historial de uso cortesías por entrada">
+  <app-input-container
+    (change) = 'this.getReport()'
+    [formGroup] = 'reportForm'
+    [value] = "now | date: 'yyyy-MM-dd'"
+    controlName = 'startDate'
+    maxL = "{{now | date:'yyyy-MM-dd'}}"
+    name = 'Inicio de Búsqueda'
+    type = 'Date'
+  ></app-input-container>
+  <app-input-container
           (change) = 'this.getReport()'
           [formGroup] = 'reportForm'
           [value] = "now | date: 'yyyy-MM-dd'"
@@ -25,9 +18,6 @@
               name = 'Fin de Búsqueda'
               type = 'Date'
             ></app-input-container>
-          </div>
-        </div>
-      </div>
         <dx-data-grid [columnHidingEnabled] = 'false'
                       [dataSource] = 'dataSource'
                       [showBorders] = 'true'

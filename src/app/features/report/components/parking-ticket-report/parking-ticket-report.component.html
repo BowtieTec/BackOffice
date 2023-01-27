@@ -1,8 +1,6 @@
 <app-panel-sub-module icon = "fas fa-sitemap"
                       title = "Reporte de Tickets">
   <div class = 'row justify-content-center'>
-    <div class = 'col-xl-4 col-lg-6 col-sm-12'>
-      <div class = 'mb-4 relative'>
         <app-input-container
           (change) = 'this.getReport()'
           [formGroup] = 'reportForm'
@@ -12,10 +10,6 @@
           name = 'Inicio de Búsqueda'
           type = 'Date'
         ></app-input-container>
-      </div>
-    </div>
-    <div class = 'col-xl-4 col-lg-6 col-sm-12'>
-      <div class = 'mb-4 relative'>
         <app-input-container
           (change) = 'this.getReport()'
           [formGroup] = 'reportForm'
@@ -25,8 +19,6 @@
               name = 'Fin de Búsqueda'
               type = 'Date'
             ></app-input-container>
-          </div>
-        </div>
       </div>
         <dx-data-grid [dataSource] = 'dataSource'
                       [showBorders] = 'true'

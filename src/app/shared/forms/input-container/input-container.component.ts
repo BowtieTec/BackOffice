@@ -14,6 +14,8 @@ import {UtilitiesService} from '../../services/utilities.service'
   ]
 })
 export class InputContainerComponent implements OnInit {
+  @Input() columns: number = 6
+
   @Input() name!: string
   @Input() controlName!: string
   @Input() formGroup!: FormGroup
@@ -23,10 +25,13 @@ export class InputContainerComponent implements OnInit {
   @Input() minL = '0'
   @Input() maxL = '80'
   @Input() value: any
-  @Input() columns: number = 6
-  @HostBinding('class') class = `col-sm-${this.columns}`
 
   constructor(private utilitiesService: UtilitiesService) {
+
+  }
+
+  @HostBinding('class') get columnClass(): string {
+    return `col-md-${this.columns}`
   }
 
   controlInvalid(control: string): boolean {

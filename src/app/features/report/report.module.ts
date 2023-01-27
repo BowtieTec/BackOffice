@@ -21,7 +21,6 @@ import {ReportService} from './components/service/report.service'
 import {DxButtonModule, DxDataGridModule} from 'devextreme-angular'
 
 import {DetailGridComponent} from './components/parking-ticket-report/detail/detail-grid.component'
-import {DetailGridMonthComponent} from './components/parking-day-report/detail/detail-grid-month.component'
 import {ReportComponent} from './report/report.component';
 import {BillingReportComponent} from './components/billing-report/billing-report.component';
 import {HistoryCourtesyComponent} from './components/history-courtesy/history-courtesy.component';
@@ -39,7 +38,6 @@ import {TransitDetailReportComponent} from './components/transit-detail-report/t
     ParkingDayReportComponent,
     DetailGridComponent,
     ReportComponent,
-    DetailGridMonthComponent,
     BillingReportComponent,
     HistoryCourtesyComponent,
     TransitDetailReportComponent

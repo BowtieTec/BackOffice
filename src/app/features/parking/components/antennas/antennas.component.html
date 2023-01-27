@@ -7,42 +7,32 @@
         method = "post"
         name = "form-wrapper"
         novalidate = "">
-    <div *ngIf = "ifHaveAction(createAntennaAction)">
-      <div class = "row justify-content-center">
-        <div class = "col-md-6 col-sm-12">
-          <app-select-container
-            [data] = "this.accessList"
-            [formGroup] = "this.stepFiveForm"
-            controlName = "type_access"
-            name = "Tipos de acceso"></app-select-container>
-        </div>
-        <div class = "col-md-6 col-sm-12">
-          <app-input-container
-            [formGroup] = "stepFiveForm"
-            controlName = "name_access"
-            name = "Nombre de acceso">
-          </app-input-container>
-        </div>
-        <div class = "col-md-6 col-sm-12">
+    <div *ngIf = "ifHaveAction(createAntennaAction)"
+         class = "row">
+      <app-select-container
+        [data] = "this.accessList"
+        [formGroup] = "this.stepFiveForm"
+        controlName = "type_access"
+        name = "Tipos de acceso"></app-select-container>
+      <app-input-container
+        [formGroup] = "stepFiveForm"
+        controlName = "name_access"
+        name = "Nombre de acceso">
+      </app-input-container>
           <app-input-container
             [formGroup] = "stepFiveForm"
             controlName = "mac_access"
             name = "MAC">
           </app-input-container>
-        </div>
-        <div class = "col-md-6 col-sm-12">
           <app-input-container
             [formGroup] = "stepFiveForm"
             controlName = "antenna_access"
             name = "Antena">
           </app-input-container>
-        </div>
-        <div>
           <app-checkbox-container
             [formGroup] = "stepFiveForm"
             controlName = "isPrivate"
             name = "Privado"></app-checkbox-container>
-        </div>
         <div class = "d-flex justify-content-center m-3">
           <button (click) = "addAntenna()"
                   class = "btn btn-success animate__animated animate__fadeInDown"
@@ -55,10 +45,8 @@
           </button>
         </div>
         <hr>
-      </div>
     </div>
     <table
-
       [dtOptions] = "dtOptions"
       [dtTrigger] = "dtTrigger"
       aria-label = "Tabla de antenas"

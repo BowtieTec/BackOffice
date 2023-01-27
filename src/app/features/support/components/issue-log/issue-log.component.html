@@ -1,41 +1,34 @@
 <app-panel-sub-module icon = "fas fa-sitemap"
                       title = "Bitácora">
-  <div class = "row justify-content-center">
-    <div class = "col-xl-2 col-lg-6 col-sm-12">
-      <app-input-container
-        [formGroup] = "searchLogForm"
-        controlName = "telephone"
-        maxL = "14"
-        name = "Teléfono"
-        type = "number"
-      ></app-input-container>
-    </div>
-      <div class = 'col-xl-4 col-lg-6 col-sm-12'>
-        <div class = 'mb-4 relative'>
-          <app-input-container
-            (change) = 'this.rerender()'
-            [formGroup] = 'searchLogForm'
-            [value] = "now | date: 'yyyy-MM-dd'"
-            controlName = 'initDate'
-            maxL = "{{now | date:'yyyy-MM-dd'}}"
-            name = 'Inicio de Búsqueda'
-            type = 'Date'
+  <div class = "row">
+    <app-input-container
+      [columns] = "4"
+      [formGroup] = "searchLogForm"
+      controlName = "telephone"
+      maxL = "14"
+      name = "Teléfono"
+      type = "number"
+    ></app-input-container>
+    <app-input-container
+      (change) = 'this.rerender()'
+      [columns] = "4"
+      [formGroup] = 'searchLogForm'
+      [value] = "now | date: 'yyyy-MM-dd'"
+      controlName = 'initDate'
+      maxL = "{{now | date:'yyyy-MM-dd'}}"
+      name = 'Inicio de Búsqueda'
+      type = 'Date'
           ></app-input-container>
-        </div>
-      </div>
-      <div class = 'col-xl-4 col-lg-6 col-sm-12'>
-        <div class = 'mb-4 relative'>
           <app-input-container
             (change) = 'this.rerender()'
             [formGroup] = 'searchLogForm'
+            [columns] = "4"
             [value] = "now | date: 'yyyy-MM-dd'"
             controlName = 'endDate'
             maxL = "{{now | date:'yyyy-MM-dd'}}"
             name = 'Fin de Búsqueda'
             type = 'Date'
           ></app-input-container>
-        </div>
-      </div>
     </div>
 <div *ngIf = "issues.length > 0"
      class = 'row animate__animated animate__fadeIn'>
