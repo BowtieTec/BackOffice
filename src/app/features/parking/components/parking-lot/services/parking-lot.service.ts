@@ -27,11 +27,11 @@ export class ParkingLotService {
       throw new Error(e.message)
     }
   }
-
   async updateParkingInfo(data: IParkingLotUpdate, parkingId: string) {
     try {
       const resp = await this.http.put(`${this.apiUrl}backoffice/parking/${parkingId}`, data).toPromise() as ResponseModel;
       if (resp.success) {
+        this.message.OkTimeOut('Actualizado correctamente');
         return resp.data;
       } else {
         this.message.error(resp.message);
