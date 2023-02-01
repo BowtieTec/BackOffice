@@ -1,23 +1,16 @@
 <app-panel-sub-module icon = "fas fa-clock"
+                      [formGroup] = 'stepTwoForm'
                       title = "Horarios">
-  <form
-    [formGroup] = 'stepTwoForm'
-    class = 'needs-validation form-group'
-    id = 'form-wrapper'
-    method = 'post'
-    name = 'form-wrapper'
-    novalidate = ''>
-
-    <div class = "row">
-      <div class = "col-xl-3 col-lg-4 col-md-6 col-sm-12 animate__animated animate__fadeInUp">
-        <div class = "panelsWithOutMinHeight">
-          <ul class = "opcionActivo ">
-            <li><input
-              formControlName = "isOpen0"
-              id = "lunes"
-              type = "checkbox"
-              value = "lunes"><label
-              for = "lunes">Lunes</label></li>
+  <div class = "row">
+    <div class = "col-xl-3 col-lg-4 col-md-6 col-sm-12 animate__animated animate__fadeInUp">
+      <div class = "panelsWithOutMinHeight">
+        <ul class = "opcionActivo ">
+          <li><input
+            formControlName = "isOpen0"
+            id = "lunes"
+            type = "checkbox"
+            value = "lunes"><label
+            for = "lunes">Lunes</label></li>
           </ul>
           <div
             class = " ">
@@ -195,5 +188,4 @@
         </button>
       </div>
     </div>
-  </form>
 </app-panel-sub-module>

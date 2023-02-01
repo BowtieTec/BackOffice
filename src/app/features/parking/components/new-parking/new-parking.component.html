@@ -1,4 +1,5 @@
 <app-panel-sub-module icon = "fas fa-sitemap"
+                      [formGroup] = "newParkingForm"
                       title = "Nuevo parqueo">
   <div class = "progress">
     <div [ngStyle] = "{'width': step * (100 / totalSteps ) + '%' }"
@@ -6,25 +7,17 @@
          class = "progress-bar progress-bar-striped progress-bar-animated bg-primary"
          role = "progressbar"></div>
   </div>
-  <div
-    id = "qbox-container">
-    <form
-      [formGroup] = "newParkingForm"
-          class = "needs-validation"
-          id = "form-wrapper"
-          method = "post"
-          name = "form-wrapper"
-          novalidate = "">
-          <div id = "steps-container">
-            <div *ngIf = "step == 1"
-                 class = "animate__animated animate__fadeInLeft"
-                 id = "stepOne">
-              <app-general-data
-                (changeStep) = "changeStep($event)"
-              ></app-general-data>
-            </div>
-            <div *ngIf = "step ==2"
-                 class = "animate__animated animate__fadeInLeft"
+  <div id = "qbox-container">
+    <div id = "steps-container">
+      <div *ngIf = "step == 1"
+           class = "animate__animated animate__fadeInLeft"
+           id = "stepOne">
+        <app-general-data
+          (changeStep) = "changeStep($event)"
+        ></app-general-data>
+      </div>
+      <div *ngIf = "step ==2"
+           class = "animate__animated animate__fadeInLeft"
                  id = "stepTwo">
               <app-schedule (changeStep) = "changeStep($event)"
                             [isCreatingParking] = "true"
@@ -84,7 +77,6 @@
               class = "btn btn-secondary m-2">Registrar
             </button>
           </div>
-    </form>
   </div>
   <div id = "preloader-wrapper">
     <div id = "preloader"></div>

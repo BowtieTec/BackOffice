@@ -1,21 +1,16 @@
 <app-panel-sub-module icon = "fas fa-file-invoice"
+                      [formGroup] = 'stepFourForm'
                       title = "Facturación">
-  <form [formGroup] = 'stepFourForm'
-        class = 'needs-validation form-group'
-        id = 'form-wrapper'
-        method = 'post'
-        name = 'form-wrapper'
-        novalidate = ''>
-    <div *ngIf = 'settingsOptions'
-         id = 'steps-container'>
-      <div class = 'row'>
-        <app-input-container [formGroup] = 'stepFourForm'
-                             controlName = 'business_name'
-                             name = 'Nombre'
-                             type = 'text'>
-        </app-input-container>
-        <app-input-container
-          [formGroup] = "stepFourForm"
+  <div *ngIf = 'settingsOptions'
+       id = 'steps-container'>
+    <div class = 'row'>
+      <app-input-container [formGroup] = 'stepFourForm'
+                           controlName = 'business_name'
+                           name = 'Nombre'
+                           type = 'text'>
+      </app-input-container>
+      <app-input-container
+        [formGroup] = "stepFourForm"
           controlName = "nit"
           name = "Nit"
           type = "text">
@@ -83,5 +78,4 @@
                 type = 'button'>Guardar
         </button>
       </div>
-  </form>
 </app-panel-sub-module>

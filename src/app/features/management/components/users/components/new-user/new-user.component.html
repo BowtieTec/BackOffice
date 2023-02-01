@@ -1,20 +1,16 @@
 <app-panel-sub-module icon = "fas fa-users"
+                      [formGroup] = 'newUserForm'
                       title = "Crear Usuario">
-  <form [formGroup] = 'newUserForm'
-        autocomplete = 'off'
-        class = "row"
-        id = "newUser">
-
-    <app-input-container [formGroup] = 'newUserForm'
-                         controlName = 'name'
-                         name = 'Nombre'>
-    </app-input-container>
-    <app-input-container [formGroup] = 'newUserForm'
-                         controlName = 'last_name'
-                         name = 'Apellido'>
-    </app-input-container>
-    <app-input-container [formGroup] = 'newUserForm'
-                         [readonly] = 'isEdit'
+  <app-input-container [formGroup] = 'newUserForm'
+                       controlName = 'name'
+                       name = 'Nombre'>
+  </app-input-container>
+  <app-input-container [formGroup] = 'newUserForm'
+                       controlName = 'last_name'
+                       name = 'Apellido'>
+  </app-input-container>
+  <app-input-container [formGroup] = 'newUserForm'
+                       [readonly] = 'isEdit'
                          controlName = 'email'
                          name = 'Correo'>
     </app-input-container>
@@ -79,5 +75,4 @@
       </div>
       <div class = 'mb-4 relative'></div>
     </div>
-  </form>
 </app-panel-sub-module>

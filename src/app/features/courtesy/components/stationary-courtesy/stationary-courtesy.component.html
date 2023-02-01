@@ -1,21 +1,16 @@
 <app-panel-sub-module icon = "fas fa-broadcast-tower"
+                      [formGroup] = 'stationaryForm'
                       title = "Cortesías estacionarias">
-  <form
-    [formGroup] = 'stationaryForm'
-    id = 'form-wrapper'
-    method = 'post'
-    name = 'form-wrapper'
-    novalidate = ''>
-    <div *ngIf = 'ifHaveAction(createCourtesyStationary)'
-         class = 'row'>
-      <app-input-container
-        [formGroup] = 'stationaryForm'
-        controlName = 'name'
-        name = 'Nombre de la cortesía'>
-      </app-input-container>
-      <app-select-container
-        (change) = "this.getNewConditions()"
-        [data] = ' this.typeCourtesies'
+  <div *ngIf = 'ifHaveAction(createCourtesyStationary)'
+       class = 'row'>
+    <app-input-container
+      [formGroup] = 'stationaryForm'
+      controlName = 'name'
+      name = 'Nombre de la cortesía'>
+    </app-input-container>
+    <app-select-container
+      (change) = "this.getNewConditions()"
+      [data] = ' this.typeCourtesies'
         [formGroup] = 'this.stationaryForm'
         controlName = 'type'
               name = 'Tipos de cortesía'>
@@ -137,7 +132,6 @@
             </tr>
             </tbody>
           </table>
-  </form>
 </app-panel-sub-module>
 <!-- Modal -->
 <div

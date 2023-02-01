@@ -1,21 +1,16 @@
 <app-panel-sub-module *ngIf = "ifHaveAction(createAntennaAction)"
                       icon = ""
+                      [formGroup] = "stepFiveForm"
                       title = "Agregar Antena">
-  <form [formGroup] = "stepFiveForm"
-        class = "needs-validation animate__animated animate__fadeInLeft form-group"
-        id = "form-wrapper"
-        method = "post"
-        name = "form-wrapper"
-        novalidate = "">
-    <div *ngIf = "ifHaveAction(createAntennaAction)"
-         class = "row">
-      <app-select-container
-        [data] = "this.accessList"
-        [formGroup] = "this.stepFiveForm"
-        controlName = "type_access"
-        name = "Tipos de acceso"></app-select-container>
-      <app-input-container
-        [formGroup] = "stepFiveForm"
+  <div *ngIf = "ifHaveAction(createAntennaAction)"
+       class = "row">
+    <app-select-container
+      [data] = "this.accessList"
+      [formGroup] = "this.stepFiveForm"
+      controlName = "type_access"
+      name = "Tipos de acceso"></app-select-container>
+    <app-input-container
+      [formGroup] = "stepFiveForm"
         controlName = "name_access"
         name = "Nombre de acceso">
       </app-input-container>
@@ -114,5 +109,4 @@
               type = "button">Siguiente
       </button>
     </div>
-  </form>
 </app-panel-sub-module>

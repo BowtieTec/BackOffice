@@ -1,6 +1,6 @@
-<form *ngIf = "ifHaveAction(createMonthlyParking)"
-      [formGroup] = "monthlyForm">
   <app-panel-sub-module icon = "fas fa-sitemap"
+                        *ngIf = "ifHaveAction(createMonthlyParking)"
+                        [formGroup] = "monthlyForm"
                         title = "Crear Parqueos mensuales">
 
     <div class = "row justify-content-center mb-4 ">
@@ -251,7 +251,6 @@
       </div>
     </div>
   </div>
-</form>
 <!--Profile Modal-->
 <div aria-hidden = "true"
      aria-labelledby = "staticBackdropLabel"

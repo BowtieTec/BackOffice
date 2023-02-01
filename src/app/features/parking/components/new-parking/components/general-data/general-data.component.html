@@ -1,18 +1,4 @@
-<app-title-cards icon = ""
-                 title = "Datos generales"></app-title-cards>
-<div
-  *ngIf = "ParkingId != ''"
-  class = "alert alert-primary"
-  role = "alert">
-  Este paso ya no puede ser editado desde esta pantalla.
-</div>
-<form *ngIf = "countries.length>0"
-      [formGroup] = "stepOneForm"
-      class = "needs-validation form-inline form-group"
-      id = "form-wrapper"
-      method = "post"
-      name = "form-wrapper"
-      novalidate = "">
+<app-panel-sub-module title = "Datos generales">
   <div class = "container form-group">
     <div class = "row">
       <app-input-container [formGroup] = "stepOneForm"
@@ -76,4 +62,4 @@
         </button>
       </div>
     </div>
-</form>
+</app-panel-sub-module>

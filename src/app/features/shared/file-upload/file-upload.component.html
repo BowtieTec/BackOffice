@@ -1,21 +1,17 @@
 <app-panel-sub-module icon = "fas fa-images"
+                      *ngIf = 'settingsOptions'
+                      [formGroup] = 'stepFourForm'
                       title = "Archivos">
-  <form *ngIf = 'settingsOptions'
-        [formGroup] = 'stepFourForm'
-        class = 'needs-validation form-group'
-        id = 'form-wrapper'
-        method = 'post'
-        name = 'form-wrapper'>
-    <div class = 'container'>
-      <div class = 'relative'>
-        <label class = 'labelInputFile'>Logo del parqueo:</label>
-        <input (change) = 'onFileChangeLogo($event)'
-               [class.is-invalid] = "controlInvalid('logo')"
-               accept = '.png, .jpg, .jpeg'
-               class = 'form-control inputClass'
-               formControlName = 'logo'
-               id = 'logo'
-               name = 'logo'
+  <div class = 'container'>
+    <div class = 'relative'>
+      <label class = 'labelInputFile'>Logo del parqueo:</label>
+      <input (change) = 'onFileChangeLogo($event)'
+             [class.is-invalid] = "controlInvalid('logo')"
+             accept = '.png, .jpg, .jpeg'
+             class = 'form-control inputClass'
+             formControlName = 'logo'
+             id = 'logo'
+             name = 'logo'
                type = 'file'>
         <small *ngIf = "controlInvalid('logo')"
                class = 'text-danger animate__animated  animate__rotateIn'>* Este campo es obligatorio</small>
@@ -114,5 +110,4 @@
               type = 'button'>Guardar
       </button>
     </div>
-  </form>
 </app-panel-sub-module>
