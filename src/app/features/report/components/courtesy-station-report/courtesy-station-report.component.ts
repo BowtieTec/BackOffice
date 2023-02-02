@@ -95,6 +95,7 @@ export class CourtesyStationReportComponent implements OnInit {
       .getCourtesyStationRpt(_startDate, _endDate, parkingId)
       .toPromise()
       .then((data) => {
+        console.log(data);
         if (data.success) {
           this.report = data.data
           this.dataSource = data.data
