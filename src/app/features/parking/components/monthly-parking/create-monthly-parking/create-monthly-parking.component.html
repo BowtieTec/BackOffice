@@ -1,8 +1,53 @@
-  <app-panel-sub-module icon = "fas fa-sitemap"
-                        *ngIf = "ifHaveAction(createMonthlyParking)"
-                        [formGroup] = "monthlyForm"
-                        title = "Crear Parqueos mensuales">
-
+<div class = "row justify-content-center">
+  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class = "panels">
+      <div class = "titleCards">
+        <span><em class = "fas fa-sitemap"></em></span>Crear Parqueos mensuales
+      </div>
+      <form *ngIf = "ifHaveAction(createMonthlyParking)"
+            [formGroup] = "monthlyForm">
+        <div class = "row justify-content-center mb-4 ">
+          <div class = "col-md-6 col-sm-12">
+            <div class = "row justify-content-center ">
+              <div class = "col-xl-6 text-center mb-4 animate__animated animate__fadeInLeft">
+                <h6>Seleccione un usuario</h6>
+                <div class = "input-group mb-3">
+                  <input [value] = "nameTelephone"
+                         aria-describedby = "button-addon2"
+                         aria-label = "Seleccionar usuario"
+                         class = "form-control inputClass"
+                         placeholder = "Buscar Usuario"
+                         type = "text">
+                  <div class = "iconInput">
+                    <em class = "fas fa-search"></em>
+                  </div>
+                  <button data-bs-target = "#staticBackdrop"
+                          data-bs-toggle = "modal"
+                          style = "position: absolute; width: 100%; height: 100%;  opacity: 0;"
+                          type = "button">
+                  </button>
+                </div>
+                <div *ngIf = "nameTelephone.length<=0"
+                     class = "text-info animate__animated animate__fadeIn mb-1">* Este campo es obligatorio.
+                </div>
+              </div>
+              <!-- Modal -->
+              <div aria-hidden = "true"
+                   aria-labelledby = "staticBackdropLabel"
+                   class = "modal fade"
+                   id = "staticBackdrop"
+                   tabindex = "-1">
+                <div class = "modal-dialog modal-md modal-dialog-centered">
+                  <div class = "modal-content">
+                    <div class = "modal-header">
+                      <h5 class = "modal-title"
+                          id = "staticBackdropLabel">Seleccionar usuario</h5>
+                      <button aria-label = "Close"
+                              class = "btn-close"
+                              data-bs-dismiss = "modal"
+                              type = "button"></button>
+                    </div>
+                    <div class = "modal-body">
     <div class = "row justify-content-center mb-4 ">
       <div class = "col-md-12 col-sm-12">
         <div class = "row justify-content-center ">
@@ -26,12 +71,9 @@
             <div *ngIf = "nameTelephone.length<=0"
                  class = "text-info animate__animated animate__fadeIn mb-1">* Este campo es obligatorio.
             </div>
+
           </div>
-        </div>
-      </div>
-      <div class = "col-md-6 col-sm-12 animate__animated animate__fadeInRight">
-        <div class = "row justify-content-center">
-          <div class = "col-xl-12 col-lg-12 col-sm-12 text-center  text-center">
+          <div class = "col-md-6 col-sm-12">
             <h6>Tipo de parqueo</h6>
             <ul class = "opcionActivo">
               <li class = "m-1">
@@ -54,39 +96,23 @@
               </li>
             </ul>
           </div>
-          <div class = "col-xl-8 col-md-12 col-sm-12 mb-4 ">
+          <div class = "row justify-content-center animate__animated animate__fadeInRight">
             <div *ngIf = "!this.isUnlimitedForm.value"
-                 class = "animate__animated animate__fadeInUp ">
-              <div class = "col-xl-12 col-lg-12 col-sm-12">
-                <div class = "mb-5 relative">
-                  <label class = "labelInput"
-                         for = "dateInOut"
-                         style = "display:block">Fecha de inicio</label>
-                  <input
-                    class = "form-control inputClass datetimepicker"
-                    formControlName = "begin_date"
-                    id = "dateInOut"
-                    min = "{{currentDate | date: 'yyyy-MM-dd'}}"
-                    name = "Appointment_time"
-                    placeholder = "Fecha/Hora de entrada"
-                    type = "date">
-                </div>
-              </div>
-              <div class = "col-xl-12 col-lg-12  col-sm-12">
-                <div class = "mb-4 relative">
-                  <label class = "labelInput"
-                         for = "dateEnd"
-                         style = "display:block">Fecha de fin</label>
-                  <input
-                    class = "form-control inputClass datetimepicker"
-                    formControlName = "finish_date"
-                    id = "dateEnd"
-                    min = "{{currentDate | date: 'yyyy-MM-dd'}}"
-                    name = "Appointment_time"
-                    placeholder = "Fecha/Hora de salida"
-                    type = "date">
-                </div>
-              </div>
+                 class = "col-md-6 col-sm-12">
+              <app-input-container
+                [formGroup] = "monthlyForm"
+                controlName = "begin_date"
+                name = "Fecha de inicio"
+                type = "date"
+                value = "{{currentDate | date: 'yyyy-MM-dd'}}">
+              </app-input-container>
+              <app-input-container
+                [formGroup] = "monthlyForm"
+                controlName = "finish_date"
+                name = "Fecha de salida"
+                type = "date"
+                value = "{{currentDate | date: 'yyyy-MM-dd'}}">
+              </app-input-container>
             </div>
             <hr>
 
