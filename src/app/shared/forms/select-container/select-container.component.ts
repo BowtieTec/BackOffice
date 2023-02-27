@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core'
+import {Component, HostBinding, Input} from '@angular/core'
 import {ControlContainer, FormGroup, FormGroupDirective, UntypedFormGroup} from '@angular/forms'
 import {UtilitiesService} from '../../services/utilities.service'
 
@@ -19,6 +19,11 @@ export class SelectContainerComponent {
   @Input() formGroup!: UntypedFormGroup | FormGroup
   @Input() data: any = []
   @Input() unselect: boolean = false
+  @Input() columns: number = 6
+  @HostBinding('class') class = `col-sm-${this.columns}`
+
+  @Input() onChangeFunction: (args: any) => void = () => {
+  }
 
   constructor(private utilitiesService: UtilitiesService) {
   }

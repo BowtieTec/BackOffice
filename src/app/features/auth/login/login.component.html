@@ -1,5 +1,6 @@
 <div class = "bglogin"></div>
-<div class = "login-form animate__animated animate__fadeIn">
+<div [formGroup] = "loginForm"
+     class = "login-form animate__animated animate__fadeIn">
   <form (ngSubmit) = "login()"
         [formGroup] = "loginForm">
     <div class = "logo">

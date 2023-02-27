@@ -1,102 +1,65 @@
-<div class = "titleCards">
-  Datos generales
-</div>
-<div
-  *ngIf = "ParkingId != ''"
-  class = "alert alert-primary"
-  role = "alert">
-  Este paso ya no puede ser editado desde esta pantalla.
-</div>
-<form *ngIf = "countries.length>0"
-      [formGroup] = "stepOneForm"
-      class = "needs-validation form-inline form-group"
-      id = "form-wrapper"
-      method = "post"
-      name = "form-wrapper"
-      novalidate = "">
+<app-panel-sub-module title = "Datos generales">
   <div class = "container form-group">
     <div class = "row">
       <app-input-container [formGroup] = "stepOneForm"
-                           class = "col-lg-6 col-md-5 col-sm-12 "
                            controlName = "name"
                            name = "Nombre">
       </app-input-container>
       <app-input-container [formGroup] = "stepOneForm"
-                           class = "col-lg-6 col-md-5 col-sm-12 "
                            controlName = "address"
                            maxL = '100'
                            name = "Dirección"
       >
       </app-input-container>
-    </div>
-    <div class = "row">
       <app-input-container [formGroup] = "stepOneForm"
-                           class = "col-lg-6 col-md-5 col-sm-12 "
                            controlName = "parking_spaces"
                            name = "Número de parqueos"
                            type = 'number'>
       </app-input-container>
       <app-input-container [formGroup] = "stepOneForm"
-                           class = "col-lg-6 col-md-5 col-sm-12 "
                            controlName = "special_parking_spaces"
                            name = "Número de parqueos especiales"
                            type = 'number'>
       </app-input-container>
-    </div>
-    <div class = "row">
       <app-input-container [formGroup] = "stepOneForm"
-                           class = "col-lg-6 col-md-5 col-sm-12 "
                            controlName = "minutes_to_exit"
                            name = "Tiempo de salida"
                            type = 'number'>
       </app-input-container>
-      <div class = "col-lg-6 col-md-5 col-sm-12">
-        <app-select-container
-          [data] = "countries"
+      <app-select-container
+        [data] = "countries"
+        [formGroup] = "stepOneForm"
+        controlName = "country"
+        name = "País">
+      </app-select-container>
+    </div>
+    <app-text-area-container
+      [formGroup] = "stepOneForm"
+      controlName = "rules"
+      name = "Reglamento interno">
+    </app-text-area-container>
+    </div>
+    <div class = "row in">
+      <div class = "col-sm-1">
+        <app-checkbox-container
           [formGroup] = "stepOneForm"
-          controlName = "country"
-          name = "País">
-        </app-select-container>
+          controlName = "is_TAS"
+          name = "TAS"
+        ></app-checkbox-container>
+      </div>
+      <div class = "col-sm-1 offset-1">
+        <app-checkbox-container
+          [formGroup] = "stepOneForm"
+          controlName = "is_show_map"
+          name = "Mostrar en el mapa"
+        ></app-checkbox-container>
+      </div>
+      <div class = "col-sm-1 offset-2">
+        <button (click) = "emmitStep(1)"
+                class = "btn btn-primary col-sm-1 h-50 mt-1"
+                id = "next-btn"
+                type = "button">Siguiente
+        </button>
       </div>
     </div>
-    <div class = "row">
-      <app-text-area-container
-        [formGroup] = "stepOneForm"
-        controlName = "rules"
-        name = "Reglamento interno"></app-text-area-container>
-    </div>
-    <div class = "row">
-      <app-checkbox-container
-        [formGroup] = "stepOneForm"
-        controlName = "is_TAS"
-        name = "TAS"
-      ></app-checkbox-container>
-      <app-checkbox-container
-        [formGroup] = "stepOneForm"
-        controlName = "is_show_map"
-        name = "Mostrar en el mapa"
-      ></app-checkbox-container>
-      <div class = "row col-xl-10 col-lg-10 col-sm-10 ">
-        <div *ngIf = "stepOneForm.controls['is_show_map'].value"
-             class = "animate__animated animate__fadeIn">
-          <google-map (mapClick) = "addMapMark($event)"
-                      [center] = "coords"
-                      height = "500"
-                      width = "100%">
-            <map-marker
-              [position] = "coordsMark"></map-marker>
-          </google-map>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class = "text-center"
-       id = "q-box__buttons">
-    <button (click) = "emmitStep(1)"
-            class = "btn btn-primary m-2"
-            id = "next-btn"
-            type = "button">Siguiente
-    </button>
-  </div>
-
-</form>
+</app-panel-sub-module>

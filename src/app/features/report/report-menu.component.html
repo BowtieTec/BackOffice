@@ -1,6 +1,6 @@
 <nav #nav = "ngbNav"
      [activeId] = "3"
-     class = "nav-tabs "
+     class = "nav-tabs"
      ngbNav>
   <ng-container *ngIf = "ifHaveAction(verDailyParkingReportTicket)"
                 [ngbNavItem] = "1">
@@ -16,7 +16,6 @@
       <app-parking-day-report></app-parking-day-report>
     </ng-template>
   </ng-container>
-
   <ng-container *ngIf = "ifHaveAction(verCourtesiesReport)"
                 [ngbNavItem] = "3">
     <a ngbNavLink><em class = "fas fa-magic"></em> Cortesias</a>

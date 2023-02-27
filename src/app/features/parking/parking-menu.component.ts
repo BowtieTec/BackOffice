@@ -16,6 +16,7 @@ export class ParkingMenuComponent {
   listMonthlyParking = environment.listMonthlyParking
   listParkedParking = environment.listParkedParking
   createMonthlyParking = environment.createMonthlyParking
+  listEditParking = environment.listEditParking
 
   constructor(
     private authService: AuthService,

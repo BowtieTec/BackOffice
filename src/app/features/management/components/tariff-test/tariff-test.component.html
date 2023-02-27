@@ -1,176 +1,121 @@
-<div class = "row justify-content-md-center">
-  <div class = "col-xl-12 col-lg-10 col-md-12 col-sm-12">
-    ​
-    <div class = "panels">
-      <div class = "titleCards">
-                <span>
-                    <i aria-hidden = "true"
-                       class = "fas fa-info-circle"></i>
-                </span> Pruebas de tarifa
+<app-panel-sub-module icon = "fas fa-vial"
+                      title = "Pruebas de tarifa">
+    <app-input-container
+      [formGroup] = "tariffTestForm"
+      controlName = "date_in"
+      name = "Fecha y hora de entrada"
+      type = "datetime-local">
+    </app-input-container>
+    <app-input-container
+      [formGroup] = "tariffTestForm"
+      controlName = "date_out"
+      name = "Fecha y hora de salida"
+      type = "datetime-local">
+    </app-input-container>
+    <app-select-container
+      (change) = "this.courtesySelected()"
+      [data] = "this.courtesies"
+      [formGroup] = "tariffTestForm"
+      [unselect] = "true"
+      controlName = "courtesyId"
+      name = "Cortesías">
+    </app-select-container>
+    <button
+      (click) = "getTariffTest()"
+      class = "text-center btn btn-success col-sm-3 offset-1 position-top h-25 mt-2"
+      type = "button">
+      Probar
+    </button>
+  <div
+    class = "row">
+    <div class = "col-md-6">
+      <p style = "font-size: 18px;">
+        <b style = "color: #0F1D71;">Tiempo total: </b>
+        <span *ngIf = "this.ticket.days > 0"> {{this.ticket.days}} días </span>
+        <span *ngIf = "this.ticket.hour > 0">  {{this.ticket.hour}} horas </span>
+        <span *ngIf = "this.ticket.minute > 0">  {{this.ticket.minute}} minutos</span>
+      </p>
+      <!-- <p *ngIf = "this.ticket.minute > 0"> Min.:  </p> -->
+      <br>
+
+      <div style = "background: #f2f2f2; border-radius: 12px; padding: 12px;">
+
+        <table class = "table table-borderless">
+
+          <tbody>
+          <tr *ngIf = "courtesyDetail;"
+              class = "table borderless">
+            <td class = "text-start"
+                style = "font-size: 18px;">Total sin descuento:
+            </td>
+            <td class = "text-end"
+                style = "font-size: 18px;"><b>{{this.ticket.amount_origin | currency:'GTQ'}}</b></td>
+          </tr>
+          <tr *ngIf = "courtesyDetail"
+              style = "border-bottom: 2px solid #666 !Important;">
+
+            <td class = "text-start"
+                style = "font-size: 18px;">Descuento:
+            </td>
+            <td class = "text-end"
+                style = "font-size: 18px;"><b>{{this.ticket.amount_disount | currency:'GTQ'}}</b></td>
+          </tr>
+          <tr class = "table borderless">
+            <td class = "text-start"
+                style = "font-size: 18px;">Total a pagar:
+            </td>
+            <td class = "text-end"
+                style = "font-size: 18px;"><b>{{this.ticket.amount | currency:'GTQ'}}</b></td>
+          </tr>
+          </tbody>
+        </table>
       </div>
-      ​
-      <div class = "row">
-        <div class = "col-md-4 mb-4">
-          <app-select-container (change) = "this.courtesySelected()"
-                                [data] = "this.courtesies"
-                                [formGroup] = "tariffTestForm"
-                                [unselect] = "true"
-                                controlName = "courtesyId"
-                                name = "Cortesías"></app-select-container>
-        </div>
-        <div class = "col-md-4 mb-4">
-          <app-input-container [formGroup] = "tariffTestForm"
-                               controlName = "date_in"
-                               name = "Fecha y hora de entrada"
-                               type = "datetime-local">
-
-          </app-input-container>
-        </div>
-        <div class = "col-md-4 mb-4">
-          <app-input-container [formGroup] = "tariffTestForm"
-                               controlName = "date_out"
-                               name = "Fecha y hora de salida"
-                               type = "datetime-local">
-
-          </app-input-container>
-        </div>
-      </div>
-      <div
-        class = "row">
-        <div class = "col-md-6">
-          <p style = "font-size: 18px;">
-            <b style = "color: #0F1D71;">Tiempo total: </b>
-            <span *ngIf = "this.ticket.days > 0"> {{this.ticket.days}} días </span>
-            <span *ngIf = "this.ticket.hour > 0">  {{this.ticket.hour}} horas </span>
-            <span *ngIf = "this.ticket.minute > 0">  {{this.ticket.minute}} minutos</span>
-          </p>
-          <!-- <p *ngIf = "this.ticket.minute > 0"> Min.:  </p> -->
-          <br>
-
-          <div style = "background: #f2f2f2; border-radius: 12px; padding: 12px;">
-
-            <table class = "table table-borderless">
-
-              <tbody>
-              <tr *ngIf = "courtesyDetail;"
-                  class = "table borderless">
-                <td class = "text-start"
-                    style = "font-size: 18px;">Total sin descuento:
-                </td>
-                <td class = "text-end"
-                    style = "font-size: 18px;"><b>{{this.ticket.amount_origin | currency:'GTQ'}}</b></td>
-              </tr>
-              <tr *ngIf = "courtesyDetail"
-                  style = "border-bottom: 2px solid #666 !Important;">
-
-                <td class = "text-start"
-                    style = "font-size: 18px;">Descuento:
-                </td>
-                <td class = "text-end"
-                    style = "font-size: 18px;"><b>{{this.ticket.amount_disount | currency:'GTQ'}}</b></td>
-              </tr>
-              <tr class = "table borderless">
-                <td class = "text-start"
-                    style = "font-size: 18px;">Total a pagar:
-                </td>
-                <td class = "text-end"
-                    style = "font-size: 18px;"><b>{{this.ticket.amount | currency:'GTQ'}}</b></td>
-              </tr>
-              </tbody>
-            </table>
-            <!-- <ul class = "">
-              <li *ngIf = "courtesyDetail"
-                  class = "list-group-item">Total sin descuento:<b>
-                <h6>{{this.ticket.amount_origin | currency:'GTQ'}}</h6></b></li>
-              <li *ngIf = "courtesyDetail"
-                  class = "list-group-item">Descuento:<b><h6>{{this.ticket.amount_disount | currency:'GTQ'}}</h6>
-              </b></li>
-              <li class = "list-group-item">Total a pagar:<b><h4>{{this.ticket.amount | currency:'GTQ'}}</h4></b>
-              </li>
-            </ul> -->
-          </div>
-
-
-        </div>
-        <div class = "col-md-6">
-          <div class = "timeline">
-            <div *ngFor = "let rule of tariffOfTicket"
-                 class = "timecontainer contentright">
-              <div class = "timecontent">
-                <div class = "d-flex w-100 justify-content-between">
-                  <h5 class = "mb-1">{{rule.name}}</h5>
-                  <small>{{rule.updated_at | timeAgo}}</small>
-                </div>
-                <p class = "mb-1">{{rule.description}}</p>
-                <small class = "text-muted">Evento: {{rule.event}}</small>
-              </div>
-
+    </div>
+    <div class = "col-md-6">
+      <div class = "timeline">
+        <div *ngFor = "let rule of tariffOfTicket"
+             class = "timecontainer contentright">
+          <div class = "timecontent">
+            <div class = "d-flex w-100 justify-content-between">
+              <h5 class = "mb-1">{{rule.name}}</h5>
+              <small>{{rule.updated_at | timeAgo}}</small>
             </div>
-
+            <p class = "mb-1">{{rule.description}}</p>
+            <small class = "text-muted">Evento: {{rule.event}}</small>
           </div>
-          <!-- <div class = "list-group">
-            <div *ngFor = "let rule of tariffOfTicket">
-              <a class = "list-group-item list-group-item-action flex-column align-items-start">
-                <div class = "d-flex w-100 justify-content-between">
-                  <h5 class = "mb-1">{{rule.name}}</h5>
-                  <small>{{rule.updated_at | timeAgo}}</small>
-                </div>
-                <p class = "mb-1">{{rule.description}}</p>
-                <small class = "text-muted">Evento: {{rule.event}}</small>
-              </a>
-            </div>
-          </div> -->
-        </div>
-
-        ​
-      </div>
-      <div class = "row">
-        <div class = "col-12 text-center mb-3 mt-3">
-          <button
-            (click) = "getTariffTest()"
-            class = "btn btn-primary"
-            type = "button">
-            Probar
-          </button>
-        </div>
-      </div>
-      <div class = 'row'>
-        <div class = 'col-12 text-center'>
-          <table class = "table">
-            <thead>
-            <tr>
-              <th scope = "col">Parqueo</th>
-              <th scope = "col">Fecha de entrada</th>
-              <th scope = "col">Fecha de salida</th>
-              <th scope = "col">Tiempo</th>
-              <th scope = "col">Descuento</th>
-              <th scope = "col">Total
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor = "let ticket of ListTicketTest"
-                class = "animate__animated animate__fadeIn">
-              <td>{{ticket.parking }}</td>
-              <td>{{ticket.date_in | date: 'dd/MM/YYYY hh:mm a'}}</td>
-              <td>{{ticket.date_out | date: 'dd/MM/YYYY hh:mm a'}}</td>
-              <td><p *ngIf = "this.ticket.days != 0"> Días: {{this.ticket.days}} </p>
-                <p *ngIf = "this.ticket.hour != 0"> Horas: {{this.ticket.hour}} </p>
-                <p *ngIf = "this.ticket.minute != 0"> Min.: {{this.ticket.minute}} </p></td>
-              <td>{{ticket.amount_disount ? (ticket.amount_disount | currency: 'GTQ') : 0 | currency: 'GTQ' }}</td>
-              <td>{{ticket.amount | currency: 'GTQ' }}</td>
-            </tr>
-            </tbody>
-            <tfoot>
-            <tr>
-              <td colspan = "6">Esta es una tabla temporal</td>
-            </tr>
-            </tfoot>
-          </table>
         </div>
       </div>
     </div>
-    ​
-    ​
   </div>
-</div>
+    <table class = "table col-12 text-center">
+      <thead>
+      <tr>
+        <th scope = "col">Parqueo</th>
+        <th scope = "col">Fecha de entrada</th>
+        <th scope = "col">Fecha de salida</th>
+        <th scope = "col">Tiempo</th>
+        <th scope = "col">Descuento</th>
+        <th scope = "col">Total
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor = "let ticket of ListTicketTest"
+          class = "animate__animated animate__fadeIn">
+        <td>{{ticket.parking }}</td>
+        <td>{{ticket.date_in | date: 'dd/MM/YYYY hh:mm a'}}</td>
+        <td>{{ticket.date_out | date: 'dd/MM/YYYY hh:mm a'}}</td>
+        <td><p *ngIf = "this.ticket.days != 0"> Días: {{this.ticket.days}} </p>
+          <p *ngIf = "this.ticket.hour != 0"> Horas: {{this.ticket.hour}} </p>
+          <p *ngIf = "this.ticket.minute != 0"> Min.: {{this.ticket.minute}} </p></td>
+        <td>{{ticket.amount_disount ? (ticket.amount_disount | currency: 'GTQ') : 0 | currency: 'GTQ' }}</td>
+        <td>{{ticket.amount | currency: 'GTQ' }}</td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td colspan = "6">Esta es una tabla temporal</td>
+      </tr>
+      </tfoot>
+    </table>
+</app-panel-sub-module>

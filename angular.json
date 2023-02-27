@@ -46,7 +46,8 @@
               "file-saver",
               "apexcharts",
               "sweetalert2",
-              "luxon"
+              "luxon",
+              "moment"
             ],
             "assets": [
               "src/favicon.ico",

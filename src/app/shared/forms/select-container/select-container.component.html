@@ -3,6 +3,7 @@
   <label class = "labelInput"
          style = "display: block;">{{this.name}}</label>
   <ng-select [placeholder] = "this.name"
+             (change) = "onChangeFunction($event)"
              formControlName = "{{controlName}}"
              notFoundText = "No se encontraron coincidencias">
     <ng-option *ngFor = "let item of data"

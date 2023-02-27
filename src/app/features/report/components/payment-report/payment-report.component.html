@@ -1,112 +1,88 @@
-<div class = "row justify-content-center">
-  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12 panelLeft animate__animated animate__fadeInLeft">
-    <div class = "panelsWithOutMinHeight">
-      <div class = "titleCards">
-        <span><i class = "fas fa-sitemap"></i></span> Reporte de Detalle de Pagos por Ticket
-      </div>
-      <div class = "row justify-content-center">
-        <div class = 'col-xl-4 col-lg-6 col-sm-12'>
-          <div class = 'mb-4 relative'>
-            <app-input-container
-              (change) = 'this.getReport()'
-              [formGroup] = 'reportForm'
-              [value] = "now | date: 'yyyy-MM-dd'"
-              controlName = 'startDate'
-              maxL = "{{now | date:'yyyy-MM-dd'}}"
-              name = 'Inicio de Búsqueda'
-              type = 'Date'
-            ></app-input-container>
-          </div>
-        </div>
-        <div class = 'col-xl-4 col-lg-6 col-sm-12'>
-          <div class = 'mb-4 relative'>
-            <app-input-container
-              (change) = 'this.getReport()'
-              [formGroup] = 'reportForm'
-              [value] = "now | date: 'yyyy-MM-dd'"
-              controlName = 'endDate'
-              maxL = "{{now | date:'yyyy-MM-dd'}}"
-              name = 'Fin de Búsqueda'
-              type = 'Date'
-            ></app-input-container>
-          </div>
-        </div>
-        <div class = 'col-xl-4 col-lg-6 col-sm-12'>
-          <div class = 'mb-4 relative'>
-            <app-input-container
-              (change) = 'this.getReport()'
-              [formGroup] = 'reportForm'
-              controlName = 'telephone'
-              maxL = "13"
-              minL = "8"
-              name = 'Teléfono'
-              type = 'number'
-            ></app-input-container>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
-      <div class = "panels">
-        <div class = "row"
-             id = "exportable">
-
-          <dx-data-grid [columnHidingEnabled] = "false"
-                        [dataSource] = "dataSource"
-                        [showBorders] = "true"
-                        id = "gridContainer">
-            <dxi-column
-              caption = "Teléfono"
-              dataField = "phone_key"
-              width = "125"
-            ></dxi-column>
-            <dxi-column
-              caption = "Sub Monto"
-              dataField = "subtotal"
-              dataType = "number"
-              format = "Q ,###,###,##0.00"
-              width = "125"
-            ></dxi-column>
-            <dxi-column
-              caption = "Descuento"
-              dataField = "discount"
-              dataType = "number"
-              format = "Q ,###,###,##0.00"
-              width = "125"
-            ></dxi-column>
-            <dxi-column
-              caption = "Total "
-              dataField = "total"
-              dataType = "number"
-              format = "Q ,###,###,##0.00"
-            ></dxi-column>
-            <dxi-column
-              caption = "Tiempo estacionado"
-              dataField = "timeIn"
-              dataType = "text"
-            ></dxi-column>
-            <dxi-column
-              [allowSorting] = 'true'
-              caption = "No. Factura"
-              dataField = "invoice"
-              type = "text"
-            ></dxi-column>
-            <dxo-header-filter [visible] = "true"></dxo-header-filter>
-            <dxo-search-panel [visible] = "true"
-                              placeholder = "Buscar..."></dxo-search-panel>
-            <dxo-toolbar>
-              <dxi-item location = "after">
-                <dx-button
-                  (onClick) = "onExporting($event)"
-                  icon = "xlsxfile"
-                  text = "Exportar a Excel"
-                ></dx-button>
-              </dxi-item>
-              <dxi-item name = "searchPanel"></dxi-item>
-            </dxo-toolbar>
-            <dxo-export [enabled] = "true"></dxo-export>
-          </dx-data-grid>
-        </div>
-      </div>
-    </div>
-  </div>
+<app-panel-sub-module icon = "fas fa-sitemap"
+                      title = "Detalle de pagos por ticket">
+  <app-input-container
+    (change) = 'this.getReport()'
+    [columns] = "4"
+    [formGroup] = 'reportForm'
+    [value] = "now | date: 'yyyy-MM-dd'"
+    controlName = 'startDate'
+    maxL = "{{now | date:'yyyy-MM-dd'}}"
+    name = 'Inicio de Búsqueda'
+    type = 'Date'
+  ></app-input-container>
+  <app-input-container
+    (change) = 'this.getReport()'
+    [columns] = "4"
+    [formGroup] = 'reportForm'
+    [value] = "now | date: 'yyyy-MM-dd'"
+    controlName = 'endDate'
+    maxL = "{{now | date:'yyyy-MM-dd'}}"
+    name = 'Fin de Búsqueda'
+    type = 'Date'
+  ></app-input-container>
+  <app-input-container
+    (change) = 'this.getReport()'
+    [columns] = "4"
+    [formGroup] = 'reportForm'
+    controlName = 'telephone'
+    maxL = "13"
+    minL = "8"
+    name = 'Teléfono'
+    type = 'number'
+  ></app-input-container>
+  <dx-data-grid [columnHidingEnabled] = "false"
+                [dataSource] = "dataSource"
+                [showBorders] = "true"
+                id = "gridContainer">
+    <dxi-column
+      caption = "Teléfono"
+      dataField = "phone_key"
+      width = "125"
+    ></dxi-column>
+    <dxi-column
+      caption = "Sub Monto"
+      dataField = "subtotal"
+      dataType = "number"
+      format = "Q ,###,###,##0.00"
+      width = "125"
+    ></dxi-column>
+    <dxi-column
+      caption = "Descuento"
+      dataField = "discount"
+      dataType = "number"
+      format = "Q ,###,###,##0.00"
+      width = "125"
+    ></dxi-column>
+    <dxi-column
+      caption = "Total "
+      dataField = "total"
+      dataType = "number"
+      format = "Q ,###,###,##0.00"
+    ></dxi-column>
+    <dxi-column
+      caption = "Tiempo estacionado"
+      dataField = "timeIn"
+      dataType = "text"
+    ></dxi-column>
+    <dxi-column
+      [allowSorting] = 'true'
+      caption = "No. Factura"
+      dataField = "invoice"
+      type = "text"
+    ></dxi-column>
+    <dxo-header-filter [visible] = "true"></dxo-header-filter>
+    <dxo-search-panel [visible] = "true"
+                      placeholder = "Buscar..."></dxo-search-panel>
+    <dxo-toolbar>
+      <dxi-item location = "after">
+        <dx-button
+          (onClick) = "onExporting($event)"
+          icon = "xlsxfile"
+          text = "Exportar a Excel"
+        ></dx-button>
+      </dxi-item>
+      <dxi-item name = "searchPanel"></dxi-item>
+    </dxo-toolbar>
+    <dxo-export [enabled] = "true"></dxo-export>
+  </dx-data-grid>
+</app-panel-sub-module>

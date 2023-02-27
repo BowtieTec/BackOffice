@@ -58,14 +58,21 @@ export class BillingDataComponent implements OnInit {
     this.stepFourForm.get('business_name')?.setValue(paymentInfo.business_name)
     this.stepFourForm.get('currency')?.setValue(paymentInfo.currency)
     this.stepFourForm.get('nit')?.setValue(paymentInfo.nit)
+    this.stepFourForm.get('afiliacion')?.setValue(paymentInfo.visa_credential?.cardAcqId ?? '')
+    this.stepFourForm.get('is_ebi')?.setValue(0)
+    this.stepFourForm.get('merchant_pass')?.setValue(paymentInfo.visa_credential?.merchant_password ?? '')
+    this.stepFourForm.get('merchant_id')?.setValue(paymentInfo.visa_credential?.merchant_user ?? '')
+    this.stepFourForm.get('terminal')?.setValue(paymentInfo.visa_credential?.terminal ?? '')
+
+    console.log(paymentInfo);
   }
 
   addValidators() {
     if (this.stepFourForm.controls['is_our_visa_credential'].value) {
-      this.stepFourForm.controls['merchant_id_visa'].setValidators(
+      this.stepFourForm.controls['merchant_id'].setValidators(
         Validators.required
       )
-      this.stepFourForm.controls['merchant_pass_visa'].setValidators(
+      this.stepFourForm.controls['merchant_pass'].setValidators(
         Validators.required
       )
       this.stepFourForm.controls['afiliacion'].setValidators(
@@ -73,12 +80,12 @@ export class BillingDataComponent implements OnInit {
       )
       this.stepFourForm.controls['terminal'].setValidators(Validators.required)
     } else {
-      this.stepFourForm.controls['merchant_id_visa'].clearValidators()
-      this.stepFourForm.controls['merchant_pass_visa'].clearValidators()
+      this.stepFourForm.controls['merchant_id'].clearValidators()
+      this.stepFourForm.controls['merchant_pass'].clearValidators()
       this.stepFourForm.controls['afiliacion'].clearValidators()
       this.stepFourForm.controls['terminal'].clearValidators()
-      this.stepFourForm.controls['merchant_id_visa'].setErrors(null)
-      this.stepFourForm.controls['merchant_pass_visa'].setErrors(null)
+      this.stepFourForm.controls['merchant_id'].setErrors(null)
+      this.stepFourForm.controls['merchant_pass'].setErrors(null)
       this.stepFourForm.controls['afiliacion'].setErrors(null)
       this.stepFourForm.controls['terminal'].setErrors(null)
     }
@@ -122,13 +129,13 @@ export class BillingDataComponent implements OnInit {
       nit: [null, [Validators.required]],
       business_address: [null, Validators.required],
       business_name: [null, Validators.required],
-      pay_method: ['0'],
+      pay_method: [0],
       currency: [null, Validators.required],
-      is_our_visa_credential: false,
+      is_our_visa_credential: true,
       is_our_bac_credential: false,
       //Visa Credential
-      merchant_id_visa: [''],
-      merchant_pass_visa: [''],
+      merchant_id: [''],
+      merchant_pass: [''],
       afiliacion: [''],
       terminal: [''],
       //  BAC Credential
@@ -190,9 +197,9 @@ export class BillingDataComponent implements OnInit {
       visa_credential: {
         cardAcqId: this.stepFourForm.controls['afiliacion'].value,
         terminal: this.stepFourForm.controls['terminal'].value,
-        merchant_user: this.stepFourForm.controls['merchant_id_visa'].value,
+        merchant_user: this.stepFourForm.controls['merchant_id'].value,
         merchant_password:
-        this.stepFourForm.controls['merchant_pass_visa'].value
+        this.stepFourForm.controls['merchant_pass'].value
       },
       bac_credential: {
         url: this.stepFourForm.controls['url_bac'].value,
