@@ -3,13 +3,12 @@ import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest}
 import {Observable, throwError} from 'rxjs'
 import {AuthService} from '../../shared/services/auth.service'
 import {catchError} from 'rxjs/operators'
-import {Router} from '@angular/router'
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthInterceptorService implements HttpInterceptor {
-  constructor(private authService: AuthService, private routes: Router) {
+  constructor(private authService: AuthService) {
   }
 
   intercept(

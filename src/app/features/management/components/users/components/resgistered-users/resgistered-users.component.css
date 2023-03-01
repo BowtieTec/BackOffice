@@ -47,3 +47,14 @@ a.paginate_button.current {
   color: #252525;
   padding-bottom: 18px;
 }
+
+
+table {
+  table-layout: fixed;
+}
+
+td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+}

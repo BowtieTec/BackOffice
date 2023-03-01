@@ -18,6 +18,16 @@ table.dataTable.thead.tr.th {
   text-align: center;
 }
 
+table {
+  table-layout: fixed;
+}
+
+td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+}
+
 .dt-button {
   background: #fff;
   color: #021C70;
