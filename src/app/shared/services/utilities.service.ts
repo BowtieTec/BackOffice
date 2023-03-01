@@ -16,6 +16,14 @@ export class UtilitiesService {
     )
   }
 
+  goToElementById(elementId: string) {
+    document?.getElementById(elementId)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    })
+  }
+
   markAsInvalid(form: UntypedFormGroup, control: string, error: any) {
     form.get(control)?.setErrors(error)
   }

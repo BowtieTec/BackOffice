@@ -1,31 +1,23 @@
-<div class = "row justify-content-center">
-  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class = "panels">
-      <div class = "titleCards">
-        <span><i class = "fas fa-sitemap"></i></span> Reporte de cortesías
-      </div>
-      <div class = "row">
-        <dx-data-grid [dataSource] = "dataSource"
-                      [showBorders] = "true"
-
-                      id = "gridContainer">
-          <dxi-column
-            caption = "Fecha de Creación"
-            dataField = "cd_created_at"
-            dataType = "date"
-            format = "dd/MM/yyyy"
-            sortOrder = 'desc'
-            width = 'auto'
-          ></dxi-column>
-          <dxi-column
-            caption = "Cortesía"
-            dataField = "cd_name"
-            width = '250'
-
-          ></dxi-column>
-
-          <dxi-column
-            caption = "Tipo de cortesía"
+<app-panel-sub-module icon = "fas fa-sitemap"
+                      title = "Todas las cortesías">
+  <dx-data-grid [dataSource] = "dataSource"
+                [showBorders] = "true"
+                id = "gridContainer">
+    <dxi-column
+      caption = "Fecha de Creación"
+      dataField = "cd_created_at"
+      dataType = "date"
+      format = "dd/MM/yyyy"
+      sortOrder = 'desc'
+      width = 'auto'
+    ></dxi-column>
+    <dxi-column
+      caption = "Cortesía"
+      dataField = "cd_name"
+      width = '250'
+    ></dxi-column>
+    <dxi-column
+      caption = "Tipo de cortesía"
             dataField = "cd_type"
             width = 'auto'
           ></dxi-column>
@@ -68,20 +60,16 @@
           <dxo-header-filter [visible] = "true"></dxo-header-filter>
           <dxo-search-panel [visible] = "true"
                             placeholder = "Buscar..."></dxo-search-panel>
-          <dxo-toolbar>
-            <dxi-item location = "after">
-              <dx-button
-                (onClick) = "onExporting($event)"
-                icon = "xlsxfile"
-                text = "Exportar a Excel"
-              ></dx-button>
-            </dxi-item>
-            <dxi-item name = "searchPanel"></dxi-item>
-          </dxo-toolbar>
-          <dxo-export [enabled] = "true"></dxo-export>
-        </dx-data-grid>
-      </div>
-    </div>
-  </div>
-</div>
-
+    <dxo-toolbar>
+      <dxi-item location = "after">
+        <dx-button
+          (onClick) = "onExporting($event)"
+          icon = "xlsxfile"
+          text = "Exportar a Excel"
+        ></dx-button>
+      </dxi-item>
+      <dxi-item name = "searchPanel"></dxi-item>
+    </dxo-toolbar>
+    <dxo-export [enabled] = "true"></dxo-export>
+  </dx-data-grid>
+</app-panel-sub-module>

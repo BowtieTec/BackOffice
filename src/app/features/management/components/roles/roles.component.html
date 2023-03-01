@@ -1,20 +1,16 @@
-<form action = "">
-  <div class = "panels animate__animated animate__fadeInLeft">
-    <div class = "titleCards">
-      <span><em class = "fas fa-user"></em></span> Roles y permisos
-    </div>
-    <div class = "row justify-content-center">
-
-      <div class = "col-xl-4 col-lg-8 col-md-12 col-xs-12 text-center">
-        <div class = "mb-4 relative">
-          <label class = "labelInput">Roles</label>
-          <select
-            (change) = "changeRole()"
-            [(ngModel)] = "roleIdSelected"
-            class = "inputClass"
-            id = "roleId"
-            name = "roleId">
-            <option *ngFor = "let role of Roles"
+<app-panel-sub-module icon = "fas fa-user"
+                      title = "Roles y permisos">
+    <div class = "col-sm-4 text-center">
+      <div class = "mb-4 relative">
+        <label class = "labelInput">Roles</label>
+        <select
+          (change) = "changeRole()"
+          [(ngModel)] = "roleIdSelected"
+          class = "inputClass"
+          data-placeholder = "Seleccione un rol"
+          id = "roleId"
+          name = "roleId">
+          <option *ngFor = "let role of Roles"
                     value = "{{role.id}}">{{role.name}}</option>
           </select>
 
@@ -57,6 +53,4 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</form>
+</app-panel-sub-module>

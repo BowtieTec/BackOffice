@@ -107,7 +107,6 @@ export class CourtesyService {
           if (!data.success) {
             throw new Error('No se pudo obtener las cortesias')
           }
-
           return data.data
         })
       )

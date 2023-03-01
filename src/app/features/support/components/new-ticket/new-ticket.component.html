@@ -20,20 +20,14 @@
           </div>
         </div>
         <div class = "col-lg-6">
-          <div class = "panelsWithOutMinHeight">
-            <div class = "row mt-4">
-              <div class = "col-md-12 mt-4">
-                <app-input-container [formGroup] = "supportTicketForm"
-                                     controlName = "subject"
-                                     name = "Asunto">
+          <div class = "panelsWithOutMinHeight mt-2">
+            <app-input-container [formGroup] = "supportTicketForm"
+                                 controlName = "subject"
+                                 name = "Asunto">
 
-                </app-input-container>
-              </div>
-
-            </div>
+            </app-input-container>
           </div>
         </div>
-        <div class = "col-12">
           <div class = "panelsWithOutMinHeight">
             <app-text-area-container [formGroup] = "supportTicketForm"
                                      controlName = "description"
@@ -48,8 +42,6 @@
               </button>
             </div>
           </div>
-
-        </div>
       </div>
     </div>
   </div>

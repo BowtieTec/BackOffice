@@ -12,3 +12,38 @@ a.paginate_button.current {
   background: #415ba1 !important;
   color: #fff !important;
 }
+
+.hovercard {
+  position: absolute;
+  opacity: 0;
+  z-index: 10;
+  left: 50%;
+  top: -90px;
+  transform: translateX(-50%);
+}
+
+.recent-link:hover .hovercard {
+  opacity: 0.95;
+  transition: 0.5s;
+  transition-delay: 0.1s;
+  list-style-type: none;
+}
+
+.tooltiptext {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: #04ba9f;
+  padding: 18px;
+  border-radius: 5px;
+  color: white;
+  line-height: 15px;
+  transition: 1s;
+  width: 400px;
+}
+
+.recent-link {
+  position: relative;
+  color: #252525;
+  padding-bottom: 18px;
+}

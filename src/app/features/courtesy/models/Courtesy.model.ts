@@ -1,3 +1,5 @@
+import {ParkingModel} from "../../parking/models/Parking.model";
+
 export class CourtesyTypeModel {
   id = 0
   name = ''
@@ -16,6 +18,7 @@ export class CourtesyModel {
   cantHours? = 0
   valueTimeMinutes? = 0
   haveStation?: boolean = false
+  parking?: ParkingModel = new ParkingModel()
 }
 
 class CompanyModel {

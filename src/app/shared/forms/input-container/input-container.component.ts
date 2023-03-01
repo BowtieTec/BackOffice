@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core'
-import {ControlContainer, FormGroupDirective, UntypedFormGroup, Validators} from '@angular/forms'
+import {Component, HostBinding, Input, OnInit} from '@angular/core'
+import {ControlContainer, FormGroup, FormGroupDirective, Validators} from '@angular/forms'
 import {UtilitiesService} from '../../services/utilities.service'
 
 @Component({
@@ -14,9 +14,10 @@ import {UtilitiesService} from '../../services/utilities.service'
   ]
 })
 export class InputContainerComponent implements OnInit {
+  @Input() columns: number = 6
   @Input() name!: string
   @Input() controlName!: string
-  @Input() formGroup!: UntypedFormGroup
+  @Input() formGroup!: FormGroup
   @Input() type = 'text'
   @Input() textInfo = ''
   @Input() readonly: boolean = false
@@ -25,6 +26,11 @@ export class InputContainerComponent implements OnInit {
   @Input() value: any
 
   constructor(private utilitiesService: UtilitiesService) {
+
+  }
+
+  @HostBinding('class') get columnClass(): string {
+    return `col-md-${this.columns}`
   }
 
   controlInvalid(control: string): boolean {

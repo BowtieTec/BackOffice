@@ -1,7 +1,5 @@
-<div class = 'panels'>
-  <div class = 'titleCards'>
-    <span> <em class = 'fas fa-comment-dollar'></em> </span> Tarifa
-  </div>
+<app-panel-sub-module icon = "fas fa-comment-dollar"
+                      title = "Tarifa">
   <div *ngIf = 'ifHaveAction(createTariff)'>
     <div
       *ngIf = 'false'
@@ -44,10 +42,8 @@
   </div>
   <div *ngIf = "isValidGeneralData && !this.generalDataFormValues.isPerDayCondition"
        class = "row justify-content-center">
-    <div class = "titleCards animate__animated animate__fadeInUp">
-      <span><em class = "fas fa-cogs"></em></span> Rangos y Costos
-      <hr>
-    </div>
+    <app-title-cards icon="fas fa-cogs" title="Rangos y Costos"></app-title-cards>
+
     <div *ngIf = "isValidGeneralData"
          class = " col-md-10 animate__animated animate__fadeInUp">
       <div class = "">
@@ -137,9 +133,9 @@
       type = 'button'>Guardar
     </button>
   </div>
-  <hr>
   <div>
-    <div class = 'titleCards'><span><i class = 'fas fa-list-ul'></i></span> Reglas de la tarifa para este parqueo</div>
+    <app-title-cards icon = "fas fa-list-ul"
+                     title = "Reglas de la tarifa para este parqueo"></app-title-cards>
     <!--  Reglas de tarifa  -->
     <div
       *ngIf = '!ifHaveTariffData'
@@ -149,7 +145,7 @@
     <div
       *ngIf = 'ifHaveTariffData'
       class = 'row '
-      style = 'background: #f7f7f7; margin: -15px; padding: 15px; left: 0;  right: 0;  top: 0;  border-radius: 0 0 10px 10px;'>
+      style = 'margin: -15px; padding: 15px; left: 0;  right: 0;  top: 0;  border-radius: 0 0 10px 10px;'>
       <div
         *ngFor = 'let tariff of tariffs; index as i'
         class = 'col-md-6 animate__animated animate__zoomIn'>
@@ -185,10 +181,8 @@
           <div class = 'titleCards mb-0'>{{tariff.name}}</div>
           {{tariff.static_description}}
         </div>
-
       </div>
     </div>
-
   </div>
   <div
     class = 'text-center'
@@ -208,4 +202,4 @@
       type = 'button'>Siguiente
     </button>
   </div>
-</div>
+</app-panel-sub-module>

@@ -1,19 +1,15 @@
-<div class = "row justify-content-center">
-  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class = "panels">
-      <div class = "titleCards">
-        <span><em class = "fas fa-sitemap"></em></span>Ver Parqueos mensuales
-      </div>
-      <table [dtOptions] = "dtOptions"
-             [dtTrigger] = "dtTrigger"
-             aria-label = "Tabla de parqueos mensuales"
-             class = "table hover table-striped animate__animated animate__fadeInLeft"
-             datatable>
-        <thead>
-        <tr class = "text-center">
-          <th scope = "col"
-              style = "width: 9%">Usuario
-          </th>
+<app-panel-sub-module icon = "fas fa-sitemap"
+                      title = "Ver Parqueos mensuales">
+  <table [dtOptions] = "dtOptions"
+         [dtTrigger] = "dtTrigger"
+         aria-label = "Tabla de parqueos mensuales"
+         class = "table hover table-striped animate__animated animate__fadeInLeft"
+         datatable>
+    <thead>
+    <tr class = "text-center">
+      <th scope = "col"
+          style = "width: 9%">Usuario
+      </th>
           <th scope = "col"
               style = "width: 9%">Correo
           </th>
@@ -75,9 +71,6 @@
         </tr>
         </tbody>
       </table>
-    </div>
-  </div>
-</div>
 <div aria-hidden = "true"
      aria-labelledby = "staticBackdropLabel"
      class = "modal fade"
@@ -147,3 +140,4 @@
     </div>
   </div>
 </div>
+</app-panel-sub-module>

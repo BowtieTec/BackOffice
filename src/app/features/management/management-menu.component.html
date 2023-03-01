@@ -54,13 +54,6 @@
       <app-billing-data [parkingId] = 'parkingId'></app-billing-data>
     </ng-template>
   </ng-container>
-  <ng-container *ngIf = 'ifHaveAction(listUserApp)'
-                [ngbNavItem] = "8">
-    <a ngbNavLink><em class = 'fas fa-users'></em> Usuarios ebiGo</a>
-    <ng-template ngbNavContent>
-      <app-users-app></app-users-app>
-    </ng-template>
-  </ng-container>
   <ng-container *ngIf = 'ifHaveAction(updateFiles)'
                 [ngbNavItem] = "9">
     <a ngbNavLink><em class = 'fas fa-images'></em> Archivos</a>
