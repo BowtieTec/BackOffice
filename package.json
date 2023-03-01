@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --outputHashing=all",
+    "start": "ng serve",
     "build": "ng build --prod --outputHashing=all",
     "devbuild": "ng build --configuration development",
     "watch": "ng build --watch --configuration development",

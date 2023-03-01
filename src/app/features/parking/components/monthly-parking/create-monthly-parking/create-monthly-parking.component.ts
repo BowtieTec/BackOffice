@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core'
-import {FormGroup, UntypedFormBuilder, Validators} from '@angular/forms'
+import {FormBuilder, FormGroup, Validators} from '@angular/forms'
 import {MessageService} from '../../../../../shared/services/message.service'
 import {ParkingService} from '../../../services/parking.service'
 import {UtilitiesService} from '../../../../../shared/services/utilities.service'
@@ -41,7 +41,7 @@ export class CreateMonthlyParkingComponent implements OnInit {
   private actions: string[] = this.permissionService.actionsOfPermissions
 
   constructor(
-    private formBuilder: UntypedFormBuilder,
+    private formBuilder: FormBuilder,
     private message: MessageService,
     private parkingService: ParkingService,
     private utilitiesService: UtilitiesService,
@@ -153,6 +153,7 @@ export class CreateMonthlyParkingComponent implements OnInit {
       name: this.nameProfile,
       stations: this.getStationsToCreateProfile()
     }
+    this.message.infoTimeOut('Creando perfil de acceso')
     this.parkingService.createAccessProfile(newProfile).then((data) => {
       this.resolveResponse(data)
     })

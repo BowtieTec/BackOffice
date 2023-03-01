@@ -205,7 +205,7 @@ export class ParkedComponent implements OnDestroy, AfterViewInit, OnInit {
     )
     if (result.isDenied) {
       this.message.infoTimeOut(
-        '!No te preocupes!, no se hicieron cambios.'
+        '¡No te preocupes!, no se hicieron cambios.'
       )
       return
     }

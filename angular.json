@@ -96,26 +96,24 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
+              "buildOptimizer": true,
               "optimization": false,
               "aot": true,
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true,
-              "statsJson": false,
-              "outputHashing": "all"
+              "statsJson": false
             },
             "local": {
-              "sourceMap": true,
+              "buildOptimizer": true,
               "optimization": false,
-              "namedChunks": true,
               "aot": true,
-              "extractLicenses": false,
-              "statsJson": false,
-              "progress": true,
               "vendorChunk": true,
-              "buildOptimizer": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "statsJson": false,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",

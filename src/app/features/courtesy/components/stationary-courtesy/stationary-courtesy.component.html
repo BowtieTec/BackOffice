@@ -18,6 +18,7 @@
             <app-input-container
               [formGroup] = 'stationaryForm'
               controlName = 'value'
+              maxL = "5"
               name = '{{this.inputValueFromNewCourtesy()}}'
               type = 'number'>
             </app-input-container>
@@ -40,6 +41,7 @@
               [formGroup] = 'stationaryForm'
               controlName = 'cantHours'
               name = 'Cantidad de horas'
+              maxL = "5"
               type = 'number'>
             </app-input-container>
           </div>
