@@ -114,6 +114,16 @@ button.dt-button:hover {
   min-width: 40px;
 }
 
+.buttonRowSecundary {
+  background: #6a6a6a;
+  color: White;
+  border: 1px solid #6a6a6a;
+  border-radius: 4px;
+  height: 32px;
+  font-size: 12px;
+  min-width: 40px;
+}
+
 .buttonRowDelete:Hover {
   background: #ef2f3d;
   color: #ffffff;
