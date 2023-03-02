@@ -5,6 +5,7 @@ import {DataTableOptions} from "../../../../shared/model/DataTableOptions";
 import {DataTableDirective} from "angular-datatables";
 import {Subject} from "rxjs";
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {ParkingModel} from "../../models/Parking.model";
 
 @Component({
   selector: 'app-parking-lot',
@@ -54,11 +55,13 @@ export class ParkingLotComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dtTrigger.unsubscribe()
   }
 
-  changeValue(innerHTML: any, parkingId: string, name: string): any {
+  changeValue(innerHTML: any, parking: ParkingModel, name: string): any {
+    // @ts-ignore
+    if (innerHTML.innerHTML == parking[name]) return
     const data: any = {
       [name]: innerHTML.innerHTML
     };
-    this.updateData(data, parkingId).then();
+    this.updateData(data, parking.id).then();
   }
 
   private rerender() {
