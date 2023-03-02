@@ -203,9 +203,10 @@ export class CourtesyStationReportComponent implements OnInit {
     })
     worksheet.mergeCells('B10:J11')
     worksheet.addRow([])
+    const startDateInit = new Date(startDate).setDate(new Date(startDate).getDate() + 1)
     const header1 = worksheet.addRow([
       '',
-      'Fecha Inicio: ' + new Date(startDate).toLocaleDateString(),
+      'Fecha Inicio: ' + new Date(startDateInit).toLocaleDateString(),
       '',
       '',
       '',
