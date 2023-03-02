@@ -121,11 +121,11 @@ export class CourtesyStationReportComponent implements OnInit {
       'Parqueo',
       'Local',
       'Tipo',
-      'Cortesias',
-      'Descuento',
+      'Valor',
+      'Sub Total',
+      'Total de Descuento',
+      'Total pagado',
       'Transacciones',
-      'Disponibles',
-      'Total descuento'
     ]
     //Create workbook and worksheet
     const workbook = new Workbook()
@@ -270,15 +270,15 @@ export class CourtesyStationReportComponent implements OnInit {
     this.dataSource.forEach((d: any) => {
       const row = worksheet.addRow([
         '',
-        d.cs_name,
-        d.parqueo,
-        d.comercio,
+        d.cd_name,
+        d.p_name,
+        d.company,
         d.cd_type,
-        d.cd_quantity,
         d.cd_value,
+        d.subtotal,
+        d.descuento,
+        d.total,
         d.transacciones,
-        d.disponibles,
-        d.total_descuento
       ])
       row.eachCell((cell, number) => {
         if (number > 1) {
