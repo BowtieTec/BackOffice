@@ -36,7 +36,7 @@
         <td>{{user.user}}</td>
         <td>{{user.role?.name ?? ''}}</td>
         <td>{{user.company?.name ?? ''}}</td>
-        <td> {{user.parking.name}}
+        <td style = "overflow: unset"> {{user.parking.name}}
           <div *ngIf = "user.otherParkings && user.otherParkings.length > 1">
             <i class = "recent-link text-decoration-none">
               <button class = "buttonRowQR"
@@ -46,10 +46,9 @@
                     data-bs-target = "#exampleModal"
                     data-bs-toggle = "modal">
               <div class = "tooltiptext">
-                <span *ngFor = "let parking of user.otherParkings.slice(0, 5)"
-                      class = "text-light">{{parking.name}}</span>
-                <span *ngIf = "user.otherParkings.length>5"
-                      class = "text-light">...</span>
+                <span *ngFor = "let parking of user.otherParkings"
+                      class = "text-dark"
+                      style = "border-bottom: 1px solid #6d767e; padding: 5px;">{{parking.name}}</span>
               </div>
              </span>
             </i>
