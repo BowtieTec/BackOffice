@@ -25,7 +25,7 @@ export interface billingData {
   descuento: number
   pagado: number
   nit: number
-  typeService: string
+  service_type: string
   dateBilling: string
 }
 
@@ -115,7 +115,7 @@ export class BillingReportComponent implements OnInit {
       .getBillingRpt(_startDate, _endDate, parkingId, dateTypeSearch)
       .toPromise()
       .then((data) => {
-
+        console.log(data)
         if (data.success) {
           this.report = data.data
           this.dataSource = data.data
@@ -165,7 +165,7 @@ export class BillingReportComponent implements OnInit {
         }
       }
     })
-    worksheet.mergeCells('D2:G3')
+    worksheet.mergeCells('D2:K3')
     const addressRow = worksheet.addRow(['', '', '', this.authService.getParking().name])
     addressRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
     addressRow.alignment = {horizontal: 'center', vertical: 'middle'}
@@ -179,7 +179,7 @@ export class BillingReportComponent implements OnInit {
         }
       }
     })
-    worksheet.mergeCells('D4:G5')
+    worksheet.mergeCells('D4:K5')
     const titleRow = worksheet.addRow([
       '',
       '',
@@ -198,7 +198,7 @@ export class BillingReportComponent implements OnInit {
         }
       }
     })
-    worksheet.mergeCells('D6:G8')
+    worksheet.mergeCells('D6:K8')
     //Add Image
     worksheet.mergeCells('B2:C8')
     const logo = workbook.addImage({
@@ -220,14 +220,15 @@ export class BillingReportComponent implements OnInit {
         }
       }
     })
-    worksheet.mergeCells('B10:G11')
+    worksheet.mergeCells('B10:K11')
     worksheet.addRow([])
     const header1 = worksheet.addRow([
       '',
       'Fecha Inicio: ' + new Date(new Date(startDate).setDate(new Date(startDate).getDate() + 1)).toLocaleDateString(),
       '',
       '',
-
+      '',
+      '',
       'Fecha Fin: ' + new Date(new Date(endDate).setDate(new Date(endDate).getDate() + 1)).toLocaleDateString()
     ])
     header1.eachCell((cell, number) => {
@@ -240,11 +241,13 @@ export class BillingReportComponent implements OnInit {
         }
       }
     })
-    worksheet.mergeCells('B13:D14')
-    worksheet.mergeCells('E13:G14')
+    worksheet.mergeCells('B13:F14')
+    worksheet.mergeCells('G13:K14')
     const header2 = worksheet.addRow([
       '',
       'Total de facturas emitidas: ' + this.dataSource.length,
+      '',
+      '',
       '',
       '',
       'Documento generado: ' +
@@ -262,8 +265,8 @@ export class BillingReportComponent implements OnInit {
         }
       }
     })
-    worksheet.mergeCells('B15:D16')
-    worksheet.mergeCells('E15:G16')
+    worksheet.mergeCells('B15:F16')
+    worksheet.mergeCells('G15:K16')
     worksheet.addRow([])
     const headerRow = worksheet.addRow(header)
 
@@ -305,7 +308,7 @@ export class BillingReportComponent implements OnInit {
         d.total,
         'GTQ',
         d.noFactura,
-        d.typeService
+        d.service_type
       ])
       row.eachCell((cell, number) => {
         if (number > 1) {
@@ -327,12 +330,12 @@ export class BillingReportComponent implements OnInit {
     worksheet.getColumn(4).width = 20
     worksheet.getColumn(5).width = 20
     worksheet.getColumn(6).width = 20
-    worksheet.getColumn(7).width = 20
-    worksheet.getColumn(8).width = 20
-    worksheet.getColumn(9).width = 15
-    worksheet.getColumn(10).width = 15
-    worksheet.getColumn(11).width = 30
-    worksheet.getColumn(12).width = 20
+    worksheet.getColumn(7).width = 15
+    worksheet.getColumn(8).width = 15
+    worksheet.getColumn(9).width = 25
+    worksheet.getColumn(10).width = 25
+    worksheet.getColumn(11).width = 15
+    worksheet.getColumn(12).width = 30
     worksheet.getColumn(13).width = 20
 
     //Generate Excel File with given name
