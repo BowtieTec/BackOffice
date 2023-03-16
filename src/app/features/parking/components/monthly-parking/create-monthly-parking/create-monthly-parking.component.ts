@@ -243,8 +243,6 @@ export class CreateMonthlyParkingComponent implements OnInit {
   }
 
   createMonthly() {
-    console.log(this.monthlyForm.value)
-    return;
     if (!this.monthlyForm.valid || !this.userSelected.id) {
       this.message.error(' Hacen falta datos o son inválidos.')
       return
