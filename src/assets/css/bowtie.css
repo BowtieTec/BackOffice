@@ -665,7 +665,7 @@ ul.opcionActivo li input[type="checkbox"]:checked + label::before {
 }
 
 ul.opcionActivo li input[type="checkbox"]:checked + label {
-  border: 1px solid #008974;
+  border: 1px solid #05ccae;
   background-color: #05ccae;
   color: #fff;
   transition: all .2s;
@@ -1034,6 +1034,3 @@ input[type="date"]::-webkit-calendar-picker-indicator, input[type="datetime-loca
     zoom: 0.7;
   }
 }
-
-
-

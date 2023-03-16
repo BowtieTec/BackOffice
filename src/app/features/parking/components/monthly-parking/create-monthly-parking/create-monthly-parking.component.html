@@ -51,7 +51,6 @@
 
                       <div class = "input-group-sm input-group ">
                         <input (change) = "searchUser()"
-                               (keydown.enter) = "searchUser()"
                                aria-describedby = "basic-addon1"
                                aria-label = "Número de teléfono"
                                class = "inputClass form-control"
@@ -184,7 +183,7 @@
           </div>
 
 
-          <div class = "col-xl-4 col-lg-4 col-sm-12 text-center mb-4 animate__animated animate__fadeInRight">
+          <div class = "col-sm-4 text-center">
             <h6>Perfil de acceso</h6>
             <div class = "input-group">
               <select aria-label = "Default select example"
@@ -212,10 +211,8 @@
                                                                            dentro del establecimiento, selecciones a
                                                                            cuales se les dara acceso.</small>
           </div>
-
-
-          <div class = "col-xl-4 col-lg-6  col-sm-12 text-center animate__animated animate__fadeInLeft">
-            <div class = "mb-4 relative">
+          <div class = "col-sm-4 text-center">
+            <div class = "relative text-center">
               <h6>Tarifa</h6>
               <label class = "labelInput">Cobro</label>
               <input [class.is-invalid] = "controlInvalid('amount')"
@@ -229,8 +226,32 @@
                    class = "text-danger animate__animated  animate__fadeIn mb-1">* Este campo es obligatorio
               </div>
             </div>
+
           </div>
-          <div class = "col-xl-12 col-lg-12 col-sm-12 animate__animated animate__fadeInRight">
+          <div class = "col-sm-4 text-center">
+              <h6>Tipo de cobro</h6>
+              <ul class = "opcionActivo">
+                <li>
+                  <input (change) = "changeValueSubscriptionType()"
+                         Name = "SubcriptionType"
+                         [checked] = "subscription_type"
+                         id = "radioTwoChargeIsRecurring"
+                         type = "radio">
+                  <label
+                    for = "radioTwoChargeIsRecurring">Cobro único</label>
+                </li>
+                <li class = "m-1">
+                  <input (change) = "changeValueSubscriptionType()"
+                         Name = "SubcriptionType"
+                         [checked] = "!subscription_type"
+                         id = "radioOneChargeIsRecurring"
+                         type = "radio">
+                  <label
+                    for = "radioOneChargeIsRecurring">Cobro recurrente</label>
+                </li>
+              </ul>
+            </div>
+          <div class="row">
             <div class = "text-center">
               <button (click) = "createMonthly()"
                       class = "btn btn-primary ">Guardar

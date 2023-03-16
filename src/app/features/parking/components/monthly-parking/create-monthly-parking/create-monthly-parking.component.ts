@@ -68,9 +68,15 @@ export class CreateMonthlyParkingComponent implements OnInit {
   get isUnlimitedForm() {
     return this.monthlyForm.controls['isUnlimited']
   }
+  get subscription_typeForm() {
+    return this.monthlyForm.get('subscription_type')
+  }
 
   get isUnlimitedValue() {
     return this.monthlyForm.get('isUnlimited')?.value
+  }
+  get subscription_type() {
+    return this.monthlyForm.get('subscription_type')?.value
   }
 
   getAntennasByParking() {
@@ -130,6 +136,10 @@ export class CreateMonthlyParkingComponent implements OnInit {
     const isUnlimited: boolean = this.isUnlimitedForm.value
     this.isUnlimitedForm.setValue(!isUnlimited)
   }
+  changeValueSubscriptionType() {
+    const subscription_type: boolean = this.subscription_typeForm?.value
+    this.subscription_typeForm?.setValue(!subscription_type)
+  }
 
   controlInvalid(control: string): boolean {
     return this.utilitiesService.controlInvalid(this.monthlyForm, control)
@@ -184,7 +194,8 @@ export class CreateMonthlyParkingComponent implements OnInit {
       begin_date,
       finish_date,
       profile_subscription:
-      this.monthlyForm.getRawValue().profile_subscription
+      this.monthlyForm.getRawValue().profile_subscription,
+      subscription_type: this.monthlyForm.getRawValue().subscription_type
     }
   }
 
@@ -276,6 +287,7 @@ export class CreateMonthlyParkingComponent implements OnInit {
       sunday: [false],
       telephone: ['', [Validators.maxLength(13)]],
       isUnlimited: [true],
+      subscription_type: [false],
       begin_date: [null],
       finish_date: [null],
       profile_subscription: ['']
