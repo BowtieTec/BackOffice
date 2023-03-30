@@ -15,6 +15,7 @@ export class NewUserModel {
   validate_code?: string = ''
   company?: string | null | any = ''
   otherParkings?: any[]
+  otherCourtesies?: any[]
 }
 
 export class updateUserApp {
