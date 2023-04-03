@@ -91,6 +91,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       .toPromise()
       .then((data) => {
         if (data.success) {
+          console.log("data", data)
           this.report = data.data
           this.dataSource = data.data
           this.rerender()
@@ -126,7 +127,8 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       'Estación de ingreso',
       'Estación de Salida',
       'No. Factura',
-      'Trace Number'
+      'Trace Number',
+      'Emisor de cortesia'
     ]
     //Create workbook and worksheet
     const workbook = new Workbook()
@@ -147,7 +149,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
         }
       }
     })
-    worksheet.mergeCells('D2:Q3')
+    worksheet.mergeCells('D2:R3')
     const addressRow = worksheet.addRow(['', '', '', this.authService.getParking().name])
     addressRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
     addressRow.alignment = {horizontal: 'center', vertical: 'middle'}
@@ -161,7 +163,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
         }
       }
     })
-    worksheet.mergeCells('D4:Q5')
+    worksheet.mergeCells('D4:R5')
     const titleRow = worksheet.addRow([
       '',
       '',
@@ -180,7 +182,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
         }
       }
     })
-    worksheet.mergeCells('D6:Q8')
+    worksheet.mergeCells('D6:R8')
     //Add Image
     worksheet.mergeCells('B2:C8')
     const logo = workbook.addImage({
@@ -202,7 +204,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
         }
       }
     })
-    worksheet.mergeCells('B10:Q11')
+    worksheet.mergeCells('B10:R11')
     worksheet.addRow([])
     const header1 = worksheet.addRow([
       '',
@@ -226,7 +228,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       }
     })
     worksheet.mergeCells('B13:H14')
-    worksheet.mergeCells('I13:Q14')
+    worksheet.mergeCells('I13:R14')
     const header2 = worksheet.addRow([
       '',
       'Total de cortesias aplicadas: ' + this.dataSource.length,
@@ -252,7 +254,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
       }
     })
     worksheet.mergeCells('B15:H16')
-    worksheet.mergeCells('I15:Q16')
+    worksheet.mergeCells('I15:R16')
     worksheet.addRow([])
     const headerRow = worksheet.addRow(header)
 
@@ -275,6 +277,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
     })
     // Add Data and Conditional Formatting
     this.dataSource.forEach((d: any) => {
+      console.log("Informacion", d);
       const row = worksheet.addRow([
         '',
         d.p_name,
@@ -292,7 +295,8 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
         d.estacionEntrada,
         d.estacionSalida ? d.estacionSalida : ' ',
         d.noFactura,
-        d.trace_number
+        d.trace_number,
+        d.completeAdmin
       ])
       row.eachCell((cell, number) => {
         if (number > 1) {
@@ -325,6 +329,7 @@ export class HistoryCourtesyComponent implements OnInit, AfterViewInit {
     worksheet.getColumn(15).width = 25
     worksheet.getColumn(16).width = 15
     worksheet.getColumn(17).width = 15
+    worksheet.getColumn(18).width = 30
 
     //Generate Excel File with given name
     workbook.xlsx.writeBuffer().then((data) => {
