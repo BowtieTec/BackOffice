@@ -1,5 +1,113 @@
 <app-panel-sub-module icon = "fas fa-parking"
                       title = "Parqueos">
+
+
+
+
+
+
+
+
+
+
+
+                      <table [dtOptions] = "dtOptions"
+                      [dtTrigger] = "dtTrigger"
+                      aria-label = "Tabla de parqueos mensuales"
+                      class = "table hover table-striped animate__animated animate__fadeInLeft"
+                      datatable>
+                 <thead>
+                 <tr class = "">
+                   <th scope = "col"
+                       style = "width: 200px">Nombre
+                   </th>
+                   <th scope = "col"
+                       style = "width: 200px">Dirección
+                   </th>
+                   <th scope = "col"
+                       style = "width: 200px">Espacios
+                   </th>
+                   <th scope = "col"
+                       style = "width: 200px">Especiales
+                   </th>
+                   <th scope = "col"
+                       style = "width: 200px">Estado
+                   </th>
+                   <th scope = "col"
+                       style = "width: 200px">NIT
+                   </th>
+                   <th scope = "col"
+                       style = "width: 300px">Dirección
+                   </th>
+                   <th scope = "col"
+                       style = "width: 200px">Razón
+                   </th>
+                   <th scope = "col"
+                       style = "width: 200px">Tiempo para salir
+                   </th>
+                   <th scope = "col">Mostrar en el mapa</th>
+                   <th scope = "col">TAS</th>
+                   <th scope = "col">Teléfonos</th>
+                   <th scope = "col">Eliminado</th>
+                   <th scope = "col">Lane Number</th>
+                 </tr>
+                 </thead>
+                 <tbody>
+                    <div class="row" >
+                        <div class="col-md-6">
+                            <div class="element">
+                                <div class="titleElement">Nombre</div>
+                                <div class="contenElement" >
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 <tr *ngFor = "let parking of parkingLot">
+                    
+                   
+                   <td (focusout) = "changeValue($event.target, parking.id, 'address')"
+                       contenteditable>{{parking.address}}</td>
+                   <td (focusout) = "changeValue($event.target, parking.id, 'parking_spaces')"
+                       contenteditable>{{parking.parking_spaces}}</td>
+                   <td (focusout) = "changeValue($event.target, parking.id, 'special_parking_spaces')"
+                       contenteditable>{{parking.special_parking_spaces}}</td>
+                   <td (focusout) = "changeValue($event.target, parking.id, 'status')"
+                       contenteditable>{{parking.status}}</td>
+                   <td (focusout) = "changeValue($event.target, parking.id, 'nit')"
+                       contenteditable>{{parking.nit}}</td>
+                   <td (focusout) = "changeValue($event.target, parking.id, 'business_address')"
+                       contenteditable>{{parking.business_address}}</td>
+                   <td (focusout) = "changeValue($event.target, parking.id, 'business_name')"
+                       contenteditable>{{parking.business_name}}</td>
+                   <td (focusout) = "changeValue($event.target, parking.id, 'minutes_to_exit')"
+                       contenteditable>{{parking.minutes_to_exit}}</td>
+                   <td (focusout) = "changeValue($event.target, parking.id, 'is_show_map')"
+                       contenteditable>{{parking.is_show_map}}</td>
+                   <td (focusout) = "changeValue($event.target, parking.id, 'is_TAS')"
+                       contenteditable>{{parking.is_TAS}}</td>
+                   <td (focusout) = "changeValue($event.target, parking.id, 'phone_numbers')"
+                       contenteditable>{{parking.phone_numbers}}</td>
+                   <td (focusout) = "changeValue($event.target, parking.id, 'is_draft')"
+                       contenteditable>{{parking.is_draft}}</td>
+                   <td (focusout) = "changeValue($event.target, parking.id, 'lane_number')"
+                       contenteditable>{{parking.lane_number}}</td>
+                 </tr>
+                 </tbody>
+               </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
   <table [dtOptions] = "dtOptions"
          [dtTrigger] = "dtTrigger"
          aria-label = "Tabla de parqueos mensuales"
