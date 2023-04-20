@@ -19,6 +19,7 @@ export class CourtesyModel {
   valueTimeMinutes? = 0
   haveStation?: boolean = false
   parking?: ParkingModel = new ParkingModel()
+  otherAdmin? = []
 }
 
 class CompanyModel {

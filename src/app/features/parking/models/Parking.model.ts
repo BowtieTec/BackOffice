@@ -1,6 +1,7 @@
 export class ParkingModel {
   id = ''
   name = ''
+  haveStation? = 0
 }
 
 export class ParkedModel {
