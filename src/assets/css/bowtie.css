@@ -18,6 +18,16 @@ table.dataTable.thead.tr.th {
   text-align: center;
 }
 
+table {
+  table-layout: fixed;
+}
+
+td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+}
+
 .dt-button {
   background: #fff;
   color: #021C70;
@@ -98,6 +108,16 @@ button.dt-button:hover {
   background: #fb6e7b;
   color: White;
   border: 1px solid #fb6f7b;
+  border-radius: 4px;
+  height: 32px;
+  font-size: 12px;
+  min-width: 40px;
+}
+
+.buttonRowSecundary {
+  background: #6a6a6a;
+  color: White;
+  border: 1px solid #6a6a6a;
   border-radius: 4px;
   height: 32px;
   font-size: 12px;
@@ -645,7 +665,7 @@ ul.opcionActivo li input[type="checkbox"]:checked + label::before {
 }
 
 ul.opcionActivo li input[type="checkbox"]:checked + label {
-  border: 1px solid #008974;
+  border: 1px solid #05ccae;
   background-color: #05ccae;
   color: #fff;
   transition: all .2s;
@@ -1014,6 +1034,3 @@ input[type="date"]::-webkit-calendar-picker-indicator, input[type="datetime-loca
     zoom: 0.7;
   }
 }
-
-
-

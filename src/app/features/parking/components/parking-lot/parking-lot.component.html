@@ -151,33 +151,33 @@
     </thead>
     <tbody>
     <tr *ngFor = "let parking of parkingLot">
-      <td (focusout) = "changeValue($event.target, parking.id, 'name')"
+      <td (focusout) = "changeValue($event.target, parking, 'name')"
           contenteditable>{{parking.name}}</td>
-      <td (focusout) = "changeValue($event.target, parking.id, 'address')"
+      <td (focusout) = "changeValue($event.target, parking, 'address')"
           contenteditable>{{parking.address}}</td>
-      <td (focusout) = "changeValue($event.target, parking.id, 'parking_spaces')"
+      <td (focusout) = "changeValue($event.target, parking, 'parking_spaces')"
           contenteditable>{{parking.parking_spaces}}</td>
-      <td (focusout) = "changeValue($event.target, parking.id, 'special_parking_spaces')"
+      <td (focusout) = "changeValue($event.target, parking, 'special_parking_spaces')"
           contenteditable>{{parking.special_parking_spaces}}</td>
-      <td (focusout) = "changeValue($event.target, parking.id, 'status')"
+      <td (focusout) = "changeValue($event.target, parking, 'status')"
           contenteditable>{{parking.status}}</td>
-      <td (focusout) = "changeValue($event.target, parking.id, 'nit')"
+      <td (focusout) = "changeValue($event.target, parking, 'nit')"
           contenteditable>{{parking.nit}}</td>
-      <td (focusout) = "changeValue($event.target, parking.id, 'business_address')"
+      <td (focusout) = "changeValue($event.target, parking, 'business_address')"
           contenteditable>{{parking.business_address}}</td>
-      <td (focusout) = "changeValue($event.target, parking.id, 'business_name')"
+      <td (focusout) = "changeValue($event.target, parking, 'business_name')"
           contenteditable>{{parking.business_name}}</td>
-      <td (focusout) = "changeValue($event.target, parking.id, 'minutes_to_exit')"
+      <td (focusout) = "changeValue($event.target, parking, 'minutes_to_exit')"
           contenteditable>{{parking.minutes_to_exit}}</td>
-      <td (focusout) = "changeValue($event.target, parking.id, 'is_show_map')"
+      <td (focusout) = "changeValue($event.target, parking, 'is_show_map')"
           contenteditable>{{parking.is_show_map}}</td>
-      <td (focusout) = "changeValue($event.target, parking.id, 'is_TAS')"
+      <td (focusout) = "changeValue($event.target, parking, 'is_TAS')"
           contenteditable>{{parking.is_TAS}}</td>
-      <td (focusout) = "changeValue($event.target, parking.id, 'phone_numbers')"
+      <td (focusout) = "changeValue($event.target, parking, 'phone_numbers')"
           contenteditable>{{parking.phone_numbers}}</td>
-      <td (focusout) = "changeValue($event.target, parking.id, 'is_draft')"
+      <td (focusout) = "changeValue($event.target, parking, 'is_draft')"
           contenteditable>{{parking.is_draft}}</td>
-      <td (focusout) = "changeValue($event.target, parking.id, 'lane_number')"
+      <td (focusout) = "changeValue($event.target, parking, 'lane_number')"
           contenteditable>{{parking.lane_number}}</td>
     </tr>
     </tbody>

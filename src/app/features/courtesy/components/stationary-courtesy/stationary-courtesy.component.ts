@@ -145,7 +145,7 @@ export class StationaryCourtesyComponent
     if (this.allAntennas) {
       this.parkingId = parkingId
       this.stationsCourtesies = await this.getCourtesiesStationary(parkingId)
-      //this.rerender()
+      this.rerender()
     }
 
     this.message.hideLoading()
@@ -175,7 +175,7 @@ export class StationaryCourtesyComponent
           )
         })
         .finally(() => {
-          //this.rerender()
+          this.rerender()
           if (this.allCompanies.length > 0) {
             this.stationaryForm
               .get('companyId')
@@ -342,5 +342,14 @@ export class StationaryCourtesyComponent
     this.$subs = this.listCheckboxService.recivedData().subscribe((p) => {
       this.listParkingToCourtesy = p
     })
+  }
+
+  private rerender() {
+    if (this.dtElement != undefined) {
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.destroy()
+        this.dtTrigger.next()
+      })
+    }
   }
 }

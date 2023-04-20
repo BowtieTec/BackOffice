@@ -1,37 +1,109 @@
-  <app-panel-sub-module icon = "fas fa-sitemap"
-                        *ngIf = "ifHaveAction(createMonthlyParking)"
-                        [formGroup] = "monthlyForm"
-                        title = "Crear Parqueos mensuales">
-
-    <div class = "row justify-content-center mb-4 ">
-      <div class = "col-md-12 col-sm-12">
-        <div class = "row justify-content-center ">
-          <div class = "col-xl-6 col-lg-6 col-md-12 text-center mb-4 animate__animated animate__fadeInLeft">
-            <h6>Seleccione un usuario</h6>
-            <div class = "input-group mb-3">
-              <input [value] = "nameTelephone"
-                     aria-label = "Seleccionar usuario"
-                     class = "form-control inputClass"
-                     placeholder = "Buscar Usuario"
-                     type = "text">
-              <div class = "iconInput">
-                <em class = "fas fa-search"></em>
-              </div>
-              <button data-bs-target = "#staticBackdrop"
-                      data-bs-toggle = "modal"
-                      style = "position: absolute; width: 100%; height: 100%;  opacity: 0;"
-                      type = "button">
-              </button>
-            </div>
-            <div *ngIf = "nameTelephone.length<=0"
-                 class = "text-info animate__animated animate__fadeIn mb-1">* Este campo es obligatorio.
-            </div>
-          </div>
-        </div>
+<div class = "row justify-content-center">
+  <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class = "panels">
+      <div class = "titleCards">
+        <span><em class = "fas fa-sitemap"></em></span>Crear Parqueos mensuales
       </div>
-      <div class = "col-md-6 col-sm-12 animate__animated animate__fadeInRight">
-        <div class = "row justify-content-center">
-          <div class = "col-xl-12 col-lg-12 col-sm-12 text-center  text-center">
+      <form *ngIf = "ifHaveAction(createMonthlyParking)"
+            [formGroup] = "monthlyForm">
+        <div class = "row justify-content-center mb-4 ">
+          <div class = "col-md-6 col-sm-12">
+            <div class = "row justify-content-center ">
+              <div class = "col-xl-6 text-center mb-4 animate__animated animate__fadeInLeft">
+                <h6>Seleccione un usuario</h6>
+                <div class = "input-group mb-3">
+                  <input [value] = "nameTelephone"
+                         aria-describedby = "button-addon2"
+                         aria-label = "Seleccionar usuario"
+                         class = "form-control inputClass"
+                         placeholder = "Buscar Usuario"
+                         type = "text">
+                  <div class = "iconInput">
+                    <em class = "fas fa-search"></em>
+                  </div>
+                  <button data-bs-target = "#staticBackdrop"
+                          data-bs-toggle = "modal"
+                          style = "position: absolute; width: 100%; height: 100%;  opacity: 0;"
+                          type = "button">
+                  </button>
+                </div>
+                <div *ngIf = "nameTelephone.length<=0"
+                     class = "text-info animate__animated animate__fadeIn mb-1">* Este campo es obligatorio.
+                </div>
+              </div>
+              <!-- Modal -->
+              <div aria-hidden = "true"
+                   aria-labelledby = "staticBackdropLabel"
+                   class = "modal fade"
+                   id = "staticBackdrop"
+                   tabindex = "-1">
+                <div class = "modal-dialog modal-md modal-dialog-centered">
+                  <div class = "modal-content">
+                    <div class = "modal-header">
+                      <h5 class = "modal-title"
+                          id = "staticBackdropLabel">Seleccionar usuario</h5>
+                      <button aria-label = "Close"
+                              class = "btn-close"
+                              data-bs-dismiss = "modal"
+                              type = "button"></button>
+                    </div>
+                    <div class = "modal-body">
+
+                      <div class = "input-group-sm input-group ">
+                        <input (change) = "searchUser()"
+                               aria-describedby = "basic-addon1"
+                               aria-label = "Número de teléfono"
+                               class = "inputClass form-control"
+                               formControlName = "telephone"
+                               maxLength = "13"
+                               placeholder = "Número de teléfono"
+                               type = "number">
+                        <button (click) = "searchUser()"
+                                class = "btn btn-primary btn-input"
+                                type = "button">
+                          <em class = "fas fa-search"></em>
+                        </button>
+                      </div>
+                      <span class = 'mb-5'> *Ingresar el número de teléfono</span>
+                      <div *ngIf = "loadingUser"
+                           class = "progress mb-5">
+                        <div aria-valuemax = "100"
+                             aria-valuemin = "0"
+                             aria-valuenow = "75"
+                             class = "progress-bar progress-bar-striped progress-bar-animated"
+                             role = "progressbar"
+                             style = "width: 100%"></div>
+                      </div>
+                      <div *ngIf = 'userSearched.length<=0 && searched'
+                           class = 'text-center mt-3'>
+                        No se han encontrado datos
+                      </div>
+                      <div class = "list-group mt-3">
+                        <button (click) = "userSelect(user)"
+                                *ngFor = "let user of userSearched"
+                                class = "list-group-item list-group-item-action "
+                                data-bs-dismiss = "modal"
+                                type = "button">
+                          {{user.name + ' ' + (user.last_name ? user.last_name : '') + ' Teléfono: ' + user.phone_number}}
+                          <span class = 'position-absolute ml-2'
+                                style = "right: 15px !important; color: #415ba2;">Seleccionar</span>
+                        </button>
+                      </div>
+                    </div>
+                    <div class = "modal-footer">
+                      <button class = "btn btn-secondary"
+                              data-bs-dismiss = "modal"
+                              type = "button">Cancelar
+                      </button>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class = "col-md-6 col-sm-12">
             <h6>Tipo de parqueo</h6>
             <ul class = "opcionActivo">
               <li class = "m-1">
@@ -54,204 +126,144 @@
               </li>
             </ul>
           </div>
-          <div class = "col-xl-8 col-md-12 col-sm-12 mb-4 ">
+          <div class = "row justify-content-center animate__animated animate__fadeInRight">
             <div *ngIf = "!this.isUnlimitedForm.value"
-                 class = "animate__animated animate__fadeInUp ">
-              <div class = "col-xl-12 col-lg-12 col-sm-12">
-                <div class = "mb-5 relative">
-                  <label class = "labelInput"
-                         for = "dateInOut"
-                         style = "display:block">Fecha de inicio</label>
-                  <input
-                    class = "form-control inputClass datetimepicker"
-                    formControlName = "begin_date"
-                    id = "dateInOut"
-                    min = "{{currentDate | date: 'yyyy-MM-dd'}}"
-                    name = "Appointment_time"
-                    placeholder = "Fecha/Hora de entrada"
-                    type = "date">
-                </div>
-              </div>
-              <div class = "col-xl-12 col-lg-12  col-sm-12">
-                <div class = "mb-4 relative">
-                  <label class = "labelInput"
-                         for = "dateEnd"
-                         style = "display:block">Fecha de fin</label>
-                  <input
-                    class = "form-control inputClass datetimepicker"
-                    formControlName = "finish_date"
-                    id = "dateEnd"
-                    min = "{{currentDate | date: 'yyyy-MM-dd'}}"
-                    name = "Appointment_time"
-                    placeholder = "Fecha/Hora de salida"
-                    type = "date">
-                </div>
+                 class = "col-md-6 col-sm-12">
+              <app-input-container
+                [formGroup] = "monthlyForm"
+                controlName = "begin_date"
+                minL = "{{currentDate | date: 'yyyy-MM-dd'}}"
+                name = "Fecha de inicio"
+                type = "date"
+                value = "{{currentDate | date: 'yyyy-MM-dd'}}">
+              </app-input-container>
+              <app-input-container
+                [formGroup] = "monthlyForm"
+                controlName = "finish_date"
+                minL = "{{currentDate | date: 'yyyy-MM-dd'}}"
+                name = "Fecha de salida"
+                type = "date"
+                value = "{{currentDate | date: 'yyyy-MM-dd'}}">
+              </app-input-container>
+            </div>
+          </div>
+
+          <div class = "col-xl-12 col-lg-12 col-sm-12 text-center animate__animated animate__fadeInLeft">
+            <h6>Días habilitados para entrada</h6>
+            <ul class = "opcionActivo">
+              <li class = "m-1"><input formControlName = "monday"
+                                       id = "checkboxOne"
+                                       type = "checkbox"
+                                       value = "Lunes"><label for = "checkboxOne">Lunes</label></li>
+              <li class = "m-1"><input formControlName = "tuesday"
+                                       id = "checkboxTwo"
+                                       type = "checkbox"
+                                       value = "Martes"><label for = "checkboxTwo">Martes</label></li>
+              <li class = "m-1"><input formControlName = "wednesday"
+                                       id = "checkboxThree"
+                                       type = "checkbox"
+                                       value = "Miércoles"><label for = "checkboxThree">Miércoles</label></li>
+              <li class = "m-1"><input formControlName = "thursday"
+                                       id = "checkboxFour"
+                                       type = "checkbox"
+                                       value = "Jueves"><label for = "checkboxFour">Jueves</label></li>
+              <li class = "m-1"><input formControlName = "friday"
+                                       id = "checkboxFive"
+                                       type = "checkbox"
+                                       value = "Viernes"><label for = "checkboxFive">Viernes</label></li>
+              <li class = "m-1"><input formControlName = "saturday"
+                                       id = "checkboxSix"
+                                       type = "checkbox"
+                                       value = "Sábado"><label for = "checkboxSix">Sábado</label></li>
+              <li class = "m-1"><input formControlName = "sunday"
+                                       id = "checkboxSeven"
+                                       type = "checkbox"
+                                       value = "Domingo"><label for = "checkboxSeven">Domingo</label></li>
+            </ul>
+          </div>
+
+
+          <div class = "col-sm-4 text-center">
+            <h6>Perfil de acceso</h6>
+            <div class = "input-group">
+              <select aria-label = "Default select example"
+                      class = "form-select selectClass"
+                      formControlName = "profile_subscription">
+
+                <option selected
+                        value = "">Sin perfil de acceso
+                </option>
+                <option *ngFor = "let profile of profiles"
+                        [value] = "profile.id">{{profile.name }}</option>
+              </select>
+              <!-- Button trigger modal -->
+              <div class = "input-group-append">
+                <button *ngIf = "ifHaveAction(createAccessProfileMonthlyParking)"
+                        class = "btn btn-primary btn-input"
+                        data-bs-target = "#newAccessProfiles"
+                        data-bs-toggle = "modal"
+                        type = "button">
+                  <em class = "fas fa-plus"></em>
+                </button>
               </div>
             </div>
-            <hr>
+            <small class = "text-info animate__animated animate__rotateIn">* Si cuenta con distintos accesos privados
+                                                                           dentro del establecimiento, selecciones a
+                                                                           cuales se les dara acceso.</small>
+          </div>
+          <div class = "col-sm-4 text-center">
+            <div class = "relative text-center">
+              <h6>Tarifa</h6>
+              <label class = "labelInput">Cobro</label>
+              <input [class.is-invalid] = "controlInvalid('amount')"
+                     class = "form-control inputClass"
+                     formControlName = "amount"
+                     min = "0.00"
+                     placeholder = "Monto mensual:"
+                     step = "0.01"
+                     type = "number">
+              <div *ngIf = "controlInvalid('amount')"
+                   class = "text-danger animate__animated  animate__fadeIn mb-1">* Este campo es obligatorio
+              </div>
+            </div>
 
           </div>
+          <div class = "col-sm-4 text-center">
+              <h6>Tipo de cobro</h6>
+              <ul class = "opcionActivo">
+                <li>
+                  <input (change) = "changeValueSubscriptionType()"
+                         Name = "SubcriptionType"
+                         [checked] = "subscription_type"
+                         id = "radioTwoChargeIsRecurring"
+                         type = "radio">
+                  <label
+                    for = "radioTwoChargeIsRecurring">Cobro único</label>
+                </li>
+                <li class = "m-1">
+                  <input (change) = "changeValueSubscriptionType()"
+                         Name = "SubcriptionType"
+                         [checked] = "!subscription_type"
+                         id = "radioOneChargeIsRecurring"
+                         type = "radio">
+                  <label
+                    for = "radioOneChargeIsRecurring">Cobro recurrente</label>
+                </li>
+              </ul>
+            </div>
+          <div class="row">
+            <div class = "text-center">
+              <button (click) = "createMonthly()"
+                      class = "btn btn-primary ">Guardar
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      </form>
 
-      <div class = "col-xl-12 col-lg-12 col-sm-12 text-center animate__animated animate__fadeInLeft">
-        <h6>Días habilitados para entrada</h6>
-        <ul class = "opcionActivo">
-          <li class = "m-1"><input formControlName = "monday"
-                                   id = "checkboxOne"
-                                   type = "checkbox"
-                                   value = "Lunes"><label for = "checkboxOne">Lunes</label></li>
-          <li class = "m-1"><input formControlName = "tuesday"
-                                   id = "checkboxTwo"
-                                   type = "checkbox"
-                                   value = "Martes"><label for = "checkboxTwo">Martes</label></li>
-          <li class = "m-1"><input formControlName = "wednesday"
-                                   id = "checkboxThree"
-                                   type = "checkbox"
-                                   value = "Miércoles"><label for = "checkboxThree">Miércoles</label></li>
-          <li class = "m-1"><input formControlName = "thursday"
-                                   id = "checkboxFour"
-                                   type = "checkbox"
-                                   value = "Jueves"><label for = "checkboxFour">Jueves</label></li>
-          <li class = "m-1"><input formControlName = "friday"
-                                   id = "checkboxFive"
-                                   type = "checkbox"
-                                   value = "Viernes"><label for = "checkboxFive">Viernes</label></li>
-          <li class = "m-1"><input formControlName = "saturday"
-                                   id = "checkboxSix"
-                                   type = "checkbox"
-                                   value = "Sábado"><label for = "checkboxSix">Sábado</label></li>
-          <li class = "m-1"><input formControlName = "sunday"
-                                   id = "checkboxSeven"
-                                   type = "checkbox"
-                                   value = "Domingo"><label for = "checkboxSeven">Domingo</label></li>
-        </ul>
-      </div>
-
-
-      <div class = "col-xl-4 col-lg-4 col-sm-12 text-center mb-4 animate__animated animate__fadeInRight">
-        <h6>Perfil de acceso</h6>
-        <div class = "input-group">
-          <select aria-label = "Default select example"
-                  class = "form-select selectClass"
-                  formControlName = "profile_subscription">
-
-            <option selected
-                    value = "">Sin perfil de acceso
-            </option>
-            <option *ngFor = "let profile of profiles"
-                    [value] = "profile.id">{{profile.name }}</option>
-          </select>
-          <!-- Button trigger modal -->
-          <div class = "input-group-append">
-            <button *ngIf = "ifHaveAction(createAccessProfileMonthlyParking)"
-                    class = "btn btn-primary btn-input"
-                    data-bs-target = "#newAccessProfiles"
-                    data-bs-toggle = "modal"
-                    type = "button">
-              <em class = "fas fa-plus"></em>
-            </button>
-          </div>
-        </div>
-        <small class = "text-info animate__animated animate__rotateIn">* Si cuenta con distintos accesos privados
-                                                                       dentro del establecimiento, selecciones a
-                                                                       cuales se les dara acceso.</small>
-      </div>
-      <div class = "col-xl-4 col-lg-6  col-sm-12 text-center animate__animated animate__fadeInLeft">
-        <div class = "mb-4 relative">
-          <h6>Tarifa</h6>
-          <label class = "labelInput">Cobro</label>
-          <input [class.is-invalid] = "controlInvalid('amount')"
-                 class = "form-control inputClass"
-                 formControlName = "amount"
-                 min = "0.00"
-                 placeholder = "Monto mensual:"
-                 step = "0.01"
-                 type = "number">
-          <div *ngIf = "controlInvalid('amount')"
-               class = "text-danger animate__animated  animate__fadeIn mb-1">* Este campo es obligatorio
-          </div>
-        </div>
-      </div>
-      <div class = "col-xl-12 col-lg-12 col-sm-12 animate__animated animate__fadeInRight">
-        <div class = "text-center">
-          <button (click) = "createMonthly()"
-                  class = "btn btn-primary ">Guardar
-          </button>
-        </div>
-      </div>
-    </div>
-  </app-panel-sub-module>
-  <!-- User Modal-->
-  <div aria-hidden = "true"
-       aria-labelledby = "staticBackdropLabel"
-       class = "modal fade"
-       id = "staticBackdrop"
-       tabindex = "-1">
-    <div class = "modal-dialog modal-md modal-dialog-centered">
-      <div class = "modal-content">
-        <div class = "modal-header">
-          <h5 class = "modal-title"
-              id = "staticBackdropLabel">Seleccionar usuario</h5>
-          <button aria-label = "Close"
-                  class = "btn-close"
-                  data-bs-dismiss = "modal"
-                  type = "button"></button>
-        </div>
-        <div class = "modal-body">
-
-          <div class = "input-group-sm input-group ">
-            <input (change) = "searchUser()"
-                   (keydown.enter) = "searchUser()"
-                   aria-describedby = "basic-addon1"
-                   aria-label = "Número de teléfono"
-                   class = "inputClass form-control"
-                   formControlName = "telephone"
-                   maxLength = "13"
-                   placeholder = "Número de teléfono"
-                   type = "number">
-            <button (click) = "searchUser()"
-                    class = "btn btn-primary btn-input"
-                    type = "button">
-              <em class = "fas fa-search"></em>
-            </button>
-          </div>
-          <span class = 'mb-5'> *Ingresar el número de teléfono</span>
-          <div *ngIf = "loadingUser"
-               class = "progress mb-5">
-            <div aria-valuemax = "100"
-                 aria-valuemin = "0"
-                 aria-valuenow = "75"
-                 class = "progress-bar progress-bar-striped progress-bar-animated"
-                 role = "progressbar"
-                 style = "width: 100%"></div>
-          </div>
-          <div *ngIf = 'userSearched.length<=0 && searched'
-               class = 'text-center mt-3'>
-            No se han encontrado datos
-          </div>
-          <div class = "list-group mt-3">
-            <button (click) = "userSelect(user)"
-                    *ngFor = "let user of userSearched"
-                    class = "list-group-item list-group-item-action "
-                    data-bs-dismiss = "modal"
-                    type = "button">
-              {{user.name + ' ' + (user.last_name ? user.last_name : '') + ' Teléfono: ' + user.phone_number}}
-              <span class = 'position-absolute ml-2'
-                    style = "right: 15px !important; color: #415ba2;">Seleccionar</span>
-            </button>
-          </div>
-        </div>
-        <div class = "modal-footer">
-          <button class = "btn btn-secondary"
-                  data-bs-dismiss = "modal"
-                  type = "button">Cancelar
-          </button>
-        </div>
-      </div>
     </div>
   </div>
-<!--Profile Modal-->
+</div>
 <div aria-hidden = "true"
      aria-labelledby = "staticBackdropLabel"
      class = "modal fade"
@@ -312,7 +324,9 @@
                 class = "btn btn-primary"
                 data-bs-dismiss = "modal"
                 type = "button">Crear perfil
+
         </button>
+
         <button class = "btn btn-secondary"
                 data-bs-dismiss = "modal"
                 type = "button">Cerrar
@@ -321,4 +335,3 @@
     </div>
   </div>
 </div>
-
