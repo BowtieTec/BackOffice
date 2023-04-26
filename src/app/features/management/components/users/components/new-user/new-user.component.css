@@ -1,0 +1,90 @@
+.bgUsers{
+    padding: 25px 10px;
+    margin: -25px;
+    background-color: #f7f7f7;
+}
+.ck-button {
+    margin:4px;
+    background-color:#EFEFEF;
+    border-radius:4px;
+    border:1px solid #D0D0D0;
+    overflow:auto;
+    float:left;
+}
+
+.ck-button label {
+    float:left;
+    width:4.0em;
+}
+
+.ck-button label span {
+    text-align:center;
+    padding:3px 0px;
+    display:block;
+}
+
+.ck-button label input {
+    position:absolute;
+    top:-20px;
+}
+
+.ck-button input:checked  {
+    background-color:#911;
+    color:#fff;
+}
+.opcionActivo li label {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, .9);
+    border: 2px solid rgb(29 139 250);
+    color: #021C70;
+    border-radius: 8px;
+    white-space: break-spaces;
+    margin: 3px 0px;
+    max-width: 100%;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s;
+    width: 100%;
+    text-align: left;
+    min-height: 62px
+}
+.opcionActivo li input[type="checkbox"]:checked + label {
+    border: 1px solid #05ccae;
+    background-color: #05ccae;
+    color: #fff;
+    transition: all .2s;
+  }
+  .opcionOp{
+    width: auto;
+    display: inline-grid;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+  }
+   .opcionOp input, .opcionOp input + label{
+    display: none;
+  }
+  .opcionOp input[type="checkbox"]:checked + label {
+    background-color: #485ba4;
+    color: #fff;
+    transition: all .2s;
+    display: block!important;
+    padding: 4px 8px;
+    border-radius: 4px;
+} 
+.opcionOpContent{
+    position: relative;
+    background: #f1f1f1;
+    border-radius: 8px;
+    padding: 12px;
+}
+a.editButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+    text-decoration: none;
+}
