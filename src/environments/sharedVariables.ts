@@ -125,10 +125,10 @@ export const DiscountOnWhat = [
 export const TypeOfCondition = [
   {id: 1, name: 'Aplicar siempre'},
   {id: 2, name: 'Solo si Cant. Horas es menor o igual a '},
-  {id: 3, name: 'Sumar tarifa normal y aplicar descuento solo a'}
+  {id: 3, name: 'Sumar tarifa normal y aplicar descuento solo a'},
+  {id: 4, name: 'Horas gratis y restar cantidad despues de'},
 ]
 export const settings = {
   siteKey: '6LesloIfAAAAANKGMOJ5SOxyRugy3woH7Y1DP1f6',
   passwordPattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{7,}$'
 }
-

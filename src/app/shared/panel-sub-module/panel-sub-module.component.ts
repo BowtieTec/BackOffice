@@ -6,7 +6,7 @@ import {FormGroup} from "@angular/forms";
   template: `
     <div class = "row justify-content-center">
       <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12 animate__animated animate__fadeInLeft ">
-        <div class = "panels row"
+        <div class = "panels"
              [attr.aria-current] = "formGroup? formGroup: null">
           <app-title-cards [icon] = "icon"
                            [title] = "title"></app-title-cards>

@@ -101,7 +101,7 @@ export class ResgisteredUsersComponent
   }
 
   async editTheUser(user: NewUserModel) {
-    this.utilitiesService.goToElementById("locationPanel")
+    this.utilitiesService.goToElementById("editUserExist")
     this.subject.next(user)
   }
 

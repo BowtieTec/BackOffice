@@ -5,4 +5,5 @@ export class CompaniesModel {
   parking?: any
   status = false
   created_at?: Date = new Date()
+  courtesies?: any
 }

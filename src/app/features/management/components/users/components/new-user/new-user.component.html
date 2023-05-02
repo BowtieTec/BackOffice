@@ -1,78 +1,170 @@
-<app-panel-sub-module icon = "fas fa-users"
-                      [formGroup] = 'newUserForm'
-                      title = "Crear Usuario">
-  <app-input-container [formGroup] = 'newUserForm'
-                       controlName = 'name'
-                       name = 'Nombre'>
-  </app-input-container>
-  <app-input-container [formGroup] = 'newUserForm'
-                       controlName = 'last_name'
-                       name = 'Apellido'>
-  </app-input-container>
-  <app-input-container [formGroup] = 'newUserForm'
-                       [readonly] = 'isEdit'
-                         controlName = 'email'
-                         name = 'Correo'>
-    </app-input-container>
-    <app-select-container [data] = 'this.getRoles()'
-                          [formGroup] = 'newUserForm'
-                          controlName = 'role'
-                          name = 'Roles de usuario'>
-    </app-select-container>
-    <app-input-container [formGroup] = 'newUserForm'
-                         controlName = 'user'
-                         name = 'Alias'>
-    </app-input-container>
-    <app-input-container [formGroup] = 'newUserForm'
-                         [readonly] = 'isEdit'
-                         controlName = 'password'
-                         name = 'Contraseña'
-                         textInfo = 'La contraseña debe contener al menos 7 caracteres, una letra mayúscula y un dígito'
-                         type = 'password'>
-    </app-input-container>
-    <app-select-container *ngIf = 'this.selectedRoleIsCourtesy'
-                          [data] = 'companies'
-                          [formGroup] = 'newUserForm'
-                          controlName = 'company'
-                          name = "Local">
-    </app-select-container>
-    <div class = 'col-lg-12 ms-2'>
-      <div *ngFor = "let parking of this.getParkingLotsFormArray().controls; let i = index"
-           class = "form-check-inline col-sm-3 m-1"
-           formArrayName = "otherParkings">
-        <input (change) = "onChangeCheckbox(i, otherParkingLot[i], $event)"
-               [formControlName] = "i"
-               [id] = "otherParkingLot[i].id"
-               class = "form-check-input"
-               type = "checkbox">
-        <label [for] = "otherParkingLot[i].id"
-               class = "form-check-label ms-1">
-          {{otherParkingLot[i].name}}
-        </label>
+
+<div class="modal fade" id="otrosParqueos" tabindex="-1" aria-labelledby="otrosParqueos" aria-hidden="true">
+  <div class="modal-dialog modal-xl  modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="otrosParqueos">Información de otros parqueos</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        
+<app-panel-sub-module [formGroup] = 'newUserForm'>
+        <div class="row opcionActivo" style="margin-top: -85px;">
+          <li *ngFor = "let parking of this.getParkingLotsFormArray().controls; let i = index"
+               class = " col-lg-3"
+               formArrayName = "otherParkings">
+            <input (change) = "onChangeCheckbox(i, otherParkingLot[i], $event)"
+                   [formControlName] = "i"
+                   [id] = "otherParkingLot[i].id"
+                   class = "form-check-input"
+                   type = "checkbox">
+            <label [for] = "otherParkingLot[i].id"
+                   class = "form-check-label ms-1">
+              {{otherParkingLot[i].name}}
+            </label>
+          </li>
+        </div>
+      </app-panel-sub-module>
+      </div>
+    
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click) = 'saveNewUser()'>Guardar</button>
       </div>
     </div>
-    <div class = 'col-sm-12'>
-      <div class = 'text-center'>
-        <button
-          (click) = 'selectAllCheckboxes()'
-          class = 'btn btn-outline-dark form-check-inline'>
-          Marcar todos
-        </button>
-        <button
-          (click) = 'clearAllCheckboxes()'
-          class = 'btn btn-outline-dark form-check-inline'>
-          Desmarcar todos
-        </button>
-        <button (click) = 'saveNewUser()'
-                class = 'btn btn-success me-3'
-                type = 'button'>GUARDAR
-        </button>
-        <button (click) = 'cleanForm()'
-                *ngIf = 'isEdit'
-                class = 'btn btn-secundary '
-                type = 'button'>Cancelar edicion
-        </button>
+  </div>
+</div>
+<app-panel-sub-module icon = "fas fa-users" [formGroup] = 'newUserForm' title = "Crear Usuario">
+  <div id="editUserExist" class="" >
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="panels pt-2">
+        <div class="mb-4">
+          <app-input-container [formGroup] = 'newUserForm' controlName = 'name' name = 'Nombre'></app-input-container>
+        </div>
+        <div class="mb-4">
+          <app-input-container [formGroup] = 'newUserForm' controlName = 'last_name' name = 'Apellido'></app-input-container>
+        </div>
+        <div class="mb-4">
+          <app-input-container [formGroup] = 'newUserForm' [readonly] = 'isEdit' controlName = 'email' name = 'Correo'></app-input-container>
+        </div>
+        <div class="mb-4">
+          <app-input-container [formGroup] = 'newUserForm' controlName = 'user' name = 'Alias'></app-input-container>
+        </div>
+        <div class="mb-4">
+          <app-select-container [data] = 'this.getRoles()' [formGroup] = 'newUserForm' controlName = 'role' name = 'Roles de usuario'></app-select-container>
+        </div>
+        <div class="mb-4">
+          <app-input-container [formGroup] = 'newUserForm' [readonly] = 'isEdit' controlName = 'password' name = 'Contraseña' textInfo = 'La contraseña debe contener al menos 7 caracteres, una letra mayúscula y un dígito' type = 'password'></app-input-container>
+        </div>
+        
       </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="panels pt-4">
+        <div class = 'mb-4'>
+          <b></b>
+          <div class="row">
+            <div class="text-center">
+              <h6><b>Otros parqueos</b></h6>
+              <div class="opcionOpContent text-start mt-2 pt-4 pb-4">
+                <a type="button" class="editButton" data-bs-target = "#otrosParqueos" data-bs-toggle = "modal" data-bs-toggle="modal">Editar</a>
+                <li class="opcionOp" *ngFor = "let parking of this.getParkingLotsFormArray().controls; let i = index" formArrayName = "otherParkings">
+                  <input (change) = "onChangeCheckbox(i, otherParkingLot[i], $event)"
+                   [formControlName] = "i"
+                   [id] = "otherParkingLot[i].id"
+                   class = "form-check-input"
+                   type = "checkbox">
+                  <label [for] = "otherParkingLot[i].id" class = "form-check-label ms-1">
+                    {{otherParkingLot[i].name}}
+                  </label>
+                </li>
+              </div>
+              
+            </div>
+          </div>
+          
+        </div>
+        <div class="mb-4 " [formGroup] = "newUserForm" *ngIf = 'this.selectedRoleIsCourtesy'>
+          <label class = "labelInput"
+                style = "display: block;">Local</label>
+          <select placeholder = "Local"
+          class = "inputClass" #companySelected
+                    formControlName = "company"
+                    notFoundText = "No se encontraron coincidencias"
+                    (change)='loadCourtesies(companySelected.value)'>
+            <option *ngFor = "let item of this.companies"
+                      [value] = "item.id"
+                      class = "inputClass">{{item.name | titlecase}}</option>
+          </select>
+        </div>
+        <div class = 'mb-4' *ngIf = 'this.selectedRoleIsCourtesy && this.localName'>
+          <b>Cortesias del local:</b><p>{{ localName }}</p>
+
+          <div class="row opcionActivo">
+          
+          <ng-container *ngFor = "let courtesy of this.getCourtesiesLotsFormArray().controls; let i = index">
+            <li *ngIf="courtesiesByParking[i].haveStation == 1" class = " col-sm-4 opcionActivo" formArrayName = "courtesies"> 
+              
+                <input (change) = "onChangeCheckboxCourtesies(i, courtesiesByParking[i], $event)"
+                      [formControlName] = "i"
+                      [id] = "courtesiesByParking[i].id"
+                      class = "form-check-input"
+                      type = "checkbox">
+                <label [for] = "courtesiesByParking[i].id"
+                      class = "form-check-label ">
+                  {{courtesiesByParking[i].name}}
+                </label>
+            
+              </li>
+          </ng-container>
+        </div>
+        </div>
+        
+        
+        
+        <div class = 'text-center'>
+          <!-- <button (click) = 'selectAllCheckboxes()' class = 'btn btn-outline-dark form-check-inline'>
+            Marcar todos
+          </button>
+          <button (click) = 'clearAllCheckboxes()' class = 'btn btn-outline-dark form-check-inline'>
+            Desmarcar todos
+          </button> -->
+          <button (click) = 'saveNewUser()' class = 'btn btn-success me-3' type = 'button'>Guardar</button>
+          <button (click) = 'cleanForm()' *ngIf = 'isEdit' class = 'btn btn-secundary ' type = 'button'>
+            Cancelar edicion
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  
+  
+    
+    
+    
+
+    <!-- <div class="col-xl-6 col-lg-6 col-sm-12" [formGroup] = "newUserForm" *ngIf = 'this.selectedRoleIsCourtesy'>
+      <label class = "labelInput"
+            style = "display: block;">Local</label>
+      <select placeholder = "Local"
+      class = "inputClass" #companySelected
+                formControlName = "company"
+                notFoundText = "No se encontraron coincidencias"
+                (change)='loadCourtesies(companySelected.value)'>
+        <option *ngFor = "let item of this.companies"
+                  [value] = "item.id"
+                  class = "inputClass">{{item.name | titlecase}}</option>
+      </select>
+    </div> -->
+
+    
+
+    
+    <div class = 'col-sm-12'>
+      
       <div class = 'mb-4 relative'></div>
     </div>
+  </div>
+  
 </app-panel-sub-module>
