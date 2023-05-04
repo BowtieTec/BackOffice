@@ -78,8 +78,8 @@ export class NewUserComponent implements OnInit {
       id: user.id || null,
     })
 
-   
-    
+
+
     this.isEdit = true
     this.utilitiesService.markAsUnTouched(this.newUserForm)
 
@@ -91,7 +91,7 @@ export class NewUserComponent implements OnInit {
         this.addCourtesyCheckboxes()
       }
     }
-    
+
   }
 
   ngOnInit(): void {
@@ -109,10 +109,10 @@ export class NewUserComponent implements OnInit {
       if (user) {
         this.cleanForm()
         if (user){
-          
+
           this.clearPasswordValidations()
           await this.fillFormWithUser(user)
-          
+
         }
         if (user?.otherParkings) {
           this.fillOtherParkingLotArrayCheckBox(user)
@@ -121,11 +121,11 @@ export class NewUserComponent implements OnInit {
         if (user?.otherCourtesies) {
           this.fillOtherCourtesiesLotArrayCheckBox(user)
         }
-        
+
         await this.authService.saveNewParking(user.parking)
       }
     })
-    
+
   }
 
   loadCourtesies(company: any){
@@ -138,7 +138,7 @@ export class NewUserComponent implements OnInit {
       this.addCourtesyCheckboxes()
     }
   }
-  
+
   isSudo() {
     return this.authService.isSudo
   }
@@ -188,7 +188,7 @@ export class NewUserComponent implements OnInit {
     }
     newUserValue.otherParkings = this.getOtherParkingLotsIdSelected()
     newUserValue.otherCourtesies = this.getOtherCourtesiesLotsIdSelected()
-    
+
     if (this.isEdit) {
       this.newUserForm.get('password')?.clearValidators()
       delete newUserValue.password
@@ -238,7 +238,7 @@ export class NewUserComponent implements OnInit {
     this.companies = await this.companiesService
       .getCompanies(this.parkingId)
       .toPromise()
-      
+
   }
 
   addPasswordValidations() {
@@ -308,10 +308,10 @@ export class NewUserComponent implements OnInit {
         value: false,
         disabled: false
       }))
-          
+
       }
     );
-    
+
   }
 
   private createForm() {
@@ -360,7 +360,7 @@ export class NewUserComponent implements OnInit {
   }
 
   private fillOtherCourtesiesLotArrayCheckBox(user: NewUserModel = this.authService.getUser().user as NewUserModel) {
-    
+
 
     this.courtesiesByParking.forEach((item, index) => {
 

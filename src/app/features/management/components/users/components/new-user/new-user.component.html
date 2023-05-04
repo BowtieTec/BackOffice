@@ -7,7 +7,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        
+
 <app-panel-sub-module [formGroup] = 'newUserForm'>
         <div class="row opcionActivo" style="margin-top: -85px;">
           <li *ngFor = "let parking of this.getParkingLotsFormArray().controls; let i = index"
@@ -26,9 +26,9 @@
         </div>
       </app-panel-sub-module>
       </div>
-    
+
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click) = 'saveNewUser()'>Guardar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" >Listo</button>
       </div>
     </div>
   </div>
@@ -56,7 +56,7 @@
         <div class="mb-4">
           <app-input-container [formGroup] = 'newUserForm' [readonly] = 'isEdit' controlName = 'password' name = 'Contraseña' textInfo = 'La contraseña debe contener al menos 7 caracteres, una letra mayúscula y un dígito' type = 'password'></app-input-container>
         </div>
-        
+
       </div>
     </div>
     <div class="col-lg-6">
@@ -79,10 +79,10 @@
                   </label>
                 </li>
               </div>
-              
+
             </div>
           </div>
-          
+
         </div>
         <div class="mb-4 " [formGroup] = "newUserForm" *ngIf = 'this.selectedRoleIsCourtesy'>
           <label class = "labelInput"
@@ -101,10 +101,10 @@
           <b>Cortesias del local:</b><p>{{ localName }}</p>
 
           <div class="row opcionActivo">
-          
+
           <ng-container *ngFor = "let courtesy of this.getCourtesiesLotsFormArray().controls; let i = index">
-            <li *ngIf="courtesiesByParking[i].haveStation == 1" class = " col-sm-4 opcionActivo" formArrayName = "courtesies"> 
-              
+            <li *ngIf="courtesiesByParking[i].haveStation == 1" class = " col-sm-4 opcionActivo" formArrayName = "courtesies">
+
                 <input (change) = "onChangeCheckboxCourtesies(i, courtesiesByParking[i], $event)"
                       [formControlName] = "i"
                       [id] = "courtesiesByParking[i].id"
@@ -114,14 +114,14 @@
                       class = "form-check-label ">
                   {{courtesiesByParking[i].name}}
                 </label>
-            
+
               </li>
           </ng-container>
         </div>
         </div>
-        
-        
-        
+
+
+
         <div class = 'text-center'>
           <!-- <button (click) = 'selectAllCheckboxes()' class = 'btn btn-outline-dark form-check-inline'>
             Marcar todos
@@ -137,12 +137,12 @@
       </div>
     </div>
   </div>
- 
-  
-  
-    
-    
-    
+
+
+
+
+
+
 
     <!-- <div class="col-xl-6 col-lg-6 col-sm-12" [formGroup] = "newUserForm" *ngIf = 'this.selectedRoleIsCourtesy'>
       <label class = "labelInput"
@@ -158,13 +158,13 @@
       </select>
     </div> -->
 
-    
 
-    
+
+
     <div class = 'col-sm-12'>
-      
+
       <div class = 'mb-4 relative'></div>
     </div>
   </div>
-  
+
 </app-panel-sub-module>
