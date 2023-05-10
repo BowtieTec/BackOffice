@@ -23,6 +23,7 @@
               {{otherParkingLot[i].name}}
             </label>
           </li>
+
         </div>
       </app-panel-sub-module>
       </div>
@@ -68,14 +69,9 @@
               <h6><b>Otros parqueos</b></h6>
               <div class="opcionOpContent text-start mt-2 pt-4 pb-4">
                 <a type="button" class="editButton" data-bs-target = "#otrosParqueos" data-bs-toggle = "modal" data-bs-toggle="modal">Editar</a>
-                <li class="opcionOp" *ngFor = "let parking of this.getParkingLotsFormArray().controls; let i = index" formArrayName = "otherParkings">
-                  <input (change) = "onChangeCheckbox(i, otherParkingLot[i], $event)"
-                   [formControlName] = "i"
-                   [id] = "otherParkingLot[i].id"
-                   class = "form-check-input"
-                   type = "checkbox">
-                  <label [for] = "otherParkingLot[i].id" class = "form-check-label ms-1">
-                    {{otherParkingLot[i].name}}
+                <li class="opcionOp" *ngFor = "let parking of this.otherParkingLogSelected; let i = index">
+                  <label [for]="otherParkingLogSelected[i].id" class = "form-check-label ms-1">
+                    {{otherParkingLogSelected[i].name}}
                   </label>
                 </li>
               </div>
@@ -97,7 +93,7 @@
                       class = "inputClass">{{item.name | titlecase}}</option>
           </select>
         </div>
-        <div class = 'mb-4' *ngIf = 'this.selectedRoleIsCourtesy && this.localName'>
+        <div class = 'mb-4' *ngIf = "this.selectedRoleIsCourtesy && this.localName && this.getCourtesyWithStation().length > 0; else noData">
           <b>Cortesias del local:</b><p>{{ localName }}</p>
 
           <div class="row opcionActivo">
@@ -119,8 +115,9 @@
           </ng-container>
         </div>
         </div>
-
-
+        <ng-template #noData>
+          <b>No hay cortesias para el local:</b><p>{{ localName }}</p>
+        </ng-template>
 
         <div class = 'text-center'>
           <!-- <button (click) = 'selectAllCheckboxes()' class = 'btn btn-outline-dark form-check-inline'>

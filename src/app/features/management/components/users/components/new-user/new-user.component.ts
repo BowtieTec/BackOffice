@@ -65,7 +65,7 @@ export class NewUserComponent implements OnInit {
 
   async fillFormWithUser(user: NewUserModel) {
     this.courtesiesByParking  = []
-    console.log("user", user)
+
     this.newUserForm.patchValue({
       name: user.name || '',
       last_name: user.last_name || '',
@@ -301,6 +301,9 @@ export class NewUserComponent implements OnInit {
 
   }
 
+  getCourtesyWithStation(){
+    return this.courtesiesByParking.filter(value => value.haveStation == 1)
+  }
   private addCourtesyCheckboxes() {
     this.courtesiesByParking.forEach((item) => {
 
@@ -346,7 +349,8 @@ export class NewUserComponent implements OnInit {
     this.otherParkingLot.forEach((item, index) => {
       if (user.otherParkings?.find((obj: any) => obj.id === item.id)) {
         this.getParkingLotsFormArray().controls[index].setValue(true);
-        this.otherParkingLogSelected.push(item)
+        ! this.otherParkingLogSelected.some(value => value.id == item.id) ? this.otherParkingLogSelected.push(item) : ''
+
       } else {
         this.getParkingLotsFormArray().controls[index].setValue(false);
       }
