@@ -302,7 +302,7 @@ export class NewUserComponent implements OnInit {
   }
 
   getCourtesyWithStation(){
-    return this.courtesiesByParking.filter(value => value.haveStation == 1)
+    return this.courtesiesByParking ?this.courtesiesByParking.filter(value => value.haveStation == 1):[]
   }
   private addCourtesyCheckboxes() {
     this.courtesiesByParking.forEach((item) => {
@@ -347,10 +347,9 @@ export class NewUserComponent implements OnInit {
 
   private fillOtherParkingLotArrayCheckBox(user: NewUserModel = this.authService.getUser().user as NewUserModel) {
     this.otherParkingLot.forEach((item, index) => {
-      if (user.otherParkings?.find((obj: any) => obj.id === item.id)) {
+      if (user.otherParkings?.some((obj: any) => obj.id === item.id)) {
         this.getParkingLotsFormArray().controls[index].setValue(true);
         ! this.otherParkingLogSelected.some(value => value.id == item.id) ? this.otherParkingLogSelected.push(item) : ''
-
       } else {
         this.getParkingLotsFormArray().controls[index].setValue(false);
       }

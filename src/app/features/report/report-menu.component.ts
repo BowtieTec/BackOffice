@@ -18,6 +18,7 @@ export class ReportMenuComponent {
   verBillingReport = environment.verBillingReport
   verHistoryOfCourtesy = environment.verHistoryOfCourtesyReport
   transitDetailReport = environment.transitDetailReport
+  blacklistRpt = environment.blacklistReport
   private actions: string[] = this.permissionService.actionsOfPermissions
 
   constructor(private permissionService: PermissionsService) {
