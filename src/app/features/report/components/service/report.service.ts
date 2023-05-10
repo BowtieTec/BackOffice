@@ -179,6 +179,56 @@ isApproved(payment: any) {
       )
   }
 
+  getBlackListRpt(initDate: Date, endDate: Date, parqueo: string) {
+    const _initDate = new Date(initDate).toISOString().split('T')[0]
+    const _endDate = new Date(endDate).toISOString().split('T')[0]
+    return this.http
+      .get<ResponseModel>(
+        `${this.apiUrl}backoffice/report/reportBlackList/dates?initDate=${_initDate}&endDate=${_endDate}&parqueo=${parqueo}`
+      )
+      .pipe(
+        map((res) => {
+          console.log(res);
+          return res.data.map((item: any) => {
+            console.log(item.status);
+            console.log(item.payment_type);
+            return {
+              phone_key: item.user?.phone_number ?? '',
+              entry_date: item.entry_date
+                ? new Date(item.entry_date).toLocaleString()
+                : '',
+              exit_date: item.exit_date
+                ? new Date(item.exit_date).toLocaleString()
+                : '',
+              timeIn: this.utility.descriptionOfDiffOfTime(
+                new Date(item.entry_date),
+                new Date(item.exit_date || new Date())
+              ),
+              subtotal: item.subtotal ?? '--',
+              discount: item.discount ?? '',
+              total: item.total ?? '--',
+              courtesy: item.courtesy?.courtesy_details?.name ?? '--',
+              typePayment:
+                item.payment_type == 4 || item.status == 3
+                  ? 'Pagado'
+                  : item.status == 2
+                    ? 'Pendiente de pago'
+                      : '',
+
+              status:
+                item.status == 2
+                  ? 'Puede salir'
+                  : item.status == 1
+                    ? 'Dentro del parqueo'
+                    : item.status == 3 || item.status == 5
+                      ? 'Fuera del parqueo'
+                      : 'Intento fallido'
+            }
+          })
+        })
+      )
+  }
+
   getParkingMonthlyRpt(
     initDate: Date,
     endDate: Date,

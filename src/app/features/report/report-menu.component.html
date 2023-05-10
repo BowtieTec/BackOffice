@@ -75,6 +75,14 @@
     </ng-template>
   </ng-container>
 
+  <ng-container *ngIf = "ifHaveAction(transitDetailReport)"
+                [ngbNavItem] = "11">
+    <a ngbNavLink><em class = "fas fa-list"></em> Lista negra</a>
+    <ng-template ngbNavContent>
+      <app-blacklist-report></app-blacklist-report>
+    </ng-template>
+  </ng-container>
+
 </nav>
 <div [ngbNavOutlet] = "nav"
      class = "mt-2"></div>
