@@ -74,7 +74,7 @@
     display: block!important;
     padding: 4px 8px;
     border-radius: 4px;
-} 
+}
 .opcionOpContent{
     position: relative;
     background: #f1f1f1;
@@ -87,4 +87,23 @@ a.editButton {
     right: 0;
     margin: 10px;
     text-decoration: none;
+}
+
+label.form-check-label {
+  position: relative;
+  background: #415ba2;
+  color: #fff;
+  padding: 5px 30px 5px 10px;
+  border-radius: 8px;
+}
+
+label.form-check-label::after {
+  content: 'x';
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 10px;
+  width: 10px;
+  margin: 4px;
+  /* background: #000; */
 }
