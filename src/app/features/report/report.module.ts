@@ -23,7 +23,8 @@ import {DxButtonModule, DxDataGridModule} from 'devextreme-angular'
 import {DetailGridComponent} from './components/parking-ticket-report/detail/detail-grid.component'
 import {BillingReportComponent} from './components/billing-report/billing-report.component';
 import {HistoryCourtesyComponent} from './components/history-courtesy/history-courtesy.component';
-import {TransitDetailReportComponent} from './components/transit-detail-report/transit-detail-report.component'
+import {TransitDetailReportComponent} from './components/transit-detail-report/transit-detail-report.component';
+import { BlacklistReportComponent } from './components/blacklist-report/blacklist-report.component'
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import {TransitDetailReportComponent} from './components/transit-detail-report/t
     DetailGridComponent,
     BillingReportComponent,
     HistoryCourtesyComponent,
-    TransitDetailReportComponent
+    TransitDetailReportComponent,
+    BlacklistReportComponent
   ],
   imports: [
     CommonModule,

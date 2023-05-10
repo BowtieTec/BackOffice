@@ -64,6 +64,7 @@ export const permission = {
   restartPassword: 'restartPassword',
   updateFiles: 'updateFiles',
   transitDetailReport: 'transitDetailReport',
+  blacklistReport: 'blacklistReport',
   assignCourtesyPermission: 'assignCourtesyPermission',
   changePermissions: 'changePermissions',
   listEditParking: 'listEditParking'
