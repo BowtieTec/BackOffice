@@ -36,7 +36,6 @@ export class ParkingLotComponent implements OnInit, OnDestroy, AfterViewInit {
   async getParkingLot() {
     return this.parkingSudo.getParkingLots().then((data: IParkingLot[]) => {
       this.parkingLot = data;
-      console.log(this.parkingLot);
       this.dtTrigger.next()
     })
   }

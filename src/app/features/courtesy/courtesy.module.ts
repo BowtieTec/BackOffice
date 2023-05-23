@@ -12,14 +12,16 @@ import {CourtesyComponent} from './components/courtesy/courtesy.component'
 import {StationaryCourtesyComponent} from './components/stationary-courtesy/stationary-courtesy.component'
 import {
   AntennasFromCourtesyComponent
-} from './components/stationary-courtesy/components/antennas-from-courtesy/antennas-from-courtesy.component'
+} from './components/stationary-courtesy/components/antennas-from-courtesy/antennas-from-courtesy.component';
+import { ShowCourtesiesComponent } from './components/show-courtesies/show-courtesies.component'
 
 @NgModule({
   declarations: [
     CourtesyMenuComponent,
     CourtesyComponent,
     StationaryCourtesyComponent,
-    AntennasFromCourtesyComponent
+    AntennasFromCourtesyComponent,
+    ShowCourtesiesComponent
   ],
   imports: [
     CommonModule,

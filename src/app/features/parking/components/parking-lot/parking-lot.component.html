@@ -39,6 +39,7 @@
       <th scope = "col">Teléfonos</th>
       <th scope = "col">Eliminado</th>
       <th scope = "col">Lane Number</th>
+      <th scope = "col">Mostrar cortesias en la aplicación</th>
     </tr>
     </thead>
     <tbody>
@@ -71,6 +72,8 @@
           contenteditable>{{parking.is_draft}}</td>
       <td (focusout) = "changeValue($event.target, parking, 'lane_number')"
           contenteditable>{{parking.lane_number}}</td>
+          <td (focusout) = "changeValue($event.target, parking, 'show_courtesies_in_app')"
+          contenteditable>{{parking.show_courtesies_in_app}}</td>
     </tr>
     </tbody>
   </table>

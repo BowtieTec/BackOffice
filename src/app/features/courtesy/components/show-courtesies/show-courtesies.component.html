@@ -1,0 +1,39 @@
+<div class = "row justify-content-center">
+    <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class = "panels">
+        <div class = "titleCards">
+          <span><em class = "fas fa-sitemap"></em></span>Mostrar las cortesias en la aplicación
+        </div>
+
+        <form *ngIf = "true"
+            [formGroup] = "showCourtesyForm">
+            <div class = "col-md-6 col-sm-12">
+                <h6>¿ Mostrar cortesias en la aplicación?</h6>
+                <ul class = "opcionActivo">
+                  <li class = "m-1">
+                    <input (change) = "changeValueIsUnlimited()"
+                           Name = "isUnlimited"
+                           [checked] = "isUnlimitedValue"
+                           id = "radioOne"
+                           type = "radio">
+                    <label
+                      for = "radioOne">Activado</label>
+                  </li>
+                  <li class = "m-1">
+                    <input (change) = "changeValueIsUnlimited()"
+                           Name = "isUnlimited"
+                           [checked] = "!isUnlimitedValue"
+                           id = "radioTwo"
+                           type = "radio">
+                    <label
+                      for = "radioTwo">Desactivado</label>
+                  </li>
+                </ul>
+              </div>
+        </form>
+
+        
+      </div>
+    </div>
+</div>
+

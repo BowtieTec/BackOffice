@@ -21,6 +21,7 @@ export interface IParkingLot {
   url_background: string;
   is_draft: number;
   lane_number: number;
+  show_courtesies_in_app: number;
 }
 
 export interface IParkingLotUpdate {
@@ -45,4 +46,5 @@ export interface IParkingLotUpdate {
   url_background?: string;
   is_draft?: number;
   lane_number?: number;
+  show_courtesies_in_app?: number;
 }

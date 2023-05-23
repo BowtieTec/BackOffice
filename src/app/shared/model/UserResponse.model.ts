@@ -24,6 +24,7 @@ export class UserModel {
   user = ''
   status = 0
   otherParkings: ParkingAuthModel[] = []
+  
 }
 
 export class ParkingAuthModel {
@@ -45,6 +46,7 @@ export class ParkingAuthModel {
   is_our_bac_credential: any
   is_our_visa_credential: any
   url_logo: string = ''
+  show_courtesies_in_app? = false
 }
 
 export interface ParkingCheckModel {
