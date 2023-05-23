@@ -92,8 +92,8 @@ export class GlobalErrorHandler implements ErrorHandler {
     } else if (errorString.includes('ObjectUnsubscribedError:')) {
       return
     } else if (errorString.includes('"statusText":"Unauthorized"')) {
-      this.message.error('Token vencido. Por favor iniciar sesión nuevamente')
-      this.goToLogin()
+      /*this.message.error('Token vencido. Por favor iniciar sesión nuevamente')
+      this.goToLogin()*/
       return
     }
     if (!environment.production) {

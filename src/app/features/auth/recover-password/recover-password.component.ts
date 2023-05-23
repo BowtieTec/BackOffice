@@ -69,6 +69,10 @@ export class RecoverPasswordComponent {
         }
         return data.success
       }).catch(err => {
+      if(err.status == 429) {
+        this.message.error('Demasiados intentos, prueba nuevamente en 1 minuto.', err.error.message)
+        return false
+      }
         this.message.error('', err.error.message)
         return false
       })

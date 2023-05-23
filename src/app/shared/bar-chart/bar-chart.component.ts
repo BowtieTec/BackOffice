@@ -688,7 +688,6 @@ export class BarChartComponent implements OnInit, OnDestroy {
       .getMonthlyPayments(parkingId, mes, anio)
       .toPromise()
       .then((data) => {
-        console.log(data);
         if (data) {
           const seriesDatos: any[] = []
           Object.keys(data).forEach((key: any) => {
@@ -716,7 +715,7 @@ export class BarChartComponent implements OnInit, OnDestroy {
             labelsDatos.push(iDias)
           }
           this.chart.updateSeries(seriesDatos)
-          console.log(seriesDatos);
+
           this.chart.updateOptions({
             title: {
               text: this.tipo + ' por mes'

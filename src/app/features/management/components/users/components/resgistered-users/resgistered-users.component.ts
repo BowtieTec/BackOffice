@@ -72,7 +72,6 @@ export class ResgisteredUsersComponent
       this.parkingId = parkingId
       this.getUsers({textToSearch: '', page: 1, pageSize: 10}).then((data) => {
         this.users = data.admins
-        console.log(this.users);
       })
     })
     this.subject.subscribe((user: NewUserModel) => {

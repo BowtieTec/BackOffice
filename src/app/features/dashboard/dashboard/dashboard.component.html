@@ -11,17 +11,6 @@
           [class.color] = "idTabActiva === 'flujo'"
           id = "flujo"><em class = "fas fa-chart-area fa-lg"></em> Flujo de dinero
       </li>
-      <li (click) = "tabChanges('cortesias')"
-          *ngIf = "ifHaveAction(graficosCortesias)"
-          [class.color] = "idTabActiva === 'cortesias'"
-          id = "cortesias">Cortesías
-      </li>
-      <li (click) = "tabChanges('cortesiasEstacionarias')"
-          *ngIf = "ifHaveAction(graficosCortesiasEstacionarias)"
-          [class.color] = "idTabActiva === 'cortesiasEstacionarias'"
-          id = "cortesiasEstacionarias">Cortesías
-                                        estacionarias
-      </li>
     </ul>
     <div class = "content ">
       <div *ngIf = "ifHaveAction(graficosIngresoVehiculos) && idTabActiva === 'ingresos'"
