@@ -35,13 +35,14 @@ export class CompaniesService {
     ]
   }
 
-  getCompanies(parkingId: string): Observable<Array<CompaniesModel>> {
+  getCompanies(parkingId: string,all:number = 0): Observable<Array<CompaniesModel>> {
     if (!this.permissions.ifHaveAction('listLocal')) {
       return NEVER
     }
+    const url = all == 1 ? 'backoffice/company/all/' : 'backoffice/company/'
     this.message.showLoading()
     return this.http
-      .get<ResponseModel>(`${this.apiUrl}backoffice/company/${parkingId}`)
+      .get<ResponseModel>(`${this.apiUrl}${url}${parkingId}`)
       .pipe(
         map((x: ResponseModel) => {
           if (x.success) {

@@ -157,7 +157,7 @@ export class CompanyComponent implements AfterViewInit, OnDestroy, OnInit {
 
   private async getCompanies(parkingId: string = this.parkingId) {
     return this.companyService
-      .getCompanies(this.parkingId)
+      .getCompanies(this.parkingId,1)
       .toPromise()
       .then((data) => {
         this.companies = data

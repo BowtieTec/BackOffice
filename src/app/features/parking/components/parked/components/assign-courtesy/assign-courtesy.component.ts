@@ -28,7 +28,6 @@ export class AssignCourtesyComponent implements OnInit, OnDestroy {
       return
     }
     this.courtesyService.getCourtesiesByParking(parked.parkingId).toPromise().then(data => {
-      console.log("x", data)
       this.courtesies = data.filter(x => x.haveStation)
       this.courtesiesFiltered = this.courtesies
     }).then(() => this.isLoading = !this.isLoading)
@@ -58,6 +57,6 @@ export class AssignCourtesyComponent implements OnInit, OnDestroy {
       return
     }
     this.courtesiesFiltered = this.courtesies.filter((x) => `${x.name}${x.company?.name ?? ''}${this.parkedSelected.parking ?? ''}`.toLowerCase().includes(this.searchText.toLowerCase()))
-    
+
   }
 }

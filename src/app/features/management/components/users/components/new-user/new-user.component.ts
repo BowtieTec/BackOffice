@@ -209,7 +209,7 @@ export class NewUserComponent implements OnInit {
         })
     } else {
       if(newUserValue.otherCourtesies.length == 0 && newUserValue.role == Roles.Cortesias){
-        this.message.errorTimeOut('Debe de seleccionar al menos una cortersía.')
+        this.message.errorTimeOut('Debe de seleccionar al menos una cortesía.')
         return;
       }
       delete newUserValue.id
