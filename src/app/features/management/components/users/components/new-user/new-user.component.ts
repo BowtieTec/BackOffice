@@ -208,6 +208,10 @@ export class NewUserComponent implements OnInit {
           this.message.OkTimeOut('Usuario editado con éxito.')
         })
     } else {
+      if(newUserValue.otherCourtesies.length == 0 && newUserValue.role == Roles.Cortesias){
+        this.message.errorTimeOut('Debe de seleccionar al menos una cortersía.')
+        return;
+      }
       delete newUserValue.id
       this.addPasswordValidations()
       this.userService

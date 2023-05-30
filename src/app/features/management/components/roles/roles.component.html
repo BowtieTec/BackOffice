@@ -1,7 +1,7 @@
 <app-panel-sub-module icon = "fas fa-user"
                       title = "Roles y permisos">
-    <div class = "col-sm-4 text-center">
-      <div class = "mb-4 relative">
+    <div class = "col-sm-12">
+      <div class = "text-center">
         <label class = "labelInput">Roles</label>
         <select
           (change) = "changeRole()"
@@ -15,10 +15,12 @@
           </select>
 
         </div>
-
+      <div class = "text-center">
         <button (click) = "savePermissions()"
-                class = "btn btn-success ">Guardar
+                class = "text-center btn btn-success position-top h-25 mt-2">Guardar
         </button>
+      </div>
+
       </div>
       <div class = "row mt-5">
         <div *ngFor = "let module of getModules; index as i"
