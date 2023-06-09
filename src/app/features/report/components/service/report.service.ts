@@ -51,6 +51,7 @@ export class ReportService {
                 new Date(item.exit_date)
               ),
               transaction: payment?.trace_number ?? '',
+              noAutoritation: payment?.auth_id_response ?? '',
               courtesy: item.courtesy?.courtesy_details?.name ?? '',
               company: item.courtesy?.courtesy_details?.company.name ?? '',
               typePayment:

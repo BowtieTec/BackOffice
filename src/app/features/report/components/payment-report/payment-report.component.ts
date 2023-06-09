@@ -127,6 +127,7 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
       'No. Factura',
       'Fecha de emisión de Factura',
       'Fecha de pago',
+      'No. Autorización',
       'No. Transacción',
       'Método de pago'
     ]
@@ -287,6 +288,7 @@ export class PaymentReportComponent implements OnInit, AfterViewInit {
         d.invoice,
         d.invoiceDate ? new Date(d.invoiceDate).toLocaleString() : '',
         d.paymentDate ? new Date(d.paymentDate).toLocaleString() : '',
+        d.noAutoritation,
         d.transaction,
         d.typePayment
       ])
