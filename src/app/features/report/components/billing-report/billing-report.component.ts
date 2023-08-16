@@ -144,6 +144,8 @@ export class BillingReportComponent implements OnInit {
       'Total (Q)',
       'Moneda del documento',
       'Número de Factura',
+      'Número de serie',
+      'No. autorización',
       'Tipo'
     ]
     //Create workbook and worksheet
@@ -165,7 +167,7 @@ export class BillingReportComponent implements OnInit {
         }
       }
     })
-    worksheet.mergeCells('D2:K3')
+    worksheet.mergeCells('D2:M3')
     const addressRow = worksheet.addRow(['', '', '', this.authService.getParking().name])
     addressRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
     addressRow.alignment = {horizontal: 'center', vertical: 'middle'}
@@ -179,7 +181,7 @@ export class BillingReportComponent implements OnInit {
         }
       }
     })
-    worksheet.mergeCells('D4:K5')
+    worksheet.mergeCells('D4:M5')
     const titleRow = worksheet.addRow([
       '',
       '',
@@ -198,7 +200,7 @@ export class BillingReportComponent implements OnInit {
         }
       }
     })
-    worksheet.mergeCells('D6:K8')
+    worksheet.mergeCells('D6:M8')
     //Add Image
     worksheet.mergeCells('B2:C8')
     const logo = workbook.addImage({
@@ -220,7 +222,7 @@ export class BillingReportComponent implements OnInit {
         }
       }
     })
-    worksheet.mergeCells('B10:K11')
+    worksheet.mergeCells('B10:M11')
     worksheet.addRow([])
     const header1 = worksheet.addRow([
       '',
@@ -242,7 +244,7 @@ export class BillingReportComponent implements OnInit {
       }
     })
     worksheet.mergeCells('B13:F14')
-    worksheet.mergeCells('G13:K14')
+    worksheet.mergeCells('G13:M14')
     const header2 = worksheet.addRow([
       '',
       'Total de facturas emitidas: ' + this.dataSource.length,
@@ -266,7 +268,7 @@ export class BillingReportComponent implements OnInit {
       }
     })
     worksheet.mergeCells('B15:F16')
-    worksheet.mergeCells('G15:K16')
+    worksheet.mergeCells('G15:M16')
     worksheet.addRow([])
     const headerRow = worksheet.addRow(header)
 
@@ -308,6 +310,8 @@ export class BillingReportComponent implements OnInit {
         d.total,
         'GTQ',
         d.noFactura,
+        d.serial,
+        d.noAutorizacionTC,
         d.service_type
       ])
       row.eachCell((cell, number) => {
