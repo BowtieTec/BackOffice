@@ -207,6 +207,22 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
     })
   }
 
+  disableCourtesy(courtesy: CourtesyModel){
+    this.message.showLoading()
+    courtesy.id = !courtesy.id ? '' : courtesy.id
+    this.courtesyService.disableGroupOfCourtesies(courtesy.id).toPromise().then(r =>
+      {
+        if (r.success) {
+
+          this.message.OkTimeOut()
+        } else {
+          this.message.error(r.message)
+        }
+      }
+    );
+
+  }
+
   validateValue() {
     const type = this.newCourtesyForm.get('type')?.value
     if (type == 1) {

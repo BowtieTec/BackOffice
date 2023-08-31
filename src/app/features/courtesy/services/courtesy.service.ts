@@ -129,6 +129,11 @@ export class CourtesyService {
     )
   }
 
+  disableGroupOfCourtesies(id: string){
+    return this.http.put<ResponseModel>(`${this.apiUrl}backoffice/cortesy/disableGroupCourtesy`, {"courtesy_detail_id":id} )
+
+  }
+
   getStationaryCourtesies(parkingId: string) {
     return this.http.get(
       `${this.apiUrl}backoffice/station_cortesy/${parkingId}/station`,

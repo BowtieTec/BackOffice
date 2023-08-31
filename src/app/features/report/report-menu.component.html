@@ -83,6 +83,14 @@
     </ng-template>
   </ng-container>
 
+  <ng-container
+                [ngbNavItem] = "12">
+    <a ngbNavLink><em class = "fas fa-list"></em> Reporte Facturación Biltmore</a>
+    <ng-template ngbNavContent>
+      <app-biltmore-report></app-biltmore-report>
+    </ng-template>
+  </ng-container>
+
 </nav>
 <div [ngbNavOutlet] = "nav"
      class = "mt-2"></div>

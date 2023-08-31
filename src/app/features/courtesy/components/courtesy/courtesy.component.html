@@ -116,6 +116,11 @@
           *ngIf = 'ifHaveAction(downloadCourtesy)'
           class = 'btn btn-outline-danger '><em class = 'fas fa-file-pdf'></em>
         </button>
+        <button
+          (click) = 'disableCourtesy(courtesy)'
+
+          class = 'btn btn-outline-danger '><em class = 'fas fa-ban'></em>
+        </button>
       </td>
     </tr>
     </tbody>

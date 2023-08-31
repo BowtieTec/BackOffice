@@ -24,7 +24,8 @@ import {DetailGridComponent} from './components/parking-ticket-report/detail/det
 import {BillingReportComponent} from './components/billing-report/billing-report.component';
 import {HistoryCourtesyComponent} from './components/history-courtesy/history-courtesy.component';
 import {TransitDetailReportComponent} from './components/transit-detail-report/transit-detail-report.component';
-import { BlacklistReportComponent } from './components/blacklist-report/blacklist-report.component'
+import { BlacklistReportComponent } from './components/blacklist-report/blacklist-report.component';
+import { BiltmoreReportComponent } from './components/biltmore-report/biltmore-report.component'
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { BlacklistReportComponent } from './components/blacklist-report/blacklis
     BillingReportComponent,
     HistoryCourtesyComponent,
     TransitDetailReportComponent,
-    BlacklistReportComponent
+    BlacklistReportComponent,
+    BiltmoreReportComponent
   ],
   imports: [
     CommonModule,
