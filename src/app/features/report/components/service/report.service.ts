@@ -22,7 +22,6 @@ export class ReportService {
     parqueo: string,
     telephone: string = ''
   ) {
-    console.log({initDate, endDate, parqueo, telephone})
     return this.http
       .get<ResponseModel>(
         `${this.apiUrl}backoffice/report/getPagos/dates?initDate=${initDate}&endDate=${endDate}&parqueo=${parqueo}&telephone=${telephone}`
@@ -189,8 +188,6 @@ isApproved(payment: any) {
       )
       .pipe(
         map((res) => {
-          console.log(res);
-          console.log("berny");
           return res.data.map((item: any) => {
             return {
               phone_key: item.user?.phone_number ?? '',
@@ -204,25 +201,24 @@ isApproved(payment: any) {
                 new Date(item.entry_date),
                 new Date(item.exit_date || new Date())
               ),
+              serieInterna: item.parking?.lane_number ?? '',
+              numeroInterno: item.parking?.lane_number ?? '',
+              status: item.payment[0]?.billing?.fiscal_number ? 'Impresa' : '',
+              terminal: item.parking?.lane_number ?? '',
               subtotal: item.subtotal ?? '--',
               discount: item.discount ?? '',
               total: item.total ?? '--',
               courtesy: item.courtesy?.courtesy_details?.name ?? '--',
-              typePayment:
-                item.payment_type == 4 || item.status == 3
-                  ? 'Pagado'
-                  : item.status == 2
-                    ? 'Pendiente de pago'
-                    : '',
+              certification_time:item.payment[0]?.billing?.certification_time ?? '',
+              payment_date:item.payment[0]?.created_at ?? '',
+              nit:item.payment[0]?.billing?.buyer_nit == "" ? 'CF' : item.payment[0]?.billing?.buyer_nit,
+              razonSocial: item.payment[0]?.billing?.buyer_name ?? '',
+              address:  'Ciudad',
+              paymentType:  'Tarjeta de Crédito',
+              serial:item.payment[0]?.billing?.serial ?? '--',
+              noFactura:item.payment[0]?.billing?.fiscal_number ?? '--',
+              noAutorizacion: item.payment[0]?.billing?.fiscal_uuid ?? '--',
 
-              status:
-                item.status == 2
-                  ? 'Puede salir'
-                  : item.status == 1
-                    ? 'Dentro del parqueo'
-                    : item.status == 3 || item.status == 5
-                      ? 'Fuera del parqueo'
-                      : 'Intento fallido'
             }
           })
         })
@@ -238,10 +234,8 @@ isApproved(payment: any) {
       )
       .pipe(
         map((res) => {
-          console.log(res);
           return res.data.map((item: any) => {
-            console.log(item.status);
-            console.log(item.payment_type);
+
             return {
               phone_key: item.user?.phone_number ?? '',
               entry_date: item.entry_date
@@ -332,7 +326,6 @@ isApproved(payment: any) {
 
     // Calculating the no. of days between two dates
     const diffInDays = Math.round(diffInTime / oneDay);
-    console.log(diffInDays)
     return diffInDays;
   }
 

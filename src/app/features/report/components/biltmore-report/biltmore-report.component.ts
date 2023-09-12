@@ -99,7 +99,6 @@ export class BiltmoreReportComponent implements OnInit{
     }
     let _startDate = new Date(startDate).toISOString().split('T')[0] + ' 00:00:00'
     let _endDate = new Date(endDate).toISOString().split('T')[0] + ' 23:59:59'
-    console.log(_startDate)
     return this.reportService
       .getBiltmoreRpt(_startDate, _endDate, parkingId)
       .toPromise()
@@ -118,147 +117,31 @@ export class BiltmoreReportComponent implements OnInit{
     }
     const {startDate, endDate, parkingId} = this.reportForm.getRawValue()
     const header = [
-      '',
-      'Fecha emisión factura',
-      'Fecha de entrada',
-      'Fecha de salida',
-      'Fecha de pago',
-      'Teléfono',
-      'Nit del Cliente',
-      'Total (Q)',
-      'Moneda del documento',
-      'Número de Factura',
-      'Número de serie',
-      'No. autorización',
-      'Tipo'
+      'Serie Interna',
+      'Numero Interno',
+      'Fecha Emisión',
+      'Monto',
+      'Estado',
+      'TransID',
+      'Terminal',
+      'Concepto',
+      'NIT',
+      'Razon Social',
+      'Direccion',
+      'Tipo de Pago',
+      'Serie',
+      'Numero',
+      'Numero Autorización'
     ]
     //Create workbook and worksheet
     const workbook = new Workbook()
     const worksheet = workbook.addWorksheet('ebiGO Facturación')
     //Add Row and formatting
-    worksheet.addRow([])
-
-    const busienssRow = worksheet.addRow(['', '', '', 'ebiGO'])
-    busienssRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    busienssRow.alignment = {horizontal: 'center', vertical: 'middle'}
-    busienssRow.eachCell((cell, number) => {
-      if (number > 1) {
-        cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
-        }
-      }
-    })
-    worksheet.mergeCells('D2:M3')
-    const addressRow = worksheet.addRow(['', '', '', this.authService.getParking().name])
-    addressRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    addressRow.alignment = {horizontal: 'center', vertical: 'middle'}
-    addressRow.eachCell((cell, number) => {
-      if (number > 1) {
-        cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
-        }
-      }
-    })
-    worksheet.mergeCells('D4:M5')
-    const titleRow = worksheet.addRow([
-      '',
-      '',
-      '',
-      'Reporte - ebiGO Facturación'
-    ])
-    titleRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    titleRow.alignment = {horizontal: 'center', vertical: 'middle'}
-    titleRow.eachCell((cell, number) => {
-      if (number > 1) {
-        cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
-        }
-      }
-    })
-    worksheet.mergeCells('D6:M8')
-    //Add Image
-    worksheet.mergeCells('B2:C8')
-    const logo = workbook.addImage({
-      base64: logoFile.logoBase64,
-      extension: 'png'
-    })
-    worksheet.addImage(logo, 'B3:C6')
-    worksheet.addRow([])
-    const infoRow = worksheet.addRow(['', 'Información General'])
-    infoRow.font = {name: 'Calibri', family: 4, size: 11, bold: true}
-    infoRow.alignment = {horizontal: 'center', vertical: 'middle'}
-    infoRow.eachCell((cell, number) => {
-      if (number > 1) {
-        cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
-        }
-      }
-    })
-    worksheet.mergeCells('B10:M11')
-    worksheet.addRow([])
-    const header1 = worksheet.addRow([
-      '',
-      'Fecha Inicio: ' + new Date(new Date(startDate).setDate(new Date(startDate).getDate() + 1)).toLocaleDateString(),
-      '',
-      '',
-      '',
-      '',
-      'Fecha Fin: ' + new Date(new Date(endDate).setDate(new Date(endDate).getDate() + 1)).toLocaleDateString()
-    ])
-    header1.eachCell((cell, number) => {
-      if (number > 1) {
-        cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
-        }
-      }
-    })
-    worksheet.mergeCells('B13:F14')
-    worksheet.mergeCells('G13:M14')
-    const header2 = worksheet.addRow([
-      '',
-      'Total de facturas emitidas: ' + this.dataSource.length,
-      '',
-      '',
-      '',
-      '',
-      'Documento generado: ' +
-      new Date().toLocaleDateString() +
-      '  ' +
-      new Date().toLocaleTimeString()
-    ])
-    header2.eachCell((cell, number) => {
-      if (number > 1) {
-        cell.border = {
-          top: {style: 'thin'},
-          left: {style: 'thin'},
-          bottom: {style: 'thin'},
-          right: {style: 'thin'}
-        }
-      }
-    })
-    worksheet.mergeCells('B15:F16')
-    worksheet.mergeCells('G15:M16')
-    worksheet.addRow([])
     const headerRow = worksheet.addRow(header)
 
     // Cell Style : Fill and Border
     headerRow.eachCell((cell, number) => {
-      if (number > 1) {
+      if (number > 0) {
         cell.fill = {
           type: 'pattern',
           pattern: 'solid',
@@ -276,27 +159,21 @@ export class BiltmoreReportComponent implements OnInit{
     // Add Data and Conditional Formatting
     this.dataSource.forEach((d: any) => {
       const row = worksheet.addRow([
-        '',
-        d.certification_time
-          ? new Date(d.certification_time).toLocaleString('es-GT')
-          : '',
-        d.entry_date
-          ? new Date(d.entry_date).toLocaleString('es-GT')
-          : '',
-        d.exit_date
-          ? new Date(d.exit_date).toLocaleString('es-GT')
-          : '',
-        d.payment_date
-          ? new Date(d.payment_date).toLocaleString('es-GT')
-          : '',
-        d.phone_key,
-        d.nit,
+        d.serieInterna,
+        d.numeroInterno,
+        d.certification_time,
         d.total,
-        'GTQ',
-        d.noFactura,
+        d.status,
+        '',
+        d.terminal,
+        '',
+        d.nit,
+        d.razonSocial,
+        d.address,
+        d.paymentType,
         d.serial,
-        d.noAutorizacionTC,
-        d.service_type
+        d.noFactura,
+        d.noAutorizacion,
       ])
       row.eachCell((cell, number) => {
         if (number > 1) {
@@ -313,6 +190,7 @@ export class BiltmoreReportComponent implements OnInit{
     worksheet.addRow([])
     worksheet.addRow([])
 
+    worksheet.getColumn(1).width = 20
     worksheet.getColumn(2).width = 20
     worksheet.getColumn(3).width = 20
     worksheet.getColumn(4).width = 20

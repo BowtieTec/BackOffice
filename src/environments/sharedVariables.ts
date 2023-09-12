@@ -68,7 +68,8 @@ export const permission = {
   assignCourtesyPermission: 'assignCourtesyPermission',
   changePermissions: 'changePermissions',
   listEditParking: 'listEditParking',
-  disableCourtesies: 'disableGroupOfCourtesies'
+  disableCourtesies: 'disableGroupOfCourtesies',
+  viewBiltmoreReport: 'hasPermissionToViewBiltmoreReport'
 }
 export const leftMenu = [
   {

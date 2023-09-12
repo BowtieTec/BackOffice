@@ -20,6 +20,8 @@ export class ReportMenuComponent implements OnInit{
   verHistoryOfCourtesy = environment.verHistoryOfCourtesyReport
   transitDetailReport = environment.transitDetailReport
   blacklistRpt = environment.blacklistReport
+  viewBiltmoreReport = environment.viewBiltmoreReport
+  hasPermissionToViewReport: Array<string> = []
   private actions: string[] = this.permissionService.actionsOfPermissions
   private parkingId: string = this.authService.getParking().id
 
@@ -28,16 +30,18 @@ export class ReportMenuComponent implements OnInit{
 
   ifHaveAction(action: string) {
     return !!this.actions.find((x) => x == action)
-    //return this.permissionService.ifHaveAction(action);
   }
 
   ngOnInit(): void {
     this.authService.user$.subscribe(({parkingId}) => {
       this.parkingId = parkingId;
     })
+    this.permissionService.hasPermissions(this.parkingId,this.viewBiltmoreReport)
+      .toPromise()
+      .then(data => this.hasPermissionToViewReport = JSON.parse(data));
   }
 
   isBiltmore():boolean{
-    return this.parkingId == '19b5f7a2-e165-4942-9fd6-1330f4f06654'? true:false;
+    return !!this.hasPermissionToViewReport.find(value => value == this.parkingId);
   }
 }
