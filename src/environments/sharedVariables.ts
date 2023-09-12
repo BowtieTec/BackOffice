@@ -67,7 +67,8 @@ export const permission = {
   blacklistReport: 'blacklistReport',
   assignCourtesyPermission: 'assignCourtesyPermission',
   changePermissions: 'changePermissions',
-  listEditParking: 'listEditParking'
+  listEditParking: 'listEditParking',
+  disableCourtesies: 'disableGroupOfCourtesies'
 }
 export const leftMenu = [
   {

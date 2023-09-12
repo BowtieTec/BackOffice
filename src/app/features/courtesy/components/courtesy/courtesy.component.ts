@@ -27,6 +27,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
   newCourtesyForm: FormGroup
   parkingId: string = ''
   courtesies: CourtesyModel[] = []
+  parkingHasPermissionToDisable: Array<string> = []
   allCompanies: CompaniesModel[] = []
   discountOnWhatList: SelectModel[] = this.courtesyService.DiscountOnWhatOptions
   typeOfCondition: SelectModel[] = environment.TypeOfCondition
@@ -39,6 +40,7 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
 
   /*Permissions*/
   listCourtesy = environment.listCourtesy
+  disableCourtesies = environment.disableCourtesies
   downloadCourtesy = environment.downloadCourtesy
   createCourtesy = environment.createCourtesy
 
@@ -87,6 +89,10 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ifHaveAction(action: string) {
     return this.permissionService.ifHaveAction(action)
+  }
+
+  ifHasPermission() {
+    return !!this.parkingHasPermissionToDisable.find(value => value == this.parkingId);
   }
 
   controlInvalid(control: string) {
@@ -245,6 +251,9 @@ export class CourtesyComponent implements AfterViewInit, OnDestroy, OnInit {
       this.parkingId = parkingId
       this.newCourtesyForm.get('parkingId')?.setValue(parkingId)
       this.getInitialData().finally(() => this.message.hideLoading())
+      this.permissionService.hasPermissions(this.parkingId,this.disableCourtesies).toPromise().then(data => {
+        this.parkingHasPermissionToDisable = JSON.parse(data);
+      })
     })
   }
 

@@ -118,7 +118,7 @@
         </button>
         <button
           (click) = 'disableCourtesy(courtesy)'
-
+          *ngIf = 'ifHasPermission()'
           class = 'btn btn-outline-danger '><em class = 'fas fa-ban'></em>
         </button>
       </td>

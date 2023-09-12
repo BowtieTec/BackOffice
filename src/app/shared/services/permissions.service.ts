@@ -39,6 +39,19 @@ export class PermissionsService implements OnInit {
       )
   }
 
+  hasPermissions(parkingId: string, variable: string) {
+
+    return this.http
+      .get<ResponseModel>(
+        `${this.apiUrl}backoffice/admin/role/hasPermission/${parkingId}/${variable}`
+      )
+      .pipe(
+        map((data) => {
+          return data.data
+        })
+      )
+  }
+
   ifHaveAction(action: string) {
     return !!this.actions.find((x) => x == action)
   }
